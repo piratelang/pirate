@@ -1,4 +1,4 @@
-namespace PirateParser.Models
+namespace PirateLexer.Models
 {
     public enum TokenType
     {
@@ -15,6 +15,7 @@ namespace PirateParser.Models
         LEFTPARENTHESES,
         RIGHTPARENTHESES,
         ENDOFFILE,
+        ENDOFLINE,
         POWER,
         DOUBLEEQUALS,
         NOTEQUALS,

@@ -1,6 +1,6 @@
-using PirateParser.Models;
+using PirateLexer.Models;
 
-namespace PirateParser
+namespace PirateLexer
 {
     public class TokenRepository
     {

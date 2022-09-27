@@ -1,4 +1,4 @@
-namespace PirateParser
+namespace PirateLexer
 {
     public static class Globals
     {

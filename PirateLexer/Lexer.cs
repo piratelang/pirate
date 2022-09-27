@@ -1,23 +1,19 @@
 
-using PirateParser.Models;
+using PirateLexer.Models;
 
-namespace PirateParser;
-class Lexer
+namespace PirateLexer;
+public class Lexer
 {
     public string fileName { get; set; }
     public static string text { get; set; }
     public static char currentChar { get; set; }
     public static Position position { get; set; }
 
-    public Lexer(string FileName, string[] Text)
+    public Lexer(string FileName, string Text)
     {
         fileName = FileName;
-        foreach (var item in Text)
-        {
-            item.Replace('\t', ' ');
-            item.Replace(' ');
-            text += item;
-        }
+        var noTabItem = Text.Replace("    ", "");
+        text += noTabItem;
         position = new Position(-1, 0, -1, fileName, text);
         Advance();
     }
@@ -41,12 +37,12 @@ class Lexer
 
         while (currentChar != null)
         {
-            if (currentChar.Equals('\r'))
-            {
-                Advance();
-            }
             if (currentChar.Equals('\n'))
             {
+                tokens.Add(new Token(
+                    TokenType.ENDOFLINE,
+                    PositionStart: position
+                ));
                 Advance();
             }
             if (currentChar == ' ')

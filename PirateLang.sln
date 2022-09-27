@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateInterpreter", "PirateInterpreter\PirateInterpreter.csproj", "{EBF8E034-78C5-4CF2-B9FE-7DC83851A4FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateParser", "PirateParser\PirateParser.csproj", "{D24D02C0-FD2A-4B89-B35A-76BD514587E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateLexer", "PirateLexer\PirateLexer.csproj", "{D24D02C0-FD2A-4B89-B35A-76BD514587E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateParser", "PirateParser\PirateParser.csproj", "{A0EA3188-BE4F-4D9C-A3AA-541508922B92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{D24D02C0-FD2A-4B89-B35A-76BD514587E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D24D02C0-FD2A-4B89-B35A-76BD514587E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D24D02C0-FD2A-4B89-B35A-76BD514587E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0EA3188-BE4F-4D9C-A3AA-541508922B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0EA3188-BE4F-4D9C-A3AA-541508922B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0EA3188-BE4F-4D9C-A3AA-541508922B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0EA3188-BE4F-4D9C-A3AA-541508922B92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

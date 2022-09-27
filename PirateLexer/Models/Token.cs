@@ -1,4 +1,4 @@
-namespace PirateParser.Models
+namespace PirateLexer.Models
 {
     public class Token
     {
