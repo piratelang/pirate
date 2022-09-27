@@ -1,8 +1,6 @@
-﻿using IronPythonTest;
+﻿using PirateInterpreter;
 
-Console.WriteLine("Hello, World!");
-
-var pythonEngine = new PythonEngine("C:/MyPorjects/IronPythonTest/Python/test.py");
+var pythonEngine = new PythonEngine("C:/MyPorjects/PirateLang/PirateInterpreter/Python/test.txt");
 
 object[] parameters = new object[] {
     new List<string>() {"hello", "world"}

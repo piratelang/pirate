@@ -1,0 +1,30 @@
+namespace PirateParser.Models
+{
+    public enum TokenType
+    {
+        INT,
+        FLOAT,
+        STRING,
+        IDENTIFIER,
+        KEYWORD,
+        PLUS,
+        MINUS,
+        MULTIPLY,
+        DIVIDE,
+        EQUALS,
+        LEFTPARENTHESES,
+        RIGHTPARENTHESES,
+        ENDOFFILE,
+        POWER,
+        DOUBLEEQUALS,
+        NOTEQUALS,
+        LESSTHAN,
+        GREATHERTHAN,
+        LESSTHANEQUALS,
+        GREATERTHANEQUALS,
+        COMMA,
+        COLON,
+        RIGHTCURLYBRACE,
+        LEFTCURLYBRACE
+    }
+}

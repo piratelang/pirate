@@ -1,4 +1,6 @@
-def main(c_list):
-    List = list(c_list)
+def main():
+    List = ["Hello"]
     List.append("from python")
+
+
     return List

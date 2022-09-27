@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/IronPythonTest.csproj",
+                "${workspaceFolder}/PirateInterpreter/PirateInterpreter.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/IronPythonTest.csproj",
+                "${workspaceFolder}/PirateInterpreter/PirateInterpreter.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/IronPythonTest.csproj"
+                "${workspaceFolder}/PirateInterpreter/PirateInterpreter.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

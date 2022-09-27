@@ -1,7 +1,7 @@
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 
-namespace IronPythonTest
+namespace PirateInterpreter
 {
     public class PythonEngine
     {
@@ -26,9 +26,9 @@ namespace IronPythonTest
 
             compiledCode.Execute(scope);
 
-            dynamic pythonMethod = scope.GetVariable(methodName);
+            dynamic main = scope.GetVariable("main");
 
-            return engine.Operations.Invoke(pythonMethod, parameters);
+            return main();
         }
     }
 }

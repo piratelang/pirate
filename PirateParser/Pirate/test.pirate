@@ -1,0 +1,30 @@
+func main()
+{
+    if(a != 4 and b == 5)
+    {
+        b = a
+    }
+    elif(a == 4)
+    {
+        a = b
+    }
+    else
+    {
+        a = 3
+    }
+
+    for(i = 0 to 10 step 1)
+    {
+        print(i)
+    }
+
+    while(a != 6)
+    {
+        r = 4
+    }
+
+    var a = 5
+    string dried = "hello"
+    int t = 5
+    float r = 6.5
+}
