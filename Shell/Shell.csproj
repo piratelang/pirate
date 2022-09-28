@@ -18,14 +18,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>pirate</ToolCommandName>
-<!-- 
+
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PublishReadyToRun>true</PublishReadyToRun> -->
+    <PublishReadyToRun>true</PublishReadyToRun>
+    
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>pirate</ToolCommandName>
   </PropertyGroup>
 
 </Project>
