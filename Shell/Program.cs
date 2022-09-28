@@ -1,4 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System.Reflection;
+using System;
+using System.Net.Security;
+// See https://aka.ms/new-console-template for more information
 using PirateLexer;
 using PirateParser;
 using PirateInterpreter;
@@ -20,7 +23,11 @@ internal class Program
             Console.WriteLine($"\nPirateLang version {version}\n");
             Console.WriteLine("Commands:");
             Console.WriteLine(" - pirate run [filename].pirate");
+            Console.WriteLine("    run the specified file");
             Console.WriteLine(" - pirate init [filename]\n");
+            Console.WriteLine("    initialize a new pirste project");
+            Console.WriteLine(" - pirate new [type]\n");
+            Console.WriteLine("    initialize a new pirste project");
             return;
         }
         else
@@ -29,12 +36,32 @@ internal class Program
             {
                 if (args.Length == 1)
                 {
-                    Console.WriteLine("File not provided or does not exist.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nFile not provided or does not exist.");
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    Console.WriteLine("\nThe \"pirate run [filename]\" command runs the specified module");
                 }
                 else
                 {
                     var fileName = args[1].Replace(".pirate", "");
                     Run(version, $"{fileName}.pirate");
+                }
+            }
+            if (args[0] == "new")
+            {
+                if (args.Length == 1)
+                {
+                    Console.WriteLine("\nThe \"pirate new [type]\" command creates a new file from a template");
+                    Console.WriteLine("\nOptions");
+                    Console.WriteLine(" - gitignore");
+                    Console.WriteLine(" - gitattributes");
+                    Console.WriteLine("\nFor a new pirate file see \"pirate init\" ");
+                }
+                else
+                {
+                    New(args[1]);
+                    Console.WriteLine($"\nCreated new .{args[1]}");
                 }
             }
             if (args[0] == "init")
@@ -45,7 +72,10 @@ internal class Program
                     fileName.Replace(".pirate", "");
                     fileName = args[1];
                 }
-                File.Create($"./{fileName}.pirate");
+                var file = File.CreateText($"./{fileName}.pirate");
+                file.Write("func main()\n{\nprint(\"Hello World\");\n}");
+                file.Close();
+                Console.WriteLine($"\nCreated {fileName}.pirate");
             }
         }
     }
@@ -64,5 +94,22 @@ internal class Program
 
         var pythonEngine = new PythonEngine(location);
         var result = pythonEngine.InvokeMain("main");
+    }
+
+    static void New(string type)
+    {
+        if (type == "gitignore")
+        {
+            var file = File.CreateText($"./.gitignore");
+            file.Write("[Bb]in/");
+            file.Close();
+        }
+        if (type == "gitattributes")
+        {
+            var location = "./.gitattributes";
+            var file = File.CreateText(location);
+            file.Write("*.pirate linguist-language=Squirrel");
+            file.Close();
+        }
     }
 }

@@ -155,10 +155,6 @@ public class Parser
                             WriteString("or", file, true, true);
                             Advance();
                             continue;
-                        case "not":
-                            WriteString("not", file, true, true);
-                            Advance();
-                            continue;
                         case "if":
                             WriteString("if", file);
                             Advance();
@@ -178,10 +174,6 @@ public class Parser
                             continue;
                         case "to":
                             WriteString("to", file, true, true);
-                            Advance();
-                            continue;
-                        case "step":
-                            WriteString("step", file, true, true);
                             Advance();
                             continue;
                         case "while":
