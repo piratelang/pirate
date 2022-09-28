@@ -1,5 +1,1 @@
-﻿using PirateLexer;
-using PirateParser;
-
-Console.WriteLine("Hello, World!");
-
+﻿Console.WriteLine("Hello, World!");

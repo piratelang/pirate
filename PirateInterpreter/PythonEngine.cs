@@ -12,7 +12,7 @@ namespace PirateInterpreter
 
         public PythonEngine(string scriptPath)
         {
-            Script = scriptPath;
+            Script = scriptPath + "/output.py";
         }
 
         public string Script { get; set; }

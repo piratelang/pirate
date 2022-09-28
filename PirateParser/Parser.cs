@@ -32,9 +32,13 @@ public class Parser
             currentToken = tokenList[index];
         }
     }
-    public void Parse()
+    public void Parse(string location)
     {
-        var file = File.CreateText("./output.py");
+        bool exists = System.IO.Directory.Exists(location);
+        if(!exists)
+            System.IO.Directory.CreateDirectory(location);
+
+        var file = File.CreateText("./" + location + "/output.py");
 
         while(currentToken != null)
         {
