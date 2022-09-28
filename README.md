@@ -1,3 +1,5 @@
+[![NuGet](https://img.shields.io/nuget/v/PirateLang.CLI.svg)](https://www.nuget.org/packages/PirateLang.CLI)
+
 # Pirate Programming Language
 ### PirateLexer
 Takes a .pirate file and lexes it into a list of tokens
