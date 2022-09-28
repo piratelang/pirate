@@ -2,10 +2,7 @@
 
 var pythonEngine = new PythonEngine("C:/MyPorjects/PirateLang/PirateInterpreter/Python/test.txt");
 
-object[] parameters = new object[] {
-    new List<string>() {"hello", "world"}
-};
-var result = pythonEngine.InvokeMethodWithParameters("main", parameters);
+var result = pythonEngine.InvokeMain("main");
 
 if (result != null)
 {
@@ -14,3 +11,4 @@ if (result != null)
         Console.WriteLine(item);
     }
 }
+

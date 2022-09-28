@@ -1,6 +1,0 @@
-def main():
-    List = ["Hello"]
-    List.append("from python")
-
-
-    return List

@@ -434,7 +434,7 @@ $RECYCLE.BIN/
 *.cab
 *.msi
 *.msix
-*.msm
+8*.msm
 *.msp
 
 # Windows shortcuts
@@ -452,3 +452,5 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+.release/*

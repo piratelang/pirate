@@ -117,7 +117,7 @@ namespace PirateLexer
 
         public static Token MakeGreaterThan()
         {
-            var tokenType = TokenType.GREATHERTHAN;
+            var tokenType = TokenType.GREATERHAN;
             var positionStart = Lexer.position.Copy();
             Lexer.Advance();
 

@@ -12,8 +12,9 @@ public class Lexer
     public Lexer(string FileName, string Text)
     {
         fileName = FileName;
-        var noTabItem = Text.Replace("    ", "");
-        text += noTabItem;
+        var newText = Text.Replace("\r\n", "");
+        var noTabText = newText.Replace("    ", "");
+        text = noTabText;
         position = new Position(-1, 0, -1, fileName, text);
         Advance();
     }
@@ -146,6 +147,13 @@ public class Lexer
                     ));
                     Advance();
                     continue;
+                case ';':
+                    tokens.Add(new Token(
+                        TokenType.SEMICOLON,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
                 case '=':
                     tokens.Add(TokenRepository.MakeEquals());
                     Advance();
@@ -164,6 +172,7 @@ public class Lexer
                     {
                         return (null, result.error);
                     }
+                    tokens.Add(result.token);
                     Advance();
                     continue;
                 default:

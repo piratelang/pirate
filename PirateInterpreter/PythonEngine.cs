@@ -17,7 +17,7 @@ namespace PirateInterpreter
 
         public string Script { get; set; }
 
-        public dynamic InvokeMethodWithParameters(string methodName, params object[] parameters)
+        public dynamic InvokeMain(string methodName)
         {
             engine = Python.CreateEngine();
             scriptSource = engine.CreateScriptSourceFromFile(Script);

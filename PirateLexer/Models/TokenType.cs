@@ -20,12 +20,13 @@ namespace PirateLexer.Models
         DOUBLEEQUALS,
         NOTEQUALS,
         LESSTHAN,
-        GREATHERTHAN,
+        GREATERHAN,
         LESSTHANEQUALS,
         GREATERTHANEQUALS,
         COMMA,
         COLON,
         RIGHTCURLYBRACE,
-        LEFTCURLYBRACE
+        LEFTCURLYBRACE,
+        SEMICOLON
     }
 }
