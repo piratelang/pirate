@@ -52,16 +52,14 @@ internal class Program
             }
             if (args[0] == "init")
             {
-                var fileName = "main";
-                if (args.Length > 1)
+                var nameArgument = string.Empty;
+                try
                 {
-                    fileName.Replace(".pirate", "");
-                    fileName = args[1];
+                    nameArgument = args[1];
                 }
-                var file = File.CreateText($"./{fileName}.pirate");
-                file.Write("func main()\n{\nprint(\"Hello World\");\n}");
-                file.Close();
-                Console.WriteLine($"\nCreated {fileName}.pirate");
+                catch (System.Exception) { }
+
+                commandRepository.Init(nameArgument);
             }
         }
     }

@@ -89,5 +89,19 @@ namespace Shell
             }
             Console.WriteLine($"\nCreated new .{type}");
         }
+        public void Init(string nameArgument)
+        {
+            if (nameArgument == string.Empty)
+            {
+                Console.WriteLine("\nThe \"pirate init [name]\" command creates a new pirate file");
+                return;
+            }
+
+            var fileName = nameArgument.Replace(".pirate", "");
+            var file = File.CreateText($"./{fileName}.pirate");
+            file.Write("func main()\n{\n    print(\"Hello World\");\n}");
+            file.Close();
+            Console.WriteLine($"\nCreated {fileName}.pirate");
+        }
     }
 }
