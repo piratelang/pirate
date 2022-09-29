@@ -1,4 +1,5 @@
 [![NuGet](https://img.shields.io/nuget/v/PirateLang.CLI.svg)](https://www.nuget.org/packages/PirateLang.CLI)
+[![.NET](https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml/badge.svg)](https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml)
 
 # Pirate Programming Language
 
