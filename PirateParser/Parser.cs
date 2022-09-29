@@ -5,10 +5,10 @@ namespace PirateParser;
 
 public class Parser
 {
-    public List<Token> tokenList { get; set; }
+    public static List<Token> tokenList { get; set; }
     public string writePath { get; set; }
     public int indentation { get; set; }
-    public Token currentToken { get; set; }
+    public static Token currentToken { get; set; }
 
     public Parser(List<Token> TokenList, string WritePath = null)
     {
@@ -20,7 +20,7 @@ public class Parser
             writePath = "./Pirate/output.py";
         }
     }
-    public void Advance()
+    public static void Advance()
     {
         var index = tokenList.IndexOf(currentToken) + 1;
         if (tokenList.IndexOf(currentToken) + 2 >= tokenList.Count())
@@ -39,6 +39,8 @@ public class Parser
             System.IO.Directory.CreateDirectory(location);
 
         var file = File.CreateText("./" + location + "/output.py");
+
+        var writeRepository = new WriteRepository();
 
         while(currentToken != null)
         {
@@ -179,11 +181,6 @@ public class Parser
                             WriteString("else", file);
                             Advance();
                             continue;
-                        case "for":
-                            WriteString("for", file);
-                            // WriteRepository.WriteForLoop();
-                            Advance();
-                            continue;
                         case "to":
                             WriteString("to", file, true, true);
                             Advance();
@@ -200,6 +197,13 @@ public class Parser
                             WriteString("import", file, false, true);
                             Advance();
                             continue;
+                        case "class":
+                            WriteString("class", file, false, true);
+                            Advance();
+                            continue;
+                        case "for":
+                            writeRepository.WriteForLoop(file);
+                            continue;
                     }
                     Advance();
                     continue;
@@ -211,7 +215,7 @@ public class Parser
         return true;
     }
 
-    public void WriteString(string input, StreamWriter file, bool spaceBefore = false, bool spaceAfter = false)
+    public static void WriteString(string input, StreamWriter file, bool spaceBefore = false, bool spaceAfter = false)
     {
         if (spaceBefore)
         {

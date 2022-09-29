@@ -1,5 +1,12 @@
 func main()
 {
-    var i = 3;
-    print(f"number is: {i}");
+    print(board.board())
+}
+
+class board()
+{
+    func board()
+    {
+        return "hello";
+    }
 }
