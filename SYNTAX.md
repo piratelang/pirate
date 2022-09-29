@@ -28,6 +28,15 @@ class className(params)
 }
 ```
 
+### Collection
+```
+var list = []
+```
+
+```
+list[index]
+```
+
 ## Control Flow Statements
 ### If Statements
 
@@ -56,6 +65,13 @@ else
 
 ```
 for(var name = int to int)
+{
+    //then body;
+}
+```
+
+```
+foreach(var item in list)
 {
     //then body;
 }

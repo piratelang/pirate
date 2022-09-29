@@ -165,6 +165,20 @@ public class Lexer
                     ));
                     Advance();
                     continue;
+                case '[':
+                    tokens.Add(new Token(
+                        TokenType.LEFTBRACKET,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case ']':
+                    tokens.Add(new Token(
+                        TokenType.RIGHTBRACKET,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
                 case '=':
                     tokens.Add(TokenRepository.MakeEquals());
                     Advance();

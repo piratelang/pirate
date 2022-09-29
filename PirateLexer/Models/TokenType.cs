@@ -30,6 +30,8 @@ namespace PirateLexer.Models
         LEFTCURLYBRACE,
         SEMICOLON,
         DOT,
-        DOLLAR
+        DOLLAR,
+        LEFTBRACKET,
+        RIGHTBRACKET
     }
 }

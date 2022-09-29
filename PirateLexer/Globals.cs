@@ -21,7 +21,9 @@ namespace PirateLexer
                 "while",
                 "func",
                 "import",
-                "class"
+                "class", 
+                "foreach",
+                "in"
         };
     }
 }

@@ -1,12 +1,9 @@
 func main()
 {
-    print(board.board())
-}
+    var list = ["hello", "world"];
 
-class board()
-{
-    func board()
+    foreach(var item in list)
     {
-        return "hello";
+        print(item);
     }
 }

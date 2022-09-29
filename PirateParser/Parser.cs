@@ -35,14 +35,14 @@ public class Parser
     public bool Parse(string location)
     {
         bool exists = System.IO.Directory.Exists(location);
-        if(!exists)
+        if (!exists)
             System.IO.Directory.CreateDirectory(location);
 
         var file = File.CreateText("./" + location + "/output.py");
 
         var writeRepository = new WriteRepository();
 
-        while(currentToken != null)
+        while (currentToken != null)
         {
             var indentString = string.Empty;
             switch (currentToken.tokenType)
@@ -59,6 +59,16 @@ public class Parser
                     WriteString("\n" + indentString, file);
                     Advance();
                     continue;
+
+                case TokenType.LEFTBRACKET:
+                    WriteString("[", file, false, false);
+                    Advance();
+                    continue;
+                case TokenType.RIGHTBRACKET:
+                    WriteString("]", file, false, false);
+                    Advance();
+                    continue;
+
                 case TokenType.SEMICOLON:
                     indentString = String.Concat(Enumerable.Repeat("    ", indentation));
                     WriteString("\n" + indentString, file);
@@ -154,7 +164,7 @@ public class Parser
                     WriteString("f", file, false, false);
                     Advance();
                     continue;
-                
+
                 case TokenType.KEYWORD:
                     switch (currentToken.value)
                     {
@@ -204,11 +214,18 @@ public class Parser
                         case "for":
                             writeRepository.WriteForLoop(file);
                             continue;
+                        case "foreach":
+                            writeRepository.WriteForeachLoop(file);
+                            continue;
+                        case "in":
+                            WriteString("in", file, true, true);
+                            Advance();
+                            continue;
                     }
                     Advance();
                     continue;
                 default:
-                    throw new Exception("Token not found");
+                    throw new Exception("Token not found: " + currentToken.tokenType);
             }
         }
         file.Close();
@@ -231,5 +248,5 @@ public class Parser
         }
     }
 
-    
+
 }
