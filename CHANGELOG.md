@@ -10,3 +10,11 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
 ### ([#14](https://github.com/joerivanarkel/PirateLang/pull/14)) Workflow building<br>
 - Added default .NET workflow to check if the project builds.
+
+### ([#18](https://github.com/joerivanarkel/PirateLang/pull/18)) Added new tokens<br>
+- Added list defined between `[]`
+- Added `for` loop for looping through a range
+- Added `foreach` loop for looping through a collection
+    - New foreach and in keywords
+- Added `+=` `.` and `$` operators
+- Added SYNTAX.ms for current syntax
