@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <PackageId>PirateLang.CLI</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Joeri van Arkel</Authors>
     <Company>vanarkel</Company>
     <RepositoryUrl>https://github.com/joerivanarkel/PirateLang</RepositoryUrl>
