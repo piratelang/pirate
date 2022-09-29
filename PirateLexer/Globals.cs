@@ -19,7 +19,8 @@ namespace PirateLexer
                 "to",
                 "step",
                 "while",
-                "func"
+                "func",
+                "import"
         };
     }
 }

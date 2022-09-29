@@ -1,0 +1,5 @@
+func main()
+{
+    var i = 3;
+    print(f"number is: {i}");
+}

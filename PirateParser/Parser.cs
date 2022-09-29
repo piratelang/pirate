@@ -84,6 +84,10 @@ public class Parser
                     WriteString("+", file, true, true);
                     Advance();
                     continue;
+                case TokenType.PLUSEQUALS:
+                    WriteString("+=", file, true, true);
+                    Advance();
+                    continue;
                 case TokenType.MINUS:
                     WriteString("-", file, true, true);
                     Advance();
@@ -137,7 +141,15 @@ public class Parser
                     Advance();
                     continue;
                 case TokenType.COMMA:
-                    WriteString(",", file);
+                    WriteString(",", file, false, true);
+                    Advance();
+                    continue;
+                case TokenType.DOT:
+                    WriteString(".", file, false, false);
+                    Advance();
+                    continue;
+                case TokenType.DOLLAR:
+                    WriteString("f", file, false, false);
                     Advance();
                     continue;
                 
@@ -184,9 +196,15 @@ public class Parser
                             WriteString("def", file, false, true);
                             Advance();
                             continue;
+                        case "import":
+                            WriteString("import", file, false, true);
+                            Advance();
+                            continue;
                     }
                     Advance();
                     continue;
+                default:
+                    throw new Exception("Token not found");
             }
         }
         file.Close();

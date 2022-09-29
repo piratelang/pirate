@@ -1,0 +1,1 @@
+To single EXE: dotnet publish -r win-x86 ./Shell/shell.csproj -o ./release
