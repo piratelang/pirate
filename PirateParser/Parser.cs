@@ -5,10 +5,10 @@ namespace PirateParser;
 
 public class Parser
 {
-    public List<Token> tokenList { get; set; }
+    public static List<Token> tokenList { get; set; }
     public string writePath { get; set; }
     public int indentation { get; set; }
-    public Token currentToken { get; set; }
+    public static Token currentToken { get; set; }
 
     public Parser(List<Token> TokenList, string WritePath = null)
     {
@@ -20,7 +20,7 @@ public class Parser
             writePath = "./Pirate/output.py";
         }
     }
-    public void Advance()
+    public static void Advance()
     {
         var index = tokenList.IndexOf(currentToken) + 1;
         if (tokenList.IndexOf(currentToken) + 2 >= tokenList.Count())
@@ -35,12 +35,14 @@ public class Parser
     public bool Parse(string location)
     {
         bool exists = System.IO.Directory.Exists(location);
-        if(!exists)
+        if (!exists)
             System.IO.Directory.CreateDirectory(location);
 
         var file = File.CreateText("./" + location + "/output.py");
 
-        while(currentToken != null)
+        var writeRepository = new WriteRepository();
+
+        while (currentToken != null)
         {
             var indentString = string.Empty;
             switch (currentToken.tokenType)
@@ -57,6 +59,16 @@ public class Parser
                     WriteString("\n" + indentString, file);
                     Advance();
                     continue;
+
+                case TokenType.LEFTBRACKET:
+                    WriteString("[", file, false, false);
+                    Advance();
+                    continue;
+                case TokenType.RIGHTBRACKET:
+                    WriteString("]", file, false, false);
+                    Advance();
+                    continue;
+
                 case TokenType.SEMICOLON:
                     indentString = String.Concat(Enumerable.Repeat("    ", indentation));
                     WriteString("\n" + indentString, file);
@@ -82,6 +94,10 @@ public class Parser
 
                 case TokenType.PLUS:
                     WriteString("+", file, true, true);
+                    Advance();
+                    continue;
+                case TokenType.PLUSEQUALS:
+                    WriteString("+=", file, true, true);
                     Advance();
                     continue;
                 case TokenType.MINUS:
@@ -137,10 +153,18 @@ public class Parser
                     Advance();
                     continue;
                 case TokenType.COMMA:
-                    WriteString(",", file);
+                    WriteString(",", file, false, true);
                     Advance();
                     continue;
-                
+                case TokenType.DOT:
+                    WriteString(".", file, false, false);
+                    Advance();
+                    continue;
+                case TokenType.DOLLAR:
+                    WriteString("f", file, false, false);
+                    Advance();
+                    continue;
+
                 case TokenType.KEYWORD:
                     switch (currentToken.value)
                     {
@@ -167,11 +191,6 @@ public class Parser
                             WriteString("else", file);
                             Advance();
                             continue;
-                        case "for":
-                            WriteString("for", file);
-                            // WriteRepository.WriteForLoop();
-                            Advance();
-                            continue;
                         case "to":
                             WriteString("to", file, true, true);
                             Advance();
@@ -184,16 +203,36 @@ public class Parser
                             WriteString("def", file, false, true);
                             Advance();
                             continue;
+                        case "import":
+                            WriteString("import", file, false, true);
+                            Advance();
+                            continue;
+                        case "class":
+                            WriteString("class", file, false, true);
+                            Advance();
+                            continue;
+                        case "for":
+                            writeRepository.WriteForLoop(file);
+                            continue;
+                        case "foreach":
+                            writeRepository.WriteForeachLoop(file);
+                            continue;
+                        case "in":
+                            WriteString("in", file, true, true);
+                            Advance();
+                            continue;
                     }
                     Advance();
                     continue;
+                default:
+                    throw new Exception("Token not found: " + currentToken.tokenType);
             }
         }
         file.Close();
         return true;
     }
 
-    public void WriteString(string input, StreamWriter file, bool spaceBefore = false, bool spaceAfter = false)
+    public static void WriteString(string input, StreamWriter file, bool spaceBefore = false, bool spaceAfter = false)
     {
         if (spaceBefore)
         {
@@ -209,5 +248,5 @@ public class Parser
         }
     }
 
-    
+
 }

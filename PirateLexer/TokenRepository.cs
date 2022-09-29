@@ -159,5 +159,20 @@ namespace PirateLexer
 
             return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
         }
+
+        public static Token MakePlus()
+        {
+            var tokenType = TokenType.PLUS;
+            var positionStart = Lexer.position.Copy();
+            Lexer.Advance();
+
+            if (Lexer.currentChar == '=')
+            {
+                Lexer.Advance();
+                tokenType = TokenType.PLUSEQUALS;
+            }
+
+            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+        }
     }
 }

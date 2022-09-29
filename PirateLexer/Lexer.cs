@@ -71,10 +71,7 @@ public class Lexer
                     tokens.Add(TokenRepository.MakeString());
                     continue;
                 case '+':
-                    tokens.Add(new Token(
-                        TokenType.PLUS,
-                        PositionStart: position
-                    ));
+                    tokens.Add(TokenRepository.MakePlus());
                     Advance();
                     continue;
                 case '-':
@@ -150,6 +147,34 @@ public class Lexer
                 case ';':
                     tokens.Add(new Token(
                         TokenType.SEMICOLON,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case '.':
+                    tokens.Add(new Token(
+                        TokenType.DOT,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case '$':
+                    tokens.Add(new Token(
+                        TokenType.DOLLAR,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case '[':
+                    tokens.Add(new Token(
+                        TokenType.LEFTBRACKET,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case ']':
+                    tokens.Add(new Token(
+                        TokenType.RIGHTBRACKET,
                         PositionStart: position
                     ));
                     Advance();

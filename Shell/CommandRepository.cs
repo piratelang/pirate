@@ -27,7 +27,7 @@ namespace Shell
             var location = $"bin/pirate{version}";
 
             var fileName = fileArgument.Replace(".pirate", "");
-            var text = File.ReadAllText(fileName);
+            var text = File.ReadAllText(fileName + ".pirate");
 
             var lexer = new Lexer("test", text);
             var tokens = lexer.MakeTokens();
