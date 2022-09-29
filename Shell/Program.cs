@@ -6,18 +6,15 @@ using PirateLexer;
 using PirateParser;
 using PirateInterpreter;
 
-namespace TeleprompterConsole;
+namespace Shell;
 
 internal class Program
 {
     static void Main(string[] args)
     {
-        /*
-            run = pirate run [file].pirate
-            init = pirate init
-        */
-
         var version = "0.1.0";
+        var commandRepository = new CommandRepository(version);
+
         if (args.Length == 0)
         {
             Console.WriteLine($"\nPirateLang version {version}\n");
@@ -34,35 +31,24 @@ internal class Program
         {
             if (args[0] == "run")
             {
-                if (args.Length == 1)
+                var fileArgument = string.Empty;
+                try
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\nFile not provided or does not exist.");
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    Console.WriteLine("\nThe \"pirate run [filename]\" command runs the specified module");
+                    fileArgument = args[1];
                 }
-                else
-                {
-                    var fileName = args[1].Replace(".pirate", "");
-                    Run(version, $"{fileName}.pirate");
-                }
+                catch { }
+                commandRepository.Run(fileArgument);
             }
             if (args[0] == "new")
             {
-                if (args.Length == 1)
+                var typeArgument = string.Empty;
+                try
                 {
-                    Console.WriteLine("\nThe \"pirate new [type]\" command creates a new file from a template");
-                    Console.WriteLine("\nOptions");
-                    Console.WriteLine(" - gitignore");
-                    Console.WriteLine(" - gitattributes");
-                    Console.WriteLine("\nFor a new pirate file see \"pirate init\" ");
+                    typeArgument = args[1];
                 }
-                else
-                {
-                    New(args[1]);
-                    Console.WriteLine($"\nCreated new .{args[1]}");
-                }
+                catch (System.Exception) { }
+                commandRepository.New(typeArgument);
+
             }
             if (args[0] == "init")
             {
@@ -77,39 +63,6 @@ internal class Program
                 file.Close();
                 Console.WriteLine($"\nCreated {fileName}.pirate");
             }
-        }
-    }
-
-    static void Run(string version, string file)
-    {
-
-        var location = $"bin/pirate{version}";
-
-        var text = File.ReadAllText(file);
-        var lexer = new Lexer("test", text);
-        var tokens = lexer.MakeTokens();
-
-        var parser = new Parser(tokens.tokens);
-        parser.Parse(location);
-
-        var pythonEngine = new PythonEngine(location);
-        var result = pythonEngine.InvokeMain("main");
-    }
-
-    static void New(string type)
-    {
-        if (type == "gitignore")
-        {
-            var file = File.CreateText($"./.gitignore");
-            file.Write("[Bb]in/");
-            file.Close();
-        }
-        if (type == "gitattributes")
-        {
-            var location = "./.gitattributes";
-            var file = File.CreateText(location);
-            file.Write("*.pirate linguist-language=Squirrel");
-            file.Close();
         }
     }
 }

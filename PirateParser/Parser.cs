@@ -32,7 +32,7 @@ public class Parser
             currentToken = tokenList[index];
         }
     }
-    public void Parse(string location)
+    public bool Parse(string location)
     {
         bool exists = System.IO.Directory.Exists(location);
         if(!exists)
@@ -190,6 +190,7 @@ public class Parser
             }
         }
         file.Close();
+        return true;
     }
 
     public void WriteString(string input, StreamWriter file, bool spaceBefore = false, bool spaceAfter = false)
