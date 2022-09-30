@@ -1,9 +1,4 @@
 func main()
 {
-    var list = ["hello", "world"];
-
-    foreach(var item in list)
-    {
-        print(item);
-    }
+    print("Hello World");
 }
