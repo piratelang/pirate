@@ -1,6 +1,8 @@
 # Changelog for PirateLang
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
+## 0.1.2
+
 ## 0.1.1
 ### ([#9](https://github.com/joerivanarkel/PirateLang/pull/9)) Shell, CLI Improvements<br>
 - Added pirate init command for creating default gitignore and gitattributes
@@ -22,3 +24,7 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 ### ([#25](https://github.com/joerivanarkel/PirateLang/pull/25)) new command structure, added -h and --help arguments<br>
 - Added new Factory pattern in `ICommand.cs` and `CommandFactory.cs`
 - Defined `-h` and `--help` arguments per command
+
+### ([#26](https://github.com/joerivanarkel/PirateLang/pull/26)) added comments between: // and ;. added true and false<br>
+- Added true and false booleans
+- Ignored tokens between `//` and `;` in the parser acting as comments
