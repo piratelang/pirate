@@ -12,9 +12,8 @@ public class Lexer
     public Lexer(string FileName, string Text)
     {
         fileName = FileName;
-        var newText = Text.Replace("\r\n", "");
-        var noTabText = newText.Replace("    ", "");
-        text = noTabText;
+        var newText = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
+        text = newText;
         position = new Position(-1, 0, -1, fileName, text);
         Advance();
     }
