@@ -18,3 +18,7 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
     - New foreach and in keywords
 - Added `+=` `.` and `$` operators
 - Added SYNTAX.ms for current syntax
+
+### ([#25](https://github.com/joerivanarkel/PirateLang/pull/25)) new command structure, added -h and --help arguments<br>
+- Added new Factory pattern in `ICommand.cs` and `CommandFactory.cs`
+- Defined `-h` and `--help` arguments per command
