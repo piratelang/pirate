@@ -37,7 +37,18 @@ var list = []
 list[index]
 ```
 
+### Comments
+```
+// This is a comment;
+```
+
 ## Control Flow Statements
+### Conditions
+Using an operator from: `==, !=, <, <=, >, >=`. Double statements using `and` and `or`
+```
+variable == true
+variabel == false
+```
 ### If Statements
 
 ```

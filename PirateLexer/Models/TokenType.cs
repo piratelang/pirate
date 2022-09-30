@@ -12,6 +12,7 @@ namespace PirateLexer.Models
         MINUS,
         MULTIPLY,
         DIVIDE,
+        DOUBLEDIVIDE,
         EQUALS,
         LEFTPARENTHESES,
         RIGHTPARENTHESES,
@@ -32,6 +33,7 @@ namespace PirateLexer.Models
         DOT,
         DOLLAR,
         LEFTBRACKET,
-        RIGHTBRACKET
+        RIGHTBRACKET,
+        BOOLEAN
     }
 }

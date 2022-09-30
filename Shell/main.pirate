@@ -1,4 +1,8 @@
 func main()
 {
-    print("Hello World");
+    var bool = true;
+    if(bool == true)
+    {
+        print("Hello World"); //This should not be in output.py;
+    }
 }

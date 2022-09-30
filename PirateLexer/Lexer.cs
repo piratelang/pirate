@@ -88,10 +88,7 @@ public class Lexer
                     Advance();
                     continue;
                 case '/':
-                    tokens.Add(new Token(
-                        TokenType.DIVIDE,
-                        PositionStart: position
-                    ));
+                    tokens.Add(TokenRepository.MakeDivide());
                     Advance();
                     continue;
                 case '^':

@@ -6,6 +6,12 @@ namespace PirateLexer
         public static string LETTERS { get; set; } = "abdcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public static string LETTERS_DIGITS { get; set; } = DIGITS + LETTERS;
 
+        public static string[] BOOLEANS { get; set; } = new string[] {
+                "true",
+                "false",
+                "True",
+                "False"
+        };
         public static string[] KEYWORDS { get; set; } = new string[] {
                 "var",
                 "and",
