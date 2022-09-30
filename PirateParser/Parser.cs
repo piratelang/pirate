@@ -59,6 +59,13 @@ public class Parser
                     WriteString("\n" + indentString, file);
                     Advance();
                     continue;
+                case TokenType.DOUBLEDIVIDE:
+                    while (currentToken.tokenType != TokenType.SEMICOLON)
+                    {
+                        Advance();
+                    }
+                    Advance();
+                    continue;
 
                 case TokenType.LEFTBRACKET:
                     WriteString("[", file, false, false);
@@ -163,6 +170,28 @@ public class Parser
                 case TokenType.DOLLAR:
                     WriteString("f", file, false, false);
                     Advance();
+                    continue;
+                case TokenType.BOOLEAN:
+                    switch (currentToken.value)
+                    {
+                        case "True":
+                            WriteString("True", file);
+                            Advance();
+                            continue;
+                        case "true":
+                            WriteString("True", file);
+                            Advance();
+                            continue;
+                        case "False":
+                            WriteString("False", file);
+                            Advance();
+                            continue;
+                        case "false":
+                            WriteString("False", file);
+                            Advance();
+                            continue;
+                    }
+                    // Advance();
                     continue;
 
                 case TokenType.KEYWORD:

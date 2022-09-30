@@ -55,6 +55,10 @@ namespace PirateLexer
             {
                 tokenType = TokenType.KEYWORD;
             }
+            else if (Globals.BOOLEANS.Contains(idString))
+            {
+                tokenType = TokenType.BOOLEAN;
+            }
             else
             {
                 tokenType = TokenType.IDENTIFIER;
@@ -170,6 +174,20 @@ namespace PirateLexer
             {
                 Lexer.Advance();
                 tokenType = TokenType.PLUSEQUALS;
+            }
+
+            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+        }
+        public static Token MakeDivide()
+        {
+            var tokenType = TokenType.DIVIDE;
+            var positionStart = Lexer.position.Copy();
+            Lexer.Advance();
+
+            if (Lexer.currentChar == '/')
+            {
+                Lexer.Advance();
+                tokenType = TokenType.DOUBLEDIVIDE;
             }
 
             return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
