@@ -1,68 +1,56 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System.Runtime.InteropServices;
+using System.Reflection;
+using System;
+using System.Net.Security;
+// See https://aka.ms/new-console-template for more information
 using PirateLexer;
 using PirateParser;
 using PirateInterpreter;
+using Shell.Commands;
 
-namespace TeleprompterConsole;
+namespace Shell;
 
 internal class Program
 {
     static void Main(string[] args)
     {
-        /*
-            run = pirate run [file].pirate
-            init = pirate init
-        */
+        var version = "0.1.1";
+        List<string> argumentsList = new();
 
-        var version = "0.1.0";
+        foreach(var item in args)
+        {
+            if(item != null)
+            {
+                argumentsList.Add(item);
+            }
+        }
+
         if (args.Length == 0)
         {
             Console.WriteLine($"\nPirateLang version {version}\n");
             Console.WriteLine("Commands:");
             Console.WriteLine(" - pirate run [filename].pirate");
+            Console.WriteLine("    run the specified file");
             Console.WriteLine(" - pirate init [filename]\n");
+            Console.WriteLine("    initializes a new pirate project");
+            Console.WriteLine(" - pirate new [type]\n");
+            Console.WriteLine("    create a new file");
             return;
         }
         else
         {
-            if (args[0] == "run")
+            var command = CommandFactory.GetCommand(args[0], version);
+            if (command == null){ return; }
+
+            if (argumentsList.Contains("-h") || argumentsList.Contains("--help"))
             {
-                if (args.Length == 1)
-                {
-                    Console.WriteLine("File not provided or does not exist.");
-                }
-                else
-                {
-                    var fileName = args[1].Replace(".pirate", "");
-                    Run(version, $"{fileName}.pirate");
-                }
+                command.Help();
             }
-            if (args[0] == "init")
+            else
             {
-                var fileName = "main";
-                if (args.Length > 1)
-                {
-                    fileName.Replace(".pirate", "");
-                    fileName = args[1];
-                }
-                File.Create($"./{fileName}.pirate");
+                var arguments = argumentsList.ToArray();
+                command.Run(arguments);
             }
         }
-    }
-
-    static void Run(string version, string file)
-    {
-
-        var location = $"bin/pirate{version}";
-
-        var text = File.ReadAllText(file);
-        var lexer = new Lexer("test", text);
-        var tokens = lexer.MakeTokens();
-
-        var parser = new Parser(tokens.tokens);
-        parser.Parse(location);
-
-        var pythonEngine = new PythonEngine(location);
-        var result = pythonEngine.InvokeMain("main");
     }
 }

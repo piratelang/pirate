@@ -1,0 +1,3 @@
+To single EXE: dotnet publish -r win-x86 ./Shell/shell.csproj -o ./release
+Github: dotnet nuget push "./.release/PirateLang.CLI.0.1.1.prerelease1.nupkg" --api-key // --source "github"
+Nuget: dotnet nuget push "./.release/PirateLang.CLI.0.1.1.prerelease1.nupkg" --api-key // --source "https://api.nuget.org/v3/index.json" --skip-duplicate --no-service-endpoint

@@ -12,9 +12,8 @@ public class Lexer
     public Lexer(string FileName, string Text)
     {
         fileName = FileName;
-        var newText = Text.Replace("\r\n", "");
-        var noTabText = newText.Replace("    ", "");
-        text = noTabText;
+        var newText = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
+        text = newText;
         position = new Position(-1, 0, -1, fileName, text);
         Advance();
     }
@@ -71,10 +70,7 @@ public class Lexer
                     tokens.Add(TokenRepository.MakeString());
                     continue;
                 case '+':
-                    tokens.Add(new Token(
-                        TokenType.PLUS,
-                        PositionStart: position
-                    ));
+                    tokens.Add(TokenRepository.MakePlus());
                     Advance();
                     continue;
                 case '-':
@@ -92,10 +88,7 @@ public class Lexer
                     Advance();
                     continue;
                 case '/':
-                    tokens.Add(new Token(
-                        TokenType.DIVIDE,
-                        PositionStart: position
-                    ));
+                    tokens.Add(TokenRepository.MakeDivide());
                     Advance();
                     continue;
                 case '^':
@@ -150,6 +143,34 @@ public class Lexer
                 case ';':
                     tokens.Add(new Token(
                         TokenType.SEMICOLON,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case '.':
+                    tokens.Add(new Token(
+                        TokenType.DOT,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case '$':
+                    tokens.Add(new Token(
+                        TokenType.DOLLAR,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case '[':
+                    tokens.Add(new Token(
+                        TokenType.LEFTBRACKET,
+                        PositionStart: position
+                    ));
+                    Advance();
+                    continue;
+                case ']':
+                    tokens.Add(new Token(
+                        TokenType.RIGHTBRACKET,
                         PositionStart: position
                     ));
                     Advance();

@@ -8,9 +8,11 @@ namespace PirateLexer.Models
         IDENTIFIER,
         KEYWORD,
         PLUS,
+        PLUSEQUALS,
         MINUS,
         MULTIPLY,
         DIVIDE,
+        DOUBLEDIVIDE,
         EQUALS,
         LEFTPARENTHESES,
         RIGHTPARENTHESES,
@@ -27,6 +29,11 @@ namespace PirateLexer.Models
         COLON,
         RIGHTCURLYBRACE,
         LEFTCURLYBRACE,
-        SEMICOLON
+        SEMICOLON,
+        DOT,
+        DOLLAR,
+        LEFTBRACKET,
+        RIGHTBRACKET,
+        BOOLEAN
     }
 }
