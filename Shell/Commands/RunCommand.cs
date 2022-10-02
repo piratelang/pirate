@@ -16,8 +16,8 @@ namespace Shell.Commands
         {
             var fileArgument = "main";
             if (arguments.Length >= 2) { fileArgument = arguments[1]; }
-
-            var exists = File.Exists($"./{fileArgument}.pirate");
+            var fileName = fileArgument.Replace(".pirate", "");
+            var exists = File.Exists($"./{fileName}.pirate");
 
             if (!exists)
             {
@@ -25,26 +25,11 @@ namespace Shell.Commands
                 return;
             }
 
+            var buildCommand = new BuildCommand(version);
+            buildCommand.Run(arguments);
+
             var location = $"bin/pirate{version}";
-
-            var fileName = fileArgument.Replace(".pirate", "");
-            var text = File.ReadAllText(fileName + ".pirate");
-
-            var lexer = new Lexer("test", text);
-            var tokens = lexer.MakeTokens();
-            if (tokens.tokens.Count() == 0)
-            {
-                Error("Error occured while lexing tokens.");
-            }
-
-            var parser = new Parser(tokens.tokens);
-            var parseResult = parser.Parse(location);
-            if (parseResult != true)
-            {
-                Error("Error occured while parsing tokens.");
-            }
-
-            var pythonEngine = new PythonEngine(location);
+            var pythonEngine = new PythonEngine($"{location}/{fileName}.py");
             var result = pythonEngine.InvokeMain("main");
         }
 

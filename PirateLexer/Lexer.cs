@@ -202,11 +202,6 @@ public class Lexer
                     return (null, new Error(positionStart, position, $"'{currentChar}'", "Illegal Character"));
             }
         }
-
-        tokens.Add(new Token(
-            TokenType.ENDOFFILE,
-            PositionStart: position
-        ));
         return (tokens, null);
     }
 }

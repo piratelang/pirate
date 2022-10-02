@@ -42,5 +42,11 @@ namespace Shell.Commands
                 "   -h --help       Show command line help."
             ));
         }
+        public void Error(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n{message}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }

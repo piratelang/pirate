@@ -12,6 +12,8 @@ namespace Shell.Commands
                     return new NewCommand(version);
                 case "run":
                     return new RunCommand(version);
+                case "build":
+                    return new BuildCommand(version);
                 default:
                     return null;
             }

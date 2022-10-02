@@ -6,6 +6,10 @@
     <ProjectReference Include="..\PirateParser\PirateParser.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
   <PropertyGroup>
     <PackageId>PirateLang.CLI</PackageId>
     <Version>0.1.1</Version>
