@@ -1,4 +1,5 @@
 
+using Common;
 using PirateInterpreter;
 using PirateLexer;
 using PirateParser;
@@ -14,9 +15,11 @@ namespace Shell.Commands
         }
         public void Run(string[] arguments)
         {
+            Logger.Log("Starting Init Command");
             var nameArgument = "main";
             if (arguments.Length == 2) { nameArgument = arguments[1];}
 
+            Logger.Log($"Creating {nameArgument} file");
             var fileName = nameArgument.Replace(".pirate", "");
             var file = File.CreateText($"./{fileName}.pirate");
             file.Write(String.Join(
@@ -27,6 +30,7 @@ namespace Shell.Commands
                 "}"
             ));
             file.Close();
+            Logger.Log($"Created {nameArgument} file");
             Console.WriteLine($"\nCreated {fileName}.pirate");
         }
 

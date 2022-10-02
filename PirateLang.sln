@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateParser", "PirateParse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell", "Shell\Shell.csproj", "{12B19978-5BBE-43F9-B73F-941AE86CDE6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{12B19978-5BBE-43F9-B73F-941AE86CDE6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12B19978-5BBE-43F9-B73F-941AE86CDE6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12B19978-5BBE-43F9-B73F-941AE86CDE6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

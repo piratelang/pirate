@@ -7,6 +7,7 @@ using PirateLexer;
 using PirateParser;
 using PirateInterpreter;
 using Shell.Commands;
+using Common;
 
 namespace Shell;
 
@@ -14,7 +15,10 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        
         var version = "0.1.1";
+        new Logger(version);
+
         List<string> argumentsList = new();
 
         foreach(var item in args)
@@ -31,10 +35,12 @@ internal class Program
             Console.WriteLine("Commands:");
             Console.WriteLine(" - pirate run [filename].pirate");
             Console.WriteLine("    run the specified file");
-            Console.WriteLine(" - pirate init [filename]\n");
+            Console.WriteLine(" - pirate init [filename]");
             Console.WriteLine("    initializes a new pirate project");
-            Console.WriteLine(" - pirate new [type]\n");
+            Console.WriteLine(" - pirate new [type]");
             Console.WriteLine("    create a new file");
+            Console.WriteLine(" - pirate build");
+            Console.WriteLine("    build the modules in the current folder");
             return;
         }
         else
@@ -50,6 +56,7 @@ internal class Program
             {
                 var arguments = argumentsList.ToArray();
                 command.Run(arguments);
+                Logger.Log("Command completed succesfully");
             }
         }
     }

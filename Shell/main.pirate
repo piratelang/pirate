@@ -3,6 +3,6 @@ func main()
     var bool = true;
     if(bool == true)
     {
-        print("Hello 2World"); //This should not be in output.py;
+        print("Hello World from pirate");
     }
 }

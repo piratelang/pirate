@@ -4,6 +4,7 @@
     <ProjectReference Include="..\PirateInterpreter\PirateInterpreter.csproj" />
     <ProjectReference Include="..\PirateLexer\PirateLexer.csproj" />
     <ProjectReference Include="..\PirateParser\PirateParser.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

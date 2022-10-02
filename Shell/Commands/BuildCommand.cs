@@ -1,3 +1,4 @@
+using Common;
 using Newtonsoft.Json;
 using PirateLexer;
 using PirateParser;
@@ -14,11 +15,13 @@ namespace Shell.Commands
         }
         public void Run(string[] arguments)
         {
+            Logger.Log("Starting Build Command");
             string[] foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
             var location = $"bin/pirate{version}";
 
             if (foundFiles.Length == 0)
             {
+                Logger.Log("No files were found in the directory");
                 Error("No files found");
                 return;
             }
@@ -26,37 +29,44 @@ namespace Shell.Commands
 
             foreach (var file in foundFiles)
             {
-                Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
-                if (
-                    foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
-                    foundModule.path == File.OpenRead(file).Name &&
-                    foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
-                )
-                {
-                    break;
-                }
+                // Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
+                // if (
+                //     foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
+                //     foundModule.path == File.OpenRead(file).Name &&
+                //     foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
+                // )
+                // {
+                //     Logger.Log($"{foundModule.moduleName} was not modified since last build");
+                //     break;
+                // }
 
                 Console.WriteLine($"Building {file}");
+                Logger.Log($"Building {file}");
                 var fileName = file.Replace(".pirate", "");
                 var text = File.ReadAllText(fileName + ".pirate");
                 if(text == null)
                 {
+                    Logger.Log($"{fileName} contains no text");
                     Error($"{fileName} contains no text");
                     return;
                 }
 
+                Logger.Log($"Lexing {file}");
                 var lexer = new Lexer("test", text);
                 var tokens = lexer.MakeTokens();
                 if (tokens.tokens.Count() == 0)
                 {
+                    Logger.Log($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}");
                     Error($"Error occured while lexing tokens, in the file {fileName}\n");
                     return;
                 }
 
+                Logger.Log($"Parsing {file}");
                 var parser = new Parser(tokens.tokens);
                 var parseResult = parser.Parse(location, fileName);
                 if (parseResult != true)
                 {
+                    Logger.Log("Error occured while parsing tokens.");
                     Error("Error occured while parsing tokens.");
                     return;
                 }
@@ -96,9 +106,11 @@ namespace Shell.Commands
 
                 var lastModifiedDate = File.GetLastWriteTimeUtc(item);
 
+                Logger.Log($"Found Module {fileName}");
                 moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
             }
             string jsonString = JsonConvert.SerializeObject(moduleList);
+            Logger.Log($"Writing module list to {location}/modules.json");
             File.WriteAllTextAsync($"{location}/modules.json", jsonString);
 
             return moduleList;
