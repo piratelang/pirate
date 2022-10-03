@@ -1,4 +1,5 @@
 using Common;
+using Common.Enum;
 using Newtonsoft.Json;
 using PirateLexer;
 using PirateParser;
@@ -15,13 +16,13 @@ namespace Shell.Commands
         }
         public void Run(string[] arguments)
         {
-            Logger.Log("Starting Build Command");
+            Logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
             string[] foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
             var location = $"bin/pirate{version}";
 
             if (foundFiles.Length == 0)
             {
-                Logger.Log("No files were found in the directory");
+                Logger.Log("No files were found in the directory", this.GetType().Name, LogType.ERROR);
                 Error("No files found");
                 return;
             }
@@ -41,32 +42,32 @@ namespace Shell.Commands
                 // }
 
                 Console.WriteLine($"Building {file}");
-                Logger.Log($"Building {file}");
+                Logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
                 var fileName = file.Replace(".pirate", "");
                 var text = File.ReadAllText(fileName + ".pirate");
                 if(text == null)
                 {
-                    Logger.Log($"{fileName} contains no text");
+                    Logger.Log($"{fileName} contains no text", this.GetType().Name, LogType.ERROR);
                     Error($"{fileName} contains no text");
                     return;
                 }
 
-                Logger.Log($"Lexing {file}");
+                Logger.Log($"Lexing {file}", this.GetType().Name, LogType.INFO);
                 var lexer = new Lexer("test", text);
                 var tokens = lexer.MakeTokens();
                 if (tokens.tokens.Count() == 0)
                 {
-                    Logger.Log($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}");
+                    Logger.Log($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}", this.GetType().Name, LogType.ERROR);
                     Error($"Error occured while lexing tokens, in the file {fileName}\n");
                     return;
                 }
 
-                Logger.Log($"Parsing {file}");
+                Logger.Log($"Parsing {file}", this.GetType().Name, LogType.INFO);
                 var parser = new Parser(tokens.tokens);
                 var parseResult = parser.Parse(location, fileName);
                 if (parseResult != true)
                 {
-                    Logger.Log("Error occured while parsing tokens.");
+                    Logger.Log("Error occured while parsing tokens.", this.GetType().Name, LogType.ERROR);
                     Error("Error occured while parsing tokens.");
                     return;
                 }
@@ -106,11 +107,11 @@ namespace Shell.Commands
 
                 var lastModifiedDate = File.GetLastWriteTimeUtc(item);
 
-                Logger.Log($"Found Module {fileName}");
+                Logger.Log($"Found Module {fileName}", this.GetType().Name, LogType.INFO);
                 moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
             }
             string jsonString = JsonConvert.SerializeObject(moduleList);
-            Logger.Log($"Writing module list to {location}/modules.json");
+            Logger.Log($"Writing module list to {location}/modules.json", this.GetType().Name, LogType.INFO);
             File.WriteAllTextAsync($"{location}/modules.json", jsonString);
 
             return moduleList;

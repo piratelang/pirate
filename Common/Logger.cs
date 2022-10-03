@@ -1,4 +1,6 @@
 ﻿using System;
+using Common.Enum;
+
 namespace Common;
 public class Logger
 {
@@ -12,10 +14,14 @@ public class Logger
         logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
     }
 
-    public static void Log(string message)
+    public static void Log(string message, string orginFile, LogType logType)
     {
         var location = $"./bin/pirate{version}/{logName}.log";
-        var exists = File.Exists(location);
+        bool exists = System.IO.Directory.Exists($"./bin/pirate{version}");
+        if (!exists)
+            System.IO.Directory.CreateDirectory($"./bin/pirate{version}");
+
+        exists = File.Exists(location);
         if (!exists)
         {
             var createdFile = File.Create(location);
@@ -23,8 +29,8 @@ public class Logger
         }
         var file = File.AppendText(location);
 
-        var time = DateTime.Now.ToString().Replace("uur", "");
-        file.Write(time + ": " + message + '\n');
+        var time = DateTime.Now.ToString();
+        file.Write($"{time}: {logType.ToString()}: {orginFile}.cs: {message}\n");
         file.Close();
     }
 }

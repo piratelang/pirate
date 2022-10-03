@@ -1,8 +1,8 @@
+import board;
+
 func main()
 {
-    var bool = true;
-    if(bool == true)
-    {
-        print("Hello World from pirate");
-    }
+    var bprd = board.Board();
+    print(bprd.get_board());
 }
+

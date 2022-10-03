@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Reflection;
 using System;
 using System.Net.Security;
@@ -8,6 +9,7 @@ using PirateParser;
 using PirateInterpreter;
 using Shell.Commands;
 using Common;
+using Common.Enum;
 
 namespace Shell;
 
@@ -45,18 +47,20 @@ internal class Program
         }
         else
         {
+            Logger.Log("Starting Command Factory", "Program", LogType.INFO);
             var command = CommandFactory.GetCommand(args[0], version);
             if (command == null){ return; }
 
             if (argumentsList.Contains("-h") || argumentsList.Contains("--help"))
             {
+                Logger.Log("Running Help Command", "Program", LogType.INFO);
                 command.Help();
             }
             else
             {
                 var arguments = argumentsList.ToArray();
                 command.Run(arguments);
-                Logger.Log("Command completed succesfully");
+                Logger.Log("Command completed succesfully", "Program", LogType.INFO);
             }
         }
     }

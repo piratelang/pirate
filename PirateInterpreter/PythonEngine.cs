@@ -1,3 +1,5 @@
+using Common;
+using Common.Enum;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 
@@ -19,16 +21,26 @@ namespace PirateInterpreter
 
         public dynamic InvokeMain(string methodName)
         {
+            Logger.Log("Creating Engine, Script, Code and Scope", this.GetType().Name, LogType.INFO);
             engine = Python.CreateEngine();
             scriptSource = engine.CreateScriptSourceFromFile(Script);
             compiledCode = scriptSource.Compile();
             scope = engine.CreateScope();
 
-            compiledCode.Execute(scope);
+            dynamic main;
 
-            dynamic main = scope.GetVariable("main");
-
-            return main();
+            try
+            {
+                compiledCode.Execute(scope);
+                main = scope.GetVariable("main");
+                Logger.Log("Successfully Executed", this.GetType().Name, LogType.INFO);
+                return main();
+            }
+            catch(Exception exception)
+            {
+                Logger.Log($"Execute Exception: {exception.ToString()}", this.GetType().Name, LogType.ERROR);
+                return null;    
+            }
         }
     }
 }
