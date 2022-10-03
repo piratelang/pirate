@@ -1,4 +1,4 @@
-namespace Shell.Commands.ModuleList
+namespace Shell.ModuleList
 {
     public class Module
     {

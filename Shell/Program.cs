@@ -1,12 +1,4 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Reflection;
-using System;
-using System.Net.Security;
-// See https://aka.ms/new-console-template for more information
-using PirateLexer;
-using PirateParser;
-using PirateInterpreter;
+﻿// See https://aka.ms/new-console-template for more information
 using Shell.Commands;
 using Common;
 using Common.Enum;

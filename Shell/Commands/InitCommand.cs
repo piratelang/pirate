@@ -1,9 +1,5 @@
-
 using Common;
 using Common.Enum;
-using PirateInterpreter;
-using PirateLexer;
-using PirateParser;
 
 namespace Shell.Commands
 {

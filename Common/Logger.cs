@@ -16,10 +16,10 @@ public class Logger
 
     public static void Log(string message, string orginFile, LogType logType)
     {
-        var location = $"./bin/pirate{version}/{logName}.log";
-        bool exists = System.IO.Directory.Exists($"./bin/pirate{version}");
+        var location = $"./bin/pirate{version}/logs/{logName}.log";
+        bool exists = System.IO.Directory.Exists($"./bin/pirate{version}/logs");
         if (!exists)
-            System.IO.Directory.CreateDirectory($"./bin/pirate{version}");
+            System.IO.Directory.CreateDirectory($"./bin/pirate{version}/logs");
 
         exists = File.Exists(location);
         if (!exists)

@@ -1,9 +1,8 @@
 using Common;
 using Common.Enum;
-using Newtonsoft.Json;
 using PirateLexer;
 using PirateParser;
-using Shell.Commands.ModuleList;
+using Shell.ModuleList;
 
 namespace Shell.Commands
 {
@@ -26,22 +25,29 @@ namespace Shell.Commands
                 Error("No files found");
                 return;
             }
-            var moduleList = GetModules(foundFiles, location);
+            List<Module> moduleList = ModuleListRepository.GetList(location);
 
             foreach (var file in foundFiles)
             {
-                // Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
-                // if (
-                //     foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
-                //     foundModule.path == File.OpenRead(file).Name &&
-                //     foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
-                // )
-                // {
-                //     Logger.Log($"{foundModule.moduleName} was not modified since last build");
-                //     break;
-                // }
-
-                Console.WriteLine($"Building {file}");
+                if (moduleList.Count > 0)
+                {
+                    Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
+                    if (foundModule != null)
+                    {
+                        if (
+                            foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
+                            foundModule.path == File.OpenRead(file).Name &&
+                            foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
+                        )
+                        {
+                            Logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
+                            break;
+                        }
+                    }
+                    
+                }
+                
+                Console.WriteLine($"Building {file}\n");
                 Logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
                 var fileName = file.Replace(".pirate", "");
                 var text = File.ReadAllText(fileName + ".pirate");
@@ -52,7 +58,7 @@ namespace Shell.Commands
                     return;
                 }
 
-                Logger.Log($"Lexing {file}", this.GetType().Name, LogType.INFO);
+                Logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
                 var lexer = new Lexer("test", text);
                 var tokens = lexer.MakeTokens();
                 if (tokens.tokens.Count() == 0)
@@ -72,6 +78,7 @@ namespace Shell.Commands
                     return;
                 }
             }
+            ModuleListRepository.SetList(foundFiles, location);
         }
         public void Help()
         {

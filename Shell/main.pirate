@@ -1,8 +1,4 @@
-import board;
-
 func main()
 {
-    var bprd = board.Board();
-    print(bprd.get_board());
+    print("Hello World" + "New"); //Comment;
 }
-

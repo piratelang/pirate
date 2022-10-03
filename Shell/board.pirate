@@ -1,7 +1,0 @@
-class Board()
-{
-    func get_board(self)
-    {
-        return [0, 0, 0];
-    }
-}
