@@ -1,4 +1,6 @@
 using System.Security.Principal;
+using Common;
+using Common.Enum;
 using PirateLexer.Models;
 
 namespace PirateParser
@@ -13,6 +15,7 @@ namespace PirateParser
                 localTokenList.Add(Parser.currentToken);
                 Parser.Advance();
             }
+            Logger.Log($"Found and Parsed \"FOR LOOP\"", this.GetType().Name, LogType.INFO);
             Parser.WriteString($"for {localTokenList[3].value} in range({localTokenList[5].value}, {localTokenList[7].value})", file, false, true);
             
         }
@@ -24,6 +27,7 @@ namespace PirateParser
                 localTokenList.Add(Parser.currentToken);
                 Parser.Advance();
             }
+            Logger.Log($"Found and Parsed \"FOREACH LOOP\"", this.GetType().Name, LogType.INFO);
             Parser.WriteString($"for {localTokenList[3].value} in {localTokenList[5].value}", file, false, true);
             
         }

@@ -1,7 +1,5 @@
-
-using PirateInterpreter;
-using PirateLexer;
-using PirateParser;
+using Common;
+using Common.Enum;
 
 namespace Shell.Commands
 {
@@ -14,9 +12,11 @@ namespace Shell.Commands
         }
         public void Run(string[] arguments)
         {
+            Logger.Log("Starting Init Command", this.GetType().Name, LogType.INFO);
             var nameArgument = "main";
             if (arguments.Length == 2) { nameArgument = arguments[1];}
 
+            Logger.Log($"Creating {nameArgument} file", this.GetType().Name, LogType.INFO);
             var fileName = nameArgument.Replace(".pirate", "");
             var file = File.CreateText($"./{fileName}.pirate");
             file.Write(String.Join(
@@ -27,6 +27,7 @@ namespace Shell.Commands
                 "}"
             ));
             file.Close();
+            Logger.Log($"Created {nameArgument} file", this.GetType().Name, LogType.INFO);
             Console.WriteLine($"\nCreated {fileName}.pirate");
         }
 
@@ -41,6 +42,12 @@ namespace Shell.Commands
                 "\nOptions",
                 "   -h --help       Show command line help."
             ));
+        }
+        public void Error(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n{message}");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

@@ -6,5 +6,6 @@ namespace Shell.Commands
 
         void Help();
         void Run(string[] arguments);
+        void Error(string message);
     }
 }

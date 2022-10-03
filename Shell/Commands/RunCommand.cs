@@ -1,7 +1,6 @@
-
+using Common;
+using Common.Enum;
 using PirateInterpreter;
-using PirateLexer;
-using PirateParser;
 
 namespace Shell.Commands
 {
@@ -14,38 +13,28 @@ namespace Shell.Commands
         }
         public void Run(string[] arguments)
         {
+            Logger.Log("Starting Run Command", this.GetType().Name, LogType.INFO);
             var fileArgument = "main";
             if (arguments.Length >= 2) { fileArgument = arguments[1]; }
-
-            var exists = File.Exists($"./{fileArgument}.pirate");
+            var fileName = fileArgument.Replace(".pirate", "");
+            var exists = File.Exists($"./{fileName}.pirate");
 
             if (!exists)
             {
+                Logger.Log($"File \"{fileArgument}\" not provided or does not exist.", this.GetType().Name, LogType.ERROR);
                 Error($"File \"{fileArgument}\" not provided or does not exist.");
                 return;
             }
 
+            Logger.Log("Starting build", this.GetType().Name, LogType.INFO);
+            var buildCommand = new BuildCommand(version);
+            buildCommand.Run(arguments);
+            Logger.Log("Completed Build", this.GetType().Name, LogType.INFO);
+
             var location = $"bin/pirate{version}";
-
-            var fileName = fileArgument.Replace(".pirate", "");
-            var text = File.ReadAllText(fileName + ".pirate");
-
-            var lexer = new Lexer("test", text);
-            var tokens = lexer.MakeTokens();
-            if (tokens.tokens.Count() == 0)
-            {
-                Error("Error occured while lexing tokens.");
-            }
-
-            var parser = new Parser(tokens.tokens);
-            var parseResult = parser.Parse(location);
-            if (parseResult != true)
-            {
-                Error("Error occured while parsing tokens.");
-            }
-
-            var pythonEngine = new PythonEngine(location);
-            var result = pythonEngine.InvokeMain("main");
+            Logger.Log($"Executing {fileName}.py", this.GetType().Name, LogType.INFO);
+            var pythonEngine = new PythonEngine($"{location}/{fileName}.py");
+            var result = pythonEngine.InvokeMain("main"); //Possibly null reference;
         }
 
         public void Help()

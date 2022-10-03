@@ -1,4 +1,6 @@
 
+using Common;
+using Common.Enum;
 using PirateLexer.Models;
 
 namespace PirateLexer;
@@ -35,6 +37,7 @@ public class Lexer
     {
         List<Token> tokens = new List<Token> { };
 
+        Logger.Log("Starting Lexing text", "Lexer", LogType.INFO);
         while (currentChar != null)
         {
             if (currentChar.Equals('\n'))
@@ -199,14 +202,11 @@ public class Lexer
                 default:
                     var positionStart = position.Copy();
                     Advance();
+                    Logger.Log($"{currentChar} not found in the Lexer", "Lexer", LogType.ERROR);
                     return (null, new Error(positionStart, position, $"'{currentChar}'", "Illegal Character"));
             }
         }
-
-        tokens.Add(new Token(
-            TokenType.ENDOFFILE,
-            PositionStart: position
-        ));
+        Logger.Log("Finished Lexing\n", "Lexer", LogType.INFO);
         return (tokens, null);
     }
 }
