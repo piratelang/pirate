@@ -3,7 +3,7 @@ using Common.Enum;
 using Newtonsoft.Json;
 using PirateLexer;
 using PirateParser;
-using Shell.Commands.ModuleView;
+using Shell.Commands.ModuleList;
 
 namespace Shell.Commands
 {
@@ -91,30 +91,6 @@ namespace Shell.Commands
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\n{message}");
             Console.ForegroundColor = ConsoleColor.White;
-        }
-
-        public List<Module> GetModules(string[] foundFiles, string location)
-        {
-            List<Module> moduleList = new() { };
-
-            foreach (var item in foundFiles)
-            {
-                var file = File.OpenRead(item);
-                var filePath = file.Name;
-
-                var name = filePath.Split("\\");
-                var fileName = name.Last();
-
-                var lastModifiedDate = File.GetLastWriteTimeUtc(item);
-
-                Logger.Log($"Found Module {fileName}", this.GetType().Name, LogType.INFO);
-                moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
-            }
-            string jsonString = JsonConvert.SerializeObject(moduleList);
-            Logger.Log($"Writing module list to {location}/modules.json", this.GetType().Name, LogType.INFO);
-            File.WriteAllTextAsync($"{location}/modules.json", jsonString);
-
-            return moduleList;
         }
     }
 }
