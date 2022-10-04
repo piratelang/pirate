@@ -5,7 +5,7 @@ using System;
 
 namespace Common.Test;
 
-public class UnitTest1
+public class LoggerTest
 {
     [Fact]
     public void ShouldLogToFIle()

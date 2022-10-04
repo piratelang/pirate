@@ -13,15 +13,10 @@ public class Parser
     public int indentation { get; set; }
     public static Token currentToken { get; set; }
 
-    public Parser(List<Token> TokenList, string WritePath = null)
+    public Parser(List<Token> TokenList)
     {
         tokenList = TokenList;
         currentToken = tokenList[0];
-        writePath = WritePath;
-        if (WritePath == null)
-        {
-            writePath = "./Pirate/output.py";
-        }
     }
     public static void Advance()
     {
