@@ -11,8 +11,7 @@ public class WriteRepositoryTest
     public void ShouldReturnForLoop()
     {
         //Arrange
-        string newPath = Path.GetFullPath(Path.Combine("./", @"..\..\..\"));
-        var text = File.ReadAllText($"{newPath}/ShouldReturnForLoop.pirate");
+        var text = File.ReadAllText($"../../../ShouldReturnForLoop.pirate");
         var lexer = new Lexer("test", text);
         var tokenList = lexer.MakeTokens();
         
@@ -30,8 +29,7 @@ public class WriteRepositoryTest
     public void ShouldReturnForeachLoop()
     {
         //Arrange
-        string newPath = Path.GetFullPath(Path.Combine("./", @"..\..\..\"));
-        var text = File.ReadAllText($"{newPath}/ShouldReturnForeachLoop.pirate");
+        var text = File.ReadAllText($"../../..//ShouldReturnForeachLoop.pirate");
         var lexer = new Lexer("test", text);
         var tokenList = lexer.MakeTokens();
 

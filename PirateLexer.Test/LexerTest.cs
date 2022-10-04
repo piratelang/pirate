@@ -36,9 +36,8 @@ public class LexerTest
     [Fact]
     public void ShouldLexTokens()
     {   
-        //Arrange
-        string newPath = Path.GetFullPath(Path.Combine("./", @"..\..\..\"));
-        var text = File.ReadAllText($"{newPath}/test.pirate");
+        // Arrange
+        var text = File.ReadAllText($"../../../test.pirate");
         var lexer = new Lexer("test", text);
 
         //Act
