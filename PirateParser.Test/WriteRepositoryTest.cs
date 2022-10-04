@@ -11,7 +11,7 @@ public class WriteRepositoryTest
     public void ShouldReturnForLoop()
     {
         //Arrange
-        var text = File.ReadAllText($"../../../ShouldReturnForLoop.pirate");
+        var text = File.ReadAllText($"../../../PirateInput/ShouldReturnForLoop.pirate");
         var lexer = new Lexer("test", text);
         var tokenList = lexer.MakeTokens();
         
@@ -29,7 +29,7 @@ public class WriteRepositoryTest
     public void ShouldReturnForeachLoop()
     {
         //Arrange
-        var text = File.ReadAllText($"../../..//ShouldReturnForeachLoop.pirate");
+        var text = File.ReadAllText($"../../../PirateInput/ShouldReturnForeachLoop.pirate");
         var lexer = new Lexer("test", text);
         var tokenList = lexer.MakeTokens();
 
