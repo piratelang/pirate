@@ -11,25 +11,13 @@ public class LoggerTest
     public void ShouldLogToFIle()
     {
         //Arrange
-        bool result;
         var logger = new Logger("0.1.2");
         
         //Act
-        try
-        {
-            using (FileStream fs = new FileStream($"{Logger.logName}.log", FileMode.Append, FileAccess.Write))
-            using (StreamWriter textWriter = new StreamWriter(fs))
-            {
-                Logger.Log("Test", "Test", LogType.INFO);
-            }
-            result = true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error:" + ex.Message);
-            result = false;
-        }
+        Logger.Log("Test", "Test", LogType.INFO);
+        var exists = System.IO.File.Exists($"./bin/pirate0.1.2/logs/{Logger.logName}.log");
 
-        Assert.True(result);
+        //Assert
+        Assert.True(exists);
     }
 }
