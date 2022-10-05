@@ -9,19 +9,21 @@ namespace Shell.Commands
     public class BuildCommand : ICommand
     {
         public string version { get; set; }
-        public BuildCommand(string Version)
+        public Logger logger { get; set; }
+        public BuildCommand(string Version, Logger Logger)
         {   
             version = Version;
+            logger = Logger;
         }
         public void Run(string[] arguments)
         {
-            Logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
+            logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
             string[] foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
             var location = $"bin/pirate{version}";
 
             if (foundFiles.Length == 0)
             {
-                Logger.Log("No files were found in the directory", this.GetType().Name, LogType.ERROR);
+                logger.Log("No files were found in the directory", this.GetType().Name, LogType.ERROR);
                 Error("No files found");
                 return;
             }
@@ -40,7 +42,7 @@ namespace Shell.Commands
                             foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
                         )
                         {
-                            Logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
+                            logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
                             break;
                         }
                     }
@@ -48,37 +50,37 @@ namespace Shell.Commands
                 }
                 
                 Console.WriteLine($"Building {file}\n");
-                Logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
+                logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
                 var fileName = file.Replace(".pirate", "");
                 var text = File.ReadAllText(fileName + ".pirate");
                 if(text == null)
                 {
-                    Logger.Log($"{fileName} contains no text", this.GetType().Name, LogType.ERROR);
+                    logger.Log($"{fileName} contains no text", this.GetType().Name, LogType.ERROR);
                     Error($"{fileName} contains no text");
                     return;
                 }
 
-                Logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
-                var lexer = new Lexer("test", text);
+                logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
+                var lexer = new Lexer("test", text, logger);
                 var tokens = lexer.MakeTokens();
                 if (tokens.tokens.Count() == 0)
                 {
-                    Logger.Log($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}", this.GetType().Name, LogType.ERROR);
+                    logger.Log($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}", this.GetType().Name, LogType.ERROR);
                     Error($"Error occured while lexing tokens, in the file {fileName}\n");
                     return;
                 }
 
-                Logger.Log($"Parsing {file}", this.GetType().Name, LogType.INFO);
-                var parser = new Parser(tokens.tokens);
+                logger.Log($"Parsing {file}", this.GetType().Name, LogType.INFO);
+                var parser = new Parser(tokens.tokens, logger);
                 var parseResult = parser.Parse(location, fileName);
                 if (parseResult != true)
                 {
-                    Logger.Log("Error occured while parsing tokens.", this.GetType().Name, LogType.ERROR);
+                    logger.Log("Error occured while parsing tokens.", this.GetType().Name, LogType.ERROR);
                     Error("Error occured while parsing tokens.");
                     return;
                 }
             }
-            ModuleListRepository.SetList(foundFiles, location);
+            ModuleListRepository.SetList(foundFiles, location, logger);
         }
         public void Help()
         {

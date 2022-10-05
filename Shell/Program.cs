@@ -11,7 +11,7 @@ internal class Program
     {
         
         var version = "0.1.1";
-        new Logger(version);
+        var logger = new Logger(version);
 
         List<string> argumentsList = new();
 
@@ -39,20 +39,20 @@ internal class Program
         }
         else
         {
-            Logger.Log("Starting Command Factory", "Program", LogType.INFO);
-            var command = CommandFactory.GetCommand(args[0], version);
+            logger.Log("Starting Command Factory", "Program", LogType.INFO);
+            var command = CommandFactory.GetCommand(args[0], version, logger);
             if (command == null){ return; }
 
             if (argumentsList.Contains("-h") || argumentsList.Contains("--help"))
             {
-                Logger.Log("Running Help Command", "Program", LogType.INFO);
+                logger.Log("Running Help Command", "Program", LogType.INFO);
                 command.Help();
             }
             else
             {
                 var arguments = argumentsList.ToArray();
                 command.Run(arguments);
-                Logger.Log("Command completed succesfully", "Program", LogType.INFO);
+                logger.Log("Command completed succesfully", "Program", LogType.INFO);
             }
         }
     }

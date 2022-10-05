@@ -6,7 +6,7 @@ namespace Shell.ModuleList
 {
     public class ModuleListRepository
     {
-        public static void SetList(string[] foundFiles, string location)
+        public static void SetList(string[] foundFiles, string location, Logger logger)
         {
             List<Module> moduleList = new() { };
 
@@ -20,11 +20,11 @@ namespace Shell.ModuleList
 
                 var lastModifiedDate = File.GetLastWriteTimeUtc(item);
 
-                Logger.Log($"Found Module {fileName}", "ModuleListRepository", LogType.INFO);
+                logger.Log($"Found Module {fileName}", "ModuleListRepository", LogType.INFO);
                 moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
             }
             string jsonString = JsonConvert.SerializeObject(moduleList);
-            Logger.Log($"Writing module list to {location}/modules.json", "ModuleListRepository", LogType.INFO);
+            logger.Log($"Writing module list to {location}/modules.json", "ModuleListRepository", LogType.INFO);
             File.WriteAllTextAsync($"{location}/modules.json", jsonString);
         }
 

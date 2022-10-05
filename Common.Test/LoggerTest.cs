@@ -11,10 +11,9 @@ public class LoggerTest
     public void ShouldLogToFIle()
     {
         //Arrange
-        var logger = new Logger("0.1.2");
-        
+        var logger = new Logger("Test");
         //Act
-        Logger.Log("Test", "Test", LogType.INFO);
+        logger.Log("Test", "Test", LogType.INFO);
         var exists = System.IO.File.Exists($"./bin/pirate0.1.2/logs/{Logger.logName}.log");
 
         //Assert

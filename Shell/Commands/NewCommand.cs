@@ -6,19 +6,21 @@ namespace Shell.Commands
     public class NewCommand : ICommand
     {
         public string version { get; set; }
-        public NewCommand(string Version)
+        public Logger logger { get; set; }
+        public NewCommand(string Version, Logger Logger)
         {
             version = Version;
+            logger = Logger;
         }
         public void Run(string[] arguments)
         {
-            Logger.Log("Starting New Command", this.GetType().Name, LogType.INFO);
+            logger.Log("Starting New Command", this.GetType().Name, LogType.INFO);
             var typeArgument = string.Empty;
             if (arguments.Length >= 2) { typeArgument = arguments[1]; }
 
             if (typeArgument == string.Empty)
             {
-                Logger.Log("Argument is empty", this.GetType().Name, LogType.INFO);
+                logger.Log("Argument is empty", this.GetType().Name, LogType.INFO);
                 Console.WriteLine(String.Join(
                     Environment.NewLine,
                     "\nThe \"pirate new [type]\" command creates a new file from a template",
@@ -37,12 +39,12 @@ namespace Shell.Commands
             };
             if (!typeOptions.Contains(typeArgument))
             {
-                Logger.Log($"Specified file \"{typeArgument}\" not able to be created", this.GetType().Name, LogType.ERROR);
+                logger.Log($"Specified file \"{typeArgument}\" not able to be created", this.GetType().Name, LogType.ERROR);
                 Error($"Specified file \"{typeArgument}\" not able to be created");
                 return;
             }
 
-            Logger.Log($"Creating {typeArgument} file", this.GetType().Name, LogType.INFO);
+            logger.Log($"Creating {typeArgument} file", this.GetType().Name, LogType.INFO);
             switch (typeArgument)
             {
                 case "gitignore":
@@ -65,7 +67,7 @@ namespace Shell.Commands
                     var exists = File.Exists($"./{filename}.pirate");
                     if (exists)
                     {
-                        Logger.Log($"Specified filename \"{filename}\" already exists", this.GetType().Name, LogType.WARNING);
+                        logger.Log($"Specified filename \"{filename}\" already exists", this.GetType().Name, LogType.WARNING);
                         Error($"Specified filename \"{filename}\" already exists");
                         return;
                     }

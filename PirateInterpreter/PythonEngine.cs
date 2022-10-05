@@ -19,9 +19,9 @@ namespace PirateInterpreter
 
         public string Script { get; set; }
 
-        public dynamic InvokeMain(string methodName)
+        public dynamic InvokeMain(string methodName, Logger logger)
         {
-            Logger.Log("Creating Engine, Script, Code and Scope", this.GetType().Name, LogType.INFO);
+            logger.Log("Creating Engine, Script, Code and Scope", this.GetType().Name, LogType.INFO);
             engine = Python.CreateEngine();
             scriptSource = engine.CreateScriptSourceFromFile(Script);
             compiledCode = scriptSource.Compile();
@@ -33,12 +33,12 @@ namespace PirateInterpreter
             {
                 compiledCode.Execute(scope);
                 main = scope.GetVariable("main");
-                Logger.Log("Successfully Executed", this.GetType().Name, LogType.INFO);
+                logger.Log("Successfully Executed", this.GetType().Name, LogType.INFO);
                 return main();
             }
             catch(Exception exception)
             {
-                Logger.Log($"Execute Exception: {exception.ToString()}", this.GetType().Name, LogType.ERROR);
+                logger.Log($"Execute Exception: {exception.ToString()}", this.GetType().Name, LogType.ERROR);
                 return null;    
             }
         }

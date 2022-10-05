@@ -2,6 +2,8 @@ using Xunit;
 
 using System.IO;
 using PirateLexer;
+using Common;
+using FakeItEasy;
 
 namespace PirateParser.Test;
 
@@ -11,12 +13,14 @@ public class WriteRepositoryTest
     public void ShouldReturnForLoop()
     {
         //Arrange
+        var logger = A.Fake<Logger>();
+        A.CallTo(() => logger.Log).WithAnyArguments().DoesNothing();
         var text = File.ReadAllText($"../../../PirateInput/ShouldReturnForLoop.pirate");
-        var lexer = new Lexer("test", text);
+        var lexer = new Lexer("test", text, logger);
         var tokenList = lexer.MakeTokens();
         
         //Act
-        var parser = new Parser(tokenList.tokens);
+        var parser = new Parser(tokenList.tokens, logger);
         var result = parser.Parse("output", "ShouldReturnForLoop");
 
         //Assert
@@ -29,16 +33,17 @@ public class WriteRepositoryTest
     public void ShouldReturnForeachLoop()
     {
         //Arrange
+        var logger = A.Fake<Logger>();
+        A.CallTo(() => logger.Log).WithAnyArguments().DoesNothing();
         var text = File.ReadAllText($"../../../PirateInput/ShouldReturnForeachLoop.pirate");
-        var lexer = new Lexer("test", text);
+        var lexer = new Lexer("test", text, logger);
         var tokenList = lexer.MakeTokens();
 
         //Act
-        var parser = new Parser(tokenList.tokens);
+        var parser = new Parser(tokenList.tokens, logger);
         var result = parser.Parse("output", "ShouldReturnForeachLoop");
 
         //Assert
-        var filetest = File.ReadAllText("./output/ShouldReturnForeachLoop.py");
         Assert.True(
             File.ReadAllText("./output/ShouldReturnForeachLoop.py") == "for item in list :\n    "
         );

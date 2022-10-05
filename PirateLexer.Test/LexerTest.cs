@@ -1,4 +1,5 @@
 using System.IO;
+using Common;
 using Xunit;
 
 namespace PirateLexer.Test;
@@ -9,7 +10,7 @@ public class LexerTest
     public void ShouldReturnNextCharacter()
     {
         //Arrange
-        var lexer = new Lexer("Test", "abc");
+        var lexer = new Lexer("Test", "abc", new Logger("Test"));
 
         //Act
         Lexer.Advance();
@@ -22,7 +23,7 @@ public class LexerTest
     public void ShouldReturnNoCharacter()
     {
         //Arrange
-        var lexer = new Lexer("Test", "abc");
+        var lexer = new Lexer("Test", "abc", new Logger("Test"));
 
         //Act
         Lexer.Advance();
@@ -38,7 +39,7 @@ public class LexerTest
     {   
         // Arrange
         var text = File.ReadAllText($"../../../test.pirate");
-        var lexer = new Lexer("test", text);
+        var lexer = new Lexer("test", text, new Logger("Test"));
 
         //Act
         var result = lexer.MakeTokens();
