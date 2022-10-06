@@ -27,11 +27,11 @@ namespace Shell.Commands
                 Error("No files found");
                 return;
             }
-            List<Module> moduleList = ModuleListRepository.GetList(location);
+            List<Module> moduleList = ModuleListRepository.GetList(location, logger);
 
             foreach (var file in foundFiles)
             {
-                if (moduleList.Count > 0)
+                if (moduleList != null)
                 {
                     Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
                     if (foundModule != null)

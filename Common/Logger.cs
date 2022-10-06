@@ -4,7 +4,7 @@ using Common.Enum;
 namespace Common;
 public class Logger
 {
-    public static string logName { get; set; }
+    public string logName { get; set; }
     public static string version { get; set; } = "0.0.0";
 
     public Logger(string Version, string Name = null)

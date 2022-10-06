@@ -28,8 +28,14 @@ namespace Shell.ModuleList
             File.WriteAllTextAsync($"{location}/modules.json", jsonString);
         }
 
-        public static List<Module> GetList(string location)
+        public static List<Module> GetList(string location, Logger logger)
         {
+            if(!File.Exists($"{location}/modules.json"))
+            {
+                logger.Log($"Creating module list at {location}/modules.json", "ModuleListRepository", LogType.INFO);
+                var createdFile = File.Create($"{location}/modules.json");
+                createdFile.Close();
+            }
             var file = File.ReadAllText($"{location}/modules.json");
             var deserialize = JsonConvert.DeserializeObject<List<Module>>(file);
             return deserialize;

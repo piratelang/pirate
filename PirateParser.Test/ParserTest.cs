@@ -8,6 +8,8 @@ using Common;
 using FakeItEasy;
 using PirateLexer;
 using Xunit;
+using Common.Enum;
+using AutoFixture;
 
 namespace PirateParser.Test
 {
@@ -17,15 +19,14 @@ namespace PirateParser.Test
         public void ShouldParseFile()
         {
             //Arrange
-            var logger = A.Fake<Logger>();
-            A.CallTo(() => logger.Log(A.Fake<string>, )).WithAnyArguments().DoesNothing();
-            var text = File.ReadAllText($"../../../PirateInput/ShouldReturnForeachLoop.pirate");
+            var logger = new Logger("Test", "ShouldParseFile");
+            var text = File.ReadAllText($"../../../PirateInput/ShouldParseFile.pirate");
             var lexer = new Lexer("test", text, logger);
             var tokenList = lexer.MakeTokens();
 
             //Act
             var parser = new Parser(tokenList.tokens, logger);
-            var result = parser.Parse("output", "ShouldReturnForeachLoop");
+            var result = parser.Parse("output", "ShouldParseFile");
             Assert.True(true);
         }
     }
