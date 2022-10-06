@@ -4,17 +4,21 @@ using Common.Enum;
 namespace Common;
 public class Logger
 {
-    public static string logName { get; set; }
+    public string logName { get; set; }
     public static string version { get; set; } = "0.0.0";
 
-    public Logger(string Version)
+    public Logger(string Version, string Name = null)
     {
         version = Version;
         var dateTime = DateTime.Now;
-        logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
+        logName = Name;
+        if(Name == null)
+        {
+            logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
+        }
     }
 
-    public static void Log(string message, string orginFile, LogType logType)
+    public void Log(string message, string orginFile, LogType logType)
     {
         var location = $"./bin/pirate{version}/logs/{logName}.log";
         bool exists = System.IO.Directory.Exists($"./bin/pirate{version}/logs");

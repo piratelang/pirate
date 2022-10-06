@@ -32,3 +32,8 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 ### ([#26](https://github.com/joerivanarkel/PirateLang/pull/26)) added comments between: // and ;. added true and false<br>
 - Added true and false booleans
 - Ignored tokens between `//` and `;` in the parser acting as comments
+
+
+### ([#37](https://github.com/joerivanarkel/PirateLang/pull/37)) Testing<br>
+- Created test for Common, Parser and Lexer
+- Made `logger.Log` non static

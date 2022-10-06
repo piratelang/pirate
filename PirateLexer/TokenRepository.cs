@@ -1,10 +1,11 @@
+using Common;
 using PirateLexer.Models;
 
 namespace PirateLexer
 {
     public class TokenRepository
     {
-        public static Token MakeNumber()
+        public static Token MakeNumber(Logger logger)
         {
             var numberString = string.Empty; 
             var dotCount = 0;
@@ -30,15 +31,15 @@ namespace PirateLexer
 
             if (dotCount == 0)
             {
-                return new Token(TokenType.INT, int.Parse(numberString), positionStart, Lexer.position);
+                return new Token(TokenType.INT, logger, int.Parse(numberString), positionStart, Lexer.position);
             }
             else
             {
-                return new Token(TokenType.FLOAT, float.Parse(numberString), positionStart, Lexer.position);
+                return new Token(TokenType.FLOAT, logger, float.Parse(numberString), positionStart, Lexer.position);
             }
         }
 
-        public static Token MakeIdentifier()
+        public static Token MakeIdentifier(Logger logger)
         {
             var idString = string.Empty;
             var positionStart = Lexer.position.Copy();
@@ -64,10 +65,10 @@ namespace PirateLexer
                 tokenType = TokenType.IDENTIFIER;
             }
 
-            return new Token(tokenType, idString, positionStart, Lexer.position);
+            return new Token(tokenType, logger, idString, positionStart, Lexer.position);
         }
 
-        public static Token MakeString()
+        public static Token MakeString(Logger logger)
         {
             var resultString = string.Empty;
             var positionStart = Lexer.position.Copy();
@@ -100,11 +101,11 @@ namespace PirateLexer
             }
 
             Lexer.Advance();
-            return new Token(TokenType.STRING, resultString, positionStart, Lexer.position);
+            return new Token(TokenType.STRING, logger, resultString, positionStart, Lexer.position);
 
         }
 
-        public static (Token token, Error error) MakeNotEquals()
+        public static (Token token, Error error) MakeNotEquals(Logger logger)
         {
             var positionStart = Lexer.position.Copy();
             Lexer.Advance();
@@ -112,14 +113,14 @@ namespace PirateLexer
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                return (new Token(TokenType.NOTEQUALS, PositionStart: positionStart, PositionEnd: Lexer.position), null);
+                return (new Token(TokenType.NOTEQUALS, logger, PositionStart: positionStart, PositionEnd: Lexer.position), null);
             }
 
             Lexer.Advance();
             return (null, new Error(positionStart, Lexer.position, "Expected Character Error", "'=' (after '!')"));
         }
 
-        public static Token MakeGreaterThan()
+        public static Token MakeGreaterThan(Logger logger)
         {
             var tokenType = TokenType.GREATERHAN;
             var positionStart = Lexer.position.Copy();
@@ -131,10 +132,10 @@ namespace PirateLexer
                 tokenType = TokenType.GREATERTHANEQUALS;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(tokenType, logger, PositionStart: positionStart, PositionEnd: Lexer.position);
         }
 
-        public static Token MakeLessThan()
+        public static Token MakeLessThan(Logger logger)
         {
             var tokenType = TokenType.LESSTHAN;
             var positionStart = Lexer.position.Copy();
@@ -146,10 +147,10 @@ namespace PirateLexer
                 tokenType = TokenType.LESSTHANEQUALS;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(tokenType, logger, PositionStart: positionStart, PositionEnd: Lexer.position);
         }
 
-        public static Token MakeEquals()
+        public static Token MakeEquals(Logger logger)
         {
             var tokenType = TokenType.EQUALS;
             var positionStart = Lexer.position.Copy();
@@ -161,10 +162,10 @@ namespace PirateLexer
                 tokenType = TokenType.DOUBLEEQUALS;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(tokenType, logger, PositionStart: positionStart, PositionEnd: Lexer.position);
         }
 
-        public static Token MakePlus()
+        public static Token MakePlus(Logger logger)
         {
             var tokenType = TokenType.PLUS;
             var positionStart = Lexer.position.Copy();
@@ -176,9 +177,9 @@ namespace PirateLexer
                 tokenType = TokenType.PLUSEQUALS;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(tokenType, logger, PositionStart: positionStart, PositionEnd: Lexer.position);
         }
-        public static Token MakeDivide()
+        public static Token MakeDivide(Logger logger)
         {
             var tokenType = TokenType.DIVIDE;
             var positionStart = Lexer.position.Copy();
@@ -190,7 +191,7 @@ namespace PirateLexer
                 tokenType = TokenType.DOUBLEDIVIDE;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(tokenType, logger, PositionStart: positionStart, PositionEnd: Lexer.position);
         }
     }
 }

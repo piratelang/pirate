@@ -7,7 +7,7 @@ namespace PirateParser
 {
     public class WriteRepository
     {
-        public void WriteForLoop(StreamWriter file)
+        public void WriteForLoop(StreamWriter file, Logger logger)
         {
             var localTokenList = new List<Token>() {};
             while (Parser.currentToken.tokenType != TokenType.LEFTCURLYBRACE)
@@ -15,11 +15,11 @@ namespace PirateParser
                 localTokenList.Add(Parser.currentToken);
                 Parser.Advance();
             }
-            Logger.Log($"Found and Parsed \"FOR LOOP\"", this.GetType().Name, LogType.INFO);
+            logger.Log($"Found and Parsed \"FOR LOOP\"", this.GetType().Name, LogType.INFO);
             Parser.WriteString($"for {localTokenList[3].value} in range({localTokenList[5].value}, {localTokenList[7].value})", file, false, true);
             
         }
-        public void WriteForeachLoop(StreamWriter file)
+        public void WriteForeachLoop(StreamWriter file, Logger logger)
         {
             var localTokenList = new List<Token>() {};
             while (Parser.currentToken.tokenType != TokenType.LEFTCURLYBRACE)
@@ -27,7 +27,7 @@ namespace PirateParser
                 localTokenList.Add(Parser.currentToken);
                 Parser.Advance();
             }
-            Logger.Log($"Found and Parsed \"FOREACH LOOP\"", this.GetType().Name, LogType.INFO);
+            logger.Log($"Found and Parsed \"FOREACH LOOP\"", this.GetType().Name, LogType.INFO);
             Parser.WriteString($"for {localTokenList[3].value} in {localTokenList[5].value}", file, false, true);
             
         }
