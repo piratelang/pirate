@@ -1,4 +1,4 @@
-using PirateLexer.Models;
+using NewPirateLexer.Models;
 
 namespace PirateLexer
 {

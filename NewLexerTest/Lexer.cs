@@ -1,33 +1,32 @@
 
-using PirateLexer.Models;
+using NewPirateLexer.Tokens;
+using NewPirateLexer.Enums;
 
-namespace PirateLexer;
+namespace NewPirateLexer;
 public class Lexer
 {
     public string fileName { get; set; }
     public static string text { get; set; }
     public static char currentChar { get; set; }
-    public static Position position { get; set; }
+    public static int position { get; set; }
 
     public Lexer(string FileName, string Text)
     {
         fileName = FileName;
-        var newText = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
-        text = newText;
-        position = new Position(-1, 0, -1, fileName, text);
-        Advance();
+        position = 0;
+        text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
     }
 
     public static void Advance()
     {
-        position.Advance(currentChar);
-        if (position.index < text.Length)
+        position += 1;
+        if (position + 1 < text.Length)
         {
             currentChar = text[position.index];
         }
         else
         {
-            currentChar = ' ';
+            currentChar = null;
         }
     }
 
@@ -37,21 +36,9 @@ public class Lexer
 
         while (currentChar != null)
         {
-            if (currentChar.Equals('\n'))
-            {
-                tokens.Add(new Token(
-                    TokenType.ENDOFLINE,
-                    PositionStart: position
-                ));
-                Advance();
-            }
             if (currentChar == ' ')
             {
                 Advance();
-                if (currentChar == ' ')
-                {
-                    break;
-                }
                 continue;
             }
             if (Globals.DIGITS.Contains(currentChar))
@@ -69,6 +56,8 @@ public class Lexer
                 case '"':
                     tokens.Add(TokenRepository.MakeString());
                     continue;
+                case '\'':
+                    tokens.Add(TokenRepository.MakeChar());
                 case '+':
                     tokens.Add(TokenRepository.MakePlus());
                     Advance();

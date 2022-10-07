@@ -1,4 +1,4 @@
-namespace PirateLexer.Models
+namespace NewPirateLexer
 {
     public class Position
     {
