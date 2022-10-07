@@ -7,6 +7,6 @@ namespace NewParserTest
 {
     public class Parser
     {
-        
+        public vo
     }
 }
