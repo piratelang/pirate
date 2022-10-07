@@ -18,6 +18,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateLexer.Test", "PirateLexer.Test\PirateLexer.Test.csproj", "{D7796836-3291-42BB-B3FD-05CA5AFA9EE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateParser.Test", "PirateParser.Test\PirateParser.Test.csproj", "{C5A1B098-0C59-4F0E-9462-5168DFDCBFDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewParserTest", "NewParserTest\NewParserTest.csproj", "{CED24C66-39E2-4DD5-9C59-7EE30E9B5F7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
