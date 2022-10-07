@@ -1,6 +1,7 @@
 namespace NewPirateLexer.Enums;
 public enum TokenSyntax
 {
+    IDENTIFIER,
     LEFTPARENTHESES,
     RIGHTPARENTHESES,
     RIGHTCURLYBRACE,
@@ -11,5 +12,6 @@ public enum TokenSyntax
     COLON,
     SEMICOLON,
     DOT,
-    DOLLAR
+    DOLLAR,
+    DOUBLEDIVIDE
 }

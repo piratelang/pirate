@@ -13,8 +13,9 @@ public class Lexer
     public Lexer(string FileName, string Text)
     {
         fileName = FileName;
-        position = 0;
+        position = -1;
         text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
+        Advance();
     }
 
     public static void Advance()
@@ -22,11 +23,11 @@ public class Lexer
         position += 1;
         if (position + 1 < text.Length)
         {
-            currentChar = text[position.index];
+            currentChar = text[position];
         }
         else
         {
-            currentChar = null;
+            currentChar = '€';
         }
     }
 
@@ -34,7 +35,7 @@ public class Lexer
     {
         List<Token> tokens = new List<Token> { };
 
-        while (currentChar != null)
+        while (currentChar != '€')
         {
             if (currentChar == ' ')
             {
@@ -58,22 +59,17 @@ public class Lexer
                     continue;
                 case '\'':
                     tokens.Add(TokenRepository.MakeChar());
+                    continue;
                 case '+':
                     tokens.Add(TokenRepository.MakePlus());
                     Advance();
                     continue;
                 case '-':
-                    tokens.Add(new Token(
-                        TokenType.MINUS,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MINUS));
                     Advance();
                     continue;
                 case '*':
-                    tokens.Add(new Token(
-                        TokenType.MULTIPLY,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MULTIPLY));
                     Advance();
                     continue;
                 case '/':
@@ -81,87 +77,51 @@ public class Lexer
                     Advance();
                     continue;
                 case '^':
-                    tokens.Add(new Token(
-                        TokenType.POWER,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.POWER));
                     Advance();
                     continue;
                 case '(':
-                    tokens.Add(new Token(
-                        TokenType.LEFTPARENTHESES,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
                     Advance();
                     continue;
                 case ')':
-                    tokens.Add(new Token(
-                        TokenType.RIGHTPARENTHESES,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
                     Advance();
                     continue;
                 case '{':
-                    tokens.Add(new Token(
-                        TokenType.LEFTCURLYBRACE,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
                     Advance();
                     continue;
                 case '}':
-                    tokens.Add(new Token(
-                        TokenType.RIGHTCURLYBRACE,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
                     Advance();
                     continue;
                 case ',':
-                    tokens.Add(new Token(
-                        TokenType.COMMA,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COMMA));
                     Advance();
                     continue;
                 case ':':
-                    tokens.Add(new Token(
-                        TokenType.COLON,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COLON));
                     Advance();
                     continue;
                 case ';':
-                    tokens.Add(new Token(
-                        TokenType.SEMICOLON,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.SEMICOLON));
                     Advance();
                     continue;
                 case '.':
-                    tokens.Add(new Token(
-                        TokenType.DOT,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOT));
                     Advance();
                     continue;
                 case '$':
-                    tokens.Add(new Token(
-                        TokenType.DOLLAR,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOLLAR));
                     Advance();
                     continue;
                 case '[':
-                    tokens.Add(new Token(
-                        TokenType.LEFTBRACKET,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTBRACKET));
                     Advance();
                     continue;
                 case ']':
-                    tokens.Add(new Token(
-                        TokenType.RIGHTBRACKET,
-                        PositionStart: position
-                    ));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTBRACKET));
                     Advance();
                     continue;
                 case '=':
@@ -186,16 +146,10 @@ public class Lexer
                     Advance();
                     continue;
                 default:
-                    var positionStart = position.Copy();
                     Advance();
-                    return (null, new Error(positionStart, position, $"'{currentChar}'", "Illegal Character"));
+                    return (null, new Error($"'{currentChar}'", "Illegal Character"));
             }
         }
-
-        tokens.Add(new Token(
-            TokenType.ENDOFFILE,
-            PositionStart: position
-        ));
         return (tokens, null);
     }
 }

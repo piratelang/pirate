@@ -11,6 +11,7 @@ namespace NewPirateLexer.Enums
         COMPARISONOPERATORS,
         TYPEKEYWORD,
         CONTROLKEYWORD,
-        SYNTAX
+        SYNTAX,
+        VALUE
     }
 }

@@ -1,5 +1,7 @@
+using NewPirateLexer.Enums;
+
 namespace NewPirateLexer.Tokens;
-public class Token : IToken
+public class Token
 {
     public TokenGroup tokenGroup { get; set; }
     public object tokenType { get; set; }
@@ -12,17 +14,17 @@ public class Token : IToken
         value = Value;
     }
 
-    public bool Matches(TokenType Type, object Value)
+    public bool Matches(object TokenType, object Value)
     {
-        return tokenType == Type && value == Value;
+        return tokenType == TokenType && value == Value;
     }
 
     public string Display()
     {
         if (value != null)
         {
-            return $"{tokenType.ToString()}:{value.ToString()}";
+            return $"{tokenGroup.ToString()}:{tokenType.ToString()}:{value.ToString()}";
         }
-        return $"{tokenType.ToString()}";
+        return $"{tokenGroup.ToString()}:{tokenType.ToString()}";
     }
 }

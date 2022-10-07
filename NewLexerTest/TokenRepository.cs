@@ -1,6 +1,9 @@
-using NewPirateLexer.Models;
+using System.Security.Principal;
+using NewLexerTest.Enums;
+using NewPirateLexer.Enums;
+using NewPirateLexer.Tokens;
 
-namespace PirateLexer
+namespace NewPirateLexer
 {
     public class TokenRepository
     {
@@ -8,7 +11,6 @@ namespace PirateLexer
         {
             var numberString = string.Empty; 
             var dotCount = 0;
-            var positionStart = Lexer.position.Copy();
 
             while (Lexer.currentChar != null && (Globals.DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '.'))
             {
@@ -30,18 +32,17 @@ namespace PirateLexer
 
             if (dotCount == 0)
             {
-                return new Token(TokenType.INT, int.Parse(numberString), positionStart, Lexer.position);
+                return new Token(TokenGroup.VALUE, TokenValue.INT, int.Parse(numberString));
             }
             else
             {
-                return new Token(TokenType.FLOAT, float.Parse(numberString), positionStart, Lexer.position);
+                return new Token(TokenGroup.VALUE, TokenValue.FLOAT, float.Parse(numberString));
             }
         }
 
         public static Token MakeIdentifier()
         {
             var idString = string.Empty;
-            var positionStart = Lexer.position.Copy();
 
             while (Lexer.currentChar != null && (Globals.LETTERS_DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '_'))
             {
@@ -49,28 +50,80 @@ namespace PirateLexer
                 Lexer.Advance();
             }
 
-            var tokenType = new TokenType();
+            var tokenType = new object();
+            var typeKeywords = new string[] {"var", "int", "float", "string", "char", "new"};
+            var controlKeywords = new string[] {"if", "else", "for", "to", "foreach", "in", "while", "func", "class"};
 
-            if (Globals.KEYWORDS.Contains(idString))
+            if (typeKeywords.Contains(idString))
             {
-                tokenType = TokenType.KEYWORD;
+                var tokenGroup = TokenGroup.TYPEKEYWORD;
+                switch (idString)
+                {
+                    case "var":
+                        tokenType = TokenTypeKeyword.VAR;
+                        break;
+                    case "int":
+                        tokenType = TokenTypeKeyword.INT;
+                        break;
+                    case "float":
+                        tokenType = TokenTypeKeyword.FLOAT;
+                        break;
+                    case "string":
+                        tokenType = TokenTypeKeyword.STRING;
+                        break;
+                    case "char":
+                        tokenType = TokenTypeKeyword.CHAR;
+                        break;
+                    case "new":
+                        tokenType = TokenTypeKeyword.NEW;
+                        break;
+                }
+                return new Token(tokenGroup, tokenType, idString);
             }
-            else if (Globals.BOOLEANS.Contains(idString))
+            else if(controlKeywords.Contains(idString))
             {
-                tokenType = TokenType.BOOLEAN;
+                var tokenGroup = TokenGroup.CONTROLKEYWORD;
+                switch (idString)
+                {
+                    case "if":
+                        tokenType = TokenControlKeyword.IF;
+                        break;
+                    case "else":
+                        tokenType = TokenControlKeyword.ELSE;
+                        break;
+                    case "for":
+                        tokenType = TokenControlKeyword.FOR;
+                        break;
+                    case "to":
+                        tokenType = TokenControlKeyword.TO;
+                        break;
+                    case "foreach":
+                        tokenType = TokenControlKeyword.FOREACH;
+                        break;
+                    case "in":
+                        tokenType = TokenControlKeyword.IN;
+                        break;
+                    case "while":
+                        tokenType = TokenControlKeyword.WHILE;
+                        break;
+                    case "func":
+                        tokenType = TokenControlKeyword.FUNC;
+                        break;
+                    case "class":
+                        tokenType = TokenControlKeyword.CLASS;
+                        break;
+                }
+                return new Token(tokenGroup, tokenType, idString);
             }
             else
             {
-                tokenType = TokenType.IDENTIFIER;
+                return new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, idString);
             }
-
-            return new Token(tokenType, idString, positionStart, Lexer.position);
         }
 
         public static Token MakeString()
         {
             var resultString = string.Empty;
-            var positionStart = Lexer.position.Copy();
             var escapeCharacter = false;
             Lexer.Advance();
 
@@ -98,99 +151,124 @@ namespace PirateLexer
                 Lexer.Advance();
                 escapeCharacter = false;
             }
-
             Lexer.Advance();
-            return new Token(TokenType.STRING, resultString, positionStart, Lexer.position);
+            return new Token(TokenGroup.VALUE, TokenValue.STRING, resultString);
+        }
 
+        public static Token MakeChar()
+        {
+            var resultString = ' ';
+            var escapeCharacter = false;
+            Lexer.Advance();
+
+            Dictionary<string, string> escapeCharacters = new Dictionary<string, string>() { };
+            escapeCharacters.Add("n", "\n");
+            escapeCharacters.Add("t", "\t");
+
+            while (Lexer.currentChar != null && Lexer.currentChar != '\'' || escapeCharacter)
+            {
+                if (escapeCharacter)
+                {
+                    resultString += Lexer.currentChar;
+                }
+                else
+                {
+                    if (Lexer.currentChar == '\\')
+                    {
+                        escapeCharacter = true;
+                    }
+                    else
+                    {
+                        resultString += Lexer.currentChar;
+                    }
+                }
+                Lexer.Advance();
+                escapeCharacter = false;
+            }
+            Lexer.Advance();
+            return new Token(TokenGroup.VALUE, TokenValue.CHAR, resultString);
         }
 
         public static (Token token, Error error) MakeNotEquals()
         {
-            var positionStart = Lexer.position.Copy();
             Lexer.Advance();
 
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                return (new Token(TokenType.NOTEQUALS, PositionStart: positionStart, PositionEnd: Lexer.position), null);
+                return (new Token(TokenGroup.OPERATORS, TokenOperators.EQUALS), null);
             }
 
             Lexer.Advance();
-            return (null, new Error(positionStart, Lexer.position, "Expected Character Error", "'=' (after '!')"));
+            return (null, new Error("Expected Character Error", "'=' (after '!')"));
         }
 
         public static Token MakeGreaterThan()
         {
-            var tokenType = TokenType.GREATERHAN;
-            var positionStart = Lexer.position.Copy();
+            var tokenType = TokenComparisonOperators.GREATERHAN;
             Lexer.Advance();
 
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                tokenType = TokenType.GREATERTHANEQUALS;
+                tokenType = TokenComparisonOperators.GREATERTHANEQUALS;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(TokenGroup.COMPARISONOPERATORS, tokenType);
         }
 
         public static Token MakeLessThan()
         {
-            var tokenType = TokenType.LESSTHAN;
-            var positionStart = Lexer.position.Copy();
+            var tokenType = TokenComparisonOperators.LESSTHAN;
             Lexer.Advance();
 
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                tokenType = TokenType.LESSTHANEQUALS;
+                tokenType = TokenComparisonOperators.LESSTHANEQUALS;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(TokenGroup.COMPARISONOPERATORS, tokenType);
         }
 
         public static Token MakeEquals()
         {
-            var tokenType = TokenType.EQUALS;
-            var positionStart = Lexer.position.Copy();
             Lexer.Advance();
-
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                tokenType = TokenType.DOUBLEEQUALS;
+                return new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS);
             }
-
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            else
+            {
+                return new Token(TokenGroup.OPERATORS, TokenOperators.EQUALS);
+            }
         }
 
         public static Token MakePlus()
         {
-            var tokenType = TokenType.PLUS;
-            var positionStart = Lexer.position.Copy();
+            var tokenType = TokenOperators.PLUS;
             Lexer.Advance();
 
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                tokenType = TokenType.PLUSEQUALS;
+                tokenType = TokenOperators.PLUSEQUALS;
             }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            return new Token(TokenGroup.OPERATORS, tokenType);
         }
         public static Token MakeDivide()
         {
-            var tokenType = TokenType.DIVIDE;
-            var positionStart = Lexer.position.Copy();
-            Lexer.Advance();
-
             if (Lexer.currentChar == '/')
             {
                 Lexer.Advance();
-                tokenType = TokenType.DOUBLEDIVIDE;
+                return new Token(TokenGroup.OPERATORS, TokenOperators.DIVIDE);
             }
-
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            else
+            {
+                return new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE);
+            }
         }
     }
 }
