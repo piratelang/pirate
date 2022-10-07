@@ -1,0 +1,39 @@
+namespace PirateLexer.Models
+{
+    public enum TokenType
+    {
+        INT,
+        FLOAT,
+        STRING,
+        IDENTIFIER,
+        KEYWORD,
+        PLUS,
+        PLUSEQUALS,
+        MINUS,
+        MULTIPLY,
+        DIVIDE,
+        DOUBLEDIVIDE,
+        EQUALS,
+        LEFTPARENTHESES,
+        RIGHTPARENTHESES,
+        ENDOFFILE,
+        ENDOFLINE,
+        POWER,
+        DOUBLEEQUALS,
+        NOTEQUALS,
+        LESSTHAN,
+        GREATERHAN,
+        LESSTHANEQUALS,
+        GREATERTHANEQUALS,
+        COMMA,
+        COLON,
+        RIGHTCURLYBRACE,
+        LEFTCURLYBRACE,
+        SEMICOLON,
+        DOT,
+        DOLLAR,
+        LEFTBRACKET,
+        RIGHTBRACKET,
+        BOOLEAN
+    }
+}

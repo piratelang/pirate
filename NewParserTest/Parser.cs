@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NewParserTest
+namespace NewParserTest;
+public class Parser
 {
-    public class Parser
+    public void StartParse()
     {
-        public vo
+        
     }
 }

@@ -55,6 +55,8 @@ Expression:
 Value:
     String:
         "<String>"
+    Float:
+        <int>.<int>
     Char:
         '<Char>'
     Int:
