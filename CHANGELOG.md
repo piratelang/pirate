@@ -2,6 +2,10 @@
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
 ## 0.1.2
+### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements<br>
+- Added build command to test files. Later to be joined by #35.
+- Created `.log` file, added logging in the new Common project
+- Checking for modificationdate in `modules.json` and setting the new data in the build command
 
 ## 0.1.1
 ### ([#9](https://github.com/joerivanarkel/PirateLang/pull/9)) Shell, CLI Improvements<br>
@@ -28,3 +32,8 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 ### ([#26](https://github.com/joerivanarkel/PirateLang/pull/26)) added comments between: // and ;. added true and false<br>
 - Added true and false booleans
 - Ignored tokens between `//` and `;` in the parser acting as comments
+
+
+### ([#37](https://github.com/joerivanarkel/PirateLang/pull/37)) Testing<br>
+- Created test for Common, Parser and Lexer
+- Made `logger.Log` non static

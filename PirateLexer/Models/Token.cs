@@ -1,3 +1,6 @@
+using Common;
+using Common.Enum;
+
 namespace PirateLexer.Models
 {
     public class Token
@@ -8,7 +11,7 @@ namespace PirateLexer.Models
         public Position? positionStart { get; set; }
         public Position? positionEnd { get; set; }
 
-        public Token(TokenType TokenType, object Value = null, Position PositionStart = null, Position PositionEnd = null)
+        public Token(TokenType TokenType, Logger logger, object Value = null, Position PositionStart = null, Position PositionEnd = null)
         {
             tokenType = TokenType;
             value = Value;
@@ -22,10 +25,12 @@ namespace PirateLexer.Models
             {
                 positionEnd = PositionEnd;
             }
+            logger.Log($"Found and Created Token: \"{tokenType.ToString()}:{value}\"", "Lexer", LogType.INFO);
         }
 
-        public bool Matches(TokenType Type, object Value)
+        public bool Matches(TokenType Type, object Value, Logger logger)
         {
+            logger.Log("Matching Token", this.GetType().Name, LogType.INFO);
             return tokenType == Type && value == Value;
         }
 
