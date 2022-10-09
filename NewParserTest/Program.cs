@@ -20,6 +20,10 @@ while (true)
     {
         Console.WriteLine("Why is this null?");
     }
-    Console.WriteLine(parseResult.Display());
+    else
+    {
+        Console.WriteLine(parseResult.Display());
+    }
+
 
 }

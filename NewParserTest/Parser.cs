@@ -22,6 +22,11 @@ public class Parser
         if(_tokens == null) throw new ArgumentNullException(nameof(_tokens));
         // start token 1
         var tokenParser = parserFactory.GetParser(_tokens.First(), _tokens);
+        if (tokenParser == null)
+        {
+            Console.WriteLine("Not done");
+            return null;
+        }
         var parseResult = tokenParser.CreateNode();
 
         Console.WriteLine(parseResult.index + 1);
