@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\NewLexerTest\PirateLexer.csproj" />
+    <ProjectReference Include="..\NewLexerTest\NewLexerTest.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <OutputType>Exe</OutputType>

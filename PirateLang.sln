@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateLexer.Test", "PirateL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateParser.Test", "PirateParser.Test\PirateParser.Test.csproj", "{C5A1B098-0C59-4F0E-9462-5168DFDCBFDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewLexerTest", "NewLexerTest\PirateLexer.csproj", "{8D39609C-C369-405C-A762-6FC9DFB8FE5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewLexerTest", "NewLexerTest\NewLexerTest.csproj", "{8D39609C-C369-405C-A762-6FC9DFB8FE5D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewParserTest", "NewParserTest\NewParserTest.csproj", "{86E58DCE-0009-4F02-AA90-928DE16188DC}"
 EndProject

@@ -21,7 +21,7 @@ public class Lexer
     public static void Advance()
     {
         position += 1;
-        if (position + 1 < text.Length)
+        if (position + 1 <= text.Length)
         {
             currentChar = text[position];
         }
@@ -62,7 +62,6 @@ public class Lexer
                     continue;
                 case '+':
                     tokens.Add(TokenRepository.MakePlus());
-                    Advance();
                     continue;
                 case '-':
                     tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MINUS));
@@ -74,7 +73,6 @@ public class Lexer
                     continue;
                 case '/':
                     tokens.Add(TokenRepository.MakeDivide());
-                    Advance();
                     continue;
                 case '^':
                     tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.POWER));
@@ -126,15 +124,12 @@ public class Lexer
                     continue;
                 case '=':
                     tokens.Add(TokenRepository.MakeEquals());
-                    Advance();
                     continue;
                 case '<':
                     tokens.Add(TokenRepository.MakeLessThan());
-                    Advance();
                     continue;
                 case '>':
                     tokens.Add(TokenRepository.MakeGreaterThan());
-                    Advance();
                     continue;
                 case '!':
                     var result = TokenRepository.MakeNotEquals();
@@ -143,7 +138,6 @@ public class Lexer
                         return (null, result.error);
                     }
                     tokens.Add(result.token);
-                    Advance();
                     continue;
                 default:
                     Advance();

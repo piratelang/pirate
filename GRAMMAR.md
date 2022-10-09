@@ -7,7 +7,7 @@ Definition:
 
 Control Statement:
     If Statement:
-        if (<Expression.Comparison>)
+        if (<Expression.Comparison> <extension operator> <Expression.Comparison>)
         {
             <then>
         }
@@ -26,22 +26,23 @@ Control Statement:
         {
 
         }
-
-Expression:
+Assignment:
     Assignment:
         <type> <identifier> = <value>
         var <identifier> = <value>
+
+Expression:
     Comparison:
-        <value> <double operator> <value>
-        <value> <double operator> <value> <extension operator> <value> <double operator> <value>
-        Double Operators:
-            ==, !=, <<, >>, <=, >=
-        Extension Operators:
-            ||, &&
+        <value> <comparisonoperator> <value>
+        <value> <comparisonoperator> <value>
+            Double Operators:
+                ==, !=, <<, >>, <=, >=
+            Extension Operators:
+                ||, &&
     Binary operation:
         <value> <operator> <value>
-        Operators:
-            +, -, /, *, ^
+            Operators:
+                +, -, /, *, ^
 
 Value:
     String:

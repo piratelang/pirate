@@ -260,14 +260,15 @@ namespace NewPirateLexer
         }
         public static Token MakeDivide()
         {
+            Lexer.Advance();
             if (Lexer.currentChar == '/')
             {
                 Lexer.Advance();
-                return new Token(TokenGroup.OPERATORS, TokenOperators.DIVIDE);
+                return new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE);
             }
             else
             {
-                return new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE);
+                return new Token(TokenGroup.OPERATORS, TokenOperators.DIVIDE);
             }
         }
     }

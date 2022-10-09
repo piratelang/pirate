@@ -1,5 +1,9 @@
+using NewParserTest.Node;
+using NewParserTest.Parsers;
+using NewParserTest.Parsers.Interfaces;
 using NewPirateLexer.Enums;
 using NewPirateLexer.Tokens;
+using NewParserTest.Node.Interfaces;
 
 namespace NewParserTest;
 public class Parser
@@ -13,11 +17,15 @@ public class Parser
     {
         _tokens = tokens;
     }
-    public void StartParse()
+    public INode StartParse()
     {
         if(_tokens == null) throw new ArgumentNullException(nameof(_tokens));
         // start token 1
         var tokenParser = parserFactory.GetParser(_tokens.First(), _tokens);
+        var parseResult = tokenParser.CreateNode();
+
+        Console.WriteLine(parseResult.index + 1);
+        return parseResult.node;
     }
 
 }

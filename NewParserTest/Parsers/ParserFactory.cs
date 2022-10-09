@@ -1,8 +1,10 @@
 using NewPirateLexer.Tokens;
 using NewPirateLexer.Enums;
 using NewLexerTest.Enums;
+using NewParserTest.Parsers.Interfaces;
+using NewParserTest.Node.Interfaces;
 
-namespace NewParserTest;
+namespace NewParserTest.Parsers;
 
 public class ParserFactory: IParserFactory
 {
@@ -11,8 +13,7 @@ public class ParserFactory: IParserFactory
         switch(token.TokenType)
         {
             case TokenValue:
-                return new TokenValueParser(tokens);
-            
+                return new OperationParser(tokens, token);
         }  
           return null;   
     }

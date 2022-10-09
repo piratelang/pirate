@@ -1,6 +1,6 @@
 using NewPirateLexer.Tokens;
 
-namespace NewParserTest;
+namespace NewParserTest.Parsers.Interfaces;
 
 public interface IParserFactory
 {

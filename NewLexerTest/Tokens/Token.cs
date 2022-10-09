@@ -22,6 +22,8 @@ public class Token
 
     public string Display()
     {
-        return $"{TokenGroup.ToString()}:{TokenType.ToString()}:{Value?.ToString()}";
+
+        
+        return $"{TokenGroup.ToString()}:{TokenType.ToString()}:{(Value != null ? Value.ToString() : "None")}";
     }
 }
