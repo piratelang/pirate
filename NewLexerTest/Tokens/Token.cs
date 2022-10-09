@@ -1,30 +1,27 @@
 using NewPirateLexer.Enums;
 
 namespace NewPirateLexer.Tokens;
+
 public class Token
 {
-    public TokenGroup tokenGroup { get; set; }
-    public object tokenType { get; set; }
-    public object? value { get; set; }
+    public TokenGroup TokenGroup { get; set; }
+    public object TokenType { get; set; }
+    public object? Value { get; set; }
 
-    public Token(TokenGroup TokenGroup, object TokenType, object Value = null)
+    public Token(TokenGroup tokenGroup, object tokenType, object value = null)
     {
-        tokenGroup = TokenGroup;
-        tokenType = TokenType;
-        value = Value;
+        TokenGroup = tokenGroup;
+        TokenType = tokenType;
+        Value = value;
     }
 
     public bool Matches(object TokenType, object Value)
     {
-        return tokenType == TokenType && value == Value;
+        return this.TokenType == TokenType && this.Value == Value;
     }
 
     public string Display()
     {
-        if (value != null)
-        {
-            return $"{tokenGroup.ToString()}:{tokenType.ToString()}:{value.ToString()}";
-        }
-        return $"{tokenGroup.ToString()}:{tokenType.ToString()}";
+        return $"{TokenGroup.ToString()}:{TokenType.ToString()}:{Value?.ToString()}";
     }
 }

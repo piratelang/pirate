@@ -33,7 +33,7 @@ public class Lexer
 
     public (List<Token>? tokens, Error? error) MakeTokens()
     {
-        List<Token> tokens = new List<Token> { };
+        List<Token> tokens = new ();
 
         while (currentChar != '€')
         {
