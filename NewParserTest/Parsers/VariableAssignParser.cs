@@ -21,7 +21,7 @@ public class VariableAssignParser : ITokenParser
         INode node = null;
 
         var index = _tokens.IndexOf(_currentToken);
-        var VariableTyepe = _currentToken;
+        var VariableType = _currentToken;
 
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(_tokens[index += 1], _tokens);
@@ -46,7 +46,7 @@ public class VariableAssignParser : ITokenParser
             return (null, 0);
         }
 
-        node = new VariableAssignNode(IdentifierNode, Value);
+        node = new VariableAssignNode(VariableType, IdentifierNode, Value);
         return (node, index);
     }
 }

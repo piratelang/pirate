@@ -1,6 +1,6 @@
 using NewPirateLexer.Tokens;
 
-namespace NewInterpreterTest.Values;
+namespace NewInterpreterTest.Values.Interfaces;
 
 public interface INumber : IValue
 {
