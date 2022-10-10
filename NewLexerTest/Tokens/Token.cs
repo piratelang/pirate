@@ -15,15 +15,17 @@ public class Token
         Value = value;
     }
 
-    public bool Matches(object TokenType, object Value)
+    public bool Matches(object tokenType, object Value=null)
     {
+        if (Value == null)
+        {
+            return TokenType.Equals(tokenType);
+        }
         return this.TokenType == TokenType && this.Value == Value;
     }
 
     public string Display()
     {
-
-        
         return $"{TokenGroup.ToString()}:{TokenType.ToString()}:{(Value != null ? Value.ToString() : "None")}";
     }
 }

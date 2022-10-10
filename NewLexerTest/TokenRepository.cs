@@ -196,7 +196,7 @@ namespace NewPirateLexer
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                return (new Token(TokenGroup.OPERATORS, TokenOperators.EQUALS), null);
+                return (new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS), null);
             }
 
             Lexer.Advance();
@@ -241,22 +241,22 @@ namespace NewPirateLexer
             }
             else
             {
-                return new Token(TokenGroup.OPERATORS, TokenOperators.EQUALS);
+                return new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS);
             }
         }
 
         public static Token MakePlus()
         {
-            var tokenType = TokenOperators.PLUS;
             Lexer.Advance();
-
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                tokenType = TokenOperators.PLUSEQUALS;
+                return new Token(TokenGroup.SYNTAX, TokenSyntax.PLUSEQUALS);
             }
-
-            return new Token(TokenGroup.OPERATORS, tokenType);
+            else
+            {
+                return new Token(TokenGroup.OPERATORS, TokenOperators.PLUS);
+            }
         }
         public static Token MakeDivide()
         {

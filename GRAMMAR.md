@@ -31,7 +31,7 @@ Assignment:
         <type> <identifier> = <value>
         var <identifier> = <value>
 
-Expression:
+Operation:
     Comparison:
         <value> <comparisonoperator> <value>
         <value> <comparisonoperator> <value>
@@ -39,7 +39,7 @@ Expression:
                 ==, !=, <<, >>, <=, >=
             Extension Operators:
                 ||, &&
-    Binary operation:
+    Binary:
         <value> <operator> <value>
             Operators:
                 +, -, /, *, ^

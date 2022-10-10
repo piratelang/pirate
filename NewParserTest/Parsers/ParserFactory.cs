@@ -12,9 +12,15 @@ public class ParserFactory: IParserFactory
     {
         switch(token.TokenType)
         {
+            case TokenTypeKeyword.VAR:
+                return new VariableAssignParser(tokens, token);
+
+            case TokenSyntax.IDENTIFIER:
+                return new OperationParser(tokens, token);
             case TokenValue:
                 return new OperationParser(tokens, token);
+            
         }  
-          return null;   
+        return null;   
     }
 }

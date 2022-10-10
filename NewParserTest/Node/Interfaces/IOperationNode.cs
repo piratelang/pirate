@@ -2,7 +2,7 @@ using NewPirateLexer.Tokens;
 
 namespace NewParserTest.Node.Interfaces;
 
-public interface IOperationNode
+public interface IOperationNode : INode
 {
     INode Left { get; set; }
     Token Operator { get; set; }

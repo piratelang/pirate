@@ -6,7 +6,7 @@ using NewPirateLexer.Tokens;
 
 namespace NewParserTest.Node.Interfaces
 {
-    public interface IValueNode
+    public interface IValueNode : INode
     {
         Token Value { get; set; }
     }

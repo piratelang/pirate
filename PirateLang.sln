@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewLexerTest", "NewLexerTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewParserTest", "NewParserTest\NewParserTest.csproj", "{86E58DCE-0009-4F02-AA90-928DE16188DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewInterpreterTest", "NewInterpreterTest\NewInterpreterTest.csproj", "{27D6C87E-8763-4108-B57D-ED6702377A74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,9 @@ Global
 		{86E58DCE-0009-4F02-AA90-928DE16188DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86E58DCE-0009-4F02-AA90-928DE16188DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86E58DCE-0009-4F02-AA90-928DE16188DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D6C87E-8763-4108-B57D-ED6702377A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D6C87E-8763-4108-B57D-ED6702377A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D6C87E-8763-4108-B57D-ED6702377A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D6C87E-8763-4108-B57D-ED6702377A74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -30,6 +30,12 @@ public class OperationParser : ITokenParser
         }
 
         var OperatorNode = _tokens[index + 1];
+
+        if (OperatorNode.TokenGroup != TokenGroup.OPERATORS && OperatorNode.TokenGroup != TokenGroup.COMPARISONOPERATORS)
+        {
+            return (LeftNode, index);
+        }
+
         if (OperatorNode.TokenGroup == TokenGroup.OPERATORS)
         {
             while (true)
