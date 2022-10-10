@@ -9,14 +9,14 @@ while (true)
     var lexer = new Lexer("test", input);
     var result = lexer.MakeTokens();
 
-    if(result.tokens == null)
+    if (result.tokens == null)
     {
         Console.WriteLine(result.error.ToString());
     }
 
     var parser = new Parser(result.tokens);
     var parseResult = parser.StartParse();
-    if(parseResult == null)
+    if (parseResult == null)
     {
         Console.WriteLine("Why is this null?");
     }
@@ -24,6 +24,6 @@ while (true)
     {
         Console.WriteLine(node.Display());
     }
-    
+
 
 }

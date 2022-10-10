@@ -13,5 +13,7 @@ public enum TokenSyntax
     SEMICOLON,
     DOT,
     DOLLAR,
-    DOUBLEDIVIDE
+    DOUBLEDIVIDE,
+    EQUALS,
+    PLUSEQUALS
 }

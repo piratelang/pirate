@@ -17,20 +17,22 @@ public class Parser
     {
         _tokens = tokens;
     }
-    public INode StartParse()
+    public Scope StartParse()
     {
-        if(_tokens == null) throw new ArgumentNullException(nameof(_tokens));
-        // start token 1
-        var tokenParser = parserFactory.GetParser(_tokens.First(), _tokens);
-        if (tokenParser == null)
+        var index = 0;
+        Scope scope = new Scope();
+        while (index + 1 != _tokens.Count())
         {
-            Console.WriteLine("Not done");
-            return null;
-        }
-        var parseResult = tokenParser.CreateNode();
+            if(_tokens == null) throw new ArgumentNullException(nameof(_tokens));
+            var tokenParser = parserFactory.GetParser(_tokens[index], _tokens);
+            var parseResult = tokenParser.CreateNode();
 
-        Console.WriteLine(parseResult.index + 1);
-        return parseResult.node;
+            scope.AddNode(parseResult.node);
+            index = parseResult.index;
+
+        }
+
+        return scope;
     }
 
 }

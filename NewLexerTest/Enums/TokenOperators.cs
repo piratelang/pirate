@@ -8,11 +8,9 @@ namespace NewPirateLexer.Enums
     public enum TokenOperators
     {
         PLUS,
-        PLUSEQUALS,
         MINUS,
         MULTIPLY,
         DIVIDE,
-        EQUALS,
         POWER
     }
 }
