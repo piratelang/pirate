@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using NewInterpreterTest;
 using NewParserTest;
 using NewPirateLexer;
 
@@ -16,14 +17,20 @@ while (true)
 
     var parser = new Parser(result.tokens);
     var parseResult = parser.StartParse();
-    if (parseResult == null)
+
+    if (parseResult.Nodes == null)
+    {
+        Console.WriteLine("stuk");
+    }
+
+    var interpreter = new Interpreter(parseResult);
+    var intResult = interpreter.StartInterpreter();
+
+    if (intResult == null)
     {
         Console.WriteLine("Why is this null?");
     }
-    foreach (var node in parseResult.Nodes)
-    {
-        Console.WriteLine(node.Display());
-    }
+    Console.WriteLine(intResult.Value);
 
 
 }

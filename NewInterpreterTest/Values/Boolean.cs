@@ -4,11 +4,11 @@ using NewPirateLexer.Tokens;
 
 namespace NewInterpreterTest.Values;
 
-public class Number : BaseValue, IValue
+public class Boolean : BaseValue, IValue
 {
     public override object Value { get; set; }
 
-    public Number(object value)
+    public Boolean(object value)
     {
         Value = Convert.ToInt32(value);
     }

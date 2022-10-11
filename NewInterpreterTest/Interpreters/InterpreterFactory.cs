@@ -6,18 +6,18 @@ namespace NewInterpreterTest.Interpreters;
 
 public class InterpreterFactory
 {
-    public IInterpreter GetInterpreter(INode node)
+    public BaseInterpreter GetInterpreter(INode node)
     {
         switch (node)
         {
-            case VariableAssignNode:
-                return new VariableAssignNodeInterpreter();
+        //     case VariableAssignNode:
+        //         return new VariableAssignNodeInterpreter();
             case BinaryOperationNode:
-                return new BinaryOperationNodeInterpreter();
-            case ComparisonOperationNode:
-                return new ComparisonOperationNodeInterpreter();
+                return new BinaryOperationNodeInterpreter(node, new InterpreterFactory());
+        //     case ComparisonOperationNode:
+        //         return new ComparisonOperationNodeInterpreter();
             case ValueNode:
-                return new ValueNodeInterpreter();
+                return new ValueNodeInterpreter(node);
         }
         return null;
     }

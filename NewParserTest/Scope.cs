@@ -10,15 +10,21 @@ namespace NewParserTest
     {
         public List<INode> Nodes { get; set; }
 
+        public Scope()
+        {
+            Nodes = new();
+        }
+
         public bool AddNode(INode node)
         {
             try
             {
-                Nodes.Append(node);
+                Nodes.Add(node);
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
             

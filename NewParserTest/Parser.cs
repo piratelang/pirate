@@ -21,7 +21,7 @@ public class Parser
     {
         var index = 0;
         Scope scope = new Scope();
-        while (index + 1 != _tokens.Count())
+        while (index + 1 <= _tokens.Count())
         {
             if(_tokens == null) throw new ArgumentNullException(nameof(_tokens));
             var tokenParser = parserFactory.GetParser(_tokens[index], _tokens);
@@ -29,7 +29,7 @@ public class Parser
 
             scope.AddNode(parseResult.node);
             index = parseResult.index;
-
+            index++;
         }
 
         return scope;

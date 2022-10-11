@@ -1,11 +1,11 @@
-using NewInterpreterTest.Interpreters.Interfaces;
+// using NewInterpreterTest.Interpreters.Interfaces;
 
-namespace NewInterpreterTest.Interpreters;
+// namespace NewInterpreterTest.Interpreters;
 
-public class VariableAssignNodeInterpreter : IInterpreter
-{
-    public VariableAssignNodeInterpreter()
-    {
+// public class VariableAssignNodeInterpreter : IInterpreter
+// {
+//     public VariableAssignNodeInterpreter()
+//     {
         
-    }
-}
+//     }
+// }

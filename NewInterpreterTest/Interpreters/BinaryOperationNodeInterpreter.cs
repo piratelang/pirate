@@ -1,11 +1,26 @@
-using NewInterpreterTest.Interpreters.Interfaces;
+using NewInterpreterTest.Values;
+using NewParserTest.Node.Interfaces;
 
 namespace NewInterpreterTest.Interpreters;
 
-public class BinaryOperationNodeInterpreter : IInterpreter
+public class BinaryOperationNodeInterpreter : BaseInterpreter
 {
-    public BinaryOperationNodeInterpreter()
+    public IOperationNode Node { get; set; }
+    private InterpreterFactory interpreterFactory;
+    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory)
     {
+        Node = node as IOperationNode;
+        interpreterFactory = InterpreterFactory;
+    }
+
+    public override BaseValue VisitNode()
+    {
+        var interpreter = interpreterFactory.GetInterpreter(Node.Left);
+        var left = interpreter.VisitNode();
+
+        interpreter = interpreterFactory.GetInterpreter(Node.Right);
+        var Right = interpreter.VisitNode();
         
+        return left.OperatedBy(Node.Operator, Right);
     }
 }
