@@ -12,18 +12,18 @@ public abstract class BaseValue : IValue
     public virtual object Value {get; set;}
     public abstract BaseValue OperatedBy(Token _operator, BaseValue other);
 
-    public bool Matches(BaseValue other)
+    public int Matches(BaseValue other)
     {
         if (Value.GetType() != other.Value.GetType())
         {
             Console.WriteLine("Types dont match");
-            return false;
+            return 0;
         }
-        if (Value == other.Value)
+        if (!Value.Equals(other.Value))
         {
             Console.WriteLine("Values don't match");
-            return false;
+            return 0;
         }
-        return true;
+        return 1;
     }
 }

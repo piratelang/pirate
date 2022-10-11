@@ -196,7 +196,7 @@ namespace NewPirateLexer
             if (Lexer.currentChar == '=')
             {
                 Lexer.Advance();
-                return (new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS), null);
+                return (new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.NOTEQUALS), null);
             }
 
             Lexer.Advance();
