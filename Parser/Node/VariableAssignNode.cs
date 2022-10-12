@@ -9,9 +9,9 @@ namespace Parser.Node;
 
 public class VariableAssignNode : INode
 {
-    public Token TypeToken { get; set; }
-    public INode Identifier { get; set; }
-    public INode Value { get; set; }
+    private Token TypeToken { get; set; }
+    private INode Identifier { get; set; }
+    private INode Value { get; set; }
 
     public VariableAssignNode(Token typeToken, INode identifier, INode value)
     {
@@ -20,8 +20,8 @@ public class VariableAssignNode : INode
         Value = value;
     }
 
-    public string Display()
+    public override string ToString()
     {
-        return $"({Identifier.Display()} = {Value.Display()})";
+        return $"({Identifier.ToString()} = {Value.ToString()})";
     }
 }

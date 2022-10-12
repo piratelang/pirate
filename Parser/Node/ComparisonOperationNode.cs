@@ -16,8 +16,8 @@ public class ComparisonOperationNode : INode, IOperationNode
         Right = right;
     }
 
-    public string Display()
+    public override string ToString()
     {
-        return $"{Left.Display()} | {Operator.Display()} | {Right.Display()}";
+        return $"{Left.ToString()} | {Operator.ToString()} | {Right.ToString()}";
     }
 }
