@@ -3,6 +3,7 @@ using Lexer.Enums;
 
 namespace Lexer.Tokens;
 
+[Serializable]
 public class Token
 {
     public TokenGroup TokenGroup { get; set; }
@@ -14,7 +15,7 @@ public class Token
         TokenGroup = tokenGroup;
         TokenType = tokenType;
         Value = value;
-        logger.Log($"Creating Token \"{TokenGroup.ToString()} | {TokenType.ToString()} | {(Value != null ? Value.ToString() : "None")}\"", this.GetType().ToString(), Common.Enum.LogType.INFO);
+        logger.Log($"Creating Token \"{TokenGroup.ToString()} | {TokenType.ToString()} | {(Value != null ? Value.ToString() : "None")}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public bool Matches(object tokenType, object Value=null)

@@ -15,10 +15,14 @@ public class Parser
     private IParserFactory parserFactory = new ParserFactory();
     private ITokenParser tokenParser;
     public Logger Logger { get; set; }
-    public Parser(List<Token> tokens, Logger logger)
+    public ObjectSerializer ObjectSerializer { get; set; }
+    public string FileName { get; set; }
+    public Parser(List<Token> tokens, Logger logger, ObjectSerializer objectSerializer, string fileName)
     {
         _tokens = tokens;
         Logger = logger;
+        ObjectSerializer = objectSerializer;
+        FileName = fileName;
         logger.Log("Created Parser", this.GetType().Name, LogType.INFO);
     }
     public Scope StartParse()
@@ -43,6 +47,8 @@ public class Parser
         }
 
         Logger.Log("Finished Parsing", this.GetType().Name, LogType.INFO);
+
+        ObjectSerializer.SerializeObject(scope, $"{FileName}.pirate");
 
         return scope;
     }

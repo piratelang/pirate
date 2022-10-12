@@ -3,6 +3,7 @@ using Parser.Node.Interfaces;
 
 namespace Parser.Node;
 
+[Serializable]
 public class ComparisonOperationNode : INode, IOperationNode
 {
     public INode Left { get; set; }

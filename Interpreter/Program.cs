@@ -18,7 +18,9 @@ while (true)
         Console.WriteLine(result.error.ToString());
     }
 
-    var parser = new Parser.Parser(result.tokens, Logger);
+    ObjectSerializer objectSerializer = new(".", Logger);
+
+    var parser = new Parser.Parser(result.tokens, Logger, objectSerializer, "Test");
     var parseResult = parser.StartParse();
 
     if (parseResult.Nodes == null)
@@ -26,7 +28,7 @@ while (true)
         Console.WriteLine("stuk");
     }
 
-    var interpreter = new Interpreter.Interpreter(parseResult);
+    var interpreter = new Interpreter.Interpreter(objectSerializer, Logger);
     var intResult = interpreter.StartInterpreter();
 
     if (intResult == null)

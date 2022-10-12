@@ -4,6 +4,7 @@ using Parser.Node;
 
 namespace Parser.Node;
 
+[Serializable]
 public class BinaryOperationNode : INode, IOperationNode
 {
     public INode Left { get; set; }

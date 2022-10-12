@@ -10,16 +10,20 @@ namespace Shell.Commands
     {
         public string version { get; set; }
         public Logger logger { get; set; }
-        public BuildCommand(string Version, Logger Logger)
+        public ObjectSerializer ObjectSerializer { get; set;}
+        public string Location { get; set; }
+        public BuildCommand(string Version, Logger Logger, ObjectSerializer objectSerializer, string location)
         {   
             version = Version;
             logger = Logger;
+            ObjectSerializer = objectSerializer;
+            Location = location;
         }
         public List<Scope> Run(string[] arguments)
         {
             logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
             string[] foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
-            var location = $"bin/pirate{version}";
+            
 
             if (foundFiles.Length == 0)
             {
@@ -27,28 +31,28 @@ namespace Shell.Commands
                 Error("No files found");
                 return null;
             }
-            List<Module> moduleList = ModuleListRepository.GetList(location, logger);
+            List<Module> moduleList = ModuleListRepository.GetList(Location, logger);
             List<Scope> scopeList = new();
 
             foreach (var file in foundFiles)
             {
-                // if (moduleList != null)
-                // {
-                //     Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
-                //     if (foundModule != null)
-                //     {
-                //         if (
-                //             foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
-                //             foundModule.path == File.OpenRead(file).Name &&
-                //             foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
-                //         )
-                //         {
-                //             logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
-                //             break;
-                //         }
-                //     }
+                if (moduleList != null)
+                {
+                    Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
+                    if (foundModule != null)
+                    {
+                        if (
+                            foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
+                            foundModule.path == File.OpenRead(file).Name &&
+                            foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
+                        )
+                        {
+                            logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
+                            break;
+                        }
+                    }
                     
-                // }
+                }
                 
                 Console.WriteLine($"Building {file}\n");
                 logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
@@ -71,8 +75,8 @@ namespace Shell.Commands
                     return null;
                 }
 
-                logger.Log($"Parsing {file}", this.GetType().Name, LogType.INFO);
-                var parser = new Parser.Parser(tokens.tokens, logger);
+                logger.Log($"Parsing {file}\n", this.GetType().Name, LogType.INFO);
+                var parser = new Parser.Parser(tokens.tokens, logger, ObjectSerializer, fileName);
                 var parseResult = parser.StartParse();
                 if (parseResult.Nodes.Count() < 1)
                 {
@@ -82,7 +86,10 @@ namespace Shell.Commands
                 }
                 scopeList.Add(parseResult);
             }
-            ModuleListRepository.SetList(foundFiles, location, logger);
+
+            logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
+            ModuleListRepository.SetList(foundFiles, Location, logger);
+
             return scopeList;
         }
         public override void Help()

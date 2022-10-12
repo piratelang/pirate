@@ -6,6 +6,7 @@ using Parser.Node.Interfaces;
 
 namespace Parser
 {
+    [Serializable]
     public class Scope
     {
         public List<INode> Nodes { get; set; }

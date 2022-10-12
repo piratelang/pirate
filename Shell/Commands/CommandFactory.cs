@@ -4,7 +4,7 @@ namespace Shell.Commands
 {
     public class CommandFactory
     {
-        public static Command GetCommand(string commandArgument, string version, Logger logger)
+        public static Command GetCommand(string commandArgument, string version, Logger logger, string location)
         {
             switch (commandArgument)
             {
@@ -13,9 +13,9 @@ namespace Shell.Commands
                 case "new":
                     return new NewCommand(version, logger);
                 case "run":
-                    return new RunCommand(version, logger);
+                    return new RunCommand(version, logger, location);
                 case "build":
-                    return new BuildCommand(version, logger);
+                    return new BuildCommand(version, logger, new ObjectSerializer(location, logger), location);
                 default:
                     return null;
             }

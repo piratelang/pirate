@@ -17,7 +17,9 @@ while (true)
         Console.WriteLine(result.error.ToString());
     }
 
-    var parser = new Parser.Parser(result.tokens, Logger);
+    ObjectSerializer objectSerializer = new(".", Logger);
+
+    var parser = new Parser.Parser(result.tokens, Logger, objectSerializer, "Test");
     var parseResult = parser.StartParse();
     if(parseResult == null)
     {

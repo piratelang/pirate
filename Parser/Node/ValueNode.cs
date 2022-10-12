@@ -8,6 +8,7 @@ using Lexer.Tokens;
 
 namespace Parser.Node;
 
+[Serializable]
 public class ValueNode : INode, IValueNode
 {
     public Token Value { get; set; }

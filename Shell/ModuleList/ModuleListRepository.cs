@@ -24,7 +24,7 @@ namespace Shell.ModuleList
                 moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
             }
             string jsonString = JsonConvert.SerializeObject(moduleList, Formatting.Indented);
-            logger.Log($"Writing module list to {location}/modules.json", "ModuleListRepository", LogType.INFO);
+            logger.Log($"Writing module list to \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
             File.WriteAllTextAsync($"{location}/modules.json", jsonString);
         }
 
@@ -32,7 +32,7 @@ namespace Shell.ModuleList
         {
             if(!File.Exists($"{location}/modules.json"))
             {
-                logger.Log($"Creating module list at {location}/modules.json", "ModuleListRepository", LogType.INFO);
+                logger.Log($"Creating module list at \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
                 var createdFile = File.Create($"{location}/modules.json");
                 createdFile.Close();
             }

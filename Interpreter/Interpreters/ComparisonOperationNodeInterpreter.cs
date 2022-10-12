@@ -1,6 +1,7 @@
 using Interpreter.Values;
 using Parser.Node.Interfaces;
 using Lexer.Enums;
+using Common;
 
 namespace Interpreter.Interpreters;
 
@@ -8,18 +9,21 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
 {
     public IOperationNode Node { get; set; }
     private InterpreterFactory interpreterFactory;
-    public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory)
+    public Logger Logger { get; set; }
+    public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, Logger logger)
     {
         Node = node as IOperationNode;
         interpreterFactory = InterpreterFactory;
+        Logger = logger;
+        Logger.Log($"Created {this.GetType().Name}", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public override BaseValue VisitNode()
     {
-        var interpreter = interpreterFactory.GetInterpreter(Node.Left);
+        var interpreter = interpreterFactory.GetInterpreter(Node.Left, Logger );
         var left = interpreter.VisitNode();
 
-        interpreter = interpreterFactory.GetInterpreter(Node.Right);
+        interpreter = interpreterFactory.GetInterpreter(Node.Right, Logger);
         var Right = interpreter.VisitNode();  
 
         var value = 0;

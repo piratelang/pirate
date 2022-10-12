@@ -1,24 +1,27 @@
 using Interpreter.Values;
 using Parser.Node.Interfaces;
-
+using Common;
 namespace Interpreter.Interpreters;
 
 public class BinaryOperationNodeInterpreter : BaseInterpreter
 {
     public IOperationNode Node { get; set; }
     private InterpreterFactory interpreterFactory;
-    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory)
+    public Logger Logger { get; set; }
+    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, Logger logger)
     {
         Node = node as IOperationNode;
         interpreterFactory = InterpreterFactory;
+        Logger = logger;
+        Logger.Log($"Created {this.GetType().Name}", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public override BaseValue VisitNode()
     {
-        var interpreter = interpreterFactory.GetInterpreter(Node.Left);
+        var interpreter = interpreterFactory.GetInterpreter(Node.Left, Logger);
         var left = interpreter.VisitNode();
 
-        interpreter = interpreterFactory.GetInterpreter(Node.Right);
+        interpreter = interpreterFactory.GetInterpreter(Node.Right, Logger);
         var Right = interpreter.VisitNode();
         
         return left.OperatedBy(Node.Operator, Right);

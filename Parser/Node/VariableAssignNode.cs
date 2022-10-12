@@ -7,6 +7,7 @@ using Lexer.Tokens;
 
 namespace Parser.Node;
 
+[Serializable]
 public class VariableAssignNode : INode
 {
     private Token TypeToken { get; set; }
