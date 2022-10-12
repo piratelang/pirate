@@ -3,7 +3,7 @@ using Common.Enum;
 
 namespace Shell.Commands
 {
-    public class InitCommand : ICommand
+    public class InitCommand : Command
     {
         public string version { get; set; }
         public Logger logger { get; set; }
@@ -12,7 +12,7 @@ namespace Shell.Commands
             version = Version;
             logger = Logger;
         }
-        public void Run(string[] arguments)
+        public override void Run(string[] arguments)
         {
             logger.Log("Starting Init Command", this.GetType().Name, LogType.INFO);
             var nameArgument = "main";
@@ -33,7 +33,7 @@ namespace Shell.Commands
             Console.WriteLine($"\nCreated {fileName}.pirate");
         }
 
-        public void Help()
+        public override void Help()
         {
             Console.WriteLine(String.Join(
                 Environment.NewLine,
@@ -44,12 +44,6 @@ namespace Shell.Commands
                 "\nOptions",
                 "   -h --help       Show command line help."
             ));
-        }
-        public void Error(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n{message}");
-            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

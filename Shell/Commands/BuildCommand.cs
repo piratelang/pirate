@@ -1,12 +1,12 @@
 using Common;
 using Common.Enum;
-using PirateLexer;
-using PirateParser;
+using Lexer;
+using Parser;
 using Shell.ModuleList;
 
 namespace Shell.Commands
 {
-    public class BuildCommand : ICommand
+    public class BuildCommand : Command
     {
         public string version { get; set; }
         public Logger logger { get; set; }
@@ -15,7 +15,7 @@ namespace Shell.Commands
             version = Version;
             logger = Logger;
         }
-        public void Run(string[] arguments)
+        public List<Scope> Run(string[] arguments)
         {
             logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
             string[] foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
@@ -25,9 +25,10 @@ namespace Shell.Commands
             {
                 logger.Log("No files were found in the directory", this.GetType().Name, LogType.ERROR);
                 Error("No files found");
-                return;
+                return null;
             }
             List<Module> moduleList = ModuleListRepository.GetList(location, logger);
+            List<Scope> scopeList = new();
 
             foreach (var file in foundFiles)
             {
@@ -57,32 +58,34 @@ namespace Shell.Commands
                 {
                     logger.Log($"{fileName} contains no text", this.GetType().Name, LogType.ERROR);
                     Error($"{fileName} contains no text");
-                    return;
+                    return null;
                 }
 
                 logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
-                var lexer = new Lexer("test", text, logger);
+                var lexer = new Lexer.Lexer("test", text);
                 var tokens = lexer.MakeTokens();
                 if (tokens.tokens.Count() == 0)
                 {
                     logger.Log($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}", this.GetType().Name, LogType.ERROR);
                     Error($"Error occured while lexing tokens, in the file {fileName}\n");
-                    return;
+                    return null;
                 }
 
                 logger.Log($"Parsing {file}", this.GetType().Name, LogType.INFO);
-                var parser = new Parser(tokens.tokens, logger);
-                var parseResult = parser.Parse(location, fileName);
-                if (parseResult != true)
+                var parser = new Parser.Parser(tokens.tokens);
+                var parseResult = parser.StartParse();
+                if (parseResult.Nodes.Count() < 1)
                 {
                     logger.Log("Error occured while parsing tokens.", this.GetType().Name, LogType.ERROR);
                     Error("Error occured while parsing tokens.");
-                    return;
+                    return null;
                 }
+                scopeList.Add(parseResult);
             }
             ModuleListRepository.SetList(foundFiles, location, logger);
+            return scopeList;
         }
-        public void Help()
+        public override void Help()
         {
             Console.WriteLine(String.Join(
                 Environment.NewLine,
@@ -93,13 +96,6 @@ namespace Shell.Commands
                 "\nOptions",
                 "   -h --help       Show command line help."
             ));
-        }
-
-        public void Error(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n{message}");
-            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

@@ -1,10 +1,10 @@
 using Common;
 using Common.Enum;
-using PirateInterpreter;
+using Interpreter;
 
 namespace Shell.Commands
 {
-    public class RunCommand : ICommand
+    public class RunCommand : Command
     {
         public string version { get; set; }
         public Logger logger { get; set; }
@@ -13,7 +13,7 @@ namespace Shell.Commands
             version = Version;
             logger = Logger;
         }
-        public void Run(string[] arguments)
+        public override void Run(string[] arguments)
         {
             logger.Log("Starting Run Command", this.GetType().Name, LogType.INFO);
             var fileArgument = "main";
@@ -30,16 +30,26 @@ namespace Shell.Commands
 
             logger.Log("Starting build", this.GetType().Name, LogType.INFO);
             var buildCommand = new BuildCommand(version, logger);
-            buildCommand.Run(arguments);
+            var scopeList = buildCommand.Run(arguments);
+            if (scopeList == null)
+            {
+                logger.Log($"Build Command returned no scopes", this.GetType().Name, LogType.ERROR);
+                
+            }
             logger.Log("Completed Build", this.GetType().Name, LogType.INFO);
 
             var location = $"bin/pirate{version}";
             logger.Log($"Executing {fileName}.py", this.GetType().Name, LogType.INFO);
-            var pythonEngine = new PythonEngine($"{location}/{fileName}.py");
-            var result = pythonEngine.InvokeMain("main", logger); //Possibly null reference;
+            foreach (var scope in scopeList)
+            {
+                var interpreter = new Interpreter.Interpreter(scope);
+                var interpreterResult = interpreter.StartInterpreter();
+                Console.WriteLine(interpreterResult.Value);
+                
+            }
         }
 
-        public void Help()
+        public override void Help()
         {
             Console.WriteLine(String.Join(
                 Environment.NewLine,
@@ -50,13 +60,6 @@ namespace Shell.Commands
                 "\nOptions",
                 "   -h --help   Show command line help."
             ));
-        }
-
-        public void Error(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n{message}");
-            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
