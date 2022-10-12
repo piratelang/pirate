@@ -35,7 +35,7 @@ public class Parser
             var tokenParser = parserFactory.GetParser(_tokens[index], _tokens, Logger);
             var parseResult = tokenParser.CreateNode();
 
-            Logger.Log($"Created {parseResult.node.GetType().Name} | \"{parseResult.node.Display()}\"", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Created {parseResult.node.GetType().Name} | \"{parseResult.node.ToString()}\"", this.GetType().Name, LogType.INFO);
 
             scope.AddNode(parseResult.node);
             index = parseResult.index;

@@ -18,6 +18,6 @@ else
 {
     foreach (var item in result.tokens)
     {
-        Console.WriteLine(item.Display());
+        Console.WriteLine(item.ToString());
     }
 }

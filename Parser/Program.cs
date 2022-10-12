@@ -25,7 +25,7 @@ while (true)
     }
     foreach (var node in parseResult.Nodes)
     {
-        Console.WriteLine(node.Display());
+        Console.WriteLine(node.ToString());
     }
     
 

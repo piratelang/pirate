@@ -6,20 +6,19 @@ using System.Threading.Tasks;
 using Parser.Node.Interfaces;
 using Lexer.Tokens;
 
-namespace Parser.Node
+namespace Parser.Node;
+
+public class ValueNode : INode, IValueNode
 {
-    public class ValueNode : INode, IValueNode
+    public Token Value { get; set; }
+
+    public ValueNode(Token value)
     {
-        public Token Value { get; set; }
+        Value = value;
+    }
 
-        public ValueNode(Token value)
-        {
-            Value = value;
-        }
-
-        public string Display()
-        {
-            return $"({Value.Display()})";
-        }
+    public override string ToString()
+    {
+        return $"({Value.ToString()})";
     }
 }
