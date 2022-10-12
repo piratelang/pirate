@@ -1,3 +1,5 @@
+using Common;
+using Common.Enum;
 using Lexer.Enums;
 
 namespace Lexer.Tokens;
@@ -8,11 +10,12 @@ public class Token
     public object TokenType { get; set; }
     public object? Value { get; set; }
 
-    public Token(TokenGroup tokenGroup, object tokenType, object value = null)
+    public Token(TokenGroup tokenGroup, object tokenType, Logger logger, object value = null)
     {
         TokenGroup = tokenGroup;
         TokenType = tokenType;
         Value = value;
+        logger.Log($"Creating Token \"{TokenGroup.ToString()} | {TokenType.ToString()} | {(Value != null ? Value.ToString() : "None")}\"", this.GetType().Name, LogType.INFO);
     }
 
     public bool Matches(object tokenType, object Value=null)

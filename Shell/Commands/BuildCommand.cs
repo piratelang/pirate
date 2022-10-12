@@ -32,23 +32,23 @@ namespace Shell.Commands
 
             foreach (var file in foundFiles)
             {
-                if (moduleList != null)
-                {
-                    Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
-                    if (foundModule != null)
-                    {
-                        if (
-                            foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
-                            foundModule.path == File.OpenRead(file).Name &&
-                            foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
-                        )
-                        {
-                            logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
-                            break;
-                        }
-                    }
+                // if (moduleList != null)
+                // {
+                //     Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
+                //     if (foundModule != null)
+                //     {
+                //         if (
+                //             foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
+                //             foundModule.path == File.OpenRead(file).Name &&
+                //             foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
+                //         )
+                //         {
+                //             logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
+                //             break;
+                //         }
+                //     }
                     
-                }
+                // }
                 
                 Console.WriteLine($"Building {file}\n");
                 logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
@@ -62,7 +62,7 @@ namespace Shell.Commands
                 }
 
                 logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
-                var lexer = new Lexer.Lexer("test", text);
+                var lexer = new Lexer.Lexer("test", text, logger);
                 var tokens = lexer.MakeTokens();
                 if (tokens.tokens.Count() == 0)
                 {
@@ -72,7 +72,7 @@ namespace Shell.Commands
                 }
 
                 logger.Log($"Parsing {file}", this.GetType().Name, LogType.INFO);
-                var parser = new Parser.Parser(tokens.tokens);
+                var parser = new Parser.Parser(tokens.tokens, logger);
                 var parseResult = parser.StartParse();
                 if (parseResult.Nodes.Count() < 1)
                 {

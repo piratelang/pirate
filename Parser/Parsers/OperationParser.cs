@@ -3,6 +3,8 @@ using Lexer.Tokens;
 using Parser.Parsers.Interfaces;
 using Parser.Node.Interfaces;
 using Lexer.Enums;
+using Common;
+using Common.Enum;
 
 namespace Parser.Parsers;
 
@@ -10,11 +12,14 @@ public class OperationParser : ITokenParser
 {
     private List<Token> _tokens;
     private Token _currentToken;
+    public Logger Logger { get; set; }
 
-    public OperationParser(List<Token> tokens, Token currentToken)
+    public OperationParser(List<Token> tokens, Token currentToken, Logger logger)
     {
         _tokens = tokens;
         _currentToken = currentToken;
+        Logger = logger;
+        logger.Log("Creating Operation Parser", this.GetType().Name, LogType.INFO);
     }
 
     public (INode node, int index) CreateNode()
@@ -26,6 +31,7 @@ public class OperationParser : ITokenParser
 
         if (_tokens.Count == index + 1)
         {
+            Logger.Log("Returning Single ValueNode", this.GetType().Name, LogType.INFO);
             return (LeftNode, index);
         }
 
@@ -33,6 +39,7 @@ public class OperationParser : ITokenParser
 
         if (OperatorNode.TokenGroup != TokenGroup.OPERATORS && OperatorNode.TokenGroup != TokenGroup.COMPARISONOPERATORS)
         {
+            Logger.Log("Returning Single ValueNode", this.GetType().Name, LogType.INFO);
             return (LeftNode, index);
         }
 
@@ -57,6 +64,7 @@ public class OperationParser : ITokenParser
         }
         if (_tokens.Count == index + 1)
         {
+            Logger.Log("Returning Binary Operation Node", this.GetType().Name, LogType.INFO);
             return (node, index);
         }
 
@@ -79,6 +87,8 @@ public class OperationParser : ITokenParser
                 }
             }
         }
+
+        Logger.Log("Returning Comparison or Binary Operation Node", this.GetType().Name, LogType.INFO);
         return (node, index);
     }
 

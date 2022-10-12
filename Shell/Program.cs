@@ -10,7 +10,7 @@ internal class Program
     static void Main(string[] args)
     {
         
-        var version = "0.1.1";
+        var version = "1.0.0";
         var logger = new Logger(version);
 
         List<string> argumentsList = new();

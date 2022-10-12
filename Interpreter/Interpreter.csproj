@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lexer\Lexer.csproj" />
     <ProjectReference Include="..\Parser\Parser.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

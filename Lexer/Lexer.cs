@@ -1,6 +1,8 @@
 
 using Lexer.Tokens;
 using Lexer.Enums;
+using Common;
+using Common.Enum;
 
 namespace Lexer;
 public class Lexer
@@ -9,13 +11,16 @@ public class Lexer
     public static string text { get; set; }
     public static char currentChar { get; set; }
     public static int position { get; set; }
+    public Logger Logger { get; set; }
 
-    public Lexer(string FileName, string Text)
+    public Lexer(string FileName, string Text, Logger logger)
     {
+        Logger = logger;
         fileName = FileName;
         position = -1;
         text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
         Advance();
+        logger.Log("Created Lexer", this.GetType().Name, LogType.INFO);
     }
 
     public static void Advance()
@@ -44,95 +49,95 @@ public class Lexer
             }
             if (Globals.DIGITS.Contains(currentChar))
             {
-                tokens.Add(TokenRepository.MakeNumber());
+                tokens.Add(TokenRepository.MakeNumber(Logger));
                 continue;
             }
             if (Globals.LETTERS.Contains(currentChar))
             {
-                tokens.Add(TokenRepository.MakeIdentifier());
+                tokens.Add(TokenRepository.MakeIdentifier(Logger));
                 continue;
             }
             switch (currentChar)
             {
                 case '"':
-                    tokens.Add(TokenRepository.MakeString());
+                    tokens.Add(TokenRepository.MakeString(Logger));
                     continue;
                 case '\'':
-                    tokens.Add(TokenRepository.MakeChar());
+                    tokens.Add(TokenRepository.MakeChar(Logger));
                     continue;
                 case '+':
-                    tokens.Add(TokenRepository.MakePlus());
+                    tokens.Add(TokenRepository.MakePlus(Logger));
                     continue;
                 case '-':
-                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MINUS));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MINUS, Logger));
                     Advance();
                     continue;
                 case '*':
-                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MULTIPLY));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MULTIPLY, Logger));
                     Advance();
                     continue;
                 case '/':
-                    tokens.Add(TokenRepository.MakeDivide());
+                    tokens.Add(TokenRepository.MakeDivide(Logger));
                     continue;
                 case '^':
-                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.POWER));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.POWER, Logger));
                     Advance();
                     continue;
                 case '(':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES, Logger));
                     Advance();
                     continue;
                 case ')':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES, Logger));
                     Advance();
                     continue;
                 case '{':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE, Logger));
                     Advance();
                     continue;
                 case '}':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE, Logger));
                     Advance();
                     continue;
                 case ',':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COMMA));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COMMA, Logger));
                     Advance();
                     continue;
                 case ':':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COLON));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COLON, Logger));
                     Advance();
                     continue;
                 case ';':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.SEMICOLON));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.SEMICOLON, Logger));
                     Advance();
                     continue;
                 case '.':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOT));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOT, Logger));
                     Advance();
                     continue;
                 case '$':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOLLAR));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOLLAR, Logger));
                     Advance();
                     continue;
                 case '[':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTBRACKET));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTBRACKET, Logger));
                     Advance();
                     continue;
                 case ']':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTBRACKET));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTBRACKET, Logger));
                     Advance();
                     continue;
                 case '=':
-                    tokens.Add(TokenRepository.MakeEquals());
+                    tokens.Add(TokenRepository.MakeEquals(Logger));
                     continue;
                 case '<':
-                    tokens.Add(TokenRepository.MakeLessThan());
+                    tokens.Add(TokenRepository.MakeLessThan(Logger));
                     continue;
                 case '>':
-                    tokens.Add(TokenRepository.MakeGreaterThan());
+                    tokens.Add(TokenRepository.MakeGreaterThan(Logger));
                     continue;
                 case '!':
-                    var result = TokenRepository.MakeNotEquals();
+                    var result = TokenRepository.MakeNotEquals(Logger);
                     if (result.error != null)
                     {
                         return (null, result.error);

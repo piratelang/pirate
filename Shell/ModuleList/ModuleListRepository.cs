@@ -23,7 +23,7 @@ namespace Shell.ModuleList
                 logger.Log($"Found Module {fileName}", "ModuleListRepository", LogType.INFO);
                 moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
             }
-            string jsonString = JsonConvert.SerializeObject(moduleList);
+            string jsonString = JsonConvert.SerializeObject(moduleList, Formatting.Indented);
             logger.Log($"Writing module list to {location}/modules.json", "ModuleListRepository", LogType.INFO);
             File.WriteAllTextAsync($"{location}/modules.json", jsonString);
         }

@@ -2,12 +2,15 @@
 using Interpreter;
 using Parser;
 using Lexer;
+using Common;
 
 Console.WriteLine("Hello, World!");
+var Logger = new Logger("Test");
+
 while (true)
 {
     var input = Console.ReadLine();
-    var lexer = new Lexer.Lexer("test", input);
+    var lexer = new Lexer.Lexer("test", input, Logger);
     var result = lexer.MakeTokens();
 
     if (result.tokens == null)
@@ -15,7 +18,7 @@ while (true)
         Console.WriteLine(result.error.ToString());
     }
 
-    var parser = new Parser.Parser(result.tokens);
+    var parser = new Parser.Parser(result.tokens, Logger);
     var parseResult = parser.StartParse();
 
     if (parseResult.Nodes == null)
