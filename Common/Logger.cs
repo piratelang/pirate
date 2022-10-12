@@ -34,7 +34,7 @@ public class Logger
         var file = File.AppendText(location);
 
         var time = DateTime.Now.ToString();
-        file.Write($"{time}: {logType.ToString()}: {orginFile}.cs: {message}\n");
+        file.Write($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {message}\n");
         file.Close();
     }
 }
