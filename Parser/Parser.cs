@@ -28,7 +28,7 @@ public class Parser
     public Scope StartParse()
     {
         var index = 0;
-        Scope scope = new Scope();
+        Scope scope = new Scope(Logger);
         while (index + 1 <= _tokens.Count())
         {
             if(_tokens == null) 

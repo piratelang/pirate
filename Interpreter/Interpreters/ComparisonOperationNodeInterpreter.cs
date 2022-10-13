@@ -15,7 +15,7 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
         Node = node as IOperationNode;
         interpreterFactory = InterpreterFactory;
         Logger = logger;
-        Logger.Log($"Created {this.GetType().Name}", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public override BaseValue VisitNode()

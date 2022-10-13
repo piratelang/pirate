@@ -4,33 +4,33 @@ using Lexer.Tokens;
 
 namespace Interpreter.Values;
 
-public class Boolean : BaseValue, IValue
+public class Float : BaseValue, IValue
 {
     public override object Value { get; set; }
 
-    public Boolean(object value)
+    public Float(object value)
     {
-        Value = Convert.ToInt32(value);
+        Value = value;
     }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        var value = Convert.ToInt32(Value);
-        var otherValue = Convert.ToInt32(other.Value);
+        var value = Convert.ToDouble(Value);
+        var otherValue = Convert.ToDouble(other.Value);
         switch (_operator.TokenType)
         {
             case TokenOperators.PLUS:
-                return new Integer(value + otherValue);
+                return new Float(value + otherValue);
             case TokenOperators.MINUS:
-                return new Integer(value - otherValue);
+                return new Float(value - otherValue);
             case TokenOperators.MULTIPLY:
-                return new Integer(value * otherValue);
+                return new Float(value * otherValue);
             case TokenOperators.DIVIDE:
-                return new Integer(value / otherValue);
+                return new Float(value / otherValue);
             case TokenOperators.POWER:
                 var doubleValue = Convert.ToDouble(Value);
                 var doubleOtherValue = Convert.ToDouble(otherValue);
-                return new Integer(Convert.ToInt32(Math.Pow(doubleValue, doubleOtherValue)));
+                return new Float(Math.Pow(doubleValue, doubleOtherValue));
         }
         return null;
     }

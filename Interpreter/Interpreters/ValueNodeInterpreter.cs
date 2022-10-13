@@ -17,11 +17,23 @@ public class ValueNodeInterpreter : BaseInterpreter
     {
         Node = node as IValueNode;
         Logger = logger;
-        Logger.Log($"Created {this.GetType().Name}", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public override BaseValue VisitNode()
     {
-        return new Number(Node.Value.Value);
+        switch (Node.Value.TokenType)
+        {
+            case TokenValue.INT:
+                return new Integer(Node.Value.Value);
+            case TokenValue.STRING:
+                return new Values.String(Node.Value.Value, Logger);
+            case TokenValue.CHAR:
+                return new Values.Char(Node.Value.Value, Logger);
+            case TokenValue.FLOAT:
+                return new Float(Node.Value.Value);
+        }
+        Logger.Log($"{Node.Value.GetType().Name} does not contain a vaild value type.", this.GetType().Name, Common.Enum.LogType.ERROR);
+        return null;
     }
 }

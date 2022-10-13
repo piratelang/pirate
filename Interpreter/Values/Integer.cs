@@ -4,11 +4,11 @@ using Lexer.Tokens;
 
 namespace Interpreter.Values;
 
-public class Number : BaseValue, IValue
+public class Integer : BaseValue, IValue
 {
     public override object Value { get; set; }
 
-    public Number(object value)
+    public Integer(object value)
     {
         Value = Convert.ToInt32(value);
     }
@@ -20,17 +20,17 @@ public class Number : BaseValue, IValue
         switch (_operator.TokenType)
         {
             case TokenOperators.PLUS:
-                return new Number(value + otherValue);
+                return new Integer(value + otherValue);
             case TokenOperators.MINUS:
-                return new Number(value - otherValue);
+                return new Integer(value - otherValue);
             case TokenOperators.MULTIPLY:
-                return new Number(value * otherValue);
+                return new Integer(value * otherValue);
             case TokenOperators.DIVIDE:
-                return new Number(value / otherValue);
+                return new Integer(value / otherValue);
             case TokenOperators.POWER:
                 var doubleValue = Convert.ToDouble(Value);
                 var doubleOtherValue = Convert.ToDouble(otherValue);
-                return new Number(Convert.ToInt32(Math.Pow(doubleValue, doubleOtherValue)));
+                return new Integer(Convert.ToInt32(Math.Pow(doubleValue, doubleOtherValue)));
         }
         return null;
     }
