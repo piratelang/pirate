@@ -9,8 +9,8 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
 {
     public IOperationNode Node { get; set; }
     private InterpreterFactory interpreterFactory;
-    public Logger Logger { get; set; }
-    public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, Logger logger)
+    public ILogger Logger { get; set; }
+    public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
     {
         Node = node as IOperationNode;
         interpreterFactory = InterpreterFactory;

@@ -5,5 +5,5 @@ namespace Parser.Parsers.Interfaces;
 
 public interface IParserFactory
 {
-    ITokenParser GetParser(Token token, List<Token> tokens, Logger logger);
+    ITokenParser GetParser(Token token, List<Token> tokens, ILogger logger);
 }

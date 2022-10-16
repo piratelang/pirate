@@ -14,10 +14,10 @@ public class Parser
     private List<Token> _tokens;
     private IParserFactory parserFactory = new ParserFactory();
     private ITokenParser tokenParser;
-    public Logger Logger { get; set; }
+    public ILogger Logger { get; set; }
     public ObjectSerializer ObjectSerializer { get; set; }
     public string FileName { get; set; }
-    public Parser(List<Token> tokens, Logger logger, ObjectSerializer objectSerializer, string fileName)
+    public Parser(List<Token> tokens, ILogger logger, ObjectSerializer objectSerializer, string fileName)
     {
         _tokens = tokens;
         Logger = logger;
@@ -28,7 +28,7 @@ public class Parser
     public Scope StartParse()
     {
         var index = 0;
-        Scope scope = new Scope(Logger);
+        Scope scope = new(Logger);
         while (index + 1 <= _tokens.Count())
         {
             if(_tokens == null) 

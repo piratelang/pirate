@@ -7,8 +7,8 @@ namespace Common;
 public class ObjectSerializer
 {
     public string Location { get; set; }
-    public Logger Logger { get; set; }
-    public ObjectSerializer(string location, Logger logger)
+    public ILogger Logger { get; set; }
+    public ObjectSerializer(string location, ILogger logger)
     {
         Location = $"{location}/cache";
         bool exists = System.IO.Directory.Exists(Location);

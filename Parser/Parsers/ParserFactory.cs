@@ -9,12 +9,12 @@ namespace Parser.Parsers;
 
 public class ParserFactory: IParserFactory
 {
-    public ITokenParser GetParser(Token token, List<Token> tokens, Logger logger)
+    public ITokenParser GetParser(Token token, List<Token> tokens, ILogger logger)
     {
         switch(token.TokenType)
         {
             case TokenTypeKeyword.VAR:
-                return new VariableAssignParser(tokens, token, logger);
+                return new VariableAssignParser(tokens, token, logger, this);
 
             case TokenSyntax.IDENTIFIER:
                 return new OperationParser(tokens, token, logger);

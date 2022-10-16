@@ -10,15 +10,15 @@ public sealed class SymbolTable
 {
     private static SymbolTable symbolTable = null;
     public Dictionary<string, INode> SymbolList { get; set; }
-    public Logger Logger { get; set; }
+    public ILogger Logger { get; set; }
 
-    private SymbolTable(Logger logger)
+    private SymbolTable(ILogger logger)
     {
         SymbolList = new();
         Logger = logger;
     }
 
-    public static SymbolTable Instance(Logger logger)
+    public static SymbolTable Instance(ILogger logger)
     {
         if (symbolTable == null)
         {

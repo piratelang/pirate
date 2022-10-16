@@ -6,7 +6,7 @@ namespace Shell.ModuleList
 {
     public class ModuleListRepository
     {
-        public static void SetList(string[] foundFiles, string location, Logger logger)
+        public static void SetList(string[] foundFiles, string location, ILogger logger)
         {
             List<Module> moduleList = new() { };
 
@@ -28,7 +28,7 @@ namespace Shell.ModuleList
             File.WriteAllTextAsync($"{location}/modules.json", jsonString);
         }
 
-        public static List<Module> GetList(string location, Logger logger)
+        public static List<Module> GetList(string location, ILogger logger)
         {
             if(!File.Exists($"{location}/modules.json"))
             {

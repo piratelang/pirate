@@ -7,7 +7,7 @@ namespace Interpreter.Interpreters;
 
 public class InterpreterFactory
 {
-    public BaseInterpreter GetInterpreter(INode node, Logger logger)
+    public BaseInterpreter GetInterpreter(INode node, ILogger logger)
     {
         switch (node)
         {

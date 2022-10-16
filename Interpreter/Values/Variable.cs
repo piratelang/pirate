@@ -11,9 +11,9 @@ public class Variable : BaseValue, IValue
 {
     public IValueNode ValueNode { get; set; }
     public override object Value { get ; set; }
-    public Logger Logger { get; set; }
+    public ILogger Logger { get; set; }
 
-    public Variable(string value, Logger logger)
+    public Variable(string value, ILogger logger)
     {
         ValueNode = (IValueNode) SymbolTable.Instance(logger).Get(value);
         Value= ValueNode.Value.Value;
@@ -22,7 +22,6 @@ public class Variable : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        var TypeCode = Type.GetTypeCode(Value.GetType());
         switch (Type.GetTypeCode(Value.GetType()))
         {
             case TypeCode.Int32:

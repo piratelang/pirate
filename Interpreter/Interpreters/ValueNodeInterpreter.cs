@@ -12,8 +12,8 @@ namespace Interpreter.Interpreters;
 public class ValueNodeInterpreter : BaseInterpreter
 {
     private IValueNode Node { get; set; }
-    public Logger Logger { get; set; }
-    public ValueNodeInterpreter(INode node, Logger logger)
+    public ILogger Logger { get; set; }
+    public ValueNodeInterpreter(INode node, ILogger logger)
     {
         Node = node as IValueNode;
         Logger = logger;

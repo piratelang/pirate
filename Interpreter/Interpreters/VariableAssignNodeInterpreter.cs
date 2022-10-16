@@ -10,9 +10,9 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
 {
     public VariableAssignNode Node { get; set; }
     private InterpreterFactory interpreterFactory;
-    public Logger Logger { get; set; }
+    public ILogger Logger { get; set; }
 
-    public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, Logger logger)
+    public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
     {
         Node = node as VariableAssignNode;
         interpreterFactory = InterpreterFactory;

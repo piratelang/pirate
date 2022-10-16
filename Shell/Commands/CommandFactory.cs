@@ -4,7 +4,7 @@ namespace Shell.Commands
 {
     public class CommandFactory
     {
-        public static Command GetCommand(string commandArgument, string version, Logger logger, string location)
+        public static Command GetCommand(string commandArgument, string version, ILogger logger, string location)
         {
             switch (commandArgument)
             {

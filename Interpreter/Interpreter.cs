@@ -10,8 +10,8 @@ namespace Interpreter;
 public class Interpreter
 {
     private Scope ScopeList { get; set; }
-    public Logger Logger { get; set; }
-    public Interpreter(string filename, ObjectSerializer objectSerializer, Logger logger)
+    public ILogger Logger { get; set; }
+    public Interpreter(string filename, ObjectSerializer objectSerializer, ILogger logger)
     {
         ScopeList = objectSerializer.Deserialize<Scope>(filename + ".pirate");
         Logger = logger;

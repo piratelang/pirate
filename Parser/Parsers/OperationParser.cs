@@ -12,9 +12,9 @@ public class OperationParser : ITokenParser
 {
     private List<Token> _tokens;
     private Token _currentToken;
-    public Logger Logger { get; set; }
+    public ILogger Logger { get; set; }
 
-    public OperationParser(List<Token> tokens, Token currentToken, Logger logger)
+    public OperationParser(List<Token> tokens, Token currentToken, ILogger logger)
     {
         _tokens = tokens;
         _currentToken = currentToken;

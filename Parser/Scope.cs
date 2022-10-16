@@ -12,9 +12,9 @@ namespace Parser
     public class Scope
     {
         public List<INode> Nodes { get; private set; }
-        private Logger Logger { get; set; }
+        private ILogger Logger { get; set; }
 
-        public Scope(Logger logger)
+        public Scope(ILogger logger)
         {
             Logger = logger;
             Nodes = new();

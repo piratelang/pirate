@@ -11,9 +11,9 @@ public class Lexer
     public static string text { get; set; }
     public static char currentChar { get; set; }
     public static int position { get; set; }
-    public Logger Logger { get; set; }
+    public ILogger Logger { get; set; }
 
-    public Lexer(string FileName, string Text, Logger logger)
+    public Lexer(string FileName, string Text, ILogger logger)
     {
         Logger = logger;
         fileName = FileName;

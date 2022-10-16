@@ -5,7 +5,7 @@ namespace Shell.Commands;
 public abstract class Command
 {
     public string version { get; set; }
-    public Logger logger { get; set; }
+    public ILogger logger { get; set; }
 
     public abstract void Help();
     public virtual void Run(string[] arguments)

@@ -4,7 +4,7 @@ using Common.Enum;
 namespace Common;
 
 [Serializable]
-public class Logger
+public class Logger : ILogger
 {
     public string logName { get; set; }
     public static string version { get; set; } = "0.0.0";
@@ -14,7 +14,7 @@ public class Logger
         version = Version;
         var dateTime = DateTime.Now;
         logName = Name;
-        if(Name == null)
+        if (Name == null)
         {
             logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
         }

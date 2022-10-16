@@ -6,8 +6,8 @@ namespace Shell.Commands
     public class NewCommand : Command
     {
         public string version { get; set; }
-        public Logger logger { get; set; }
-        public NewCommand(string Version, Logger Logger)
+        public ILogger logger { get; set; }
+        public NewCommand(string Version, ILogger Logger)
         {
             version = Version;
             logger = Logger;

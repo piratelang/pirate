@@ -9,10 +9,10 @@ namespace Shell.Commands
     public class BuildCommand : Command
     {
         public string version { get; set; }
-        public Logger logger { get; set; }
+        public ILogger logger { get; set; }
         public ObjectSerializer ObjectSerializer { get; set;}
         public string Location { get; set; }
-        public BuildCommand(string Version, Logger Logger, ObjectSerializer objectSerializer, string location)
+        public BuildCommand(string Version, ILogger Logger, ObjectSerializer objectSerializer, string location)
         {   
             version = Version;
             logger = Logger;

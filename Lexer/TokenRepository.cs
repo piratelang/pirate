@@ -8,7 +8,7 @@ namespace Lexer
 {
     public class TokenRepository
     {
-        public static Token MakeNumber(Logger Logger)
+        public static Token MakeNumber(ILogger Logger)
         {
             var numberString = string.Empty; 
             var dotCount = 0;
@@ -41,19 +41,18 @@ namespace Lexer
             }
         }
 
-        public static Token MakeIdentifier(Logger Logger)
+        public static Token MakeIdentifier(ILogger Logger)
         {
             var idString = string.Empty;
+            var tokenType = new object();
+            var typeKeywords = new string[] {"var", "int", "float", "string", "char", "new"};
+            var controlKeywords = new string[] {"if", "else", "for", "to", "foreach", "in", "while", "func", "class"};
 
             while (Lexer.currentChar != null && (Globals.LETTERS_DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '_'))
             {
                 idString += Lexer.currentChar;
                 Lexer.Advance();
             }
-
-            var tokenType = new object();
-            var typeKeywords = new string[] {"var", "int", "float", "string", "char", "new"};
-            var controlKeywords = new string[] {"if", "else", "for", "to", "foreach", "in", "while", "func", "class"};
 
             if (typeKeywords.Contains(idString))
             {
@@ -122,7 +121,7 @@ namespace Lexer
             }
         }
 
-        public static Token MakeString(Logger Logger)
+        public static Token MakeString(ILogger Logger)
         {
             var resultString = string.Empty;
             var escapeCharacter = false;
@@ -156,7 +155,7 @@ namespace Lexer
             return new Token(TokenGroup.VALUE, TokenValue.STRING, Logger, resultString);
         }
 
-        public static Token MakeChar(Logger Logger)
+        public static Token MakeChar(ILogger Logger)
         {
             var resultString = ' ';
             var escapeCharacter = false;
@@ -190,7 +189,7 @@ namespace Lexer
             return new Token(TokenGroup.VALUE, TokenValue.CHAR, Logger, resultString);
         }
 
-        public static (Token token, Error error) MakeNotEquals(Logger Logger)
+        public static (Token token, Error error) MakeNotEquals(ILogger Logger)
         {
             Lexer.Advance();
 
@@ -204,7 +203,7 @@ namespace Lexer
             return (null, new Error("Expected Character Error", "'=' (after '!')"));
         }
 
-        public static Token MakeGreaterThan(Logger Logger)
+        public static Token MakeGreaterThan(ILogger Logger)
         {
             var tokenType = TokenComparisonOperators.GREATERHAN;
             Lexer.Advance();
@@ -218,7 +217,7 @@ namespace Lexer
             return new Token(TokenGroup.COMPARISONOPERATORS, tokenType, Logger);
         }
 
-        public static Token MakeLessThan(Logger Logger)
+        public static Token MakeLessThan(ILogger Logger)
         {
             var tokenType = TokenComparisonOperators.LESSTHAN;
             Lexer.Advance();
@@ -232,7 +231,7 @@ namespace Lexer
             return new Token(TokenGroup.COMPARISONOPERATORS, tokenType, Logger);
         }
 
-        public static Token MakeEquals(Logger Logger)
+        public static Token MakeEquals(ILogger Logger)
         {
             Lexer.Advance();
             if (Lexer.currentChar == '=')
@@ -246,7 +245,7 @@ namespace Lexer
             }
         }
 
-        public static Token MakePlus(Logger Logger)
+        public static Token MakePlus(ILogger Logger)
         {
             Lexer.Advance();
             if (Lexer.currentChar == '=')
@@ -259,7 +258,7 @@ namespace Lexer
                 return new Token(TokenGroup.OPERATORS, TokenOperators.PLUS, Logger);
             }
         }
-        public static Token MakeDivide(Logger Logger)
+        public static Token MakeDivide(ILogger Logger)
         {
             Lexer.Advance();
             if (Lexer.currentChar == '/')

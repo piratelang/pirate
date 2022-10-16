@@ -7,10 +7,10 @@ namespace Shell.Commands
     public class RunCommand : Command
     {
         public string version { get; set; }
-        public Logger logger { get; set; }
+        public ILogger logger { get; set; }
         public ObjectSerializer ObjectSerializer { get; set; }
         public string Location { get; set; }
-        public RunCommand(string Version, Logger Logger, string location)
+        public RunCommand(string Version, ILogger Logger, string location)
         {
             version = Version;
             logger = Logger;

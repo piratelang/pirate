@@ -7,8 +7,8 @@ public class BinaryOperationNodeInterpreter : BaseInterpreter
 {
     public IOperationNode Node { get; set; }
     private InterpreterFactory interpreterFactory;
-    public Logger Logger { get; set; }
-    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, Logger logger)
+    public ILogger Logger { get; set; }
+    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
     {
         Node = node as IOperationNode;
         interpreterFactory = InterpreterFactory;

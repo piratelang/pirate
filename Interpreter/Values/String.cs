@@ -8,9 +8,9 @@ namespace Interpreter.Values;
 public class String : BaseValue, IValue
 {
     public override object Value { get; set; }
-    public Logger Logger { get; set; }
+    public ILogger Logger { get; set; }
 
-    public String(object value, Logger logger)
+    public String(object value, ILogger logger)
     {
         Value = value;
         Logger = logger;

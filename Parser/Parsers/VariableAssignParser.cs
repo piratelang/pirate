@@ -12,12 +12,14 @@ public class VariableAssignParser : ITokenParser
 {
     private List<Token> _tokens;
     private Token _currentToken;
-    public Logger Logger { get; set; }
-    public VariableAssignParser(List<Token> tokens, Token currentToken, Logger logger)
+    public ParserFactory ParserFactory { get; set; }
+    public ILogger Logger { get; set; }
+    public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory)
     {
         _tokens = tokens;
         _currentToken = currentToken;
         Logger = logger;
+        ParserFactory = parserFactory;
         logger.Log("Creating Variable Assign Parser", this.GetType().Name, LogType.INFO);
     }
 
@@ -28,8 +30,8 @@ public class VariableAssignParser : ITokenParser
         var index = _tokens.IndexOf(_currentToken);
         var VariableType = _currentToken;
 
-        var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
+        
+        var parser = ParserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
         var result = parser.CreateNode();
 
         var IdentifierNode = result.node;
@@ -42,7 +44,7 @@ public class VariableAssignParser : ITokenParser
             return (null, 0);
         }
 
-        parser = parserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
+        parser = ParserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
         result = parser.CreateNode();
         INode Value = result.node;
         index = result.index;
