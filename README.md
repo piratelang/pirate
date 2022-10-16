@@ -5,7 +5,7 @@
 # Pirate Programming Language
 
 ## Installation
-Pirate comes completely installed in a dotnet tool. Sinmply install the NuGet package linked and use `pirate init` to create the first module. A VSCode extension is avaialble for syntax highlighting [here](https://github.com/joerivanarkel/PirateLang.VSCode).
+Pirate comes completely installed in a dotnet tool. Sinmply install the NuGet package linked and use `pirate init` to create the first module. A VSCode extension is available for syntax highlighting [here](https://github.com/joerivanarkel/PirateLang.VSCode). Laso a standalone executable is availeble in the releases tab.
 
 ## Syntax and Structure
 A simple Hello World in pirate looks like this:
@@ -20,11 +20,13 @@ More syntax is defined in the [Syntax.md](syntax.md) file.
 
 ## Solution Structure
 ### PirateLexer
-Takes a .pirate file and lexes it into a list of tokens
+Takes a .pirate file and lexes it into a list of tokens. A single token has a group and type property.
+
 ### PirateParser
-Takes a list of tokens from the lexer and prases it to the python syntax
+Takes a list of tokens from the lexer and parses it to a Scope. A scope consists of a list of Node. A node is created in the Parsers. This list of nodes is serialized locally.
+
 ### PirateInterpreter
-Runs a python engine and runtime in C# to run the python code from the Parser.
+Takes the serialized scope and visits each node for a result. Returns a `BaseValue` type object.
 
 ### Shell
 Runs the Lexer, Parser and Interpreter of the file path in the argument.
