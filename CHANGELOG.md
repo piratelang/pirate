@@ -1,6 +1,17 @@
 # Changelog for PirateLang
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
+## 1.0.0
+### ([#39](https://github.com/joerivanarkel/PirateLang/pull/32)) New Lexer, Parser and Interpreter<br>
+- Completely remade Parser
+    - Using a Factory pattern get a Parser per token type. This is using the LL parser pattern.
+    - Creates a Scope, which consits of a List of Nodes.
+- Completely remade Interpreter
+    - Using a Factory pattern get a Interpreter for each node.
+    - Returns a BaseValue foreach node.
+- Partially Rewrote Lexer, to simplify.
+- Created a Object serializer, which takes a Scope and serializes it to binary.
+
 ## 0.1.2
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements<br>
 - Added build command to test files. Later to be joined by #35.

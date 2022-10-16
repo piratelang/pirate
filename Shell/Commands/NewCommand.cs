@@ -3,16 +3,16 @@ using Common.Enum;
 
 namespace Shell.Commands
 {
-    public class NewCommand : ICommand
+    public class NewCommand : Command
     {
         public string version { get; set; }
-        public Logger logger { get; set; }
-        public NewCommand(string Version, Logger Logger)
+        public ILogger logger { get; set; }
+        public NewCommand(string Version, ILogger Logger)
         {
             version = Version;
             logger = Logger;
         }
-        public void Run(string[] arguments)
+        public override void Run(string[] arguments)
         {
             logger.Log("Starting New Command", this.GetType().Name, LogType.INFO);
             var typeArgument = string.Empty;
@@ -77,7 +77,7 @@ namespace Shell.Commands
             }      
         }
 
-        public void Help()
+        public override void Help()
         {
             Console.WriteLine(String.Join(
                 Environment.NewLine,
@@ -91,13 +91,6 @@ namespace Shell.Commands
                 "   gitattributes   Creates standard pirate gitattributes\n",
                 "   -h --help   Show command line help."
             ));
-        }
-
-        public void Error(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n{message}");
-            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

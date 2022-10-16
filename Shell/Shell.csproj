@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\PirateInterpreter\PirateInterpreter.csproj" />
-    <ProjectReference Include="..\PirateLexer\PirateLexer.csproj" />
-    <ProjectReference Include="..\PirateParser\PirateParser.csproj" />
+    <ProjectReference Include="..\Interpreter\Interpreter.csproj" />
+    <ProjectReference Include="..\Lexer\Lexer.csproj" />
+    <ProjectReference Include="..\Parser\Parser.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
@@ -13,7 +13,7 @@
 
   <PropertyGroup>
     <PackageId>PirateLang.CLI</PackageId>
-    <Version>0.1.1</Version>
+    <Version>1.0.0</Version>
     <Authors>Joeri van Arkel</Authors>
     <Company>vanarkel</Company>
     <RepositoryUrl>https://github.com/joerivanarkel/PirateLang</RepositoryUrl>

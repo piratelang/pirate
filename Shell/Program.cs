@@ -10,7 +10,8 @@ internal class Program
     static void Main(string[] args)
     {
         
-        var version = "0.1.1";
+        var version = "1.0.0";
+        var location = $"bin/pirate{version}";
         var logger = new Logger(version);
 
         List<string> argumentsList = new();
@@ -40,7 +41,7 @@ internal class Program
         else
         {
             logger.Log("Starting Command Factory", "Program", LogType.INFO);
-            var command = CommandFactory.GetCommand(args[0], version, logger);
+            var command = CommandFactory.GetCommand(args[0], version, logger, location);
             if (command == null){ return; }
 
             if (argumentsList.Contains("-h") || argumentsList.Contains("--help"))

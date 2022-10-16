@@ -1,19 +1,23 @@
 using Common;
 using Common.Enum;
-using PirateInterpreter;
+using Interpreter;
 
 namespace Shell.Commands
 {
-    public class RunCommand : ICommand
+    public class RunCommand : Command
     {
         public string version { get; set; }
-        public Logger logger { get; set; }
-        public RunCommand(string Version, Logger Logger)
+        public ILogger logger { get; set; }
+        public ObjectSerializer ObjectSerializer { get; set; }
+        public string Location { get; set; }
+        public RunCommand(string Version, ILogger Logger, string location)
         {
             version = Version;
             logger = Logger;
+            ObjectSerializer = new(location, logger);
+            Location = location;
         }
-        public void Run(string[] arguments)
+        public override void Run(string[] arguments)
         {
             logger.Log("Starting Run Command", this.GetType().Name, LogType.INFO);
             var fileArgument = "main";
@@ -29,17 +33,27 @@ namespace Shell.Commands
             }
 
             logger.Log("Starting build", this.GetType().Name, LogType.INFO);
-            var buildCommand = new BuildCommand(version, logger);
-            buildCommand.Run(arguments);
+            var buildCommand = new BuildCommand(version, logger, ObjectSerializer, Location);
+            var scopeList = buildCommand.Run(arguments);
+            if (scopeList == null)
+            {
+                logger.Log($"Build Command returned no scopes", this.GetType().Name, LogType.ERROR);
+                
+            }
             logger.Log("Completed Build", this.GetType().Name, LogType.INFO);
 
             var location = $"bin/pirate{version}";
-            logger.Log($"Executing {fileName}.py", this.GetType().Name, LogType.INFO);
-            var pythonEngine = new PythonEngine($"{location}/{fileName}.py");
-            var result = pythonEngine.InvokeMain("main", logger); //Possibly null reference;
+            logger.Log($"Executing {fileName}.pirate\n", this.GetType().Name, LogType.INFO);
+            
+            var interpreter = new Interpreter.Interpreter(fileName, ObjectSerializer, logger);
+            var interpreterResult = interpreter.StartInterpreter();
+            foreach (var item in interpreterResult)
+            {
+                Console.WriteLine(item.Value);
+            }
         }
 
-        public void Help()
+        public override void Help()
         {
             Console.WriteLine(String.Join(
                 Environment.NewLine,
@@ -50,13 +64,6 @@ namespace Shell.Commands
                 "\nOptions",
                 "   -h --help   Show command line help."
             ));
-        }
-
-        public void Error(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n{message}");
-            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

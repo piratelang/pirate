@@ -7,50 +7,42 @@ Definition:
 
 Control Statement:
     If Statement:
-        if (<Expression.Comparison>)
+        if (<Expression.Comparison> <extension operator> <Expression.Comparison>)
         {
             <then>
         }
-
     Else Statement:
         else
         {
             
         }
-
     While Loop:
         while (<Expression.Comparison>)
         {
 
         }
-
     For Loop:
         for(<expression.assignment.int> to <value.int>)
         {
 
         }
-
-Expression:
+Assignment:
     Assignment:
         <type> <identifier> = <value>
-
         var <identifier> = <value>
 
-    Binary operation:
-        <value> <operator> <value>
-
-        Operators:
-            +, -, /, *, ^
-
+Operation:
     Comparison:
-        <value> <double operator> <value>
-        <value> <double operator> <value> <extension operator> <value> <double operator> <value>
-        
-        Double Operators:
-            ==, !=, <<, >>, <=, >=
-
-        Extension Operators:
-            ||, &&
+        <value> <comparisonoperator> <value>
+        <value> <comparisonoperator> <value>
+            Double Operators:
+                ==, !=, <<, >>, <=, >=
+            Extension Operators:
+                ||, &&
+    Binary:
+        <value> <operator> <value>
+            Operators:
+                +, -, /, *, ^
 
 Value:
     String:

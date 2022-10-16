@@ -2,7 +2,9 @@
 using Common.Enum;
 
 namespace Common;
-public class Logger
+
+[Serializable]
+public class Logger : ILogger
 {
     public string logName { get; set; }
     public static string version { get; set; } = "0.0.0";
@@ -12,7 +14,7 @@ public class Logger
         version = Version;
         var dateTime = DateTime.Now;
         logName = Name;
-        if(Name == null)
+        if (Name == null)
         {
             logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
         }
@@ -34,7 +36,7 @@ public class Logger
         var file = File.AppendText(location);
 
         var time = DateTime.Now.ToString();
-        file.Write($"{time}: {logType.ToString()}: {orginFile}.cs: {message}\n");
+        file.Write($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {message}\n");
         file.Close();
     }
 }
