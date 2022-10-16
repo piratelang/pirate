@@ -2,7 +2,10 @@
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
 ## 1.0.0
-### ([#39](https://github.com/joerivanarkel/PirateLang/pull/32)) New Lexer, Parser and Interpreter<br>
+### ([#49](https://github.com/joerivanarkel/PirateLang/pull/49)) Semicolons<br>
+- Added Semicolon token to parser.
+
+### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter<br>
 - Completely remade Parser
     - Using a Factory pattern get a Parser per token type. This is using the LL parser pattern.
     - Creates a Scope, which consits of a List of Nodes.
