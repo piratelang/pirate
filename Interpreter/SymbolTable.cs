@@ -1,16 +1,31 @@
 using Parser.Node.Interfaces;
 using Common;
+using Parser.Node;
+using Lexer.Tokens;
+using Interpreter.Values;
 
 namespace Interpreter;
 
-public class SymbolTable
+public sealed class SymbolTable
 {
+    private static SymbolTable symbolTable = null;
     public Dictionary<string, INode> SymbolList { get; set; }
     public Logger Logger { get; set; }
-    public SymbolTable(Logger logger)
+
+    private SymbolTable(Logger logger)
     {
         SymbolList = new();
         Logger = logger;
+    }
+
+    public static SymbolTable Instance(Logger logger)
+    {
+        if (symbolTable == null)
+        {
+            symbolTable = new SymbolTable(logger);
+            symbolTable.SymbolList["a"] = new ValueNode(new Token(Lexer.Enums.TokenGroup.VALUE, Lexer.Enums.TokenValue.INT, logger, 2));
+        }
+        return symbolTable;
     }
 
     public INode Get(string name)

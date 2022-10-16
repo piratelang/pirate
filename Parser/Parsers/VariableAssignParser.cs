@@ -49,11 +49,11 @@ public class VariableAssignParser : ITokenParser
 
         if (IdentifierNode is not ValueNode)
         {
-            Logger.Log("Variable Identiifer was not a single value", this.GetType().Name, LogType.ERROR);
+            Logger.Log("Variable Identifier is not a single value", this.GetType().Name, LogType.ERROR);
             return (null, 0);
         }
 
-        node = new VariableAssignNode(VariableType, IdentifierNode, Value);
+        node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (IValueNode)Value);
         return (node, index);
     }
 }

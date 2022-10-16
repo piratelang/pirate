@@ -11,22 +11,22 @@ public class Interpreter
 {
     private Scope ScopeList { get; set; }
     public Logger Logger { get; set; }
-    public Interpreter(ObjectSerializer objectSerializer, Logger logger)
+    public Interpreter(string filename, ObjectSerializer objectSerializer, Logger logger)
     {
-        ScopeList = objectSerializer.Deserialize<Scope>("test.pirate");
+        ScopeList = objectSerializer.Deserialize<Scope>(filename + ".pirate");
         Logger = logger;
     }
 
-    public BaseValue StartInterpreter()
+    public List<BaseValue> StartInterpreter()
     {
+        List<BaseValue> result = new();
         var interpreterFactory = new InterpreterFactory();
         foreach (var item in ScopeList.Nodes)
         {
             Logger.Log($"Interpreting {item.GetType().Name}", this.GetType().Name, LogType.INFO);
             var interpreter = interpreterFactory.GetInterpreter(item, Logger);
-            var result = interpreter.VisitNode();
-            return result;
+            result.Add(interpreter.VisitNode());
         }
-        return null;
+        return result;
     }
 }

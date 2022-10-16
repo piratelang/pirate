@@ -33,9 +33,10 @@ public class ValueNodeInterpreter : BaseInterpreter
             case TokenValue.FLOAT:
                 return new Float(Node.Value.Value);
             case TokenSyntax.IDENTIFIER:
-                return new Variable(Node.Value.Value);
-        }
+                return new Variable((string)Node.Value.Value, Logger);
+        } 
         Logger.Log($"{Node.Value.GetType().Name} does not contain a vaild value type.", this.GetType().Name, Common.Enum.LogType.ERROR);
         return null;
+
     }
 }

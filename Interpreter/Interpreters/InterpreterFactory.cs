@@ -11,8 +11,8 @@ public class InterpreterFactory
     {
         switch (node)
         {
-        //     case VariableAssignNode:
-        //         return new VariableAssignNodeInterpreter();
+            case VariableAssignNode:
+                return new VariableAssignNodeInterpreter(node, new InterpreterFactory(), logger);
             case BinaryOperationNode:
                 return new BinaryOperationNodeInterpreter(node, new InterpreterFactory(), logger);
             case ComparisonOperationNode:

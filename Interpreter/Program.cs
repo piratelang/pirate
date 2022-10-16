@@ -28,14 +28,18 @@ while (true)
         Console.WriteLine("stuk");
     }
 
-    var interpreter = new Interpreter.Interpreter(objectSerializer, Logger);
-    var intResult = interpreter.StartInterpreter();
+    var interpreter = new Interpreter.Interpreter("Test", objectSerializer, Logger);
+    var Result = interpreter.StartInterpreter();
 
-    if (intResult == null)
+    if (Result == null)
     {
         Console.WriteLine("Why is this null?");
     }
-    Console.WriteLine(intResult.Value);
+    foreach (var item in Result)
+    {
+        Console.WriteLine(item.Value);
+    }
+    
 
 
 }

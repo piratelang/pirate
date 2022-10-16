@@ -2,6 +2,8 @@
 using Common.Enum;
 
 namespace Common;
+
+[Serializable]
 public class Logger
 {
     public string logName { get; set; }

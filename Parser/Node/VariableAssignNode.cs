@@ -10,11 +10,11 @@ namespace Parser.Node;
 [Serializable]
 public class VariableAssignNode : INode
 {
-    private Token TypeToken { get; set; }
-    private INode Identifier { get; set; }
-    private INode Value { get; set; }
+    public Token TypeToken { get; set; }
+    public IValueNode Identifier { get; set; }
+    public IValueNode Value { get; set; }
 
-    public VariableAssignNode(Token typeToken, INode identifier, INode value)
+    public VariableAssignNode(Token typeToken, IValueNode identifier, IValueNode value)
     {
         TypeToken= typeToken;
         Identifier = identifier;

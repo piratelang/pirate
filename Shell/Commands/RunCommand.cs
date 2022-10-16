@@ -44,12 +44,12 @@ namespace Shell.Commands
 
             var location = $"bin/pirate{version}";
             logger.Log($"Executing {fileName}.pirate\n", this.GetType().Name, LogType.INFO);
-            foreach (var scope in scopeList)
+            
+            var interpreter = new Interpreter.Interpreter(fileName, ObjectSerializer, logger);
+            var interpreterResult = interpreter.StartInterpreter();
+            foreach (var item in interpreterResult)
             {
-                var interpreter = new Interpreter.Interpreter(ObjectSerializer, logger);
-                var interpreterResult = interpreter.StartInterpreter();
-                Console.WriteLine(interpreterResult.Value);
-                
+                Console.WriteLine(item.Value);
             }
         }
 
