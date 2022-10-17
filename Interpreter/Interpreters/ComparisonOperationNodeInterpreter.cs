@@ -2,6 +2,7 @@ using Interpreter.Values;
 using Parser.Node.Interfaces;
 using Lexer.Enums;
 using Common;
+using Common.Errors;
 
 namespace Interpreter.Interpreters;
 
@@ -13,6 +14,11 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
     public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
     {
         Node = node as IOperationNode;
+        if (Node == null)
+        {
+            Exception exception = new TypeConversionException()
+        }
+        
         interpreterFactory = InterpreterFactory;
         Logger = logger;
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);

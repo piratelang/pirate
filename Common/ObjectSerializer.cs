@@ -48,24 +48,15 @@ public class ObjectSerializer
             using (StreamReader streamReader = new StreamReader($"{Location}/{FileName}.bin"))
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
-                T obj;
-                try
-                {
-                    obj = (T)binaryFormatter.Deserialize(streamReader.BaseStream);
-                }
-                catch (SerializationException ex)
-                {
-                    Logger.Log($"Failed to Deserialize {FileName}.bin. \"{((object)ex).ToString() + "\n" + ex.Source}\"", this.GetType().Name, LogType.ERROR);
-                    throw new SerializationException(((object)ex).ToString() + "\n" + ex.Source);
-                }
+                var @object = (T)binaryFormatter.Deserialize(streamReader.BaseStream);
                 Logger.Log($"Deserialized and converted {FileName} to {FileName}.bin", this.GetType().Name, LogType.INFO);
-                return obj;
+                return @object;
             }
         }
-        catch (Exception ex)
+        catch (SerializationException ex)
         {
-            Logger.Log($"Failed to Deserialize {FileName}.bin. \"{ex.ToString()}\"", this.GetType().Name, LogType.ERROR);
-            throw;
+            Logger.Log($"Failed to Deserialize {FileName}.bin. \"{((object)ex).ToString() + "\n" + ex.Source}\"", this.GetType().Name, LogType.ERROR);
+            throw new SerializationException(((object)ex).ToString() + "\n" + ex.Source);
         }
 
     }
