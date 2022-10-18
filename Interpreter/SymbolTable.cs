@@ -8,14 +8,14 @@ namespace Interpreter;
 
 public sealed class SymbolTable
 {
-    private static SymbolTable symbolTable = null;
-    public Dictionary<string, INode> SymbolList { get; set; }
+    private static SymbolTable symbolTable;
+    public Dictionary<string, INode> SymbolList { get; set; } = new ();
     public ILogger Logger { get; set; }
 
     private SymbolTable(ILogger logger)
     {
-        SymbolList = new();
         Logger = logger;
+        Instance(Logger);
     }
 
     public static SymbolTable Instance(ILogger logger)
@@ -31,8 +31,12 @@ public sealed class SymbolTable
     public INode Get(string name)
     {
         var value = SymbolList.GetValueOrDefault(name);
-        if (value == null) Logger.Log($"No value was found for name: {name}", this.GetType().Name, Common.Enum.LogType.ERROR);
-        else Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", this.GetType().Name, Common.Enum.LogType.INFO);
+        if (value == null) 
+        {
+            Logger.Log($"No value was found for name: {name}", this.GetType().Name, Common.Enum.LogType.ERROR);
+            throw new NullReferenceException("Requested element from the Symbol Table does not exist.");
+        }
+        Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", this.GetType().Name, Common.Enum.LogType.INFO);
         return value;
     }
 
