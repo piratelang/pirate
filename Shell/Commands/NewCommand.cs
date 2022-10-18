@@ -5,22 +5,17 @@ namespace Shell.Commands
 {
     public class NewCommand : Command
     {
-        public string version { get; set; }
-        public ILogger logger { get; set; }
-        public NewCommand(string Version, ILogger Logger)
-        {
-            version = Version;
-            logger = Logger;
-        }
+        public NewCommand(string Version, ILogger Logger) : base(Version, Logger)
+        { }
         public override void Run(string[] arguments)
         {
-            logger.Log("Starting New Command", this.GetType().Name, LogType.INFO);
+            Logger.Log("Starting New Command", this.GetType().Name, LogType.INFO);
             var typeArgument = string.Empty;
             if (arguments.Length >= 2) { typeArgument = arguments[1]; }
 
             if (typeArgument == string.Empty)
             {
-                logger.Log("Argument is empty", this.GetType().Name, LogType.INFO);
+                Logger.Log("Argument is empty", this.GetType().Name, LogType.INFO);
                 Console.WriteLine(String.Join(
                     Environment.NewLine,
                     "\nThe \"pirate new [type]\" command creates a new file from a template",
@@ -39,12 +34,12 @@ namespace Shell.Commands
             };
             if (!typeOptions.Contains(typeArgument))
             {
-                logger.Log($"Specified file \"{typeArgument}\" not able to be created", this.GetType().Name, LogType.ERROR);
+                Logger.Log($"Specified file \"{typeArgument}\" not able to be created", this.GetType().Name, LogType.ERROR);
                 Error($"Specified file \"{typeArgument}\" not able to be created");
                 return;
             }
 
-            logger.Log($"Creating {typeArgument} file", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Creating {typeArgument} file", this.GetType().Name, LogType.INFO);
             switch (typeArgument)
             {
                 case "gitignore":
@@ -67,7 +62,7 @@ namespace Shell.Commands
                     var exists = File.Exists($"./{filename}.pirate");
                     if (exists)
                     {
-                        logger.Log($"Specified filename \"{filename}\" already exists", this.GetType().Name, LogType.WARNING);
+                        Logger.Log($"Specified filename \"{filename}\" already exists", this.GetType().Name, LogType.WARNING);
                         Error($"Specified filename \"{filename}\" already exists");
                         return;
                     }

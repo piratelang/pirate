@@ -8,14 +8,13 @@ namespace Interpreter;
 
 public sealed class SymbolTable
 {
-    private static SymbolTable symbolTable;
+    private static SymbolTable? symbolTable;
     public Dictionary<string, INode> SymbolList { get; set; } = new ();
     public ILogger Logger { get; set; }
 
     private SymbolTable(ILogger logger)
     {
         Logger = logger;
-        Instance(Logger);
     }
 
     public static SymbolTable Instance(ILogger logger)

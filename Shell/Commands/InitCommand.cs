@@ -5,20 +5,18 @@ namespace Shell.Commands
 {
     public class InitCommand : Command
     {
-        public string version { get; set; }
-        public ILogger logger { get; set; }
-        public InitCommand(string Version, ILogger Logger)
-        {
-            version = Version;
-            logger = Logger;
-        }
+        // public string Version { get; set; }
+        // public ILogger Logger { get; set; }
+        public InitCommand(string Version, ILogger Logger) : base(Version, Logger)
+        { }
+        
         public override void Run(string[] arguments)
         {
-            logger.Log("Starting Init Command", this.GetType().Name, LogType.INFO);
+            Logger.Log("Starting Init Command", this.GetType().Name, LogType.INFO);
             var nameArgument = "main";
             if (arguments.Length == 2) { nameArgument = arguments[1];}
 
-            logger.Log($"Creating {nameArgument} file", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Creating {nameArgument} file", this.GetType().Name, LogType.INFO);
             var fileName = nameArgument.Replace(".pirate", "");
             var file = File.CreateText($"./{fileName}.pirate");
             file.Write(String.Join(
@@ -29,7 +27,7 @@ namespace Shell.Commands
                 "}"
             ));
             file.Close();
-            logger.Log($"Created {nameArgument} file", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Created {nameArgument} file", this.GetType().Name, LogType.INFO);
             Console.WriteLine($"\nCreated {fileName}.pirate");
         }
 

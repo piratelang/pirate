@@ -28,11 +28,15 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
 
     public override BaseValue VisitNode()
     {
-        var Identifier = (string)Node.Identifier.Value.Value;
-        if (Identifier is not string || Identifier == null)
+        if (Node.Identifier.Value.Value is not string)
         {
-            throw new TypeConversionException(Node.Identifier.Value.Value.GetType(), typeof(string));
+            if (Node.Identifier.Value.Value != null)
+            {
+                throw new TypeConversionException(Node.Identifier.Value.Value.GetType(), typeof(string));
+            }
+            throw new TypeConversionException(typeof(string));
         }
+        var Identifier = (string)Node.Identifier.Value.Value;
         SymbolTable.Instance(Logger).Set(Identifier, Node.Value);
 
         var variable = new Variable(Identifier, Logger);

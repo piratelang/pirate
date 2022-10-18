@@ -65,6 +65,11 @@ public class OperationParser : ITokenParser
         if (_tokens.Count == index + 1)
         {
             Logger.Log("Returning Binary Operation Node", this.GetType().Name, LogType.INFO);
+            if(node == null)
+            {
+                Logger.Log("Node provided is null", this.GetType().Name, LogType.ERROR);
+                throw new NullReferenceException("Node provided is null");
+            }
             return (node, index);
         }
 
@@ -89,6 +94,11 @@ public class OperationParser : ITokenParser
         }
 
         Logger.Log("Returning Comparison or Binary Operation Node", this.GetType().Name, LogType.INFO);
+        if(node == null)
+        {
+            Logger.Log("Node provided is null", this.GetType().Name, LogType.ERROR);
+            throw new NullReferenceException("Node provided is null");
+        }
         return (node, index);
     }
 

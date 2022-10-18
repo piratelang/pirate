@@ -8,7 +8,7 @@ public class Token
 {
     public TokenGroup TokenGroup { get; set; }
     public object TokenType { get; set; }
-    public object? Value { get; set; }
+    public object Value { get; set; }
 
     public Token(TokenGroup tokenGroup, object tokenType, ILogger logger, object value = null)
     {

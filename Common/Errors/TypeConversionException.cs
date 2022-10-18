@@ -5,8 +5,8 @@ namespace Common.Errors;
 [Serializable]
 public class TypeConversionException : Exception
 {
-    public Type OrginType { get; set; }
-    public Type TargetType { get; set; }
+    public Type? OrginType { get; set; }
+    public Type? TargetType { get; set; }
     public TypeConversionException() { }
     public TypeConversionException(string message) : base(message) { }
     public TypeConversionException(Type targetType) : base($"Failed to convert to {targetType.Name}")

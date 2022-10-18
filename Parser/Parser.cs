@@ -13,7 +13,6 @@ public class Parser
 
     private List<Token> _tokens;
     private IParserFactory parserFactory = new ParserFactory();
-    private ITokenParser tokenParser;
     public ILogger Logger { get; set; }
     public ObjectSerializer ObjectSerializer { get; set; }
     public string FileName { get; set; }

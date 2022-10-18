@@ -5,6 +5,7 @@ using Lexer.Enums;
 using Parser.Node;
 using Common;
 using Common.Enum;
+using Common.Errors;
 
 namespace Parser.Parsers;
 
@@ -25,7 +26,7 @@ public class VariableAssignParser : ITokenParser
 
     public (INode node, int index) CreateNode()
     {
-        INode node = null;
+        INode node;
 
         var index = _tokens.IndexOf(_currentToken);
         var VariableType = _currentToken;
@@ -37,23 +38,23 @@ public class VariableAssignParser : ITokenParser
         var IdentifierNode = result.node;
         index = result.index;
 
+        if (IdentifierNode is not ValueNode)
+        {
+            Logger.Log("Variable Identifier is not a single value", this.GetType().Name, LogType.ERROR);
+            throw new ParserException("Variable Identifier is not a single value");
+        }
+
         var Operator = _tokens[index += 1];
         if (!Operator.Matches(TokenSyntax.EQUALS))
         {
             Logger.Log("No Equals assign Operator was found", this.GetType().Name, LogType.ERROR);
-            return (null, 0);
+            throw new ParserException("No Equals assign Operator was found, following the Identifier");
         }
 
         parser = ParserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
         result = parser.CreateNode();
         INode Value = result.node;
         index = result.index;
-
-        if (IdentifierNode is not ValueNode)
-        {
-            Logger.Log("Variable Identifier is not a single value", this.GetType().Name, LogType.ERROR);
-            return (null, 0);
-        }
 
         node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (IValueNode)Value);
         return (node, index);
