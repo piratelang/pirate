@@ -14,7 +14,7 @@ public class Logger : ILogger
         version = Version;
         var dateTime = DateTime.Now;
         logName = Name;
-        if (Name == null)
+        if (logName == null)
         {
             logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
         }

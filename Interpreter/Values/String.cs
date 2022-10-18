@@ -2,6 +2,7 @@ using Interpreter.Values.Interfaces;
 using Lexer.Enums;
 using Lexer.Tokens;
 using Common;
+using Common.Errors;
 
 namespace Interpreter.Values;
 
@@ -18,6 +19,10 @@ public class String : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
+        if (Value is not string)
+        {
+            throw new TypeConversionException(typeof(string));
+        }
         var value = Convert.ToString(Value);
 
         switch (_operator.TokenType)
@@ -25,13 +30,17 @@ public class String : BaseValue, IValue
             case TokenOperators.PLUS:
                 try
                 {
-                    var otherValue = Convert.ToString(other.Value);
+                    if (other.Value is not string)
+                    {
+                        throw new TypeConversionException(typeof(string));
+                    }
+                    var otherValue = (string)other.Value;
                     return new String(string.Concat(value, otherValue), Logger);
                 }
                 catch (Exception ex)
                 {
                     Logger.Log($" <string> + <value> returned an error of: {ex.ToString()}", this.GetType().Name, Common.Enum.LogType.ERROR);
-                    throw;
+                    throw ex;
                 }
 
             case TokenOperators.MINUS:
@@ -41,13 +50,17 @@ public class String : BaseValue, IValue
             case TokenOperators.MULTIPLY:
                 try
                 {
-                    var otherValueInt = Convert.ToInt32(other.Value);
+                    if (other.Value is not string)
+                    {
+                        throw new TypeConversionException(typeof(string));
+                    }
+                    var otherValueInt = (int)other.Value;
                     return new String(string.Concat(Enumerable.Repeat(value, otherValueInt)), Logger);
                 }
                 catch (Exception ex)
                 {
                     Logger.Log($" <string> * <value> returned an error of: \"{ex.ToString()}\"", this.GetType().Name, Common.Enum.LogType.ERROR);
-                    throw;
+                    throw ex;
                 }
 
             case TokenOperators.DIVIDE:
@@ -59,6 +72,6 @@ public class String : BaseValue, IValue
                 throw new NotImplementedException();
 
         }
-        return null;
+        throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
 }

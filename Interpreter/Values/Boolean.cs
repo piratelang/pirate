@@ -1,3 +1,4 @@
+using Common.Errors;
 using Interpreter.Values.Interfaces;
 using Lexer.Enums;
 using Lexer.Tokens;
@@ -10,13 +11,17 @@ public class Boolean : BaseValue, IValue
 
     public Boolean(object value)
     {
-        Value = Convert.ToInt32(value);
+        Value = value;
     }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        var value = Convert.ToInt32(Value);
-        var otherValue = Convert.ToInt32(other.Value);
+        if (Value is not int || other.Value is not int)
+        {
+            throw new TypeConversionException(typeof(int));
+        }
+        var value = (int)Value;
+        var otherValue = (int)other.Value;
         switch (_operator.TokenType)
         {
             case TokenOperators.PLUS:
@@ -32,6 +37,6 @@ public class Boolean : BaseValue, IValue
                 var doubleOtherValue = Convert.ToDouble(otherValue);
                 return new Integer(Convert.ToInt32(Math.Pow(doubleValue, doubleOtherValue)));
         }
-        return null;
+        throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
 }

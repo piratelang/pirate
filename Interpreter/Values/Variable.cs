@@ -16,6 +16,10 @@ public class Variable : BaseValue, IValue
     public Variable(string value, ILogger logger)
     {
         ValueNode = (IValueNode) SymbolTable.Instance(logger).Get(value);
+        if (ValueNode.Value.Value is null)
+        {
+            throw new NullReferenceException("Token provided has no value");
+        }
         Value= ValueNode.Value.Value;
         Logger = logger;
     }
@@ -34,6 +38,6 @@ public class Variable : BaseValue, IValue
                 return new Char(Value, Logger).OperatedBy(_operator, other);
         }
         Logger.Log("No TypeCode found", this.GetType().Name, Common.Enum.LogType.ERROR);
-        return null;
+        throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
 }

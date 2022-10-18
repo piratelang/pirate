@@ -9,9 +9,12 @@ public class TypeConversionException : Exception
     public Type TargetType { get; set; }
     public TypeConversionException() { }
     public TypeConversionException(string message) : base(message) { }
-    public TypeConversionException(string message, Exception inner) : base(message, inner) { }
-    public TypeConversionException(string message, Type orginType, Type targetType) : base(message) 
-    { 
+    public TypeConversionException(Type targetType) : base($"Failed to convert to {targetType.Name}")
+    {
+        TargetType = targetType;
+    }
+    public TypeConversionException(Type orginType, Type targetType) : base($"Failed to convert {orginType.Name} to {targetType.Name}")
+    {
         OrginType = orginType;
         TargetType = targetType;
     }

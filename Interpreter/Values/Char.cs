@@ -2,6 +2,7 @@ using Interpreter.Values.Interfaces;
 using Lexer.Enums;
 using Lexer.Tokens;
 using Common;
+using Common.Errors;
 
 namespace Interpreter.Values;
 
@@ -18,7 +19,11 @@ public class Char : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        var value = Convert.ToChar(Value);
+        if (Value is not char && Value is not string)
+        {
+            throw new TypeConversionException(typeof(char));
+        }
+        var value = (char)Value;
 
         switch (_operator.TokenType)
         {
@@ -43,6 +48,6 @@ public class Char : BaseValue, IValue
                 throw new NotImplementedException();
 
         }
-        return null;
+        throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
 }

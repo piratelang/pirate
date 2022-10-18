@@ -13,11 +13,11 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
     public ILogger Logger { get; set; }
     public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
     {
-        Node = node as IOperationNode;
-        if (Node == null)
+        if (node is not IOperationNode)
         {
-            Exception exception = new TypeConversionException()
+            throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
         }
+        Node = (IOperationNode)node;
         
         interpreterFactory = InterpreterFactory;
         Logger = logger;

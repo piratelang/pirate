@@ -3,6 +3,7 @@ using Parser.Node.Interfaces;
 using Common;
 using Interpreter.Values;
 using Parser.Node;
+using Common.Errors;
 
 namespace Interpreter.Interpreters;
 
@@ -14,7 +15,12 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
 
     public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
     {
-        Node = node as VariableAssignNode;
+        if (node is not VariableAssignNode)
+        {
+            throw new TypeConversionException(node.GetType(), typeof(VariableAssignNode));
+        }
+        Node = (VariableAssignNode)node;
+
         interpreterFactory = InterpreterFactory;
         Logger = logger;
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
@@ -22,13 +28,14 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
 
     public override BaseValue VisitNode()
     {
-        var Identifier = Node.Identifier.Value.Value;
-        
+        var Identifier = (string)Node.Identifier.Value.Value;
+        if (Identifier is not string || Identifier == null)
+        {
+            throw new TypeConversionException(Node.Identifier.Value.Value.GetType(), typeof(string));
+        }
+        SymbolTable.Instance(Logger).Set(Identifier, Node.Value);
 
-        SymbolTable.Instance(Logger).Set((string)Identifier, Node.Value);
-
-        var variable = new Variable((string)Identifier, Logger);
-
+        var variable = new Variable(Identifier, Logger);
         return variable;
     }
 }
