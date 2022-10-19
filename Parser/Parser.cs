@@ -28,9 +28,9 @@ public class Parser
     {
         var index = 0;
         Scope scope = new(Logger);
-        while(index + 1 <= _tokens.Count())
+        while (index + 1 <= _tokens.Count())
         {
-            if(_tokens == null) 
+            if (_tokens == null)
             {
                 Logger.Log("No Tokens Found", this.GetType().Name, LogType.ERROR);
                 throw new ArgumentNullException(nameof(_tokens));
@@ -43,9 +43,12 @@ public class Parser
             scope.AddNode(parseResult.node);
             index = parseResult.index;
             index++;
-            if (_tokens[index].TokenType.Equals(TokenSyntax.SEMICOLON))
+            if (index + 1 <= _tokens.Count())
             {
-                index++;
+                if (_tokens[index].TokenType.Equals(TokenSyntax.SEMICOLON))
+                {
+                    index++;
+                }
             }
         }
 
