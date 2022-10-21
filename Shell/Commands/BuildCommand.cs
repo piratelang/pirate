@@ -8,8 +8,8 @@ namespace Shell.Commands
 {
     public class BuildCommand : Command
     {
-        public ObjectSerializer ObjectSerializer { get; set;}
-        public string Location { get; set; }
+        private ObjectSerializer ObjectSerializer { get; set;}
+        private string Location { get; set; }
         public BuildCommand(string Version, ILogger Logger, ObjectSerializer objectSerializer, string location) : base(Version, Logger)
         {   
             ObjectSerializer = objectSerializer;

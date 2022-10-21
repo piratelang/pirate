@@ -13,16 +13,11 @@ namespace Interpreter.Interpreters;
 public class ValueNodeInterpreter : BaseInterpreter
 {
     private IValueNode Node { get; set; }
-    public ILogger Logger { get; set; }
-    public ValueNodeInterpreter(INode node, ILogger logger)
+    public ValueNodeInterpreter(INode node, ILogger logger)  : base(logger)
     {
-        if (node is not IValueNode)
-        {
-            throw new TypeConversionException(node.GetType(), typeof(IValueNode));
-        }
+        if (node is not IValueNode) throw new TypeConversionException(node.GetType(), typeof(IValueNode));
         Node = (IValueNode)node;
 
-        Logger = logger;
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 

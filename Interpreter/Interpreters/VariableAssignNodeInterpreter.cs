@@ -11,18 +11,14 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
 {
     public VariableAssignNode Node { get; set; }
     private InterpreterFactory interpreterFactory;
-    public ILogger Logger { get; set; }
 
-    public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
+    public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger)
     {
-        if (node is not VariableAssignNode)
-        {
-            throw new TypeConversionException(node.GetType(), typeof(VariableAssignNode));
-        }
+        if (node is not VariableAssignNode)throw new TypeConversionException(node.GetType(), typeof(VariableAssignNode));
+
         Node = (VariableAssignNode)node;
 
         interpreterFactory = InterpreterFactory;
-        Logger = logger;
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 

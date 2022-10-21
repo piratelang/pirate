@@ -4,8 +4,8 @@ namespace Shell.Commands;
 
 public abstract class Command
 {
-    public string Version { get; set; }
-    public ILogger Logger { get; set; }
+    protected string Version { get; set; }
+    protected ILogger Logger { get; set; }
     public Command(string version, ILogger logger)
     {
         Version = version;

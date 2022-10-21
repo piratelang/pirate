@@ -9,17 +9,12 @@ public class BinaryOperationNodeInterpreter : BaseInterpreter
 {
     public IOperationNode Node { get; set; }
     private InterpreterFactory interpreterFactory;
-    public ILogger Logger { get; set; }
-    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger)
+    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger)
     {
-        if (node is not IOperationNode)
-        {
-            throw new TypeConversionException(node.GetType(), typeof(IOperationNode));            
-        }
+        if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));            
         Node = (IOperationNode)node;
-
+        
         interpreterFactory = InterpreterFactory;
-        Logger = logger;
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
