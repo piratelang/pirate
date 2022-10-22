@@ -1,8 +1,6 @@
 using Lexer.Tokens;
 using Lexer.Enums;
-using Lexer.Enums;
 using Parser.Parsers.Interfaces;
-using Parser.Node.Interfaces;
 using Common;
 
 namespace Parser.Parsers;
@@ -22,6 +20,6 @@ public class ParserFactory: IParserFactory
                 return new OperationParser(tokens, token, logger);
             
         }  
-        return null;   
+        throw new ArgumentNullException("node", $"Factory cannot find parser for {token.GetType().Name}");
     }
 }

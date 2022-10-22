@@ -20,6 +20,6 @@ public class InterpreterFactory
             case ValueNode:
                 return new ValueNodeInterpreter(node, logger);
         }
-        return null;
+        throw new ArgumentNullException("node", $"Factory cannot find interpreter for {node.GetType().Name}");
     }
 }

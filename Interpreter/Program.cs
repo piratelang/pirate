@@ -13,9 +13,10 @@ while (true)
     var lexer = new Lexer.Lexer("test", input, Logger);
     var result = lexer.MakeTokens();
 
-    if (result.tokens == null)
+    if (result.tokens == null && result.error != null)
     {
         Console.WriteLine(result.error.ToString());
+        return;
     }
 
     ObjectSerializer objectSerializer = new(".", Logger);
@@ -26,6 +27,7 @@ while (true)
     if (parseResult.Nodes == null)
     {
         Console.WriteLine("stuk");
+        return;
     }
 
     var interpreter = new Interpreter.Interpreter("Test", objectSerializer, Logger);
@@ -34,12 +36,10 @@ while (true)
     if (Result == null)
     {
         Console.WriteLine("Why is this null?");
+        return;
     }
     foreach (var item in Result)
     {
         Console.WriteLine(item.Value);
     }
-    
-
-
 }

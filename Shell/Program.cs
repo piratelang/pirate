@@ -9,16 +9,16 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        
+
         var version = "1.0.0";
         var location = $"bin/pirate{version}";
         var logger = new Logger(version);
 
         List<string> argumentsList = new();
 
-        foreach(var item in args)
+        foreach (var item in args)
         {
-            if(item != null)
+            if (item != null)
             {
                 argumentsList.Add(item);
             }
@@ -42,7 +42,7 @@ internal class Program
         {
             logger.Log("Starting Command Factory", "Program", LogType.INFO);
             var command = CommandFactory.GetCommand(args[0], version, logger, location);
-            if (command == null){ return; }
+            if (command == null) { return; }
 
             if (argumentsList.Contains("-h") || argumentsList.Contains("--help"))
             {
@@ -51,9 +51,19 @@ internal class Program
             }
             else
             {
-                var arguments = argumentsList.ToArray();
-                command.Run(arguments);
-                logger.Log("Command completed succesfully", "Program", LogType.INFO);
+                try
+                {
+                    var arguments = argumentsList.ToArray();
+                    command.Run(arguments);
+                    logger.Log("Command completed succesfully", "Program", LogType.INFO);
+                }
+                catch (Exception exception)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n{exception}");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    throw;
+                }
             }
         }
     }

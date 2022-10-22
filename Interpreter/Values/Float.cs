@@ -1,3 +1,4 @@
+using Common.Errors;
 using Interpreter.Values.Interfaces;
 using Lexer.Enums;
 using Lexer.Tokens;
@@ -15,8 +16,12 @@ public class Float : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        var value = Convert.ToDouble(Value);
-        var otherValue = Convert.ToDouble(other.Value);
+        if (Value is not double && other.Value is not double)
+        {
+            throw new TypeConversionException(typeof(double));
+        }
+        var value = (double)Value;
+        var otherValue = (double)other.Value;
         switch (_operator.TokenType)
         {
             case TokenOperators.PLUS:
@@ -32,6 +37,6 @@ public class Float : BaseValue, IValue
                 var doubleOtherValue = Convert.ToDouble(otherValue);
                 return new Float(Math.Pow(doubleValue, doubleOtherValue));
         }
-        return null;
+        throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
 }

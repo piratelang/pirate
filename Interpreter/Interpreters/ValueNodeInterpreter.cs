@@ -6,22 +6,24 @@ using Parser.Node;
 using Parser.Node.Interfaces;
 using Lexer.Tokens;
 using Common;
+using Common.Errors;
 
 namespace Interpreter.Interpreters;
 
 public class ValueNodeInterpreter : BaseInterpreter
 {
     private IValueNode Node { get; set; }
-    public ILogger Logger { get; set; }
-    public ValueNodeInterpreter(INode node, ILogger logger)
+    public ValueNodeInterpreter(INode node, ILogger logger)  : base(logger)
     {
-        Node = node as IValueNode;
-        Logger = logger;
+        if (node is not IValueNode) throw new TypeConversionException(node.GetType(), typeof(IValueNode));
+        Node = (IValueNode)node;
+
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public override BaseValue VisitNode()
     {
+        if (Node.Value.Value == null) throw new ArgumentNullException($"{Node.Value.GetType().Name} does not contain a vaild value type.");
         switch (Node.Value.TokenType)
         {
             case TokenValue.INT:
@@ -35,8 +37,7 @@ public class ValueNodeInterpreter : BaseInterpreter
             case TokenSyntax.IDENTIFIER:
                 return new Variable((string)Node.Value.Value, Logger);
         } 
-        Logger.Log($"{Node.Value.GetType().Name} does not contain a vaild value type.", this.GetType().Name, Common.Enum.LogType.ERROR);
-        return null;
+        throw new ArgumentNullException($"{Node.Value.GetType().Name} is not trecognized as a BaseValue type.");
 
     }
 }

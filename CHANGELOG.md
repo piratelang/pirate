@@ -15,6 +15,12 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Partially Rewrote Lexer, to simplify.
 - Created a Object serializer, which takes a Scope and serializes it to binary.
 
+### ([#51](https://github.com/joerivanarkel/PirateLang/pull/51)) Error Handling and Validation<br>
+- Created Custom exceptions for Type Conversion and Parsing Exceptions
+- Added validation for type conversions
+- Replaced null return with errors
+- Created base class constructors
+
 ## 0.1.2
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements<br>
 - Added build command to test files. Later to be joined by #35.
