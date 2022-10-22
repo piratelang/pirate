@@ -76,9 +76,6 @@ namespace Lexer
                     case "char":
                         tokenType = TokenTypeKeyword.CHAR;
                         break;
-                    case "new":
-                        tokenType = TokenTypeKeyword.NEW;
-                        break;
                 }
                 return new Token(tokenGroup, tokenType, Logger, idString);
             }
@@ -113,6 +110,9 @@ namespace Lexer
                         break;
                     case "class":
                         tokenType = TokenControlKeyword.CLASS;
+                        break;
+                    case "new":
+                        tokenType = TokenControlKeyword.NEW;
                         break;
                 }
                 return new Token(tokenGroup, tokenType, Logger, idString);

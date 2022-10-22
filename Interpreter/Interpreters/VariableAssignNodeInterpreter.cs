@@ -29,6 +29,7 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
             }
             throw new TypeConversionException(typeof(string));
         }
+
         var Identifier = (string)Node.Identifier.Value.Value;
         SymbolTable.Instance(Logger).Set(Identifier, Node.Value);
 
