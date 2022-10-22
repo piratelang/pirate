@@ -23,11 +23,7 @@ public class ValueNodeInterpreter : BaseInterpreter
 
     public override BaseValue VisitNode()
     {
-        if (Node.Value.Value == null)
-        {
-            Logger.Log($"{Node.Value.GetType().Name} does not contain a vaild value type.", this.GetType().Name, Common.Enum.LogType.ERROR);
-            throw new ArgumentNullException($"{Node.Value.GetType().Name} does not contain a vaild value type.");
-        }
+        if (Node.Value.Value == null) throw new ArgumentNullException($"{Node.Value.GetType().Name} does not contain a vaild value type.");
         switch (Node.Value.TokenType)
         {
             case TokenValue.INT:
@@ -41,7 +37,6 @@ public class ValueNodeInterpreter : BaseInterpreter
             case TokenSyntax.IDENTIFIER:
                 return new Variable((string)Node.Value.Value, Logger);
         } 
-        Logger.Log($"{Node.Value.GetType().Name} is not trecognized as a BaseValue type.", this.GetType().Name, Common.Enum.LogType.ERROR);
         throw new ArgumentNullException($"{Node.Value.GetType().Name} is not trecognized as a BaseValue type.");
 
     }
