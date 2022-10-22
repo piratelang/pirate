@@ -56,7 +56,7 @@ public class VariableAssignParser : ITokenParser
         INode Value = result.node;
         index = result.index;
 
-        node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (IValueNode)Value);
+        node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
         return (node, index);
     }
 }

@@ -12,9 +12,9 @@ public class VariableAssignNode : INode
 {
     public Token TypeToken { get; set; }
     public IValueNode Identifier { get; set; }
-    public IValueNode Value { get; set; }
+    public INode Value { get; set; }
 
-    public VariableAssignNode(Token typeToken, IValueNode identifier, IValueNode value)
+    public VariableAssignNode(Token typeToken, IValueNode identifier, INode value)
     {
         TypeToken= typeToken;
         Identifier = identifier;

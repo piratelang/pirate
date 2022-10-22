@@ -1,6 +1,6 @@
+using System.Globalization;
 using System.Security.Principal;
 using Common;
-using Lexer.Enums;
 using Lexer.Enums;
 using Lexer.Tokens;
 
@@ -37,7 +37,9 @@ namespace Lexer
             }
             else
             {
-                return new Token(TokenGroup.VALUE, TokenValue.FLOAT, Logger, float.Parse(numberString));
+                CultureInfo cultureInfo = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+                cultureInfo.NumberFormat.CurrencyDecimalSeparator = "."; cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+                return new Token(TokenGroup.VALUE, TokenValue.FLOAT, Logger, float.Parse(numberString, cultureInfo));
             }
         }
 
