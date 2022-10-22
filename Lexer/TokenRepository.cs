@@ -159,33 +159,12 @@ namespace Lexer
 
         public static Token MakeChar(ILogger Logger)
         {
-            var resultString = ' ';
-            var escapeCharacter = false;
             Lexer.Advance();
-
-            Dictionary<string, string> escapeCharacters = new Dictionary<string, string>() { };
-            escapeCharacters.Add("n", "\n");
-            escapeCharacters.Add("t", "\t");
-
-            while (Lexer.currentChar != null && Lexer.currentChar != '\'' || escapeCharacter)
+            var resultString = Lexer.currentChar;
+            Lexer.Advance();
+            if (Lexer.currentChar != '\'')
             {
-                if (escapeCharacter)
-                {
-                    resultString += Lexer.currentChar;
-                }
-                else
-                {
-                    if (Lexer.currentChar == '\\')
-                    {
-                        escapeCharacter = true;
-                    }
-                    else
-                    {
-                        resultString += Lexer.currentChar;
-                    }
-                }
-                Lexer.Advance();
-                escapeCharacter = false;
+                throw new NotImplementedException("Char is not one letter");
             }
             Lexer.Advance();
             return new Token(TokenGroup.VALUE, TokenValue.CHAR, Logger, resultString);
