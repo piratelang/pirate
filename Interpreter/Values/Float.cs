@@ -7,7 +7,7 @@ namespace Interpreter.Values;
 
 public class Float : BaseValue, IValue
 {
-    public override object Value { get; set; }
+    // public override object Value { get; set; }
 
     public Float(object value)
     {

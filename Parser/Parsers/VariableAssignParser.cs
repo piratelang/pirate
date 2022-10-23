@@ -15,6 +15,7 @@ public class VariableAssignParser : ITokenParser
     private Token _currentToken;
     public ParserFactory ParserFactory { get; set; }
     public ILogger Logger { get; set; }
+    
     public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory)
     {
         _tokens = tokens;

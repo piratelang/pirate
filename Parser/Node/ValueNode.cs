@@ -22,4 +22,9 @@ public class ValueNode : INode, IValueNode
     {
         return $"({Value.ToString()})";
     }
+
+    public bool IsValid()
+    {
+        
+    }
 }
