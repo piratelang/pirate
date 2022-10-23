@@ -8,9 +8,9 @@ namespace Shell.Commands
     {
         public ObjectSerializer ObjectSerializer { get; set; }
         public string Location { get; set; }
-        public RunCommand(string Version, ILogger Logger, string location) : base(Version, Logger)
+        public RunCommand(string version, ILogger logger, ObjectSerializer objectSerializer, string location) : base(version, logger)
         {
-            ObjectSerializer = new(location, this.Logger);
+            ObjectSerializer = objectSerializer;
             Location = location;
         }
         public override void Run(string[] arguments)
@@ -19,23 +19,14 @@ namespace Shell.Commands
             var fileArgument = "main";
             if (arguments.Length >= 2) { fileArgument = arguments[1]; }
             var fileName = fileArgument.Replace(".pirate", "");
-            var exists = File.Exists($"./{fileName}.pirate");
 
-            if (!exists)
-            {
-                Logger.Log($"File \"{fileArgument}\" not provided or does not exist.", this.GetType().Name, LogType.ERROR);
-                Error($"File \"{fileArgument}\" not provided or does not exist.");
-                return;
-            }
+            if (!File.Exists($"./{fileName}.pirate")) Error($"File \"{fileArgument}\" not provided or does not exist.");
 
             Logger.Log("Starting build", this.GetType().Name, LogType.INFO);
+
             var buildCommand = new BuildCommand(Version, Logger, ObjectSerializer, Location);
-            var scopeList = buildCommand.Run(arguments);
-            if (scopeList == null)
-            {
-                Logger.Log($"Build Command returned no scopes", this.GetType().Name, LogType.ERROR);
-                
-            }
+            buildCommand.Run(arguments);
+                        
             Logger.Log("Completed Build", this.GetType().Name, LogType.INFO);
 
             var location = $"bin/pirate{Version}";

@@ -13,7 +13,7 @@ namespace Shell.Commands
                 case "new":
                     return new NewCommand(version, logger);
                 case "run":
-                    return new RunCommand(version, logger, location);
+                    return new RunCommand(version, logger, new ObjectSerializer(location, logger), location);
                 case "build":
                     return new BuildCommand(version, logger, new ObjectSerializer(location, logger), location);
                 default:

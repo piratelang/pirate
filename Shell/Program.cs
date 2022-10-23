@@ -1,4 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System.Globalization;
+// See https://aka.ms/new-console-template for more information
 using Shell.Commands;
 using Common;
 using Common.Enum;
@@ -59,6 +60,8 @@ internal class Program
                 }
                 catch (Exception exception)
                 {
+                    logger.Log(exception.ToString(), "Program", LogType.ERROR);
+
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"\n{exception}");
                     Console.ForegroundColor = ConsoleColor.White;

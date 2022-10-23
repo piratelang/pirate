@@ -1,4 +1,5 @@
 using Common;
+using Common.Errors;
 
 namespace Shell.Commands;
 
@@ -13,14 +14,13 @@ public abstract class Command
     }
 
     public abstract void Help();
-    public virtual void Run(string[] arguments)
-    {
-
-    }
+    public abstract void Run(string[] arguments);
     public void Error(string message)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"\n{message}");
         Console.ForegroundColor = ConsoleColor.White;
+
+        throw new RuntimeCommandException(message);
     }
 }
