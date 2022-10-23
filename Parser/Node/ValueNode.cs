@@ -9,7 +9,7 @@ using Lexer.Tokens;
 namespace Parser.Node;
 
 [Serializable]
-public class ValueNode : INode, IValueNode
+public class ValueNode : IValueNode
 {
     public Token Value { get; set; }
 
@@ -21,5 +21,14 @@ public class ValueNode : INode, IValueNode
     public override string ToString()
     {
         return $"({Value.ToString()})";
+    }
+
+    public bool IsValid()
+    {
+        if (Value is not Token)
+        {
+            return false;
+        }
+        return true;
     }
 }

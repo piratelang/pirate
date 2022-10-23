@@ -8,14 +8,7 @@ namespace Interpreter.Values;
 
 public class String : BaseValue, IValue
 {
-    public override object Value { get; set; }
-    public ILogger Logger { get; set; }
-
-    public String(object value, ILogger logger)
-    {
-        Value = value;
-        Logger = logger;
-    }
+    public String(object value, ILogger logger) :base(value, logger) {}
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {

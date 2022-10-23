@@ -15,6 +15,7 @@ namespace Lexer.Enums
         IN,
         WHILE,
         FUNC,
-        CLASS
+        CLASS,
+        NEW
     }
 }

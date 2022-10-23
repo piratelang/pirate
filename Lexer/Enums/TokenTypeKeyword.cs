@@ -5,6 +5,5 @@ public enum TokenTypeKeyword
     INT,
     FLOAT,
     STRING,
-    CHAR,
-    NEW
+    CHAR
 }

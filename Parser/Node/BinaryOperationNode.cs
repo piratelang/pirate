@@ -1,11 +1,12 @@
 using Lexer.Tokens;
 using Parser.Node.Interfaces;
 using Parser.Node;
+using Lexer.Enums;
 
 namespace Parser.Node;
 
 [Serializable]
-public class BinaryOperationNode : INode, IOperationNode
+public class BinaryOperationNode : IOperationNode
 {
     public INode Left { get; set; }
     public Token Operator { get; set; }
@@ -21,5 +22,22 @@ public class BinaryOperationNode : INode, IOperationNode
     public override string ToString()
     {
         return $"({Left.ToString()} | {Operator.ToString()} | {Right.ToString()})";
+    }
+
+    public bool IsValid()
+    {
+        if (Left is not INode)
+        {
+            return false;
+        }
+        if (Operator.TokenType is not TokenOperators)
+        {
+            return false;
+        }
+        if (Right is not INode)
+        {
+            return false;
+        }
+        return true;
     }
 }

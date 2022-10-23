@@ -4,40 +4,48 @@ using Lexer.Enums;
 using Lexer.Tokens;
 using Common;
 using Parser.Node.Interfaces;
+using Interpreter.Interpreters;
+using Parser.Node;
 
 namespace Interpreter.Values;
 
 public class Variable : BaseValue, IValue
 {
-    public IValueNode ValueNode { get; set; }
-    public override object Value { get ; set; }
-    public ILogger Logger { get; set; }
-
-    public Variable(string value, ILogger logger)
+    public InterpreterFactory InterpreterFactory { get; set; }
+    public Variable(string value, ILogger logger, InterpreterFactory interpreterFactory): base(value, logger)
     {
-        ValueNode = (IValueNode) SymbolTable.Instance(logger).Get(value);
-        if (ValueNode.Value.Value is null)
+        Value = GetValue(value);
+    }
+
+    public object GetValue(string value)
+    {
+        var resultNode = SymbolTable.Instance(Logger).Get(value);
+        if (resultNode is not IValueNode)
         {
-            throw new NullReferenceException("Token provided has no value");
+           var interpreter = InterpreterFactory.GetInterpreter(resultNode, Logger);
+           var result = interpreter.VisitNode();
+           return result.Value;
         }
-        Value= ValueNode.Value.Value;
-        Logger = logger;
+        else
+        {
+            var valueNode = (IValueNode)resultNode;
+            return valueNode.Value.Value;
+        }
     }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        switch (Type.GetTypeCode(Value.GetType()))
+        switch (Value.GetType())
         {
-            case TypeCode.Int32:
-                return new Integer(Value).OperatedBy(_operator, other);
-            case TypeCode.String:
+            case Type intType when Value.GetType() == typeof(int):
+                return new Integer(Value, Logger).OperatedBy(_operator, other);
+            case Type stringType when Value.GetType() == typeof(string):
                 return new String(Value, Logger).OperatedBy(_operator, other);
-            case TypeCode.Double:
-                return new Float(Value).OperatedBy(_operator, other);
-            case TypeCode.Char:
+            case Type floatType when Value.GetType() == typeof(float):
+                return new Float(Value, Logger).OperatedBy(_operator, other);
+            case Type charType when Value.GetType() == typeof(char):
                 return new Char(Value, Logger).OperatedBy(_operator, other);
         }
-        Logger.Log("No TypeCode found", this.GetType().Name, Common.Enum.LogType.ERROR);
-        throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
+        throw new NotImplementedException("No TypeCode found");
     }
 }

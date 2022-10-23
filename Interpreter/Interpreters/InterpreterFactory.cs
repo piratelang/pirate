@@ -12,13 +12,13 @@ public class InterpreterFactory
         switch (node)
         {
             case VariableAssignNode:
-                return new VariableAssignNodeInterpreter(node, new InterpreterFactory(), logger);
+                return new VariableAssignNodeInterpreter(node, this, logger);
             case BinaryOperationNode:
-                return new BinaryOperationNodeInterpreter(node, new InterpreterFactory(), logger);
+                return new BinaryOperationNodeInterpreter(node, this, logger);
             case ComparisonOperationNode:
-                return new ComparisonOperationNodeInterpreter(node, new InterpreterFactory(), logger);
+                return new ComparisonOperationNodeInterpreter(node, this, logger);
             case ValueNode:
-                return new ValueNodeInterpreter(node, logger);
+                return new ValueNodeInterpreter(node, this, logger);
         }
         throw new ArgumentNullException("node", $"Factory cannot find interpreter for {node.GetType().Name}");
     }

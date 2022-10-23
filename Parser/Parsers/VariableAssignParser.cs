@@ -15,6 +15,7 @@ public class VariableAssignParser : ITokenParser
     private Token _currentToken;
     public ParserFactory ParserFactory { get; set; }
     public ILogger Logger { get; set; }
+    
     public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory)
     {
         _tokens = tokens;
@@ -56,7 +57,7 @@ public class VariableAssignParser : ITokenParser
         INode Value = result.node;
         index = result.index;
 
-        node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (IValueNode)Value);
+        node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
         return (node, index);
     }
 }

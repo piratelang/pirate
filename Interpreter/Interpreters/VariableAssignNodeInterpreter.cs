@@ -10,15 +10,12 @@ namespace Interpreter.Interpreters;
 public class VariableAssignNodeInterpreter : BaseInterpreter
 {
     public VariableAssignNode Node { get; set; }
-    private InterpreterFactory interpreterFactory;
 
-    public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger)
+    public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not VariableAssignNode)throw new TypeConversionException(node.GetType(), typeof(VariableAssignNode));
-
         Node = (VariableAssignNode)node;
 
-        interpreterFactory = InterpreterFactory;
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
@@ -32,10 +29,11 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
             }
             throw new TypeConversionException(typeof(string));
         }
+
         var Identifier = (string)Node.Identifier.Value.Value;
         SymbolTable.Instance(Logger).Set(Identifier, Node.Value);
 
-        var variable = new Variable(Identifier, Logger);
+        var variable = new Variable(Identifier, Logger, InterpreterFactory);
         return variable;
     }
 }

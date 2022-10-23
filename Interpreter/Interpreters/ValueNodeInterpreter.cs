@@ -13,7 +13,7 @@ namespace Interpreter.Interpreters;
 public class ValueNodeInterpreter : BaseInterpreter
 {
     private IValueNode Node { get; set; }
-    public ValueNodeInterpreter(INode node, ILogger logger)  : base(logger)
+    public ValueNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IValueNode) throw new TypeConversionException(node.GetType(), typeof(IValueNode));
         Node = (IValueNode)node;
@@ -27,15 +27,15 @@ public class ValueNodeInterpreter : BaseInterpreter
         switch (Node.Value.TokenType)
         {
             case TokenValue.INT:
-                return new Integer(Node.Value.Value);
+                return new Integer(Node.Value.Value, Logger);
             case TokenValue.STRING:
                 return new Values.String(Node.Value.Value, Logger);
             case TokenValue.CHAR:
                 return new Values.Char(Node.Value.Value, Logger);
             case TokenValue.FLOAT:
-                return new Float(Node.Value.Value);
+                return new Float(Node.Value.Value, Logger);
             case TokenSyntax.IDENTIFIER:
-                return new Variable((string)Node.Value.Value, Logger);
+                return new Variable((string)Node.Value.Value, Logger, InterpreterFactory);
         } 
         throw new ArgumentNullException($"{Node.Value.GetType().Name} is not trecognized as a BaseValue type.");
 
