@@ -27,13 +27,13 @@ public class ValueNodeInterpreter : BaseInterpreter
         switch (Node.Value.TokenType)
         {
             case TokenValue.INT:
-                return new Integer(Node.Value.Value);
+                return new Integer(Node.Value.Value, Logger);
             case TokenValue.STRING:
                 return new Values.String(Node.Value.Value, Logger);
             case TokenValue.CHAR:
                 return new Values.Char(Node.Value.Value, Logger);
             case TokenValue.FLOAT:
-                return new Float(Node.Value.Value);
+                return new Float(Node.Value.Value, Logger);
             case TokenSyntax.IDENTIFIER:
                 return new Variable((string)Node.Value.Value, Logger, InterpreterFactory);
         } 

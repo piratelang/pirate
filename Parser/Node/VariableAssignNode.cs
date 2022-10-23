@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Parser.Node.Interfaces;
 using Lexer.Tokens;
+using Lexer.Enums;
 
 namespace Parser.Node;
 
@@ -24,5 +25,22 @@ public class VariableAssignNode : INode
     public override string ToString()
     {
         return $"({Identifier.ToString()} = {Value.ToString()})";
+    }
+
+    public bool IsValid()
+    {
+        if (TypeToken.TokenType is not TokenTypeKeyword)
+        {
+            return false;
+        }
+        if (Identifier is not IValueNode)
+        {
+            return false;
+        }
+        if (Value is not INode)
+        {
+            return false;
+        }
+        return true;
     }
 }

@@ -1,3 +1,4 @@
+using Common;
 using Common.Errors;
 using Interpreter.Values.Interfaces;
 using Lexer.Enums;
@@ -7,12 +8,7 @@ namespace Interpreter.Values;
 
 public class Float : BaseValue, IValue
 {
-    // public override object Value { get; set; }
-
-    public Float(object value)
-    {
-        Value = value;
-    }
+    public Float(object value, ILogger logger) :base(value, logger) {}
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
@@ -25,17 +21,17 @@ public class Float : BaseValue, IValue
         switch (_operator.TokenType)
         {
             case TokenOperators.PLUS:
-                return new Float(value + otherValue);
+                return new Float(value + otherValue, Logger);
             case TokenOperators.MINUS:
-                return new Float(value - otherValue);
+                return new Float(value - otherValue, Logger);
             case TokenOperators.MULTIPLY:
-                return new Float(value * otherValue);
+                return new Float(value * otherValue, Logger);
             case TokenOperators.DIVIDE:
-                return new Float(value / otherValue);
+                return new Float(value / otherValue, Logger);
             case TokenOperators.POWER:
                 var doubleValue = Convert.ToDouble(Value);
                 var doubleOtherValue = Convert.ToDouble(otherValue);
-                return new Float(Math.Pow(doubleValue, doubleOtherValue));
+                return new Float(Math.Pow(doubleValue, doubleOtherValue), Logger);
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }

@@ -75,7 +75,7 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
                 break;
         }
 
-        return new Values.Boolean(value);
+        return new Values.Boolean(value, Logger);
     }
 
 
