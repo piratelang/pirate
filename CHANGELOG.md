@@ -21,6 +21,13 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Replaced null return with errors
 - Created base class constructors
 
+### ([#53](https://github.com/joerivanarkel/PirateLang/pull/53)) Fixing Float and Chaarcter issues<br>
+- Moved Logger and Factory to BaseInterpeter
+- Moved Logger and Value to BaseVaule
+- Added more possible nodes to variables
+- Started on Validation methods per entity. #60 
+- Fixed Float and Character lexing errors
+
 ## 0.1.2
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements<br>
 - Added build command to test files. Later to be joined by #35.
