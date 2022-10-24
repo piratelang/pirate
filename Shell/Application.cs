@@ -35,8 +35,6 @@ public class Application
         {
             RunCommand(args, argumentsList, version, location);
         }
-
-
     }
 
     public void Help(string version)

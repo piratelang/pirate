@@ -9,14 +9,16 @@ namespace Shell.Commands
         public INewCommand NewCommand { get; set; }
         public IRunCommand RunCommand { get; set; }
         public IBuildCommand BuildCommand { get; set; }
+        public IShellCommand ShellCommand { get; set; }
         public ILogger Logger { get; set; }
 
-        public CommandFactory(IInitCommand initCommand, INewCommand newCommand, IRunCommand runCommand, IBuildCommand buildCommand, ILogger logger)
+        public CommandFactory(IInitCommand initCommand, INewCommand newCommand, IRunCommand runCommand, IBuildCommand buildCommand, ILogger logger, IShellCommand shellCommand)
         {
             InitCommand = initCommand;
             NewCommand = newCommand;
             RunCommand = runCommand;
             BuildCommand = buildCommand;
+            ShellCommand = shellCommand;
             Logger = logger;
         }
         public ICommand GetCommand(string commandArgument)
@@ -31,6 +33,8 @@ namespace Shell.Commands
                     return (ICommand)RunCommand;
                 case "build":
                     return (ICommand)BuildCommand;
+                case "shell":
+                    return (ICommand)ShellCommand;
             }
             throw new NotImplementedException($"{commandArgument} is not a found command.");
         }

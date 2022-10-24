@@ -30,8 +30,8 @@ while (true)
         return;
     }
 
-    var interpreter = new Interpreter.Interpreter("Test", objectSerializer, Logger);
-    var Result = interpreter.StartInterpreter();
+    var interpreter = new Interpreter.Interpreter(objectSerializer, Logger);
+    var Result = interpreter.StartInterpreter("Test");
 
     if (Result == null)
     {

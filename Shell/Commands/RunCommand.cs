@@ -8,12 +8,14 @@ namespace Shell.Commands;
 public class RunCommand : Command, ICommand, IRunCommand
 {
     public IObjectSerializer ObjectSerializer;
-    public string Location = EnvironmentVariables.GetVariable("location");
     public IBuildCommand BuildCommand;
-    public RunCommand(ILogger logger, IObjectSerializer objectSerializer, IBuildCommand buildCommand) : base(logger)
+    public IInterpreter Interpreter { get; set; }
+    public string Location = EnvironmentVariables.GetVariable("location");
+    public RunCommand(ILogger logger, IObjectSerializer objectSerializer, IBuildCommand buildCommand, IInterpreter interpreter) : base(logger)
     {
         ObjectSerializer = objectSerializer;
         BuildCommand = buildCommand;
+        Interpreter = interpreter;
     }
     public override void Run(string[] arguments)
     {
@@ -25,16 +27,12 @@ public class RunCommand : Command, ICommand, IRunCommand
         if (!File.Exists($"./{fileName}.pirate")) Error($"File \"{fileArgument}\" not provided or does not exist.");
 
         Logger.Log("Starting build", this.GetType().Name, LogType.INFO);
-
         BuildCommand.Run(arguments);
-
         Logger.Log("Completed Build", this.GetType().Name, LogType.INFO);
 
-        var location = $"bin/pirate{Version}";
         Logger.Log($"Executing {fileName}.pirate\n", this.GetType().Name, LogType.INFO);
 
-        var interpreter = new Interpreter.Interpreter(fileName, ObjectSerializer, Logger);
-        var interpreterResult = interpreter.StartInterpreter();
+        var interpreterResult = Interpreter.StartInterpreter(fileName);
         foreach (var item in interpreterResult)
         {
             Console.WriteLine(item.Value);
