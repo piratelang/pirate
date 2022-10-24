@@ -2,8 +2,6 @@
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
 ## 1.0.0
-### ([#49](https://github.com/joerivanarkel/PirateLang/pull/49)) Semicolons<br>
-- Added Semicolon token to parser.
 
 ### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter<br>
 - Completely remade Parser
@@ -15,11 +13,21 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Partially Rewrote Lexer, to simplify.
 - Created a Object serializer, which takes a Scope and serializes it to binary.
 
+### ([#49](https://github.com/joerivanarkel/PirateLang/pull/49)) Semicolons<br>
+- Added Semicolon token to parser.
+
 ### ([#51](https://github.com/joerivanarkel/PirateLang/pull/51)) Error Handling and Validation<br>
 - Created Custom exceptions for Type Conversion and Parsing Exceptions
 - Added validation for type conversions
 - Replaced null return with errors
 - Created base class constructors
+
+### ([#53](https://github.com/joerivanarkel/PirateLang/pull/53)) Fixing Float and Chaarcter issues<br>
+- Moved Logger and Factory to BaseInterpeter
+- Moved Logger and Value to BaseVaule
+- Added more possible nodes to variables
+- Started on Validation methods per entity. #60 
+- Fixed Float and Character lexing errors
 
 ## 0.1.2
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements<br>

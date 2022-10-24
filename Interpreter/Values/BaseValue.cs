@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common;
 using Interpreter.Values.Interfaces;
 using Lexer.Tokens;
 
@@ -9,7 +10,16 @@ namespace Interpreter.Values;
 
 public abstract class BaseValue : IValue
 {
-    public virtual object Value {get; set;}
+    public object Value {get; set;}
+    public ILogger Logger { get; set; }
+    
+    public BaseValue(object value, ILogger logger)
+    {
+        Logger = logger;
+        Value = value;
+    }
+
+
     public abstract BaseValue OperatedBy(Token _operator, BaseValue other);
 
     public int Matches(BaseValue other)

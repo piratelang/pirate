@@ -11,7 +11,7 @@ public class ParserFactory: IParserFactory
     {
         switch(token.TokenType)
         {
-            case TokenTypeKeyword.VAR:
+            case TokenTypeKeyword:
                 return new VariableAssignParser(tokens, token, logger, this);
 
             case TokenSyntax.IDENTIFIER:
