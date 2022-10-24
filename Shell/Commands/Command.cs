@@ -1,15 +1,15 @@
 using Common;
 using Common.Errors;
+using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
-public abstract class Command
+public abstract class Command : ICommand
 {
-    protected string Version { get; set; }
+    protected string Version { get; set; } = EnvironmentVariables.GetVariable("version");
     protected ILogger Logger { get; set; }
-    public Command(string version, ILogger logger)
+    public Command(ILogger logger)
     {
-        Version = version;
         Logger = logger;
     }
 

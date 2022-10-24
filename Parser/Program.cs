@@ -9,19 +9,19 @@ var Logger = new Logger("Test");
 while (true)
 {
     var input = Console.ReadLine();
-    var lexer = new Lexer.Lexer("test", input, Logger);
-    var result = lexer.MakeTokens();
+    var lexer = new Lexer.Lexer(Logger);
+    var result = lexer.MakeTokens(input, "test");
 
-    if(result.tokens == null)
+    if (result.tokens == null)
     {
         Console.WriteLine(result.error.ToString());
     }
 
-    ObjectSerializer objectSerializer = new(".", Logger);
+    ObjectSerializer objectSerializer = new(Logger);
 
-    var parser = new Parser.Parser(result.tokens, Logger, objectSerializer, "Test");
-    var parseResult = parser.StartParse();
-    if(parseResult == null)
+    var parser = new Parser.Parser(Logger, objectSerializer);
+    var parseResult = parser.StartParse(result.tokens, "Test");
+    if (parseResult == null)
     {
         Console.WriteLine("Why is this null?");
     }
@@ -29,6 +29,6 @@ while (true)
     {
         Console.WriteLine(node.ToString());
     }
-    
+
 
 }

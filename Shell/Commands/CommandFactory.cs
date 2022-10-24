@@ -1,24 +1,38 @@
 using Common;
+using Shell.Commands.Interfaces;
 
 namespace Shell.Commands
 {
-    public class CommandFactory
+    public class CommandFactory : ICommandFactory
     {
-        public static Command GetCommand(string commandArgument, string version, ILogger logger, string location)
+        public IInitCommand InitCommand { get; set; }
+        public INewCommand NewCommand { get; set; }
+        public IRunCommand RunCommand { get; set; }
+        public IBuildCommand BuildCommand { get; set; }
+        public ILogger Logger { get; set; }
+
+        public CommandFactory(IInitCommand initCommand, INewCommand newCommand, IRunCommand runCommand, IBuildCommand buildCommand, ILogger logger)
+        {
+            InitCommand = initCommand;
+            NewCommand = newCommand;
+            RunCommand = runCommand;
+            BuildCommand = buildCommand;
+            Logger = logger;
+        }
+        public ICommand GetCommand(string commandArgument)
         {
             switch (commandArgument)
             {
                 case "init":
-                    return new InitCommand(version, logger);
+                    return (ICommand)InitCommand;
                 case "new":
-                    return new NewCommand(version, logger);
+                    return (ICommand)NewCommand;
                 case "run":
-                    return new RunCommand(version, logger, new ObjectSerializer(location, logger), location);
+                    return (ICommand)RunCommand;
                 case "build":
-                    return new BuildCommand(version, logger, new ObjectSerializer(location, logger), location);
-                default:
-                    return null;
+                    return (ICommand)BuildCommand;
             }
+            throw new NotImplementedException($"{commandArgument} is not a found command.");
         }
     }
 }

@@ -11,7 +11,7 @@ public class Interpreter
 {
     private Scope ScopeList { get; set; }
     public ILogger Logger { get; set; }
-    public Interpreter(string filename, ObjectSerializer objectSerializer, ILogger logger)
+    public Interpreter(string filename, IObjectSerializer objectSerializer, ILogger logger)
     {
         ScopeList = objectSerializer.Deserialize<Scope>(filename + ".pirate");
         Logger = logger;

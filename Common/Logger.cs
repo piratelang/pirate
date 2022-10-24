@@ -7,14 +7,11 @@ namespace Common;
 public class Logger : ILogger
 {
     private string logName { get; set; }
-    private string version { get; set; } = "0.0.0";
+    private string version { get; set; } = EnvironmentVariables.GetVariable("version");
     private string location { get; set; }
 
-    public Logger(string Version, string Name = "placeholder")
+    public Logger(string Name = "placeholder")
     {
-        version = Version;
-
-
         var dateTime = DateTime.Now;
         logName = Name;
         if (Name == "placeholder")

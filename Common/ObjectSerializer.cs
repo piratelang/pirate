@@ -4,13 +4,13 @@ using Common.Enum;
 
 namespace Common;
 
-public class ObjectSerializer
+public class ObjectSerializer : IObjectSerializer
 {
     public string Location { get; set; }
     public ILogger Logger { get; set; }
-    public ObjectSerializer(string location, ILogger logger)
+    public ObjectSerializer(ILogger logger)
     {
-        Location = $"{location}/cache";
+        Location = EnvironmentVariables.GetVariable("location") + "/cache";
         bool exists = System.IO.Directory.Exists(Location);
         if (!exists)
             System.IO.Directory.CreateDirectory(Location);
