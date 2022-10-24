@@ -14,6 +14,7 @@ public class Variable : BaseValue, IValue
     public InterpreterFactory InterpreterFactory { get; set; }
     public Variable(string value, ILogger logger, InterpreterFactory interpreterFactory): base(value, logger)
     {
+        InterpreterFactory = interpreterFactory;
         Value = GetValue(value);
     }
 

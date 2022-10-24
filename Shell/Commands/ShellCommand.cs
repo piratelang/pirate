@@ -26,28 +26,35 @@ public class ShellCommand : Command, ICommand, IShellCommand
         Logger.Log("Starting Shell Command", this.GetType().Name, LogType.INFO);
         while (true)
         {
-            Console.Write(">> ");
-            var input = Console.ReadLine();
-            List<string> exitterms = new(){"stop", "exit", "break"};
-            if (input == null || input == "")
+            try
             {
-                continue;
+                Console.Write(">> ");
+                var input = Console.ReadLine();
+                List<string> exitterms = new() { "stop", "exit", "break" };
+                if (input == null || input == "")
+                {
+                    continue;
+                }
+                if (exitterms.Contains(input))
+                {
+                    break;
+                }
+
+                var tokens = Lexer.MakeTokens(input, "test");
+                if (tokens.tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file. {tokens.error.AsString()}");
+
+                var parseResult = Parser.StartParse(tokens.tokens, "repl");
+                if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
+
+                var interpreterResult = Interpreter.StartInterpreter("repl");
+                foreach (var item in interpreterResult)
+                {
+                    Console.WriteLine(item.Value);
+                }
             }
-            if (exitterms.Contains(input))
+            catch (Exception ex)
             {
-                break;
-            }
-
-            var tokens = Lexer.MakeTokens(input, "test");
-            if (tokens.tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file. {tokens.error.AsString()}");
-
-            var parseResult = Parser.StartParse(tokens.tokens, "repl");
-            if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
-
-            var interpreterResult = Interpreter.StartInterpreter("repl");
-            foreach (var item in interpreterResult)
-            {
-                Console.WriteLine(item.Value);
+                Error(ex.ToString());
             }
         }
     }
@@ -63,5 +70,12 @@ public class ShellCommand : Command, ICommand, IShellCommand
             "\nOptions",
             "   -h --help       Show command line help."
         ));
+    }
+
+    public override void Error(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"\n{message}");
+        Console.ForegroundColor = ConsoleColor.White;
     }
 }

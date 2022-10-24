@@ -15,7 +15,7 @@ public abstract class Command : ICommand
 
     public abstract void Help();
     public abstract void Run(string[] arguments);
-    public void Error(string message)
+    public virtual void Error(string message)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"\n{message}");
