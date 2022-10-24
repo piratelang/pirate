@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Security.Principal;
 using Common;
+using Common.Interfaces;
 using Lexer.Enums;
 using Lexer.Tokens;
 

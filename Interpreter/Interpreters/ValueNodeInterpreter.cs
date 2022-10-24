@@ -7,6 +7,7 @@ using Parser.Node.Interfaces;
 using Lexer.Tokens;
 using Common;
 using Common.Errors;
+using Common.Interfaces;
 
 namespace Interpreter.Interpreters;
 

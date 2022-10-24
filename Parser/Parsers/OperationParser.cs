@@ -5,6 +5,7 @@ using Parser.Node.Interfaces;
 using Lexer.Enums;
 using Common;
 using Common.Enum;
+using Common.Interfaces;
 
 namespace Parser.Parsers;
 

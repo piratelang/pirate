@@ -1,4 +1,4 @@
-namespace Common;
+namespace Common.Interfaces;
 
 public interface IObjectSerializer
 {

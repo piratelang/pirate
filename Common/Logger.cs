@@ -1,5 +1,6 @@
 ﻿using System;
 using Common.Enum;
+using Common.Interfaces;
 
 namespace Common;
 

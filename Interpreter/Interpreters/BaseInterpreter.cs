@@ -2,6 +2,7 @@ using Interpreter.Values;
 using Parser.Node.Interfaces;
 using Interpreter.Interpreters.Interfaces;
 using Common;
+using Common.Interfaces;
 
 namespace Interpreter.Interpreters;
 

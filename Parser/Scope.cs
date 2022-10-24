@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Parser.Node.Interfaces;
 using Common;
+using Common.Interfaces;
 
 namespace Parser
 {

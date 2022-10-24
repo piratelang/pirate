@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Common;
+using Common.Interfaces;
 using Interpreter;
 using Lexer;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,6 +1,6 @@
 using Common.Enum;
 
-namespace Common;
+namespace Common.Interfaces;
 
 public interface ILogger
 {

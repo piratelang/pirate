@@ -6,6 +6,7 @@ using Parser.Node;
 using Common;
 using Common.Enum;
 using Common.Errors;
+using Common.Interfaces;
 
 namespace Parser.Parsers;
 

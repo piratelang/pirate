@@ -4,6 +4,7 @@ using Lexer;
 using Parser;
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
+using Common.Interfaces;
 
 namespace Shell.Commands;
 

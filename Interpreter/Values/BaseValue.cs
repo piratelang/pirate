@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
+using Common.Interfaces;
 using Interpreter.Values.Interfaces;
 using Lexer.Tokens;
 

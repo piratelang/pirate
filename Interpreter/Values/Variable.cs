@@ -6,6 +6,7 @@ using Common;
 using Parser.Node.Interfaces;
 using Interpreter.Interpreters;
 using Parser.Node;
+using Common.Interfaces;
 
 namespace Interpreter.Values;
 

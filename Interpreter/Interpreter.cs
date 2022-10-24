@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using Interpreter.Interpreters;
 using Interpreter.Values;
 using Parser;
-using Common;
+using Common.Interfaces;
 using Common.Enum;
 
 namespace Interpreter;

@@ -1,4 +1,5 @@
 using Common;
+using Common.Interfaces;
 
 namespace Shell.Commands.Interfaces;
 
