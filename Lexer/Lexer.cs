@@ -17,8 +17,6 @@ public class Lexer : ILexer
     public Lexer(ILogger logger)
     {
         Logger = logger;
-        position = -1;
-
         logger.Log("Created Lexer", this.GetType().Name, LogType.INFO);
     }
 
@@ -37,6 +35,7 @@ public class Lexer : ILexer
 
     public (List<Token>? tokens, Error? error) MakeTokens(string Text, string FileName)
     {
+        position = -1;
         text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
         fileName = FileName;
 
