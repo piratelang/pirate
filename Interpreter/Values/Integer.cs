@@ -1,5 +1,6 @@
 using Common;
 using Common.Errors;
+using Common.Interfaces;
 using Interpreter.Values.Interfaces;
 using Lexer.Enums;
 using Lexer.Tokens;

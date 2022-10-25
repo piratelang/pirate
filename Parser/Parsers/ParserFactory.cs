@@ -2,6 +2,7 @@ using Lexer.Tokens;
 using Lexer.Enums;
 using Parser.Parsers.Interfaces;
 using Common;
+using Common.Interfaces;
 
 namespace Parser.Parsers;
 

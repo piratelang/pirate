@@ -2,26 +2,32 @@ using System.Runtime.Serialization;
 using Interpreter.Interpreters;
 using Interpreter.Values;
 using Parser;
-using Common;
+using Common.Interfaces;
 using Common.Enum;
 
 namespace Interpreter;
 
-public class Interpreter
+public class Interpreter : IInterpreter
 {
-    private Scope ScopeList { get; set; }
+    private IObjectSerializer ObjectSerializer;
     public ILogger Logger { get; set; }
-    public Interpreter(string filename, ObjectSerializer objectSerializer, ILogger logger)
+    public Interpreter(IObjectSerializer objectSerializer, ILogger logger)
     {
-        ScopeList = objectSerializer.Deserialize<Scope>(filename + ".pirate");
+        ObjectSerializer = objectSerializer;
         Logger = logger;
     }
 
-    public List<BaseValue> StartInterpreter()
+    public List<BaseValue> StartInterpreter(string filename)
     {
+        if (filename == null)
+        {
+            throw new NullReferenceException("filename provided is null");
+        }
+        var scopeList = ObjectSerializer.Deserialize<Scope>(filename + ".pirate");
+
         List<BaseValue> result = new();
         var interpreterFactory = new InterpreterFactory();
-        foreach (var item in ScopeList.Nodes)
+        foreach (var item in scopeList.Nodes)
         {
             Logger.Log($"Interpreting {item.GetType().Name}", this.GetType().Name, LogType.INFO);
             var interpreter = interpreterFactory.GetInterpreter(item, Logger);

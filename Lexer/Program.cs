@@ -7,8 +7,8 @@ Console.WriteLine("Hello, World!");
 var Logger = new Logger("Test");
 
 var input = Console.ReadLine();
-var lexer = new Lexer.Lexer("test", input, Logger);
-var result = lexer.MakeTokens();
+var lexer = new Lexer.Lexer(Logger);
+var result = lexer.MakeTokens(input, "test");
 
 if (result.error != null)
 {

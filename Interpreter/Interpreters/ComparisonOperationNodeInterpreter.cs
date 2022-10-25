@@ -3,6 +3,7 @@ using Parser.Node.Interfaces;
 using Lexer.Enums;
 using Common;
 using Common.Errors;
+using Common.Interfaces;
 
 namespace Interpreter.Interpreters;
 

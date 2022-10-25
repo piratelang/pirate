@@ -6,36 +6,34 @@ using Lexer.Tokens;
 using Parser.Node.Interfaces;
 using Common;
 using Common.Enum;
+using Common.Interfaces;
 
 namespace Parser;
-public class Parser
-{
 
-    private List<Token> _tokens;
+public class Parser : IParser
+{
     private IParserFactory parserFactory = new ParserFactory();
     public ILogger Logger { get; set; }
-    public ObjectSerializer ObjectSerializer { get; set; }
-    public string FileName { get; set; }
-    public Parser(List<Token> tokens, ILogger logger, ObjectSerializer objectSerializer, string fileName)
+    public IObjectSerializer ObjectSerializer { get; set; }
+
+    public Parser(ILogger logger, IObjectSerializer objectSerializer)
     {
-        _tokens = tokens;
         Logger = logger;
         ObjectSerializer = objectSerializer;
-        FileName = fileName;
         logger.Log("Created Parser", this.GetType().Name, LogType.INFO);
     }
-    public Scope StartParse()
+    public Scope StartParse(List<Token> tokens, string fileName)
     {
         var index = 0;
         Scope scope = new(Logger);
-        while (index + 1 <= _tokens.Count())
+        while (index + 1 <= tokens.Count())
         {
-            if (_tokens == null)
+            if (tokens == null)
             {
                 Logger.Log("No Tokens Found", this.GetType().Name, LogType.ERROR);
-                throw new ArgumentNullException(nameof(_tokens));
+                throw new ArgumentNullException(nameof(tokens));
             }
-            var tokenParser = parserFactory.GetParser(_tokens[index], _tokens, Logger);
+            var tokenParser = parserFactory.GetParser(tokens[index], tokens, Logger);
             var parseResult = tokenParser.CreateNode();
 
             Logger.Log($"Created {parseResult.node.GetType().Name} | \"{parseResult.node.ToString()}\"", this.GetType().Name, LogType.INFO);
@@ -43,9 +41,9 @@ public class Parser
             scope.AddNode(parseResult.node);
             index = parseResult.index;
             index++;
-            if (index + 1 <= _tokens.Count())
+            if (index + 1 <= tokens.Count())
             {
-                if (_tokens[index].TokenType.Equals(TokenSyntax.SEMICOLON))
+                if (tokens[index].TokenType.Equals(TokenSyntax.SEMICOLON))
                 {
                     index++;
                 }
@@ -54,7 +52,7 @@ public class Parser
 
         Logger.Log("Finished Parsing", this.GetType().Name, LogType.INFO);
 
-        ObjectSerializer.SerializeObject(scope, $"{FileName}.pirate");
+        ObjectSerializer.SerializeObject(scope, $"{fileName}.pirate");
 
         return scope;
     }

@@ -1,5 +1,5 @@
-﻿using System;
-using Common.Enum;
+﻿using Common.Enum;
+using Common.Interfaces;
 
 namespace Common;
 
@@ -7,21 +7,16 @@ namespace Common;
 public class Logger : ILogger
 {
     private string logName { get; set; }
-    private string version { get; set; } = "0.0.0";
+    private string version { get; set; } = EnvironmentVariables.GetVariable("version");
     private string location { get; set; }
 
-    public Logger(string Version, string Name = "placeholder")
+    public Logger(string Name = "placeholder")
     {
-        version = Version;
-
-
-        var dateTime = DateTime.Now;
         logName = Name;
         if (Name == "placeholder")
         {
-            logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
+            logName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
         }
-
         location = $"./bin/pirate{version}/logs/{logName}.log";
 
         bool exists = Directory.Exists($"./bin/pirate{version}/logs");

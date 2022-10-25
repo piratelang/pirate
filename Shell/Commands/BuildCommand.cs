@@ -3,102 +3,90 @@ using Common.Enum;
 using Lexer;
 using Parser;
 using Shell.ModuleList;
+using Shell.Commands.Interfaces;
+using Common.Interfaces;
 
-namespace Shell.Commands
+namespace Shell.Commands;
+
+public class BuildCommand : Command, ICommand, IBuildCommand
 {
-    public class BuildCommand : Command
+    private IObjectSerializer _objectSerializer;
+    private IParser _parser;
+    private ILexer _lexer;
+    private IModuleListRepository _moduleListRepository;
+    private string Location = EnvironmentVariables.GetVariable("location");
+
+    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer, IModuleListRepository moduleListRepository) : base(logger)
     {
-        private ObjectSerializer ObjectSerializer { get; set;}
-        private string Location { get; set; }
-        public BuildCommand(string Version, ILogger Logger, ObjectSerializer objectSerializer, string location) : base(Version, Logger)
-        {   
-            ObjectSerializer = objectSerializer;
-            Location = location;
-        }
-        public List<Scope> Run(string[] arguments)
+        _objectSerializer = objectSerializer;
+        _parser = parser;
+        _lexer = lexer;
+        _moduleListRepository = moduleListRepository;
+    }
+    public override void Run(string[] arguments)
+    {
+        Logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
+
+        // Check for files
+        var foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
+        if (foundFiles.Length == 0) Error("No files were found in the directory");
+
+        var moduleList = _moduleListRepository.GetList(Location, Logger);
+
+        foreach (var file in foundFiles)
         {
-            Logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
-            string[] foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
-            
+            if (CheckModuleList(moduleList, file)) break;
 
-            if (foundFiles.Length == 0)
-            {
-                Logger.Log("No files were found in the directory", this.GetType().Name, LogType.ERROR);
-                Error("No files found");
-                return null;
-            }
-            List<Module> moduleList = ModuleListRepository.GetList(Location, Logger);
-            List<Scope> scopeList = new();
+            // Starting build
+            Console.WriteLine($"Building {file}\n");
+            Logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
 
-            foreach (var file in foundFiles)
-            {
-                if (moduleList != null)
-                {
-                    Module foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
-                    if (foundModule != null)
-                    {
-                        if (
-                            foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
-                            foundModule.path == File.OpenRead(file).Name &&
-                            foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
-                        )
-                        {
-                            Logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
-                            break;
-                        }
-                    }
-                    
-                }
-                
-                Console.WriteLine($"Building {file}\n");
-                Logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
-                var fileName = file.Replace(".pirate", "");
-                var text = File.ReadAllText(fileName + ".pirate");
-                if(text == null)
-                {
-                    Logger.Log($"{fileName} contains no text", this.GetType().Name, LogType.ERROR);
-                    Error($"{fileName} contains no text");
-                    return null;
-                }
+            var fileName = file.Replace(".pirate", "");
+            var text = File.ReadAllText(fileName + ".pirate");
+            if (text == null) Error($"{fileName} contains no text");
 
-                Logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
-                var lexer = new Lexer.Lexer("test", text, Logger);
-                var tokens = lexer.MakeTokens();
-                if (tokens.tokens.Count() == 0)
-                {
-                    Logger.Log($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}", this.GetType().Name, LogType.ERROR);
-                    Error($"Error occured while lexing tokens, in the file {fileName}\n");
-                    return null;
-                }
+            // Running Lexer
+            Logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
+            var tokens = _lexer.MakeTokens(text, "test");
+            if (tokens.tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}");
 
-                Logger.Log($"Parsing {file}\n", this.GetType().Name, LogType.INFO);
-                var parser = new Parser.Parser(tokens.tokens, Logger, ObjectSerializer, fileName);
-                var parseResult = parser.StartParse();
-                if (parseResult.Nodes.Count() < 1)
-                {
-                    Logger.Log("Error occured while parsing tokens.", this.GetType().Name, LogType.ERROR);
-                    Error("Error occured while parsing tokens.");
-                    return null;
-                }
-                scopeList.Add(parseResult);
-            }
-
-            Logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
-            ModuleListRepository.SetList(foundFiles, Location, Logger);
-
-            return scopeList;
+            // Running Parser
+            Logger.Log($"Parsing {file}\n", this.GetType().Name, LogType.INFO);
+            var parseResult = _parser.StartParse(tokens.tokens, fileName);
+            if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
         }
-        public override void Help()
+        Logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
+        _moduleListRepository.SetList(foundFiles, Location, Logger);
+    }
+    public override void Help()
+    {
+        Console.WriteLine(String.Join(
+            Environment.NewLine,
+            "Description",
+            "   pirate project building command",
+            "\nUsage",
+            "   pirate build",
+            "\nOptions",
+            "   -h --help       Show command line help."
+        ));
+    }
+
+    public bool CheckModuleList(List<Module> moduleList, string file)
+    {
+        if (moduleList != null) return false;
+        var foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
+        if (foundModule != null)
         {
-            Console.WriteLine(String.Join(
-                Environment.NewLine,
-                "Description",
-                "   pirate project building command",
-                "\nUsage",
-                "   pirate build",
-                "\nOptions",
-                "   -h --help       Show command line help."
-            ));
+            if (
+                foundModule.moduleName == File.OpenRead(file).Name.Split("\\").Last() &&
+                foundModule.path == File.OpenRead(file).Name &&
+                foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
+            )
+            {
+                Logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
+                return true;
+            }
         }
+        return false;
     }
 }

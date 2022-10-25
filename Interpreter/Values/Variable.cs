@@ -6,6 +6,7 @@ using Common;
 using Parser.Node.Interfaces;
 using Interpreter.Interpreters;
 using Parser.Node;
+using Common.Interfaces;
 
 namespace Interpreter.Values;
 
@@ -14,6 +15,7 @@ public class Variable : BaseValue, IValue
     public InterpreterFactory InterpreterFactory { get; set; }
     public Variable(string value, ILogger logger, InterpreterFactory interpreterFactory): base(value, logger)
     {
+        InterpreterFactory = interpreterFactory;
         Value = GetValue(value);
     }
 

@@ -1,25 +1,22 @@
-
 using Lexer.Tokens;
 using Lexer.Enums;
-using Common;
+using Common.Interfaces;
 using Common.Enum;
 
 namespace Lexer;
-public class Lexer
+
+public class Lexer : ILexer
 {
+    public ILogger Logger { get; set; }
+
     public string fileName { get; set; }
     public static string text { get; set; }
     public static char currentChar { get; set; }
     public static int position { get; set; }
-    public ILogger Logger { get; set; }
 
-    public Lexer(string FileName, string Text, ILogger logger)
+    public Lexer(ILogger logger)
     {
         Logger = logger;
-        fileName = FileName;
-        position = -1;
-        text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
-        Advance();
         logger.Log("Created Lexer", this.GetType().Name, LogType.INFO);
     }
 
@@ -36,9 +33,15 @@ public class Lexer
         }
     }
 
-    public (List<Token>? tokens, Error? error) MakeTokens()
+    public (List<Token>? tokens, Error? error) MakeTokens(string Text, string FileName)
     {
-        List<Token> tokens = new ();
+        position = -1;
+        text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
+        fileName = FileName;
+
+        Advance();
+        
+        List<Token> tokens = new();
 
         while (currentChar != '€')
         {

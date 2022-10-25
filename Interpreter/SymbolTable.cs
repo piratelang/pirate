@@ -3,6 +3,7 @@ using Common;
 using Parser.Node;
 using Lexer.Tokens;
 using Interpreter.Values;
+using Common.Interfaces;
 
 namespace Interpreter;
 

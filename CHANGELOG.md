@@ -29,6 +29,14 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Started on Validation methods per entity. #60 
 - Fixed Float and Character lexing errors
 
+### ([#62](https://github.com/joerivanarkel/PirateLang/pull/62)) Command Rework<br>
+- Refined and Refactored commands
+- Added a dependency injection container, from Application to the Parser and Lexer
+- Moved constant variable parameters to `variables.json` and added new `EnvironmentVariables` class to get these variables
+- Created repl command `shell`
+- Fixed lexer for multiple inputs
+- Move common interfaces to `Common.Interfaces`
+
 ## 0.1.2
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements<br>
 - Added build command to test files. Later to be joined by #35.
