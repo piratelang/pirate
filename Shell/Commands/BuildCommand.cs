@@ -10,16 +10,18 @@ namespace Shell.Commands;
 
 public class BuildCommand : Command, ICommand, IBuildCommand
 {
-    private IObjectSerializer ObjectSerializer;
-    private IParser Parser;
-    private ILexer Lexer;
+    private IObjectSerializer _objectSerializer;
+    private IParser _parser;
+    private ILexer _lexer;
+    private IModuleListRepository _moduleListRepository;
     private string Location = EnvironmentVariables.GetVariable("location");
 
-    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer) : base(logger)
+    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer, IModuleListRepository moduleListRepository) : base(logger)
     {
-        ObjectSerializer = objectSerializer;
-        Parser = parser;
-        Lexer = lexer;
+        _objectSerializer = objectSerializer;
+        _parser = parser;
+        _lexer = lexer;
+        _moduleListRepository = moduleListRepository;
     }
     public override void Run(string[] arguments)
     {
@@ -29,9 +31,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
         var foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
         if (foundFiles.Length == 0) Error("No files were found in the directory");
 
-        var moduleList = ModuleListRepository.GetList(Location, Logger);
-        List<Scope> scopeList = new();
-
+        var moduleList = _moduleListRepository.GetList(Location, Logger);
 
         foreach (var file in foundFiles)
         {
@@ -47,19 +47,16 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 
             // Running Lexer
             Logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
-            var tokens = Lexer.MakeTokens(text, "test");
+            var tokens = _lexer.MakeTokens(text, "test");
             if (tokens.tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}");
 
             // Running Parser
             Logger.Log($"Parsing {file}\n", this.GetType().Name, LogType.INFO);
-            var parseResult = Parser.StartParse(tokens.tokens, fileName);
+            var parseResult = _parser.StartParse(tokens.tokens, fileName);
             if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
-
-            scopeList.Add(parseResult);
         }
-
         Logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
-        ModuleListRepository.SetList(foundFiles, Location, Logger);
+        _moduleListRepository.SetList(foundFiles, Location, Logger);
     }
     public override void Help()
     {

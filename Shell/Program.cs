@@ -8,6 +8,7 @@ using Parser;
 using Shell;
 using Shell.Commands;
 using Shell.Commands.Interfaces;
+using Shell.ModuleList;
 
 var version = "1.0.0";
 var location = $"bin/pirate{version}";
@@ -16,6 +17,7 @@ var builder = new ServiceCollection();
 builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
 builder.AddSingleton<ILogger, Logger>();
+builder.AddSingleton<IModuleListRepository, ModuleListRepository>();
 
 builder.AddSingleton<CommandFactory, CommandFactory>();
 
