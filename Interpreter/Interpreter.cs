@@ -19,6 +19,10 @@ public class Interpreter : IInterpreter
 
     public List<BaseValue> StartInterpreter(string filename)
     {
+        if (filename == null)
+        {
+            throw new NullReferenceException("filename provided is null");
+        }
         var scopeList = ObjectSerializer.Deserialize<Scope>(filename + ".pirate");
 
         List<BaseValue> result = new();

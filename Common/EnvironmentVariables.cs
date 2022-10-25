@@ -1,3 +1,4 @@
+using Common.Errors;
 using Microsoft.Extensions.Configuration;
 
 namespace Common
@@ -16,7 +17,7 @@ namespace Common
             }
             catch (System.Exception)
             {
-                throw new NotImplementedException($"{variablename} was not found in variables.json");
+                throw new FileException($"{variablename} was not found in variables.json");
             }
         }
     }

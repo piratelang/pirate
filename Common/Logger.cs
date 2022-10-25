@@ -1,5 +1,4 @@
-﻿using System;
-using Common.Enum;
+﻿using Common.Enum;
 using Common.Interfaces;
 
 namespace Common;
@@ -13,13 +12,11 @@ public class Logger : ILogger
 
     public Logger(string Name = "placeholder")
     {
-        var dateTime = DateTime.Now;
         logName = Name;
         if (Name == "placeholder")
         {
-            logName = $"{dateTime.Day}.{dateTime.Month}.{dateTime.Year}.{dateTime.Hour}.{dateTime.Minute}.{dateTime.Second}";
+            logName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
         }
-
         location = $"./bin/pirate{version}/logs/{logName}.log";
 
         bool exists = Directory.Exists($"./bin/pirate{version}/logs");
