@@ -1,7 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Parser;
-using Lexer;
-using Common;
+﻿using Common;
 
 Console.WriteLine("Hello, World!");
 var Logger = new Logger("Test");

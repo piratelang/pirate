@@ -1,5 +1,3 @@
-using Common.Interfaces;
-
 namespace Shell.ModuleList;
 
 public interface IModuleListRepository

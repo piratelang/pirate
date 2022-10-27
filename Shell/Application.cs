@@ -1,6 +1,3 @@
-using Common;
-using Common.Enum;
-using Common.Interfaces;
 using Shell.Commands;
 
 namespace Shell;

@@ -1,9 +1,4 @@
 using Interpreter.Values.Interfaces;
-using Lexer.Enums;
-using Lexer.Tokens;
-using Common;
-using Common.Errors;
-using Common.Interfaces;
 
 namespace Interpreter.Values;
 

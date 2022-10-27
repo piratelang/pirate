@@ -1,40 +1,32 @@
-using System.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Parser.Node.Interfaces;
-using Common;
-using Common.Interfaces;
 
-namespace Parser
+namespace Parser;
+
+[Serializable]
+public class Scope
 {
-    [Serializable]
-    public class Scope
+    public List<INode> Nodes { get; private set; }
+    private ILogger Logger { get; set; }
+
+    public Scope(ILogger logger)
     {
-        public List<INode> Nodes { get; private set; }
-        private ILogger Logger { get; set; }
+        Logger = logger;
+        Nodes = new();
+    }
 
-        public Scope(ILogger logger)
+    public bool AddNode(INode node)
+    {
+        try
         {
-            Logger = logger;
-            Nodes = new();
+            Nodes.Add(node);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.Log($"Scope.AddNode() returned an error of {ex.ToString()}", this.GetType().Name, Common.Enum.LogType.ERROR);
+            Console.WriteLine(ex);
+            return false;
         }
 
-        public bool AddNode(INode node)
-        {
-            try
-            {
-                Nodes.Add(node);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"Scope.AddNode() returned an error of {ex.ToString()}", this.GetType().Name, Common.Enum.LogType.ERROR);
-                Console.WriteLine(ex);
-                return false;
-            }
-            
-        }
     }
 }

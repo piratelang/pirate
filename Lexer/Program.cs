@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using Lexer;
-using Common;
+﻿using Common;
 
 Console.WriteLine("Hello, World!");
 

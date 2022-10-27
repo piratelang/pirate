@@ -1,6 +1,4 @@
 using Interpreter.Values;
-using Common;
-using Common.Interfaces;
 
 namespace Interpreter;
 

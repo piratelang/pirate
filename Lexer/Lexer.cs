@@ -1,7 +1,5 @@
 using Lexer.Tokens;
 using Lexer.Enums;
-using Common.Interfaces;
-using Common.Enum;
 
 namespace Lexer;
 
