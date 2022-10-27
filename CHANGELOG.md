@@ -37,6 +37,10 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Fixed lexer for multiple inputs
 - Move common interfaces to `Common.Interfaces`
 
+### ([#66](https://github.com/joerivanarkel/PirateLang/pull/66)) Implicit usings<br>
+- Removed unnecessary usings.
+- Added implicit using in `Usings.g.cs`
+
 ## 0.1.2
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements<br>
 - Added build command to test files. Later to be joined by #35.
