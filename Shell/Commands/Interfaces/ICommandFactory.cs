@@ -1,9 +1,8 @@
-using Common;
 using Common.Interfaces;
 
 namespace Shell.Commands.Interfaces;
 
-    public interface ICommandFactory
+public interface ICommandFactory
     {
         IInitCommand InitCommand { get; set; }
         INewCommand NewCommand { get; set; }

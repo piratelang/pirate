@@ -1,7 +1,5 @@
-using Interpreter.Interpreters.Interfaces;
 using Parser.Node;
 using Parser.Node.Interfaces;
-using Common;
 using Common.Interfaces;
 
 namespace Interpreter.Interpreters;

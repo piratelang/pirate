@@ -1,6 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Parser;
-using Lexer;
 using Common;
 
 Console.WriteLine("Hello, World!");

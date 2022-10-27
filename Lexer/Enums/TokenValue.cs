@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+namespace Lexer.Enums;
 
-namespace Lexer.Enums
+public enum TokenValue
 {
-    public enum TokenValue
-    {
-        INT,
-        FLOAT,
-        STRING, 
-        CHAR
-    }
+    INT,
+    FLOAT,
+    STRING,
+    CHAR
 }

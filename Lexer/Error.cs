@@ -1,21 +1,19 @@
+namespace Lexer;
 
-namespace Lexer
+public class Error
 {
-    public class Error
+    public string errorName { get; set; }
+    public string details { get; set; }
+
+    public Error(string ErrorName, string Details)
     {
-        public string errorName { get; set; }
-        public string details { get; set; }
+        errorName = ErrorName;
+        details = Details;
+    }
 
-        public Error(string ErrorName, string Details)
-        {
-            errorName = ErrorName;
-            details = Details;
-        }
-
-        public string AsString()
-        {
-            var result = $"{errorName}: {details}";
-            return result;
-        }
+    public string AsString()
+    {
+        var result = $"{errorName}: {details}";
+        return result;
     }
 }
