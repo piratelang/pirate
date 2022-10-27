@@ -11,7 +11,7 @@ public class TokenRepository
         var numberString = string.Empty;
         var dotCount = 0;
 
-        while (Lexer.currentChar != null && (Globals.DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '.'))
+        while (Lexer.Instance(Logger).text[Lexer.Instance(Logger).position] != null && (Globals.DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '.'))
         {
             if (Lexer.currentChar == '.')
             {
