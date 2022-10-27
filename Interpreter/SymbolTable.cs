@@ -1,8 +1,3 @@
-using Parser.Node.Interfaces;
-using Parser.Node;
-using Lexer.Tokens;
-using Common.Interfaces;
-
 namespace Interpreter;
 
 public sealed class SymbolTable

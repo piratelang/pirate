@@ -1,8 +1,5 @@
 using Interpreter.Values.Interfaces;
-using Lexer.Tokens;
-using Parser.Node.Interfaces;
 using Interpreter.Interpreters;
-using Common.Interfaces;
 
 namespace Interpreter.Values;
 

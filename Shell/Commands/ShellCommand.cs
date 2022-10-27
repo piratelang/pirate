@@ -1,6 +1,4 @@
 using Common;
-using Common.Enum;
-using Common.Interfaces;
 using Interpreter;
 using Lexer;
 using Parser;

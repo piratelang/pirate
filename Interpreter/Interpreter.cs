@@ -1,8 +1,6 @@
 using Interpreter.Interpreters;
 using Interpreter.Values;
 using Parser;
-using Common.Interfaces;
-using Common.Enum;
 
 namespace Interpreter;
 

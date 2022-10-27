@@ -1,5 +1,4 @@
 using Lexer.Tokens;
-using Common.Interfaces;
 
 namespace Lexer;
 

@@ -1,9 +1,5 @@
 using Parser.Parsers;
 using Parser.Parsers.Interfaces;
-using Lexer.Enums;
-using Lexer.Tokens;
-using Common.Enum;
-using Common.Interfaces;
 
 namespace Parser;
 

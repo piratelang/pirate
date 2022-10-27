@@ -1,6 +1,4 @@
-using Common.Interfaces;
 using Interpreter.Values.Interfaces;
-using Lexer.Tokens;
 
 namespace Interpreter.Values;
 

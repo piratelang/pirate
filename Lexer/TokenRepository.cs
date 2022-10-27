@@ -1,5 +1,4 @@
 using System.Globalization;
-using Common.Interfaces;
 using Lexer.Enums;
 using Lexer.Tokens;
 

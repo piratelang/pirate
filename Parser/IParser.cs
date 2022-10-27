@@ -1,6 +1,3 @@
-using Lexer.Tokens;
-using Common.Interfaces;
-
 namespace Parser;
 
 public interface IParser

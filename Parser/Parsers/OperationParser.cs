@@ -1,10 +1,6 @@
 using Parser.Node;
-using Lexer.Tokens;
 using Parser.Parsers.Interfaces;
 using Parser.Node.Interfaces;
-using Lexer.Enums;
-using Common.Enum;
-using Common.Interfaces;
 
 namespace Parser.Parsers;
 

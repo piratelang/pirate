@@ -1,4 +1,3 @@
-using Common.Interfaces;
 using Lexer.Enums;
 
 namespace Lexer.Tokens;
