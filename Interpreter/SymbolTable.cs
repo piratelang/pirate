@@ -16,7 +16,6 @@ public sealed class SymbolTable
         if (symbolTable == null)
         {
             symbolTable = new SymbolTable(logger);
-            symbolTable.SymbolList["a"] = new ValueNode(new Token(Lexer.Enums.TokenGroup.VALUE, Lexer.Enums.TokenValue.INT, logger, 2));
         }
         return symbolTable;
     }
