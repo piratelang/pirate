@@ -12,7 +12,7 @@ public sealed class Lexer : ILexer
     public string text { get; set; }
     public int position { get; set; } = 0;
 
-    private Lexer(ILogger logger)
+    public Lexer(ILogger logger)
     {
         Logger = logger;
         logger.Log("Created Lexer", this.GetType().Name, LogType.INFO);
@@ -29,32 +29,40 @@ public sealed class Lexer : ILexer
 
     public List<Token> MakeTokens(string Text, string FileName)
     {
-        text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
-        fileName = FileName;
-        position = 0;
+        Instance(Logger);
+        lexer.text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
+        if (lexer.text == null)
+        {
+            throw new NullReferenceException("Lexer text is null");
+        }
+        lexer.fileName = FileName;
+        lexer.position = 0;
 
         List<Token> tokens = new();
         var result = true;
 
         while (result)
         {
-            if (position + 1 == text.Length)
-                if (text[position] == ' ')
-                {
-                    position += 1;
-                    continue;
-                }
-            if (Char.IsDigit(text[position]))
+            if (lexer.position >= lexer.text.Length)
+            {
+                break;
+            }
+            if (lexer.text[lexer.position] == ' ')
+            {
+                lexer.position += 1;
+                continue;
+            }
+            if (Char.IsDigit(lexer.text[lexer.position]))
             {
                 tokens.Add(TokenRepository.MakeNumber(Logger));
                 continue;
             }
-            if (Char.IsLetter(text[position]))
+            if (Char.IsLetter(lexer.text[lexer.position]))
             {
                 tokens.Add(TokenRepository.MakeIdentifier(Logger));
                 continue;
             }
-            switch (text[position])
+            switch (lexer.text[lexer.position])
             {
                 case '"':
                     tokens.Add(TokenRepository.MakeString(Logger));
@@ -67,62 +75,62 @@ public sealed class Lexer : ILexer
                     continue;
                 case '-':
                     tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MINUS, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '*':
                     tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MULTIPLY, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '/':
                     tokens.Add(TokenRepository.MakeDivide(Logger));
                     continue;
                 case '^':
                     tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.POWER, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '(':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case ')':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '{':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '}':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case ',':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COMMA, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case ':':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COLON, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case ';':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.SEMICOLON, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '.':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOT, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '$':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOLLAR, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '[':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTBRACKET, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case ']':
                     tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTBRACKET, Logger));
-                    position += 1;
+                    lexer.position += 1;
                     continue;
                 case '=':
                     tokens.Add(TokenRepository.MakeEquals(Logger));

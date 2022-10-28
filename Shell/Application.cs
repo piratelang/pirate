@@ -48,7 +48,9 @@ public class Application
             " - pirate new [type]",
             "    create a new file",
             " - pirate build",
-            "    build the modules in the current folder"
+            "    build the modules in the current folder",
+            " - pirate shell",
+            "    opens the pirate repl"
         ));
     }
 

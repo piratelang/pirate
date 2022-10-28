@@ -26,7 +26,7 @@ builder.AddTransient<IRunCommand, RunCommand>();
 builder.AddTransient<IShellCommand, ShellCommand>();
 builder.AddTransient<ICommandFactory, CommandFactory>();
 
-builder.AddTransient<ILexer, Lexer.Lexer>();
+builder.AddSingleton<ILexer, Lexer.Lexer>();
 builder.AddTransient<IParser, Parser.Parser>();
 builder.AddTransient<IInterpreter, Interpreter.Interpreter>();
 
