@@ -1,8 +1,8 @@
 ﻿using Common;
-using Interpreter;
-using Lexer;
+using PirateInterpreter;
+using PirateLexer;
 using Microsoft.Extensions.DependencyInjection;
-using Parser;
+using PirateParser;
 using Shell;
 using Shell.Commands;
 using Shell.Commands.Interfaces;
@@ -26,9 +26,9 @@ builder.AddTransient<IRunCommand, RunCommand>();
 builder.AddTransient<IShellCommand, ShellCommand>();
 builder.AddTransient<ICommandFactory, CommandFactory>();
 
-builder.AddTransient<ILexer, Lexer.Lexer>();
-builder.AddTransient<IParser, Parser.Parser>();
-builder.AddTransient<IInterpreter, Interpreter.Interpreter>();
+builder.AddTransient<ILexer, Lexer>();
+builder.AddTransient<IParser, Parser>();
+builder.AddTransient<IInterpreter, Interpreter>();
 
 var provider = builder.BuildServiceProvider();
 var app = provider.GetRequiredService<Application>();

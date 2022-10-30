@@ -1,6 +1,6 @@
 using Common;
-using Lexer;
-using Parser;
+using PirateLexer;
+using PirateParser;
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
 

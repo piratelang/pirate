@@ -1,7 +1,7 @@
 using Common;
-using Interpreter;
-using Lexer;
-using Parser;
+using PirateInterpreter;
+using PirateLexer;
+using PirateParser;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
