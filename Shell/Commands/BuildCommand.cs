@@ -21,6 +21,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
         _lexer = lexer;
         _moduleListRepository = moduleListRepository;
     }
+    
     public override void Run(string[] arguments)
     {
         Logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
@@ -56,6 +57,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
         Logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
         _moduleListRepository.SetList(foundFiles, Location, Logger);
     }
+    
     public override void Help()
     {
         Console.WriteLine(String.Join(

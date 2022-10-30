@@ -237,6 +237,7 @@ public class TokenRepository
             return new Token(TokenGroup.OPERATORS, TokenOperators.PLUS, Logger);
         }
     }
+   
     public static Token MakeDivide(ILogger Logger)
     {
         Lexer.Advance();

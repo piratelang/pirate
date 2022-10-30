@@ -16,7 +16,7 @@ builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
 builder.AddSingleton<ILogger, Logger>();
 builder.AddSingleton<IModuleListRepository, ModuleListRepository>();
-
+builder.AddSingleton<ICommandManager, CommandManager>();
 builder.AddSingleton<CommandFactory, CommandFactory>();
 
 builder.AddTransient<IBuildCommand, BuildCommand>();
