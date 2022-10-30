@@ -1,6 +1,6 @@
 using Common;
 using PirateInterpreter;
-using PirateLexer;
+using PirateLexer.Interfaces;
 using PirateParser;
 using Shell.Commands.Interfaces;
 

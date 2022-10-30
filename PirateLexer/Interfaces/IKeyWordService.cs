@@ -1,8 +1,8 @@
 using PirateLexer.Enums;
 
-namespace PirateLexer.Tokens;
+namespace PirateLexer.Interfaces;
 
-public interface IKeyWorkService
+public interface IKeyWordService
 {
     TokenControlKeyword GetTokenControlKeywork(string idString);
     TokenTypeKeyword GetTypeKeyword(string idString);

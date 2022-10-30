@@ -9,7 +9,8 @@ var Logger = new Logger("Test");
 while (true)
 {
     var input = Console.ReadLine();
-    var tokens = Lexer.Instance(Logger).MakeTokens(input, "test");
+    var lexer = new Lexer(Logger, new TokenRepository(new KeyWordService()));
+    var tokens = lexer.MakeTokens(input, "test");
 
     ObjectSerializer objectSerializer = new(Logger);
 

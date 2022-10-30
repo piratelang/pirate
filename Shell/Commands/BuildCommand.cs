@@ -1,8 +1,8 @@
 using Common;
-using PirateLexer;
 using PirateParser;
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
+using PirateLexer.Interfaces;
 
 namespace Shell.Commands;
 

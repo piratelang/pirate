@@ -7,6 +7,8 @@ using Shell;
 using Shell.Commands;
 using Shell.Commands.Interfaces;
 using Shell.ModuleList;
+using PirateLexer.Interfaces;
+using PirateLexer.Tokens;
 
 var version = "1.0.0";
 var location = $"bin/pirate{version}";
@@ -15,6 +17,8 @@ var builder = new ServiceCollection();
 builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
 builder.AddSingleton<ILogger, Logger>();
+
+//Shell
 builder.AddSingleton<IModuleListRepository, ModuleListRepository>();
 builder.AddSingleton<ICommandManager, CommandManager>();
 builder.AddSingleton<CommandFactory, CommandFactory>();
@@ -26,8 +30,15 @@ builder.AddTransient<IRunCommand, RunCommand>();
 builder.AddTransient<IShellCommand, ShellCommand>();
 builder.AddTransient<ICommandFactory, CommandFactory>();
 
+//Lexer
 builder.AddTransient<ILexer, Lexer>();
+builder.AddSingleton<IKeyWordService, KeyWordService>();
+builder.AddTransient<ITokenRepository, TokenRepository>();
+
+//Parser
 builder.AddTransient<IParser, Parser>();
+
+//Interpreter
 builder.AddTransient<IInterpreter, Interpreter>();
 
 var provider = builder.BuildServiceProvider();

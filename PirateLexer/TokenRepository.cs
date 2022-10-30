@@ -1,32 +1,17 @@
 using System.Globalization;
 using PirateLexer.Tokens;
 using PirateLexer.Enums;
+using PirateLexer.Interfaces;
 
-namespace Pirate
-
-public interface ITokenRepository
-{
-    TokenResult MakeChar(ILogger Logger);
-    TokenResult MakeDivide(ILogger Logger);
-    TokenResult MakeEquals(ILogger Logger);
-    TokenResult MakeGreaterThan(ILogger Logger);
-    TokenResult MakeIdentifier(ILogger Logger);
-    TokenResult MakeLessThan(ILogger Logger);
-    TokenResult MakeNotEquals(ILogger Logger);
-    TokenResult MakeNumber(ILogger Logger, char currentChar);
-    TokenResult MakePlus(ILogger Logger);
-    TokenResult MakeString(ILogger Logger);
-}
+namespace PirateLexer;
 
 public class TokenRepository : ITokenRepository
 {
-    private readonly ILogger _logger;
-    private readonly IKeyWorkService _keyWorkService;
+    private readonly IKeyWordService _KeyWordService;
 
-    public TokenRepository(ILogger logger, IKeyWorkService keyWorkService)
+    public TokenRepository(IKeyWordService KeyWordService)
     {
-        _logger = logger;
-        _keyWorkService = keyWorkService;
+        _KeyWordService = KeyWordService;
     }
 
     public TokenResult MakeNumber(string text, int position)
@@ -57,7 +42,6 @@ public class TokenRepository : ITokenRepository
         if (dotCount == 0)
         {
             token = new Token(TokenGroup.VALUE, TokenValue.INT, int.Parse(numberString));
-            _logger.Log($"Creating Token \"{token.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
 
         }
         else
@@ -65,7 +49,6 @@ public class TokenRepository : ITokenRepository
             CultureInfo cultureInfo = (CultureInfo)CultureInfo.CurrentCulture.Clone();
             cultureInfo.NumberFormat.CurrencyDecimalSeparator = "."; cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
             token = new Token(TokenGroup.VALUE, TokenValue.FLOAT, float.Parse(numberString, cultureInfo));
-            _logger.Log($"Creating Token \"{token.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
         }
 
         return new TokenResult()
@@ -87,13 +70,13 @@ public class TokenRepository : ITokenRepository
             if (position == text.Length) break;
         }
 
-        var tokenTypeKeywordType = _keyWorkService.GetTypeKeyword(idString);
-        if ( tokenTypeKeywordType != TokenTypeKeyword.Empty)
+        var tokenTypeKeywordType = _KeyWordService.GetTypeKeyword(idString);
+        if (tokenTypeKeywordType != TokenTypeKeyword.Empty)
         {
             token = new Token(TokenGroup.TYPEKEYWORD, tokenTypeKeywordType, idString);
         }
 
-        var tokenControlKeywordType = _keyWorkService.GetTokenControlKeywork(idString);
+        var tokenControlKeywordType = _KeyWordService.GetTokenControlKeywork(idString);
 
         if (tokenControlKeywordType != TokenControlKeyword.Empty)
         {
@@ -102,8 +85,9 @@ public class TokenRepository : ITokenRepository
 
         else
         {
-            token = new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER,  idString);
+            token = new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, idString);
         }
+
         return new TokenResult()
         {
             Token = token,
@@ -111,10 +95,8 @@ public class TokenRepository : ITokenRepository
         };
     }
 
-    public TokenResult MakeString()
+    public TokenResult MakeString(string text, int position)
     {
-  
-
         var resultString = string.Empty;
         var escapeCharacter = false;
         position += 1;
@@ -145,13 +127,16 @@ public class TokenRepository : ITokenRepository
             if (position == text.Length) break;
         }
         position += 1;
-        return new Token(TokenGroup.VALUE, TokenValue.STRING, Logger, resultString);
+
+        return new TokenResult()
+        {
+            Token = new Token(TokenGroup.VALUE, TokenValue.STRING, resultString),
+            Position = position
+        };
     }
 
-    public TokenResult MakeChar()
+    public TokenResult MakeChar(string text, int position)
     {
-
-
         position += 1;
         var resultString = text[position];
         position += 1;
@@ -160,28 +145,34 @@ public class TokenRepository : ITokenRepository
             throw new InvalidOperationException("Char is not one letter");
         }
         position += 1;
-        return new Token(TokenGroup.VALUE, TokenValue.CHAR, Logger, resultString);
+
+        return new TokenResult()
+        {
+            Token = new Token(TokenGroup.VALUE, TokenValue.CHAR, resultString),
+            Position = position
+        };
     }
 
-    public TokenResult MakeNotEquals()
+    public TokenResult MakeNotEquals(string text, int position)
     {
-
-
         position += 1;
 
         if (text[position] == '=')
         {
             position += 1;
-            return new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.NOTEQUALS, Logger);
+            return new TokenResult()
+            {
+                Token = new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.NOTEQUALS),
+                Position = position
+            };
         }
 
         position += 1;
         throw new Exception("Expected Character Error: '=' (after '!')");
     }
 
-    public TokenResult MakeGreaterThan()
+    public TokenResult MakeGreaterThan(string text, int position)
     {
-
         var tokenType = TokenComparisonOperators.GREATERHAN;
         position += 1;
 
@@ -191,13 +182,16 @@ public class TokenRepository : ITokenRepository
             tokenType = TokenComparisonOperators.GREATERTHANEQUALS;
         }
 
-        return new Token(TokenGroup.COMPARISONOPERATORS, tokenType, Logger);
+        return new TokenResult()
+        {
+            Token = new Token(TokenGroup.COMPARISONOPERATORS, tokenType),
+            Position = position
+        };
+
     }
 
-    public TokenResult MakeLessThan()
+    public TokenResult MakeLessThan(string text, int position)
     {
-        var = Instance(Logger);
-
         var tokenType = TokenComparisonOperators.LESSTHAN;
         position += 1;
 
@@ -207,58 +201,73 @@ public class TokenRepository : ITokenRepository
             tokenType = TokenComparisonOperators.LESSTHANEQUALS;
         }
 
-        return new Token(TokenGroup.COMPARISONOPERATORS, tokenType, Logger);
+        return new TokenResult()
+        {
+            Token = new Token(TokenGroup.COMPARISONOPERATORS, tokenType),
+            Position = position
+        };
     }
 
-    public TokenResult MakeEquals()
+    public TokenResult MakeEquals(string text, int position)
     {
-        var = Instance(Logger);
-
+        Token token;
         position += 1;
         if (text[position] == '=')
         {
             position += 1;
-            return new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, Logger);
+            token = new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS);
         }
         else
         {
-            return new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS, Logger);
+            token = new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS);
         }
+
+        return new TokenResult()
+        {
+            Token = token,
+            Position = position
+        };
     }
 
-    public TokenResult MakePlus()
+    public TokenResult MakePlus(string text, int position)
     {
-        var = Instance(Logger);
-
+        Token token;
         position += 1;
         if (text[position] == '=')
         {
             position += 1;
-            return new Token(TokenGroup.SYNTAX, TokenSyntax.PLUSEQUALS, Logger);
+            token = new Token(TokenGroup.SYNTAX, TokenSyntax.PLUSEQUALS);
         }
         else
         {
-            return new Token(TokenGroup.OPERATORS, TokenOperators.PLUS, Logger);
+            token = new Token(TokenGroup.OPERATORS, TokenOperators.PLUS);
         }
+
+        return new TokenResult()
+        {
+            Token = token,
+            Position = position
+        };
     }
 
-    public TokenResult MakeDivide()
+    public TokenResult MakeDivide(string text, int position)
     {
-        var = Instance(Logger);
-
+        Token token;
         position += 1;
         if (text[position] == '/')
         {
             position += 1;
-            return new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE, Logger);
+            token = new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE);
         }
         else
         {
-            return new Token(TokenGroup.OPERATORS, TokenOperators.DIVIDE, Logger);
+            token = new Token(TokenGroup.OPERATORS, TokenOperators.DIVIDE);
         }
-    }
 
-    {
-        throw new NotImplementedException();
+        return new TokenResult()
+        {
+            Token = token,
+            Position = position
+        };
     }
 }

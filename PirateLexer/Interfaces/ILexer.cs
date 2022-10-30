@@ -1,6 +1,6 @@
 using PirateLexer.Tokens;
 
-namespace PirateLexer;
+namespace PirateLexer.Interfaces;
 
 public interface ILexer
 {

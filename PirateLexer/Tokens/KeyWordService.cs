@@ -1,8 +1,9 @@
 using PirateLexer.Enums;
+using PirateLexer.Interfaces;
 
 namespace PirateLexer.Tokens;
 
-public class KeyWorkService : IKeyWorkService
+public class KeyWordService : IKeyWordService
 {
     private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char", "new" };
 
@@ -25,9 +26,8 @@ public class KeyWorkService : IKeyWorkService
                 case "char":
                     return TokenTypeKeyword.CHAR;
             }
-            throw new TyepKeyWorkNotImplementedException();
+            throw new NotImplementedException($"Type keyword, {idString} has not been implemented");
         }
-
         return TokenTypeKeyword.Empty;
     }
 
@@ -66,10 +66,8 @@ public class KeyWorkService : IKeyWorkService
 
                 case "new":
                     return TokenControlKeyword.NEW;
-
-
             }
-            throw new ControlKeyWorkNotImplementedException();
+            throw new NotImplementedException($"Control keyword, {idString} has not been implemented");
         }
         return TokenControlKeyword.Empty;
     }
