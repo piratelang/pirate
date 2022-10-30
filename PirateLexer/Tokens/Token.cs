@@ -9,12 +9,12 @@ public class Token
     public object TokenType { get; set; }
     public object Value { get; set; }
 
-    public Token(TokenGroup tokenGroup, object tokenType, ILogger logger, object value = null)
+    public Token(TokenGroup tokenGroup, object tokenType, object value = null)
     {
         TokenGroup = tokenGroup;
         TokenType = tokenType;
         Value = value;
-        logger.Log($"Creating Token \"{ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        // logger.Log($"Creating Token \"{ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public bool Matches(object tokenType, object Value=null)

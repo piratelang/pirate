@@ -11,5 +11,6 @@ public enum TokenControlKeyword
     WHILE,
     FUNC,
     CLASS,
-    NEW
+    NEW,
+    Empty
 }
