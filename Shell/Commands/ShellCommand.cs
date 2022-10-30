@@ -40,9 +40,9 @@ public class ShellCommand : Command, ICommand, IShellCommand
                 }
 
                 var tokens = Lexer.MakeTokens(input, "test");
-                if (tokens.tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file. {tokens.error.AsString()}");
+                if (tokens.Count() == 0) Error($"Error occured while lexing tokens.");
 
-                var parseResult = Parser.StartParse(tokens.tokens, "repl");
+                var parseResult = Parser.StartParse(tokens, "repl");
                 if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
 
                 var interpreterResult = Interpreter.StartInterpreter("repl");

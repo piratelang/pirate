@@ -6,6 +6,8 @@ public interface ILexer
 {
     ILogger Logger { get; set; }
     string fileName { get; set; }
+    string text { get; set; }
+    int position { get; set; }
 
-    (List<Token> tokens, Error error) MakeTokens(string Text, string FileName);
+    List<Token> MakeTokens(string Text, string FileName);
 }

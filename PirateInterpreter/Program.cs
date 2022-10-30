@@ -9,19 +9,12 @@ var Logger = new Logger("Test");
 while (true)
 {
     var input = Console.ReadLine();
-    var lexer = new Lexer(Logger);
-    var result = lexer.MakeTokens(input, "test");
-
-    if (result.tokens == null && result.error != null)
-    {
-        Console.WriteLine(result.error.ToString());
-        return;
-    }
+    var tokens = Lexer.Lexer.Instance(Logger).MakeTokens(input, "test");
 
     ObjectSerializer objectSerializer = new(Logger);
 
-    var parser = new Parser(Logger, objectSerializer);
-    var parseResult = parser.StartParse(result.tokens, "Test");
+    var parser = new Parser.Parser(Logger, objectSerializer);
+    var parseResult = parser.StartParse(tokens, "Test");
 
     if (parseResult.Nodes == null)
     {

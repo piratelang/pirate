@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Globalization;
 using PirateLexer.Enums;
 using PirateLexer.Tokens;
@@ -8,12 +9,14 @@ public class TokenRepository
 {
     public static Token MakeNumber(ILogger Logger)
     {
-        var numberString = string.Empty;
-        var dotCount = 0;
+        var lexer = Lexer.Instance(Logger);
 
-        while (Lexer.currentChar != null && (Globals.DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '.'))
+        var dotCount = 0;
+        var numberString = string.Empty;
+
+        while (Char.IsDigit(lexer.text[lexer.position]) || lexer.text[lexer.position] == '.')
         {
-            if (Lexer.currentChar == '.')
+            if (lexer.text[lexer.position] == '.')
             {
                 if (dotCount == 1)
                 {
@@ -24,9 +27,10 @@ public class TokenRepository
             }
             else
             {
-                numberString += Lexer.currentChar;
+                numberString += lexer.text[lexer.position];
             }
-            Lexer.Advance();
+            lexer.position += 1;
+            if(lexer.position == lexer.text.Length) break;
         }
 
         if (dotCount == 0)
@@ -43,15 +47,18 @@ public class TokenRepository
 
     public static Token MakeIdentifier(ILogger Logger)
     {
+        var lexer = Lexer.Instance(Logger);
+
         var idString = string.Empty;
         var tokenType = new object();
         var typeKeywords = new string[] { "var", "int", "float", "string", "char", "new" };
         var controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class" };
 
-        while (Lexer.currentChar != null && (Globals.LETTERS_DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '_'))
+        while (Char.IsLetterOrDigit(lexer.text[lexer.position]) || lexer.text[lexer.position] != ' ')
         {
-            idString += Lexer.currentChar;
-            Lexer.Advance();
+            idString += lexer.text[lexer.position];
+            lexer.position += 1;
+            if(lexer.position == lexer.text.Length) break;
         }
 
         if (typeKeywords.Contains(idString))
@@ -123,73 +130,82 @@ public class TokenRepository
 
     public static Token MakeString(ILogger Logger)
     {
+        var lexer = Lexer.Instance(Logger);
+
         var resultString = string.Empty;
         var escapeCharacter = false;
-        Lexer.Advance();
+        lexer.position += 1;
 
         Dictionary<string, string> escapeCharacters = new Dictionary<string, string>() { };
         escapeCharacters.Add("n", "\n");
         escapeCharacters.Add("t", "\t");
 
-        while (Lexer.currentChar != null && Lexer.currentChar != '"' || escapeCharacter)
+        while (lexer.text[lexer.position] != '"' || escapeCharacter)
         {
             if (escapeCharacter)
             {
-                resultString += escapeCharacters[Lexer.currentChar.ToString()];
+                resultString += escapeCharacters[lexer.text[lexer.position].ToString()];
             }
             else
             {
-                if (Lexer.currentChar == '\\')
+                if (lexer.text[lexer.position] == '\\')
                 {
                     escapeCharacter = true;
                 }
                 else
                 {
-                    resultString += Lexer.currentChar;
+                    resultString += lexer.text[lexer.position];
                 }
             }
-            Lexer.Advance();
+            lexer.position += 1;
             escapeCharacter = false;
+            if(lexer.position == lexer.text.Length) break;
         }
-        Lexer.Advance();
+        lexer.position += 1;
         return new Token(TokenGroup.VALUE, TokenValue.STRING, Logger, resultString);
     }
 
     public static Token MakeChar(ILogger Logger)
     {
-        Lexer.Advance();
-        var resultString = Lexer.currentChar;
-        Lexer.Advance();
-        if (Lexer.currentChar != '\'')
+        var lexer = Lexer.Instance(Logger);
+
+        lexer.position += 1;
+        var resultString = lexer.text[lexer.position];
+        lexer.position += 1;
+        if (lexer.text[lexer.position] != '\'')
         {
-            throw new NotImplementedException("Char is not one letter");
+            throw new InvalidOperationException("Char is not one letter");
         }
-        Lexer.Advance();
+        lexer.position += 1;
         return new Token(TokenGroup.VALUE, TokenValue.CHAR, Logger, resultString);
     }
 
-    public static (Token token, Error error) MakeNotEquals(ILogger Logger)
+    public static Token MakeNotEquals(ILogger Logger)
     {
-        Lexer.Advance();
+        var lexer = Lexer.Instance(Logger);
 
-        if (Lexer.currentChar == '=')
+        lexer.position += 1;
+
+        if (lexer.text[lexer.position] == '=')
         {
-            Lexer.Advance();
-            return (new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.NOTEQUALS, Logger), null);
+            lexer.position += 1;
+            return new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.NOTEQUALS, Logger);
         }
 
-        Lexer.Advance();
-        return (null, new Error("Expected Character Error", "'=' (after '!')"));
+        lexer.position += 1;
+        throw new Exception("Expected Character Error: '=' (after '!')");
     }
 
     public static Token MakeGreaterThan(ILogger Logger)
     {
-        var tokenType = TokenComparisonOperators.GREATERHAN;
-        Lexer.Advance();
+        var lexer = Lexer.Instance(Logger);
 
-        if (Lexer.currentChar == '=')
+        var tokenType = TokenComparisonOperators.GREATERHAN;
+        lexer.position += 1;
+
+        if (lexer.text[lexer.position] == '=')
         {
-            Lexer.Advance();
+            lexer.position += 1;
             tokenType = TokenComparisonOperators.GREATERTHANEQUALS;
         }
 
@@ -198,12 +214,14 @@ public class TokenRepository
 
     public static Token MakeLessThan(ILogger Logger)
     {
-        var tokenType = TokenComparisonOperators.LESSTHAN;
-        Lexer.Advance();
+        var lexer = Lexer.Instance(Logger);
 
-        if (Lexer.currentChar == '=')
+        var tokenType = TokenComparisonOperators.LESSTHAN;
+        lexer.position += 1;
+
+        if (lexer.text[lexer.position] == '=')
         {
-            Lexer.Advance();
+            lexer.position += 1;
             tokenType = TokenComparisonOperators.LESSTHANEQUALS;
         }
 
@@ -212,10 +230,12 @@ public class TokenRepository
 
     public static Token MakeEquals(ILogger Logger)
     {
-        Lexer.Advance();
-        if (Lexer.currentChar == '=')
+        var lexer = Lexer.Instance(Logger);
+
+        lexer.position += 1;
+        if (lexer.text[lexer.position] == '=')
         {
-            Lexer.Advance();
+            lexer.position += 1;
             return new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, Logger);
         }
         else
@@ -226,10 +246,12 @@ public class TokenRepository
 
     public static Token MakePlus(ILogger Logger)
     {
-        Lexer.Advance();
-        if (Lexer.currentChar == '=')
+        var lexer = Lexer.Instance(Logger);
+
+        lexer.position += 1;
+        if (lexer.text[lexer.position] == '=')
         {
-            Lexer.Advance();
+            lexer.position += 1;
             return new Token(TokenGroup.SYNTAX, TokenSyntax.PLUSEQUALS, Logger);
         }
         else
@@ -240,10 +262,12 @@ public class TokenRepository
    
     public static Token MakeDivide(ILogger Logger)
     {
-        Lexer.Advance();
-        if (Lexer.currentChar == '/')
+        var lexer = Lexer.Instance(Logger);
+
+        lexer.position += 1;
+        if (lexer.text[lexer.position] == '/')
         {
-            Lexer.Advance();
+            lexer.position += 1;
             return new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE, Logger);
         }
         else
