@@ -16,7 +16,7 @@ var builder = new ServiceCollection();
 builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
 builder.AddSingleton<ILogger, Logger>();
-builder.AddSingleton<IFileHandler, FileHandler>();
+builder.AddSingleton<IFileWriteHandler, FileWriteHandler>();
 
 //Shell
 builder.AddSingleton<IModuleListRepository, ModuleListRepository>();

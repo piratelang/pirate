@@ -9,9 +9,9 @@ public class Logger : ILogger
     private string logName { get; set; }
     private string version { get; set; } = EnvironmentVariables.GetVariable("version");
     private string location { get; set; }
-    private IFileHandler _fileHandler;
+    private IFileWriteHandler _fileHandler;
 
-    public Logger(IFileHandler FileHandler, string Name = "")
+    public Logger(IFileWriteHandler FileHandler, string Name = "")
     {
         _fileHandler = FileHandler;
 

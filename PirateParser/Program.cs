@@ -3,7 +3,7 @@ using PirateLexer;
 using PirateParser;
 
 Console.WriteLine("Hello, World!");
-var Logger = new Logger(new FileHandler(), "Test");
+var Logger = new Logger(new FileWriteHandler(), "Test");
 
 while (true)
 {

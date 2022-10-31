@@ -4,8 +4,11 @@ namespace Shell.Commands;
 
 public class NewCommand : Command, ICommand, INewCommand
 {
-    public NewCommand(ILogger Logger) : base(Logger)
-    { }
+    private IFileWriteHandler _fileWriteHandler;
+    public NewCommand(ILogger Logger, IFileWriteHandler FileWriteHandler) : base(Logger)
+    { 
+        _fileWriteHandler = FileWriteHandler;
+    }
     public override void Run(string[] arguments)
     {
         Logger.Log("Starting New Command", this.GetType().Name, LogType.INFO);
@@ -42,14 +45,10 @@ public class NewCommand : Command, ICommand, INewCommand
         switch (typeArgument)
         {
             case "gitignore":
-                var file = File.CreateText($"./.gitignore");
-                file.Write("[Bb]in/");
-                file.Close();
+                _fileWriteHandler.WriteToFile(".gitignore", "", "[Bb]in/", "");
                 return;
             case "gitattributes":
-                file = File.CreateText("./.gitattributes");
-                file.Write("*.pirate linguist-language=Squirrel");
-                file.Close();
+                _fileWriteHandler.WriteToFile(".gitattributes", "", "*.pirate linguist-language=Squirrel", "");
                 return;
             case "pirate":
                 var filename = "main";
@@ -58,14 +57,14 @@ public class NewCommand : Command, ICommand, INewCommand
                     filename = arguments[2];
                 }
                 catch (System.Exception) { }
+
                 var exists = File.Exists($"./{filename}.pirate");
                 if (exists)
                 {
-                    Logger.Log($"Specified filename \"{filename}\" already exists", this.GetType().Name, LogType.WARNING);
                     Error($"Specified filename \"{filename}\" already exists");
                     return;
                 }
-                file = File.CreateText($"./{filename}.pirate");
+                _fileWriteHandler.WriteToFile("filename", ".pirate", "", "");
                 Console.WriteLine($"\nCreated new .{typeArgument} file");
                 return;
         }

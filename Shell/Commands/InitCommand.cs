@@ -4,8 +4,11 @@ namespace Shell.Commands;
 
 public class InitCommand : Command, ICommand, IInitCommand
 {
-    public InitCommand(ILogger Logger) : base(Logger)
-    { }
+    private IFileWriteHandler _fileWriteHandler;
+    public InitCommand(ILogger Logger, IFileWriteHandler FileWriteHandler) : base(Logger)
+    { 
+        _fileWriteHandler = FileWriteHandler;
+    }
 
     public override void Run(string[] arguments)
     {
@@ -15,15 +18,16 @@ public class InitCommand : Command, ICommand, IInitCommand
 
         Logger.Log($"Creating {nameArgument} file", this.GetType().Name, LogType.INFO);
         var fileName = nameArgument.Replace(".pirate", "");
-        var file = File.CreateText($"./{fileName}.pirate");
-        file.Write(String.Join(
+
+        var text = String.Join(
             Environment.NewLine,
             "func main()",
             "{",
             "    print(\"Hello World\");",
             "}"
-        ));
-        file.Close();
+        );
+        _fileWriteHandler.WriteToFile(fileName, ".pirate", text, "");
+
         Logger.Log($"Created {nameArgument} file", this.GetType().Name, LogType.INFO);
         Console.WriteLine($"\nCreated {fileName}.pirate");
     }
