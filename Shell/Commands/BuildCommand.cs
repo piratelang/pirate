@@ -73,7 +73,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 
     public bool CheckModuleList(List<Module> moduleList, string file)
     {
-        if (moduleList != null) return false;
+        if (moduleList == null) return false;
         var foundModule = moduleList.Where(a => a.moduleName == file.Replace("./", "")).FirstOrDefault();
         if (foundModule != null)
         {

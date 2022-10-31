@@ -12,7 +12,7 @@ public class Application
     }
 
 
-    public void Run(string[] args, string version, string location)
+    public void Run(string[] args, string version)
     {
         if (args.Length == 0)
         {

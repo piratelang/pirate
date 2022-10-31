@@ -11,12 +11,12 @@ using PirateLexer.Interfaces;
 using PirateLexer.Tokens;
 
 var version = "1.0.0";
-var location = $"bin/pirate{version}";
 
 var builder = new ServiceCollection();
 builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
 builder.AddSingleton<ILogger, Logger>();
+builder.AddSingleton<IFileHandler, FileHandler>();
 
 //Shell
 builder.AddSingleton<IModuleListRepository, ModuleListRepository>();
@@ -44,4 +44,4 @@ builder.AddTransient<IInterpreter, Interpreter>();
 var provider = builder.BuildServiceProvider();
 var app = provider.GetRequiredService<Application>();
 
-app.Run(args, version, location);
+app.Run(args, version);
