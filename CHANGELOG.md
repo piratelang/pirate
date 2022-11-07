@@ -50,7 +50,7 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
 ### ([#68](https://github.com/joerivanarkel/PirateLang/pull/68)) Lexer Rewrite
 
-- Completely rewrote lexer tor emove the static methods and fields.
+- Completely rewrote lexer to remove the static methods and fields.
 - Renamed Lexer, Parser and Interpreter to PirateLexer, PirateParser and PirateInterpreter
 
 ## 0.1.2
