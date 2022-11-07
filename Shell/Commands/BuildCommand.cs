@@ -1,8 +1,8 @@
 using Common;
-using Lexer;
-using Parser;
+using PirateParser;
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
+using PirateLexer.Interfaces;
 
 namespace Shell.Commands;
 
@@ -21,6 +21,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
         _lexer = lexer;
         _moduleListRepository = moduleListRepository;
     }
+    
     public override void Run(string[] arguments)
     {
         Logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
@@ -46,16 +47,17 @@ public class BuildCommand : Command, ICommand, IBuildCommand
             // Running Lexer
             Logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
             var tokens = _lexer.MakeTokens(text, "test");
-            if (tokens.tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file {fileName}. {tokens.error.AsString()}");
+            if (tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file {fileName}.");
 
             // Running Parser
             Logger.Log($"Parsing {file}\n", this.GetType().Name, LogType.INFO);
-            var parseResult = _parser.StartParse(tokens.tokens, fileName);
+            var parseResult = _parser.StartParse(tokens, fileName);
             if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
         }
         Logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
         _moduleListRepository.SetList(foundFiles, Location, Logger);
     }
+    
     public override void Help()
     {
         Console.WriteLine(String.Join(

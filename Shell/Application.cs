@@ -4,34 +4,23 @@ namespace Shell;
 
 public class Application
 {
-    public ILogger Logger { get; set; }
-    public CommandFactory CommandFactory { get; set; }
-    public Application(ILogger logger, CommandFactory commandFactory)
+    private readonly ICommandManager _commandManager;
+
+    public Application(ICommandManager commandManager)
     {
-        Logger = logger;
-        CommandFactory = commandFactory;
+        this._commandManager = commandManager;
     }
 
 
     public void Run(string[] args, string version, string location)
     {
-        List<string> argumentsList = new();
-
-        foreach (var item in args)
-        {
-            if (item != null)
-            {
-                argumentsList.Add(item);
-            }
-        }
-
         if (args.Length == 0)
         {
             Help(version);
         }
         else
         {
-            RunCommand(args, argumentsList, version, location);
+            _commandManager.RunCommand(args);
         }
     }
 
@@ -48,38 +37,9 @@ public class Application
             " - pirate new [type]",
             "    create a new file",
             " - pirate build",
-            "    build the modules in the current folder"
+            "    build the modules in the current folder",
+            " - pirate shell",
+            "    opens the pirate repl"
         ));
-    }
-
-    public void RunCommand(string[] args, List<string> argumentsList, string version, string location)
-    {
-        Logger.Log("Starting Command Factory", "Program", LogType.INFO);
-        var command = CommandFactory.GetCommand(args[0]);
-        if (command == null) { return; }
-
-        if (argumentsList.Contains("-h") || argumentsList.Contains("--help"))
-        {
-            Logger.Log("Running Help Command", "Program", LogType.INFO);
-            command.Help();
-        }
-        else
-        {
-            try
-            {
-                var arguments = argumentsList.ToArray();
-                command.Run(arguments);
-                Logger.Log("Command completed succesfully", "Program", LogType.INFO);
-            }
-            catch (Exception exception)
-            {
-                Logger.Log(exception.ToString(), "Program", LogType.ERROR);
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\n{exception}");
-                Console.ForegroundColor = ConsoleColor.White;
-                throw;
-            }
-        }
     }
 }

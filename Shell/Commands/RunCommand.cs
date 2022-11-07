@@ -1,5 +1,5 @@
 using Common;
-using Interpreter;
+using PirateInterpreter;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;

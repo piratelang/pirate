@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Interpreter\Interpreter.csproj" />
-    <ProjectReference Include="..\Lexer\Lexer.csproj" />
-    <ProjectReference Include="..\Parser\Parser.csproj" />
+    <ProjectReference Include="..\PirateInterpreter\Interpreter.csproj" />
+    <ProjectReference Include="..\PirateLexer\Lexer.csproj" />
+    <ProjectReference Include="..\PirateParser\Parser.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
