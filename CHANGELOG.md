@@ -48,6 +48,11 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Removed unnecessary usings.
 - Added implicit using in `Usings.g.cs`
 
+### ([#68](https://github.com/joerivanarkel/PirateLang/pull/68)) Lexer Rewrite
+
+- Completely rewrote lexer tor emove the static methods and fields.
+- Renamed Lexer, Parser and Interpreter to PirateLexer, PirateParser and PirateInterpreter
+
 ## 0.1.2
 
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements
