@@ -4,7 +4,7 @@ using PirateLexer.Tokens;
 
 Console.WriteLine("Hello, World!");
 
-var Logger = new Logger("Test");
+var Logger = new Logger(new FileWriteHandler(), "Test");
 
 var input = Console.ReadLine();
 var lexer = new Lexer(Logger, new TokenRepository(new KeyWordService()));

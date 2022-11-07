@@ -4,7 +4,17 @@ namespace Shell.ModuleList;
 
 public class ModuleListRepository : IModuleListRepository
 {
-    public void SetList(string[] foundFiles, string location, ILogger logger)
+    private ILogger _logger;
+    private IFileWriteHandler _fileWriteHandler;
+    private IFileReadHandler _fileReadHandler;
+
+    public ModuleListRepository(ILogger Logger, IFileWriteHandler FileWriteHandler, IFileReadHandler FileReadHandler)
+    {
+        _logger = Logger;
+        _fileWriteHandler = FileWriteHandler;
+        _fileReadHandler = FileReadHandler;
+    }
+    public void SetList(string[] foundFiles, string location)
     {
         List<Module> moduleList = new() { };
 
@@ -18,23 +28,22 @@ public class ModuleListRepository : IModuleListRepository
 
             var lastModifiedDate = File.GetLastWriteTimeUtc(item);
 
-            logger.Log($"Found Module {fileName}", "ModuleListRepository", LogType.INFO);
+            _logger.Log($"Found Module {fileName}", "ModuleListRepository", LogType.INFO);
             moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
         }
         string jsonString = JsonConvert.SerializeObject(moduleList, Formatting.Indented);
-        logger.Log($"Writing module list to \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
-        File.WriteAllTextAsync($"{location}/modules.json", jsonString);
+        _logger.Log($"Writing module list to \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
+        _fileWriteHandler.WriteToFile(new FileWriteModel("modules", ".json", location, jsonString));
     }
 
-    public List<Module> GetList(string location, ILogger logger)
+    public List<Module> GetList(string location)
     {
-        if (!File.Exists($"{location}/modules.json"))
+        if (!_fileReadHandler.FileExists("modules", ".json", location))
         {
-            logger.Log($"Creating module list at \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
-            var createdFile = File.Create($"{location}/modules.json");
-            createdFile.Close();
+            _logger.Log($"Creating module list at \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
+            _fileWriteHandler.WriteToFile(new FileWriteModel("modules", ".json", location, " "));
         }
-        var file = File.ReadAllText($"{location}/modules.json");
+        var file = _fileReadHandler.ReadAllTextFromFile("modules", ".json", location).Result;
         var deserialize = JsonConvert.DeserializeObject<List<Module>>(file);
         return deserialize;
     }

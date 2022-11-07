@@ -73,24 +73,27 @@ public class TokenRepository : ITokenRepository
         var tokenTypeKeywordType = _KeyWordService.GetTypeKeyword(idString);
         if (tokenTypeKeywordType != TokenTypeKeyword.Empty)
         {
-            token = new Token(TokenGroup.TYPEKEYWORD, tokenTypeKeywordType, idString);
+            return new TokenResult()
+            {
+                Token = new Token(TokenGroup.TYPEKEYWORD, tokenTypeKeywordType, idString),
+                Position = position
+            };
         }
 
         var tokenControlKeywordType = _KeyWordService.GetTokenControlKeywork(idString);
 
         if (tokenControlKeywordType != TokenControlKeyword.Empty)
         {
-            token = new Token(TokenGroup.CONTROLKEYWORD, tokenControlKeywordType, idString);
-        }
-
-        else
-        {
-            token = new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, idString);
+            return new TokenResult()
+            {
+                Token = new Token(TokenGroup.CONTROLKEYWORD, tokenControlKeywordType, idString),
+                Position = position
+            };
         }
 
         return new TokenResult()
         {
-            Token = token,
+            Token = new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, idString),
             Position = position
         };
     }
