@@ -1,16 +1,14 @@
-using System.Runtime.InteropServices.ComTypes;
-using Common.Interfaces;
+using Common.FileHandlers.Interfaces;
 
-namespace Common;
+namespace Common.FileHandlers;
 
 [Serializable]
 public class FileReadHandler : IFileReadHandler
 {
-
     // Name: Without extension
     // Extension: With! dot
     // Location: Without root folder, i.e. "./"
-    public string ReadAllTextFromFile(string name, string extension, string location)
+    public async Task<string> ReadAllTextFromFile(string name, string extension, string location)
     {
         if (name == string.Empty || extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
@@ -18,7 +16,14 @@ public class FileReadHandler : IFileReadHandler
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
         string fileName = Path.Combine(targetFolder, name);
 
-        return File.ReadAllText(fileName);
+        if (FileExists(name, extension, location))
+        {
+            return await File.ReadAllTextAsync(fileName);
+        }
+        else
+        {
+            throw new FileNotFoundException("File not found");
+        }
     }
 
     public bool FileExists(string name, string extension, string location)

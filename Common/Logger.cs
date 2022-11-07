@@ -1,4 +1,6 @@
 ﻿using Common.Enum;
+using Common.FileHandlers;
+using Common.FileHandlers.Interfaces;
 using Common.Interfaces;
 
 namespace Common;
@@ -6,19 +8,19 @@ namespace Common;
 [Serializable]
 public class Logger : ILogger
 {
-    private string logName { get; set; }
+    private string logFileName { get; set; }
     private string version { get; set; } = EnvironmentVariables.GetVariable("version");
     private string location { get; set; }
-    private IFileWriteHandler _fileHandler;
+    private readonly IFileWriteHandler _fileHandler;
 
     public Logger(IFileWriteHandler FileHandler, string Name = "")
     {
         _fileHandler = FileHandler;
 
-        logName = Name;
+        logFileName = Name;
         if (Name == "")
         {
-            logName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
+            logFileName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
         }
 
         location = $"bin/pirate{version}/logs";
@@ -29,6 +31,6 @@ public class Logger : ILogger
         var time = DateTime.Now.ToString();
         var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {message}\n");
 
-        _fileHandler.AppendToFile(logName, ".log", text, location);
+        _fileHandler.AppendToFile(new FileWriteModel("log", ".log", location, text));
     }
 }

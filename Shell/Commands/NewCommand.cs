@@ -47,10 +47,10 @@ public class NewCommand : Command, ICommand, INewCommand
         switch (typeArgument)
         {
             case "gitignore":
-                _fileWriteHandler.WriteToFile(".gitignore", "", "[Bb]in/", "");
+                _fileWriteHandler.WriteToFile(new FileWriteModel("", ".gitignore",  "", "[Bb]in/"));
                 return;
             case "gitattributes":
-                _fileWriteHandler.WriteToFile(".gitattributes", "", "*.pirate linguist-language=Squirrel", "");
+                _fileWriteHandler.WriteToFile(new FileWriteModel("", ".gitattributes", "", "*.pirate linguist-language=Squirrel" ));
                 return;
             case "pirate":
                 var filename = "main";
@@ -65,7 +65,7 @@ public class NewCommand : Command, ICommand, INewCommand
                     Error($"Specified filename \"{filename}\" already exists");
                     return;
                 }
-                _fileWriteHandler.WriteToFile("filename", ".pirate", " ", "");
+                _fileWriteHandler.WriteToFile(new FileWriteModel(filename, ".pirate", " ", ""));
                 Console.WriteLine($"\nCreated new .{typeArgument} file");
                 return;
         }

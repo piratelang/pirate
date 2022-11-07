@@ -33,7 +33,7 @@ public class ModuleListRepository : IModuleListRepository
         }
         string jsonString = JsonConvert.SerializeObject(moduleList, Formatting.Indented);
         _logger.Log($"Writing module list to \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
-        _fileWriteHandler.WriteToFile("modules", ".json", jsonString, location);
+        _fileWriteHandler.WriteToFile(new FileWriteModel("modules", ".json", location, jsonString));
     }
 
     public List<Module> GetList(string location)
@@ -41,9 +41,9 @@ public class ModuleListRepository : IModuleListRepository
         if (!_fileReadHandler.FileExists("modules", ".json", location))
         {
             _logger.Log($"Creating module list at \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
-            _fileWriteHandler.WriteToFile("modules", ".json", " ", location);
+            _fileWriteHandler.WriteToFile(new FileWriteModel("modules", ".json", location, " "));
         }
-        var file = _fileReadHandler.ReadAllTextFromFile("modules", ".json", location);
+        var file = _fileReadHandler.ReadAllTextFromFile("modules", ".json", location).Result;
         var deserialize = JsonConvert.DeserializeObject<List<Module>>(file);
         return deserialize;
     }
