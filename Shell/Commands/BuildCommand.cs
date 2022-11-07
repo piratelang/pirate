@@ -12,14 +12,16 @@ public class BuildCommand : Command, ICommand, IBuildCommand
     private IParser _parser;
     private ILexer _lexer;
     private IModuleListRepository _moduleListRepository;
+    private IFileReadHandler _fileReadHandler;
     private string Location = EnvironmentVariables.GetVariable("location");
 
-    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer, IModuleListRepository moduleListRepository) : base(logger)
+    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer, IModuleListRepository moduleListRepository, IFileReadHandler fileReadHandler) : base(logger)
     {
         _objectSerializer = objectSerializer;
         _parser = parser;
         _lexer = lexer;
         _moduleListRepository = moduleListRepository;
+        _fileReadHandler = fileReadHandler;
     }
     
     public override void Run(string[] arguments)
@@ -30,7 +32,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
         var foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
         if (foundFiles.Length == 0) Error("No files were found in the directory");
 
-        var moduleList = _moduleListRepository.GetList(Location, Logger);
+        var moduleList = _moduleListRepository.GetList(Location);
 
         foreach (var file in foundFiles)
         {
@@ -40,8 +42,9 @@ public class BuildCommand : Command, ICommand, IBuildCommand
             Console.WriteLine($"Building {file}\n");
             Logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
 
-            var fileName = file.Replace(".pirate", "");
-            var text = File.ReadAllText(fileName + ".pirate");
+            var fileName = file.Replace(".pirate", "").Replace("./", "");
+            
+            var text = _fileReadHandler.ReadAllTextFromFile(fileName, ".pirate", "");
             if (text == null) Error($"{fileName} contains no text");
 
             // Running Lexer
@@ -55,7 +58,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
             if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
         }
         Logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
-        _moduleListRepository.SetList(foundFiles, Location, Logger);
+        _moduleListRepository.SetList(foundFiles, Location);
     }
     
     public override void Help()

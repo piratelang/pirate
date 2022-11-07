@@ -9,12 +9,14 @@ public class RunCommand : Command, ICommand, IRunCommand
     public IObjectSerializer ObjectSerializer;
     public IBuildCommand BuildCommand;
     public IInterpreter Interpreter { get; set; }
+    private IFileReadHandler _fileReadHandler;
     public string Location = EnvironmentVariables.GetVariable("location");
-    public RunCommand(ILogger logger, IObjectSerializer objectSerializer, IBuildCommand buildCommand, IInterpreter interpreter) : base(logger)
+    public RunCommand(ILogger logger, IObjectSerializer objectSerializer, IBuildCommand buildCommand, IInterpreter interpreter, IFileReadHandler FileReadHandler) : base(logger)
     {
         ObjectSerializer = objectSerializer;
         BuildCommand = buildCommand;
         Interpreter = interpreter;
+        _fileReadHandler = FileReadHandler;
     }
     public override void Run(string[] arguments)
     {
@@ -23,7 +25,7 @@ public class RunCommand : Command, ICommand, IRunCommand
         if (arguments.Length >= 2) { fileArgument = arguments[1]; }
         var fileName = fileArgument.Replace(".pirate", "");
 
-        if (!File.Exists($"./{fileName}.pirate")) Error($"File \"{fileArgument}\" not provided or does not exist.");
+        if (!_fileReadHandler.FileExists(fileName, ".pirate", "")) Error($"File \"{fileArgument}\" not provided or does not exist.");
 
         Logger.Log("Starting build", this.GetType().Name, LogType.INFO);
         BuildCommand.Run(arguments);

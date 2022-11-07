@@ -17,6 +17,7 @@ builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
 builder.AddSingleton<ILogger, Logger>();
 builder.AddSingleton<IFileWriteHandler, FileWriteHandler>();
+builder.AddSingleton<IFileReadHandler, FileReadHandler>();
 
 //Shell
 builder.AddSingleton<IModuleListRepository, ModuleListRepository>();

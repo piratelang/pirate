@@ -5,9 +5,11 @@ namespace Shell.Commands;
 public class NewCommand : Command, ICommand, INewCommand
 {
     private IFileWriteHandler _fileWriteHandler;
-    public NewCommand(ILogger Logger, IFileWriteHandler FileWriteHandler) : base(Logger)
+    private IFileReadHandler _fileReadHandler;
+    public NewCommand(ILogger Logger, IFileWriteHandler FileWriteHandler, IFileReadHandler FileReadHandler) : base(Logger)
     { 
         _fileWriteHandler = FileWriteHandler;
+        _fileReadHandler = FileReadHandler;
     }
     public override void Run(string[] arguments)
     {
@@ -58,13 +60,12 @@ public class NewCommand : Command, ICommand, INewCommand
                 }
                 catch (System.Exception) { }
 
-                var exists = File.Exists($"./{filename}.pirate");
-                if (exists)
+                if (_fileReadHandler.FileExists(filename, ".pirate", " "))
                 {
                     Error($"Specified filename \"{filename}\" already exists");
                     return;
                 }
-                _fileWriteHandler.WriteToFile("filename", ".pirate", "", "");
+                _fileWriteHandler.WriteToFile("filename", ".pirate", " ", "");
                 Console.WriteLine($"\nCreated new .{typeArgument} file");
                 return;
         }

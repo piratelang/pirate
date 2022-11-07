@@ -6,11 +6,13 @@ public class ModuleListRepository : IModuleListRepository
 {
     private ILogger _logger;
     private IFileWriteHandler _fileWriteHandler;
+    private IFileReadHandler _fileReadHandler;
 
-    public ModuleListRepository(ILogger Logger, IFileWriteHandler FileWriteHandler)
+    public ModuleListRepository(ILogger Logger, IFileWriteHandler FileWriteHandler, IFileReadHandler FileReadHandler)
     {
         _logger = Logger;
         _fileWriteHandler = FileWriteHandler;
+        _fileReadHandler = FileReadHandler;
     }
     public void SetList(string[] foundFiles, string location)
     {
@@ -36,12 +38,12 @@ public class ModuleListRepository : IModuleListRepository
 
     public List<Module> GetList(string location)
     {
-        if (!File.Exists($"{location}/modules.json"))
+        if (!_fileReadHandler.FileExists("modules", ".json", location))
         {
             _logger.Log($"Creating module list at \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
-            _fileWriteHandler.WriteToFile("modules", ".json", "", location);
+            _fileWriteHandler.WriteToFile("modules", ".json", " ", location);
         }
-        var file = File.ReadAllText($"{location}/modules.json");
+        var file = _fileReadHandler.ReadAllTextFromFile("modules", ".json", location);
         var deserialize = JsonConvert.DeserializeObject<List<Module>>(file);
         return deserialize;
     }
