@@ -17,13 +17,15 @@ public class Token
         // logger.Log($"Creating Token \"{ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
-    public bool Matches(object tokenType, object Value=null)
+    public bool Matches(object tokenType, object value=null)
     {
         if (Value == null)
         {
             return TokenType.Equals(tokenType);
         }
-        return this.TokenType == TokenType && this.Value == Value;
+        var een = TokenType.Equals(tokenType);
+        var twee = Value.Equals(value);
+        return een && twee;
     }
 
     public override string ToString()

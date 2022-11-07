@@ -1,6 +1,6 @@
 using PirateInterpreter.Values;
 
-namespace PirateInterpreter;
+namespace PirateInterpreter.Interfaces;
 
 public interface IInterpreter
 {

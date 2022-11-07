@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
@@ -14,6 +14,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "PirateParser\Parser.csproj", "{86E58DCE-0009-4F02-AA90-928DE16188DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "PirateInterpreter\Interpreter.csproj", "{27D6C87E-8763-4108-B57D-ED6702377A74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter.Test", "PirateInterpreter.Test\Interpreter.Test.csproj", "{5B9BAF88-8564-4596-A976-020DF568C991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer.Test", "PirateLexer.Test\Lexer.Test.csproj", "{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser.Test", "PirateParser.Test\Parser.Test.csproj", "{100016EC-FF10-4763-864C-265ABC3291FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,5 +54,17 @@ Global
 		{27D6C87E-8763-4108-B57D-ED6702377A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27D6C87E-8763-4108-B57D-ED6702377A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27D6C87E-8763-4108-B57D-ED6702377A74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B9BAF88-8564-4596-A976-020DF568C991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9BAF88-8564-4596-A976-020DF568C991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9BAF88-8564-4596-A976-020DF568C991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9BAF88-8564-4596-A976-020DF568C991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{100016EC-FF10-4763-864C-265ABC3291FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{100016EC-FF10-4763-864C-265ABC3291FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{100016EC-FF10-4763-864C-265ABC3291FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{100016EC-FF10-4763-864C-265ABC3291FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

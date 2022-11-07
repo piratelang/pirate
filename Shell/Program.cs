@@ -9,6 +9,7 @@ using Shell.Commands.Interfaces;
 using Shell.ModuleList;
 using PirateLexer.Interfaces;
 using PirateLexer.Tokens;
+using PirateInterpreter.Interfaces;
 
 var version = "1.0.0";
 

@@ -32,7 +32,7 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
                 var result = left.Matches(Right);
                 if(result == 0) { value = 1; }
                 break;
-            case TokenComparisonOperators.GREATERHAN:
+            case TokenComparisonOperators.GREATERTHAN:
                 if (left.Value is int && Right.Value is int)
                 {
                     if(Convert.ToInt32(left.Value) > Convert.ToInt32(Right.Value))

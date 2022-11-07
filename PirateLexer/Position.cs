@@ -16,21 +16,4 @@ public class Position
         fileName = FileName;
         fileText = FileText;
     }
-
-    public void Advance(char CurrentChar = ' ')
-    {
-        index += 1;
-        columnNumber += 1;
-
-        if (CurrentChar == '\n')
-        {
-            lineNumber += 1;
-            columnNumber = 0;
-        }
-    }
-
-    public Position Copy()
-    {
-        return new Position(index, lineNumber, columnNumber, fileName, fileText);
-    }
 }

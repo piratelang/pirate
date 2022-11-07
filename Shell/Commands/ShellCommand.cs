@@ -1,5 +1,5 @@
 using Common;
-using PirateInterpreter;
+using PirateInterpreter.Interfaces;
 using PirateLexer.Interfaces;
 using PirateParser;
 using Shell.Commands.Interfaces;
