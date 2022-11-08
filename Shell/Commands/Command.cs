@@ -5,11 +5,12 @@ namespace Shell.Commands;
 
 public abstract class Command : ICommand
 {
-    protected string Version { get; set; } = EnvironmentVariables.GetVariable("version");
+    protected string Version { get; set; }
     protected ILogger Logger { get; set; }
-    public Command(ILogger logger)
+    public Command(ILogger logger, IEnvironmentVariables environmentVariables)
     {
         Logger = logger;
+        Version = environmentVariables.GetVariable("version");
     }
 
     public abstract void Help();

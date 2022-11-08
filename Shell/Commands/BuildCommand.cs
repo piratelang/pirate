@@ -13,15 +13,17 @@ public class BuildCommand : Command, ICommand, IBuildCommand
     private ILexer _lexer;
     private IModuleListRepository _moduleListRepository;
     private IFileReadHandler _fileReadHandler;
-    private string Location = EnvironmentVariables.GetVariable("location");
+    private string Location;
 
-    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer, IModuleListRepository moduleListRepository, IFileReadHandler fileReadHandler) : base(logger)
+    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer, IModuleListRepository moduleListRepository, IFileReadHandler fileReadHandler, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
     {
         _objectSerializer = objectSerializer;
         _parser = parser;
         _lexer = lexer;
         _moduleListRepository = moduleListRepository;
         _fileReadHandler = fileReadHandler;
+
+        Location = environmentVariables.GetVariable("location");
     }
     
     public override void Run(string[] arguments)

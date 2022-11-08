@@ -3,7 +3,7 @@ using PirateLexer;
 using PirateParser;
 
 Console.WriteLine("Hello, World!");
-var Logger = new Logger(new FileWriteHandler(), "Test");
+var Logger = new Logger(new FileWriteHandler(), new EnvironmentVariables(),  "Test");
 
 while (true)
 {
@@ -11,7 +11,7 @@ while (true)
     var lexer = new Lexer(Logger, new TokenRepository(new KeyWordService()));
     var tokens = lexer.MakeTokens(input, "test");
 
-    ObjectSerializer objectSerializer = new(Logger);
+    ObjectSerializer objectSerializer = new(Logger, new EnvironmentVariables());
 
     var parser = new Parser(Logger, objectSerializer);
     var parseResult = parser.StartParse(tokens, "Test");

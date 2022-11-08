@@ -11,12 +11,14 @@ public class ShellCommand : Command, ICommand, IShellCommand
     private IParser Parser;
     private ILexer Lexer;
     private IInterpreter Interpreter;
+    private IEnvironmentVariables EnvironmentVariables;
 
-    public ShellCommand(ILogger logger, IParser parser, ILexer lexer, IInterpreter interpreter) : base(logger)
+    public ShellCommand(ILogger logger, IParser parser, ILexer lexer, IInterpreter interpreter, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
     {
         Parser = parser;
         Lexer = lexer;
         Interpreter = interpreter;
+        EnvironmentVariables = environmentVariables;
     }
 
     public override void Run(string[] arguments)

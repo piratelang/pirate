@@ -1,6 +1,4 @@
-using PirateLexer.Enums;
-using PirateLexer.Tokens;
-using Xunit;
+
 
 namespace PirateLexer.Test;
 
@@ -36,7 +34,7 @@ public class TokenRepositoryTest
         Assert.Equal(7, result.Position);
         Assert.Equal(TokenGroup.VALUE, result.Token.TokenGroup);
         Assert.Equal(TokenValue.FLOAT, result.Token.TokenType);
-        Assert.Equal(123.123, result.Token.Value);
+        Assert.Equal((float)123.123, result.Token.Value);
     }
 
     [Fact]

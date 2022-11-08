@@ -10,13 +10,14 @@ public class RunCommand : Command, ICommand, IRunCommand
     public IBuildCommand BuildCommand;
     public IInterpreter Interpreter { get; set; }
     private IFileReadHandler _fileReadHandler;
-    public string Location = EnvironmentVariables.GetVariable("location");
-    public RunCommand(ILogger logger, IObjectSerializer objectSerializer, IBuildCommand buildCommand, IInterpreter interpreter, IFileReadHandler FileReadHandler) : base(logger)
+    public string Location;
+    public RunCommand(ILogger Logger, IObjectSerializer objectSerializer, IBuildCommand buildCommand, IInterpreter interpreter, IFileReadHandler FileReadHandler, IEnvironmentVariables EnvironmentVariables) : base(Logger, EnvironmentVariables)
     {
         ObjectSerializer = objectSerializer;
         BuildCommand = buildCommand;
         Interpreter = interpreter;
         _fileReadHandler = FileReadHandler;
+        Location = EnvironmentVariables.GetVariable("location");
     }
     public override void Run(string[] arguments)
     {

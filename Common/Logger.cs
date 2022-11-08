@@ -9,11 +9,11 @@ namespace Common;
 public class Logger : ILogger
 {
     private string logFileName { get; set; }
-    private string version { get; set; } = EnvironmentVariables.GetVariable("version");
+    private string version { get; set; }
     private string location { get; set; }
     private readonly IFileWriteHandler _fileHandler;
 
-    public Logger(IFileWriteHandler FileHandler, string Name = "")
+    public Logger(IFileWriteHandler FileHandler, IEnvironmentVariables environmentVariables, string Name = "")
     {
         _fileHandler = FileHandler;
 
@@ -24,6 +24,7 @@ public class Logger : ILogger
         }
 
         location = $"bin/pirate{version}/logs";
+        version = environmentVariables.GetVariable("version");
     }
 
     public void Log(string message, string orginFile, LogType logType)

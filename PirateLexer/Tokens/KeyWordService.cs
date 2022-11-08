@@ -5,9 +5,9 @@ namespace PirateLexer.Tokens;
 
 public class KeyWordService : IKeyWordService
 {
-    private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char", "new" };
+    private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char"};
 
-    private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class" };
+    private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class", "new"};
 
     public TokenTypeKeyword GetTypeKeyword(string idString)
     {
