@@ -32,15 +32,17 @@ public sealed class SymbolTable
         return value;
     }
 
-    public void Set(string name, INode value)
+    public bool Set(string name, INode value)
     {
         SymbolList[name] = value;
         Logger.Log($"Added {name}: {value.ToString()} to SymbolTable", this.GetType().Name, Common.Enum.LogType.INFO);
+        return true;
     }
 
-    public void Remove(string name)
+    public bool Remove(string name)
     {
         SymbolList.Remove(name);
         Logger.Log($"Removed {name} from SymbolTable", this.GetType().Name, Common.Enum.LogType.INFO);
+        return true;
     }
 }

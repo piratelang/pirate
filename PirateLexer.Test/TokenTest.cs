@@ -1,7 +1,3 @@
-using PirateLexer.Enums;
-using PirateLexer.Tokens;
-using Xunit;
-
 namespace PirateLexer.Test;
 
 public class TokenTest

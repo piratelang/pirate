@@ -39,7 +39,7 @@ public class String : BaseValue, IValue
             case TokenOperators.MULTIPLY:
                 try
                 {
-                    if (other.Value is not string)
+                    if (other.Value is not int)
                     {
                         throw new TypeConversionException(typeof(string));
                     }

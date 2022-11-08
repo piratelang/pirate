@@ -1,10 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PirateParser.Node;
-using PirateParser.Parsers;
-using Xunit;
 
 namespace PirateParser.Test;
 
