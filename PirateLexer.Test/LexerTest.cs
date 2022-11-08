@@ -22,7 +22,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("123", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.VALUE, result[0].TokenGroup);
         Assert.Equal(TokenValue.INT, result[0].TokenType);
         Assert.Equal(123, result[0].Value);
@@ -47,7 +47,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("123.123", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.VALUE, result[0].TokenGroup);
         Assert.Equal(TokenValue.FLOAT, result[0].TokenType);
         Assert.Equal((float)123.123, result[0].Value);
@@ -72,7 +72,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("appel", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.IDENTIFIER, result[0].TokenType);
         Assert.Equal("appel", result[0].Value);
@@ -97,7 +97,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("\"test\"", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.VALUE, result[0].TokenGroup);
         Assert.Equal(TokenValue.STRING, result[0].TokenType);
         Assert.Equal("test", result[0].Value);
@@ -122,7 +122,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("'a'", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.VALUE, result[0].TokenGroup);
         Assert.Equal(TokenValue.CHAR, result[0].TokenType);
         Assert.Equal('a', result[0].Value);
@@ -147,7 +147,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("+ ", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.OPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenOperators.PLUS, result[0].TokenType);
     }
@@ -171,7 +171,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("-", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.OPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenOperators.MINUS, result[0].TokenType);
     }
@@ -195,7 +195,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("*", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.OPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenOperators.MULTIPLY, result[0].TokenType);
     }
@@ -219,7 +219,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("/ ", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.OPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenOperators.DIVIDE, result[0].TokenType);
     }
@@ -243,7 +243,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("^", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.OPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenOperators.POWER, result[0].TokenType);
     }
@@ -267,7 +267,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("(", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.LEFTPARENTHESES, result[0].TokenType);
     }
@@ -291,7 +291,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens(")", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.RIGHTPARENTHESES, result[0].TokenType);
     }
@@ -315,7 +315,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("{", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.LEFTCURLYBRACE, result[0].TokenType);
     }
@@ -339,7 +339,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("}", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.RIGHTCURLYBRACE, result[0].TokenType);
     }
@@ -363,7 +363,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens(",", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.COMMA, result[0].TokenType);
     }
@@ -387,7 +387,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens(":", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.COLON, result[0].TokenType);
     }
@@ -411,7 +411,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens(";", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.SEMICOLON, result[0].TokenType);
     }
@@ -435,7 +435,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens(".", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.DOT, result[0].TokenType);
     }
@@ -459,7 +459,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("[", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.LEFTBRACKET, result[0].TokenType);
     }
@@ -483,7 +483,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("]", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.RIGHTBRACKET, result[0].TokenType);
     }
@@ -507,7 +507,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("= ", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.SYNTAX, result[0].TokenGroup);
         Assert.Equal(TokenSyntax.EQUALS, result[0].TokenType);
     }
@@ -531,7 +531,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("< ", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenComparisonOperators.LESSTHAN, result[0].TokenType);
     }
@@ -555,7 +555,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("> ", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenComparisonOperators.GREATERTHAN, result[0].TokenType);
     }
@@ -579,7 +579,7 @@ namespace PirateLexer.Test;
         var result = lexer.MakeTokens("!=", " ");
 
         //Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result[0].TokenGroup);
         Assert.Equal(TokenComparisonOperators.NOTEQUALS, result[0].TokenType);
     }
