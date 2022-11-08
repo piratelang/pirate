@@ -27,7 +27,7 @@ public class ComparisonOperationNode : IOperationNode
         {
             return false;
         }
-        if (Operator.TokenType is not TokenOperators)
+        if (Operator.TokenType is not TokenComparisonOperators)
         {
             return false;
         }
