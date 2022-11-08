@@ -27,11 +27,13 @@ public class Logger : ILogger
         version = environmentVariables.GetVariable("version");
     }
 
-    public void Log(string message, string orginFile, LogType logType)
+    public bool Log(string message, string orginFile, LogType logType)
     {
         var time = DateTime.Now.ToString();
         var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {message}\n");
 
         _fileHandler.AppendToFile(new FileWriteModel("log", ".log", location, text));
+
+        return true;
     }
 }
