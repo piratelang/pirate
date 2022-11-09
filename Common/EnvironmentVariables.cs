@@ -1,11 +1,13 @@
 using Common.Errors;
+using Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace Common
 {
-    public class EnvironmentVariables
+
+    public class EnvironmentVariables : IEnvironmentVariables
     {
-        public static string GetVariable(string variablename)
+        public string GetVariable(string variablename)
         {
             try
             {

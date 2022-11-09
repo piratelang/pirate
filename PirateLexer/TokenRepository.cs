@@ -176,7 +176,7 @@ public class TokenRepository : ITokenRepository
 
     public TokenResult MakeGreaterThan(string text, int position)
     {
-        var tokenType = TokenComparisonOperators.GREATERHAN;
+        var tokenType = TokenComparisonOperators.GREATERTHAN;
         position += 1;
 
         if (text[position] == '=')

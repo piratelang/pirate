@@ -9,9 +9,9 @@ public class ObjectSerializer : IObjectSerializer
 {
     public string Location { get; set; }
     public ILogger Logger { get; set; }
-    public ObjectSerializer(ILogger logger)
+    public ObjectSerializer(ILogger logger, IEnvironmentVariables environmentVariables)
     {
-        Location = EnvironmentVariables.GetVariable("location") + "/cache";
+        Location = environmentVariables.GetVariable("location") + "/cache";
         bool exists = System.IO.Directory.Exists(Location);
         if (!exists)
             System.IO.Directory.CreateDirectory(Location);

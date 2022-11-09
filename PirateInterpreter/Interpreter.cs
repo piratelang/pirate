@@ -1,5 +1,6 @@
 using PirateInterpreter.Interpreters;
 using PirateInterpreter.Values;
+using PirateInterpreter.Interfaces;
 using PirateParser;
 
 namespace PirateInterpreter;

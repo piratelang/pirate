@@ -9,6 +9,7 @@ using Shell.Commands.Interfaces;
 using Shell.ModuleList;
 using PirateLexer.Interfaces;
 using PirateLexer.Tokens;
+using PirateInterpreter.Interfaces;
 
 var version = "1.0.0";
 
@@ -16,6 +17,7 @@ var builder = new ServiceCollection();
 builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
 builder.AddSingleton<ILogger, Logger>();
+builder.AddSingleton<IEnvironmentVariables, EnvironmentVariables>();
 builder.AddSingleton<IFileWriteHandler, FileWriteHandler>();
 builder.AddSingleton<IFileReadHandler, FileReadHandler>();
 

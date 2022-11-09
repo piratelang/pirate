@@ -1,5 +1,8 @@
 using Common.Enum;
 using Common.FileHandlers;
+using Common.FileHandlers.Interfaces;
+using Common.Interfaces;
+using FakeItEasy;
 using Xunit;
 
 namespace Common.Test;
@@ -7,15 +10,23 @@ namespace Common.Test;
 public class LoggerTest
 {
     [Fact]
-    public void ShouldLogToFIle()
+    public void ShouldLog()
     {
-        //Arrange
-        var logger = new Logger(new FileWriteHandler(), "Test");
-        //Act
-        logger.Log("Test", "Test", LogType.INFO);
-        var exists = System.IO.File.Exists($"./bin/pirateTest/logs/Test.log");
+        // Arrange
+        var FileWriteHandler = A.Fake<IFileWriteHandler>();
+        var EnvironmentVariables = A.Fake<IEnvironmentVariables>();
+        var logger = new Logger(FileWriteHandler, EnvironmentVariables);
 
-        //Assert
-        Assert.True(exists);
+        A.CallTo(() => FileWriteHandler.WriteToFile(A<FileWriteModel>.Ignored, A<bool>.Ignored)).Returns(true);
+        A.CallTo(() => EnvironmentVariables.GetVariable("version")).Returns("1.0.0");
+        var message = "Test message";
+        var type = LogType.INFO;
+
+        // Act
+        var result = logger.Log(message, this.GetType().Name, type);
+
+        // Assert
+        Assert.True(result);
     }
+        
 }

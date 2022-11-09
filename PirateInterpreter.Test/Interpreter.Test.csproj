@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\PirateLexer\Lexer.csproj" />
+    <ProjectReference Include="..\PirateParser\Parser.csproj" />
+    <ProjectReference Include="..\PirateInterpreter\Interpreter.csproj" />
   </ItemGroup>
 
 </Project>

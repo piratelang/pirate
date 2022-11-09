@@ -5,7 +5,7 @@ public enum TokenComparisonOperators
     DOUBLEEQUALS,
     NOTEQUALS,
     LESSTHAN,
-    GREATERHAN,
+    GREATERTHAN,
     LESSTHANEQUALS,
     GREATERTHANEQUALS,
     DOUBLEPIPE,

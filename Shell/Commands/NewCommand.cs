@@ -6,7 +6,7 @@ public class NewCommand : Command, ICommand, INewCommand
 {
     private IFileWriteHandler _fileWriteHandler;
     private IFileReadHandler _fileReadHandler;
-    public NewCommand(ILogger Logger, IFileWriteHandler FileWriteHandler, IFileReadHandler FileReadHandler) : base(Logger)
+    public NewCommand(ILogger Logger, IFileWriteHandler FileWriteHandler, IFileReadHandler FileReadHandler, IEnvironmentVariables EnvironmentVariables) : base(Logger, EnvironmentVariables)
     { 
         _fileWriteHandler = FileWriteHandler;
         _fileReadHandler = FileReadHandler;

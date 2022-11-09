@@ -5,7 +5,7 @@ namespace Shell.Commands;
 public class InitCommand : Command, ICommand, IInitCommand
 {
     private IFileWriteHandler _fileWriteHandler;
-    public InitCommand(ILogger Logger, IFileWriteHandler FileWriteHandler) : base(Logger)
+    public InitCommand(ILogger Logger, IFileWriteHandler FileWriteHandler, IEnvironmentVariables EnvironmentVariables) : base(Logger, EnvironmentVariables)
     { 
         _fileWriteHandler = FileWriteHandler;
     }
