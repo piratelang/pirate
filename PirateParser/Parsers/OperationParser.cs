@@ -4,21 +4,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
-public class OperationParser : ITokenParser
+public class OperationParser : BaseParser, ITokenParser
 {
-    private List<Token> _tokens;
-    private Token _currentToken;
-    public ILogger Logger { get; set; }
 
-    public OperationParser(List<Token> tokens, Token currentToken, ILogger logger)
-    {
-        _tokens = tokens;
-        _currentToken = currentToken;
-        Logger = logger;
-        logger.Log("Creating Operation Parser", this.GetType().Name, LogType.INFO);
-    }
+    public OperationParser(List<Token> tokens, Token currentToken, ILogger logger) : base(tokens, currentToken, logger) {}
 
-    public (INode node, int index) CreateNode()
+    public override (INode node, int index) CreateNode()
     {
         INode node = null;
 
@@ -98,7 +89,7 @@ public class OperationParser : ITokenParser
         return (node, index);
     }
 
-    public (INode node, int index) CreateBinaryOperationNode(int index, INode LeftNode)
+    private (INode node, int index) CreateBinaryOperationNode(int index, INode LeftNode)
     {
         INode node = null;
         var OperatorNode = _tokens[index += 1];

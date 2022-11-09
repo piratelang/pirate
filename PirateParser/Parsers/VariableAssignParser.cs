@@ -4,23 +4,16 @@ using PirateParser.Node;
 
 namespace PirateParser.Parsers;
 
-public class VariableAssignParser : ITokenParser
+public class VariableAssignParser : BaseParser, ITokenParser
 {
-    private List<Token> _tokens;
-    private Token _currentToken;
     public ParserFactory ParserFactory { get; set; }
-    public ILogger Logger { get; set; }
     
-    public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory)
+    public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory) : base(tokens, currentToken, logger)
     {
-        _tokens = tokens;
-        _currentToken = currentToken;
-        Logger = logger;
         ParserFactory = parserFactory;
-        logger.Log("Creating Variable Assign Parser", this.GetType().Name, LogType.INFO);
     }
 
-    public (INode node, int index) CreateNode()
+    public override (INode node, int index) CreateNode()
     {
         INode node;
 

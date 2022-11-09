@@ -4,7 +4,6 @@ namespace PirateInterpreter.Interpreters;
 
 public abstract class BaseInterpreter
 {
-    public abstract BaseValue VisitNode();
     protected ILogger Logger {get; set; }
     protected InterpreterFactory InterpreterFactory { get; private set; }
     
@@ -13,4 +12,6 @@ public abstract class BaseInterpreter
         Logger = logger;
         InterpreterFactory = interpreterFactory;
     }
+    
+    public abstract BaseValue VisitNode();
 }
