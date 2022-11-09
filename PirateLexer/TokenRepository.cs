@@ -60,7 +60,6 @@ public class TokenRepository : ITokenRepository
 
     public TokenResult MakeIdentifier(string text, int position)
     {
-        Token token;
         var idString = string.Empty;
 
         while (Char.IsLetterOrDigit(text[position]) || text[position] != ' ')
