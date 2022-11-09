@@ -45,6 +45,7 @@ public class ModuleListRepository : IModuleListRepository
         }
         var file = _fileReadHandler.ReadAllTextFromFile("modules", ".json", location).Result;
         var deserialize = JsonConvert.DeserializeObject<List<Module>>(file);
+
         return deserialize;
     }
 }
