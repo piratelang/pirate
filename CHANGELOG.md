@@ -2,13 +2,6 @@
 
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
-# 1.1.0
-
-### ([#71](https://github.com/joerivanarkel/PirateLang/pull/71)) XML docs for filehandler usage
-
-- Added XML documentation for `FileReadHandler` and `FileWriteHandler`
-- Removed not referenced objects
-
 ## 1.0.0
 
 ### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter

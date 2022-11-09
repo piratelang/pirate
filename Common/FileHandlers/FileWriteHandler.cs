@@ -5,7 +5,10 @@ namespace Common.FileHandlers;
 [Serializable]
 public class FileWriteHandler : IFileWriteHandler
 {
-    /// <inheritdoc/>
+
+    // Name: Without extension
+    // Extension: With! dot
+    // Location: Without root folder, i.e. "./"
     public bool WriteToFile(FileWriteModel fileWriteModel, bool encryption = false)
     {
         if (fileWriteModel.Name == string.Empty || fileWriteModel.Extension == string.Empty || fileWriteModel.Extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
@@ -23,8 +26,6 @@ public class FileWriteHandler : IFileWriteHandler
 
         return result;
     }
-
-/// <inheritdoc/>
     public bool AppendToFile(FileWriteModel fileWriteModel, Boolean encryption = false)
     {
         if (fileWriteModel.Name == string.Empty || fileWriteModel.Text == string.Empty || fileWriteModel.Extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
@@ -41,6 +42,7 @@ public class FileWriteHandler : IFileWriteHandler
         return result;
     }
 
+    //--------------------------------------------------------------------------------
 
     private string Encrypt(string text)
     {

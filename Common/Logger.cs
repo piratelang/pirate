@@ -11,12 +11,12 @@ public class Logger : ILogger
     private string logFileName { get; set; }
     private string version { get; set; }
     private string location { get; set; }
-    private readonly IFileWriteHandler _fileWriteHandler;
+    private readonly IFileWriteHandler _fileHandler;
 
-    public Logger(IFileWriteHandler FileWriteHandler, IEnvironmentVariables environmentVariables, string Name = "")
+    public Logger(IFileWriteHandler FileHandler, IEnvironmentVariables environmentVariables, string Name = "")
     {
-        _fileWriteHandler = FileWriteHandler;
-        
+        _fileHandler = FileHandler;
+
         logFileName = Name;
         if (Name == "")
         {
@@ -32,7 +32,7 @@ public class Logger : ILogger
         var time = DateTime.Now.ToString();
         var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {message}\n");
 
-        _fileWriteHandler.AppendToFile(new FileWriteModel("log", ".log", location, text));
+        _fileHandler.AppendToFile(new FileWriteModel("log", ".log", location, text));
 
         return true;
     }
