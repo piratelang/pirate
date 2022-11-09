@@ -19,7 +19,7 @@ public class Token
 
     public bool Matches(object tokenType, object value=null)
     {
-        if (Value == null)
+        if (value == null || Value == null)
         {
             return TokenType.Equals(tokenType);
         }

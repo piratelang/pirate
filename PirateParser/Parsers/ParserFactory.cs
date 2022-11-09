@@ -4,10 +4,12 @@ namespace PirateParser.Parsers;
 
 public class ParserFactory: IParserFactory
 {
-    public ITokenParser GetParser(Token token, List<Token> tokens, ILogger logger)
+    public BaseParser GetParser(Token token, List<Token> tokens, ILogger logger)
     {
         switch(token.TokenType)
         {
+            case TokenControlKeyword.IF:
+                return new IfStatementParser(tokens, token, logger, this);
             case TokenTypeKeyword:
                 return new VariableAssignParser(tokens, token, logger, this);
 

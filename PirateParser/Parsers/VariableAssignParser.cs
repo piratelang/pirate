@@ -6,11 +6,11 @@ namespace PirateParser.Parsers;
 
 public class VariableAssignParser : BaseParser, ITokenParser
 {
-    public ParserFactory ParserFactory { get; set; }
+    private ParserFactory _parserFactory { get; set; }
     
     public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory) : base(tokens, currentToken, logger)
     {
-        ParserFactory = parserFactory;
+        _parserFactory = parserFactory;
     }
 
     public override (INode node, int index) CreateNode()
@@ -21,7 +21,7 @@ public class VariableAssignParser : BaseParser, ITokenParser
         var VariableType = _currentToken;
 
         
-        var parser = ParserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
+        var parser = _parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
         var result = parser.CreateNode();
 
         var IdentifierNode = result.node;
@@ -40,7 +40,7 @@ public class VariableAssignParser : BaseParser, ITokenParser
             throw new ParserException("No Equals assign Operator was found, following the Identifier");
         }
 
-        parser = ParserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
+        parser = _parserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
         result = parser.CreateNode();
         INode Value = result.node;
         index = result.index;
