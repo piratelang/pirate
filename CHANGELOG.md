@@ -57,6 +57,10 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
 - Added a two filehandlers for writing and reading
 
+### ([#70](https://github.com/joerivanarkel/PirateLang/pull/70)) Unit Tests
+
+- Created Unit Tests for Lexer, Parser, Interpreter projects
+
 ## 0.1.2
 
 ### ([#32](https://github.com/joerivanarkel/PirateLang/pull/32)) Shell, CLI Improvements
