@@ -1,196 +1,276 @@
-using PirateLexer.Models;
+using System.Globalization;
+using PirateLexer.Tokens;
+using PirateLexer.Enums;
+using PirateLexer.Interfaces;
 
-namespace PirateLexer
+namespace PirateLexer;
+
+public class TokenRepository : ITokenRepository
 {
-    public class TokenRepository
+    private readonly IKeyWordService _KeyWordService;
+
+    public TokenRepository(IKeyWordService KeyWordService)
     {
-        public static Token MakeNumber()
+        _KeyWordService = KeyWordService;
+    }
+
+    public TokenResult MakeNumber(string text, int position)
+    {
+        var dotCount = 0;
+        var numberString = string.Empty;
+        Token token;
+
+        while (Char.IsDigit(text[position]) || text[position] == '.')
         {
-            var numberString = string.Empty; 
-            var dotCount = 0;
-            var positionStart = Lexer.position.Copy();
-
-            while (Lexer.currentChar != null && (Globals.DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '.'))
+            if (text[position] == '.')
             {
-                if (Lexer.currentChar == '.')
+                if (dotCount == 1)
                 {
-                    if (dotCount == 1)
-                    {
-                        break;
-                    }
-                    dotCount += 1;
-                    numberString += '.';
+                    break;
                 }
-                else
-                {
-                    numberString += Lexer.currentChar;
-                }
-                Lexer.Advance();
-            }
-
-            if (dotCount == 0)
-            {
-                return new Token(TokenType.INT, int.Parse(numberString), positionStart, Lexer.position);
+                dotCount += 1;
+                numberString += '.';
             }
             else
             {
-                return new Token(TokenType.FLOAT, float.Parse(numberString), positionStart, Lexer.position);
+                numberString += text[position];
             }
+            position += 1;
+            if (position == text.Length) break;
         }
 
-        public static Token MakeIdentifier()
+        if (dotCount == 0)
         {
-            var idString = string.Empty;
-            var positionStart = Lexer.position.Copy();
+            token = new Token(TokenGroup.VALUE, TokenValue.INT, int.Parse(numberString));
 
-            while (Lexer.currentChar != null && (Globals.LETTERS_DIGITS.Contains(Lexer.currentChar) || Lexer.currentChar == '_'))
-            {
-                idString += Lexer.currentChar;
-                Lexer.Advance();
-            }
+        }
+        else
+        {
+            CultureInfo cultureInfo = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            cultureInfo.NumberFormat.CurrencyDecimalSeparator = "."; cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+            token = new Token(TokenGroup.VALUE, TokenValue.FLOAT, float.Parse(numberString, cultureInfo));
+        }
 
-            var tokenType = new TokenType();
+        return new TokenResult()
+        {
+            Token = token,
+            Position = position
+        };
+    }
 
-            if (Globals.KEYWORDS.Contains(idString))
+    public TokenResult MakeIdentifier(string text, int position)
+    {
+        Token token;
+        var idString = string.Empty;
+
+        while (Char.IsLetterOrDigit(text[position]) || text[position] != ' ')
+        {
+            idString += text[position];
+            position += 1;
+            if (position == text.Length) break;
+        }
+
+        var tokenTypeKeywordType = _KeyWordService.GetTypeKeyword(idString);
+        if (tokenTypeKeywordType != TokenTypeKeyword.Empty)
+        {
+            return new TokenResult()
             {
-                tokenType = TokenType.KEYWORD;
-            }
-            else if (Globals.BOOLEANS.Contains(idString))
+                Token = new Token(TokenGroup.TYPEKEYWORD, tokenTypeKeywordType, idString),
+                Position = position
+            };
+        }
+
+        var tokenControlKeywordType = _KeyWordService.GetTokenControlKeywork(idString);
+
+        if (tokenControlKeywordType != TokenControlKeyword.Empty)
+        {
+            return new TokenResult()
             {
-                tokenType = TokenType.BOOLEAN;
+                Token = new Token(TokenGroup.CONTROLKEYWORD, tokenControlKeywordType, idString),
+                Position = position
+            };
+        }
+
+        return new TokenResult()
+        {
+            Token = new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, idString),
+            Position = position
+        };
+    }
+
+    public TokenResult MakeString(string text, int position)
+    {
+        var resultString = string.Empty;
+        var escapeCharacter = false;
+        position += 1;
+
+        Dictionary<string, string> escapeCharacters = new Dictionary<string, string>() { };
+        escapeCharacters.Add("n", "\n");
+        escapeCharacters.Add("t", "\t");
+
+        while (text[position] != '"' || escapeCharacter)
+        {
+            if (escapeCharacter)
+            {
+                resultString += escapeCharacters[text[position].ToString()];
             }
             else
             {
-                tokenType = TokenType.IDENTIFIER;
-            }
-
-            return new Token(tokenType, idString, positionStart, Lexer.position);
-        }
-
-        public static Token MakeString()
-        {
-            var resultString = string.Empty;
-            var positionStart = Lexer.position.Copy();
-            var escapeCharacter = false;
-            Lexer.Advance();
-
-            Dictionary<string, string> escapeCharacters = new Dictionary<string, string>() { };
-            escapeCharacters.Add("n", "\n");
-            escapeCharacters.Add("t", "\t");
-
-            while (Lexer.currentChar != null && Lexer.currentChar != '"' || escapeCharacter)
-            {
-                if (escapeCharacter)
+                if (text[position] == '\\')
                 {
-                    resultString += escapeCharacters[Lexer.currentChar.ToString()];
+                    escapeCharacter = true;
                 }
                 else
                 {
-                    if (Lexer.currentChar == '\\')
-                    {
-                        escapeCharacter = true;
-                    }
-                    else
-                    {
-                        resultString += Lexer.currentChar;
-                    }
+                    resultString += text[position];
                 }
-                Lexer.Advance();
-                escapeCharacter = false;
             }
-
-            Lexer.Advance();
-            return new Token(TokenType.STRING, resultString, positionStart, Lexer.position);
-
+            position += 1;
+            escapeCharacter = false;
+            if (position == text.Length) break;
         }
+        position += 1;
 
-        public static (Token token, Error error) MakeNotEquals()
+        return new TokenResult()
         {
-            var positionStart = Lexer.position.Copy();
-            Lexer.Advance();
+            Token = new Token(TokenGroup.VALUE, TokenValue.STRING, resultString),
+            Position = position
+        };
+    }
 
-            if (Lexer.currentChar == '=')
-            {
-                Lexer.Advance();
-                return (new Token(TokenType.NOTEQUALS, PositionStart: positionStart, PositionEnd: Lexer.position), null);
-            }
-
-            Lexer.Advance();
-            return (null, new Error(positionStart, Lexer.position, "Expected Character Error", "'=' (after '!')"));
-        }
-
-        public static Token MakeGreaterThan()
+    public TokenResult MakeChar(string text, int position)
+    {
+        position += 1;
+        var resultString = text[position];
+        position += 1;
+        if (text[position] != '\'')
         {
-            var tokenType = TokenType.GREATERHAN;
-            var positionStart = Lexer.position.Copy();
-            Lexer.Advance();
-
-            if (Lexer.currentChar == '=')
-            {
-                Lexer.Advance();
-                tokenType = TokenType.GREATERTHANEQUALS;
-            }
-
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            throw new InvalidOperationException("Char is not one letter");
         }
+        position += 1;
 
-        public static Token MakeLessThan()
+        return new TokenResult()
         {
-            var tokenType = TokenType.LESSTHAN;
-            var positionStart = Lexer.position.Copy();
-            Lexer.Advance();
+            Token = new Token(TokenGroup.VALUE, TokenValue.CHAR, resultString),
+            Position = position
+        };
+    }
 
-            if (Lexer.currentChar == '=')
-            {
-                Lexer.Advance();
-                tokenType = TokenType.LESSTHANEQUALS;
-            }
+    public TokenResult MakeNotEquals(string text, int position)
+    {
+        position += 1;
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
-        }
-
-        public static Token MakeEquals()
+        if (text[position] == '=')
         {
-            var tokenType = TokenType.EQUALS;
-            var positionStart = Lexer.position.Copy();
-            Lexer.Advance();
-
-            if (Lexer.currentChar == '=')
+            position += 1;
+            return new TokenResult()
             {
-                Lexer.Advance();
-                tokenType = TokenType.DOUBLEEQUALS;
-            }
-
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+                Token = new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.NOTEQUALS),
+                Position = position
+            };
         }
 
-        public static Token MakePlus()
+        position += 1;
+        throw new Exception("Expected Character Error: '=' (after '!')");
+    }
+
+    public TokenResult MakeGreaterThan(string text, int position)
+    {
+        var tokenType = TokenComparisonOperators.GREATERTHAN;
+        position += 1;
+
+        if (text[position] == '=')
         {
-            var tokenType = TokenType.PLUS;
-            var positionStart = Lexer.position.Copy();
-            Lexer.Advance();
-
-            if (Lexer.currentChar == '=')
-            {
-                Lexer.Advance();
-                tokenType = TokenType.PLUSEQUALS;
-            }
-
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+            position += 1;
+            tokenType = TokenComparisonOperators.GREATERTHANEQUALS;
         }
-        public static Token MakeDivide()
+
+        return new TokenResult()
         {
-            var tokenType = TokenType.DIVIDE;
-            var positionStart = Lexer.position.Copy();
-            Lexer.Advance();
+            Token = new Token(TokenGroup.COMPARISONOPERATORS, tokenType),
+            Position = position
+        };
 
-            if (Lexer.currentChar == '/')
-            {
-                Lexer.Advance();
-                tokenType = TokenType.DOUBLEDIVIDE;
-            }
+    }
 
-            return new Token(tokenType, PositionStart: positionStart, PositionEnd: Lexer.position);
+    public TokenResult MakeLessThan(string text, int position)
+    {
+        var tokenType = TokenComparisonOperators.LESSTHAN;
+        position += 1;
+
+        if (text[position] == '=')
+        {
+            position += 1;
+            tokenType = TokenComparisonOperators.LESSTHANEQUALS;
         }
+
+        return new TokenResult()
+        {
+            Token = new Token(TokenGroup.COMPARISONOPERATORS, tokenType),
+            Position = position
+        };
+    }
+
+    public TokenResult MakeEquals(string text, int position)
+    {
+        Token token;
+        position += 1;
+        if (text[position] == '=')
+        {
+            position += 1;
+            token = new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS);
+        }
+        else
+        {
+            token = new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS);
+        }
+
+        return new TokenResult()
+        {
+            Token = token,
+            Position = position
+        };
+    }
+
+    public TokenResult MakePlus(string text, int position)
+    {
+        Token token;
+        position += 1;
+        if (text[position] == '=')
+        {
+            position += 1;
+            token = new Token(TokenGroup.SYNTAX, TokenSyntax.PLUSEQUALS);
+        }
+        else
+        {
+            token = new Token(TokenGroup.OPERATORS, TokenOperators.PLUS);
+        }
+
+        return new TokenResult()
+        {
+            Token = token,
+            Position = position
+        };
+    }
+
+    public TokenResult MakeDivide(string text, int position)
+    {
+        Token token;
+        position += 1;
+        if (text[position] == '/')
+        {
+            position += 1;
+            token = new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE);
+        }
+        else
+        {
+            token = new Token(TokenGroup.OPERATORS, TokenOperators.DIVIDE);
+        }
+
+        return new TokenResult()
+        {
+            Token = token,
+            Position = position
+        };
     }
 }

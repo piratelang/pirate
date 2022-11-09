@@ -1,212 +1,166 @@
-
-using PirateLexer.Models;
+using PirateLexer.Tokens;
+using PirateLexer.Enums;
+using PirateLexer.Interfaces;
 
 namespace PirateLexer;
-public class Lexer
+
+public class Lexer : ILexer
 {
+    private static Lexer? lexer;
+    private readonly ITokenRepository _tokenRepository;
+
+    public ILogger Logger { get; set; }
+
     public string fileName { get; set; }
-    public static string text { get; set; }
-    public static char currentChar { get; set; }
-    public static Position position { get; set; }
+    public string text { get; set; }
+    public int position { get; set; } = 0;
 
-    public Lexer(string FileName, string Text)
+    public Lexer(ILogger logger, ITokenRepository tokenRepository)
     {
+        Logger = logger;
+        _tokenRepository = tokenRepository;
+        logger.Log("Created Lexer", this.GetType().Name, LogType.INFO);
+    }
+
+    public List<Token> MakeTokens(string Text, string FileName)
+    {
+        text = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
+        if (text == null)
+        {
+            throw new NullReferenceException("Lexer text is null");
+        }
         fileName = FileName;
-        var newText = Text.Replace("\n", "").Replace("\r", "").Replace("    ", "");
-        text = newText;
-        position = new Position(-1, 0, -1, fileName, text);
-        Advance();
-    }
+        position = 0;
 
-    public static void Advance()
-    {
-        position.Advance(currentChar);
-        if (position.index < text.Length)
-        {
-            currentChar = text[position.index];
-        }
-        else
-        {
-            currentChar = ' ';
-        }
-    }
+        List<Token> tokens = new();
+        var result = true;
 
-    public (List<Token>? tokens, Error? error) MakeTokens()
-    {
-        List<Token> tokens = new List<Token> { };
-
-        while (currentChar != null)
+        while (result)
         {
-            if (currentChar.Equals('\n'))
+            if (position >= text.Length)
             {
-                tokens.Add(new Token(
-                    TokenType.ENDOFLINE,
-                    PositionStart: position
-                ));
-                Advance();
+                break;
             }
-            if (currentChar == ' ')
+            if (text[position] == ' ')
             {
-                Advance();
-                if (currentChar == ' ')
-                {
-                    break;
-                }
+                position += 1;
                 continue;
             }
-            if (Globals.DIGITS.Contains(currentChar))
+            if (Char.IsDigit(text[position]))
             {
-                tokens.Add(TokenRepository.MakeNumber());
+                var tokenResult = _tokenRepository.MakeNumber(text, position);
+                tokens.Add(tokenResult.Token);
+                position = tokenResult.Position;
+                Logger.Log($"Creating Token \"{tokenResult.Token.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
                 continue;
             }
-            if (Globals.LETTERS.Contains(currentChar))
+            if (Char.IsLetter(text[position]))
             {
-                tokens.Add(TokenRepository.MakeIdentifier());
+                var tokenResult = _tokenRepository.MakeIdentifier(text, position);
+                tokens.Add(tokenResult.Token);
+                position = tokenResult.Position;
                 continue;
             }
-            switch (currentChar)
+            switch (text[position])
             {
                 case '"':
-                    tokens.Add(TokenRepository.MakeString());
+                    var tokenResult = _tokenRepository.MakeString(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
+                    continue;
+                case '\'':
+                    tokenResult = _tokenRepository.MakeChar(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
                     continue;
                 case '+':
-                    tokens.Add(TokenRepository.MakePlus());
-                    Advance();
+                    tokenResult = _tokenRepository.MakePlus(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
                     continue;
                 case '-':
-                    tokens.Add(new Token(
-                        TokenType.MINUS,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MINUS, Logger));
+                    position += 1;
                     continue;
                 case '*':
-                    tokens.Add(new Token(
-                        TokenType.MULTIPLY,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.MULTIPLY, Logger));
+                    position += 1;
                     continue;
                 case '/':
-                    tokens.Add(TokenRepository.MakeDivide());
-                    Advance();
+                    tokenResult = _tokenRepository.MakeDivide(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
                     continue;
                 case '^':
-                    tokens.Add(new Token(
-                        TokenType.POWER,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.POWER, Logger));
+                    position += 1;
                     continue;
                 case '(':
-                    tokens.Add(new Token(
-                        TokenType.LEFTPARENTHESES,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES, Logger));
+                    position += 1;
                     continue;
                 case ')':
-                    tokens.Add(new Token(
-                        TokenType.RIGHTPARENTHESES,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES, Logger));
+                    position += 1;
                     continue;
                 case '{':
-                    tokens.Add(new Token(
-                        TokenType.LEFTCURLYBRACE,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE, Logger));
+                    position += 1;
                     continue;
                 case '}':
-                    tokens.Add(new Token(
-                        TokenType.RIGHTCURLYBRACE,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE, Logger));
+                    position += 1;
                     continue;
                 case ',':
-                    tokens.Add(new Token(
-                        TokenType.COMMA,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COMMA, Logger));
+                    position += 1;
                     continue;
                 case ':':
-                    tokens.Add(new Token(
-                        TokenType.COLON,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COLON, Logger));
+                    position += 1;
                     continue;
                 case ';':
-                    tokens.Add(new Token(
-                        TokenType.SEMICOLON,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.SEMICOLON, Logger));
+                    position += 1;
                     continue;
                 case '.':
-                    tokens.Add(new Token(
-                        TokenType.DOT,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOT, Logger));
+                    position += 1;
                     continue;
                 case '$':
-                    tokens.Add(new Token(
-                        TokenType.DOLLAR,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.DOLLAR, Logger));
+                    position += 1;
                     continue;
                 case '[':
-                    tokens.Add(new Token(
-                        TokenType.LEFTBRACKET,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTBRACKET, Logger));
+                    position += 1;
                     continue;
                 case ']':
-                    tokens.Add(new Token(
-                        TokenType.RIGHTBRACKET,
-                        PositionStart: position
-                    ));
-                    Advance();
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTBRACKET, Logger));
+                    position += 1;
                     continue;
                 case '=':
-                    tokens.Add(TokenRepository.MakeEquals());
-                    Advance();
+                    tokenResult = _tokenRepository.MakeEquals(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
                     continue;
                 case '<':
-                    tokens.Add(TokenRepository.MakeLessThan());
-                    Advance();
+                    tokenResult = _tokenRepository.MakeLessThan(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
                     continue;
                 case '>':
-                    tokens.Add(TokenRepository.MakeGreaterThan());
-                    Advance();
+                    tokenResult = _tokenRepository.MakeGreaterThan(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
                     continue;
                 case '!':
-                    var result = TokenRepository.MakeNotEquals();
-                    if (result.error != null)
-                    {
-                        return (null, result.error);
-                    }
-                    tokens.Add(result.token);
-                    Advance();
+                    tokenResult = _tokenRepository.MakeNotEquals(text, position);
+                    tokens.Add(tokenResult.Token);
+                    position = tokenResult.Position;
                     continue;
-                default:
-                    var positionStart = position.Copy();
-                    Advance();
-                    return (null, new Error(positionStart, position, $"'{currentChar}'", "Illegal Character"));
             }
         }
-
-        tokens.Add(new Token(
-            TokenType.ENDOFFILE,
-            PositionStart: position
-        ));
-        return (tokens, null);
+        return tokens;
     }
 }

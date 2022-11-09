@@ -1,0 +1,9 @@
+#####################################3
+Parser:
+TokenGroup = TokenTypeKeyword.VAR:
+    -> Variable Assign Parser
+       Uses: Operation Parser
+       Creates VariableAssignNode
+TokenGroup = Value && TokenGroup = TokenSyntax.IDENTIFIER:
+    -> Operation Parser
+       Creates BinaryOperationNode, ComparisonOperationNode, ValueNode

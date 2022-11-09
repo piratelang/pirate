@@ -1,8 +1,3 @@
-func main()
-{
-    var bool = true;
-    if(bool == true)
-    {
-        print("Hello World"); //This should not be in output.py;
-    }
-}
+var a = 2.2 + 1.1;
+a + 2.0;
+2 + 2;

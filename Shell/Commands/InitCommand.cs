@@ -1,46 +1,47 @@
+using Shell.Commands.Interfaces;
 
-using PirateInterpreter;
-using PirateLexer;
-using PirateParser;
+namespace Shell.Commands;
 
-namespace Shell.Commands
+public class InitCommand : Command, ICommand, IInitCommand
 {
-    public class InitCommand : ICommand
+    private IFileWriteHandler _fileWriteHandler;
+    public InitCommand(ILogger Logger, IFileWriteHandler FileWriteHandler, IEnvironmentVariables EnvironmentVariables) : base(Logger, EnvironmentVariables)
+    { 
+        _fileWriteHandler = FileWriteHandler;
+    }
+
+    public override void Run(string[] arguments)
     {
-        public string version { get; set; }
-        public InitCommand(string Version)
-        {
-            version = Version;
-        }
-        public void Run(string[] arguments)
-        {
-            var nameArgument = "main";
-            if (arguments.Length == 2) { nameArgument = arguments[1];}
+        Logger.Log("Starting Init Command", this.GetType().Name, LogType.INFO);
+        var nameArgument = "main";
+        if (arguments.Length == 2) { nameArgument = arguments[1]; }
 
-            var fileName = nameArgument.Replace(".pirate", "");
-            var file = File.CreateText($"./{fileName}.pirate");
-            file.Write(String.Join(
-                Environment.NewLine,
-                "func main()",
-                "{",
-                "    print(\"Hello World\");",
-                "}"
-            ));
-            file.Close();
-            Console.WriteLine($"\nCreated {fileName}.pirate");
-        }
+        Logger.Log($"Creating {nameArgument} file", this.GetType().Name, LogType.INFO);
+        var fileName = nameArgument.Replace(".pirate", "");
 
-        public void Help()
-        {
-            Console.WriteLine(String.Join(
-                Environment.NewLine,
-                "Description",
-                "   pirate initalize command",
-                "\nUsage",
-                "   pirate init [filename]",
-                "\nOptions",
-                "   -h --help       Show command line help."
-            ));
-        }
+        var text = String.Join(
+            Environment.NewLine,
+            "func main()",
+            "{",
+            "    print(\"Hello World\");",
+            "}"
+        );
+        _fileWriteHandler.WriteToFile(new FileWriteModel(fileName, ".pirate", "", text));
+
+        Logger.Log($"Created {nameArgument} file", this.GetType().Name, LogType.INFO);
+        Console.WriteLine($"\nCreated {fileName}.pirate");
+    }
+
+    public override void Help()
+    {
+        Console.WriteLine(String.Join(
+            Environment.NewLine,
+            "Description",
+            "   pirate initalize command",
+            "\nUsage",
+            "   pirate init [filename]",
+            "\nOptions",
+            "   -h --help       Show command line help."
+        ));
     }
 }

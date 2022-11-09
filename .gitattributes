@@ -1,1 +1,4 @@
 *.pirate linguist-language=Squirrel
+
+# Markdown
+*.md linguist-detectable=true

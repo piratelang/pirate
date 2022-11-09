@@ -1,71 +1,56 @@
+using Common;
+using PirateInterpreter.Interfaces;
+using Shell.Commands.Interfaces;
 
-using PirateInterpreter;
-using PirateLexer;
-using PirateParser;
+namespace Shell.Commands;
 
-namespace Shell.Commands
+public class RunCommand : Command, ICommand, IRunCommand
 {
-    public class RunCommand : ICommand
+    public IObjectSerializer ObjectSerializer;
+    public IBuildCommand BuildCommand;
+    public IInterpreter Interpreter { get; set; }
+    private IFileReadHandler _fileReadHandler;
+    public string Location;
+    public RunCommand(ILogger Logger, IObjectSerializer objectSerializer, IBuildCommand buildCommand, IInterpreter interpreter, IFileReadHandler FileReadHandler, IEnvironmentVariables EnvironmentVariables) : base(Logger, EnvironmentVariables)
     {
-        public string version { get; set; }
-        public RunCommand(string Version)
+        ObjectSerializer = objectSerializer;
+        BuildCommand = buildCommand;
+        Interpreter = interpreter;
+        _fileReadHandler = FileReadHandler;
+        Location = EnvironmentVariables.GetVariable("location");
+    }
+    public override void Run(string[] arguments)
+    {
+        Logger.Log("Starting Run Command", this.GetType().Name, LogType.INFO);
+        var fileArgument = "main";
+        if (arguments.Length >= 2) { fileArgument = arguments[1]; }
+        var fileName = fileArgument.Replace(".pirate", "");
+
+        if (!_fileReadHandler.FileExists(fileName, ".pirate", "")) Error($"File \"{fileArgument}\" not provided or does not exist.");
+
+        Logger.Log("Starting build", this.GetType().Name, LogType.INFO);
+        BuildCommand.Run(arguments);
+        Logger.Log("Completed Build", this.GetType().Name, LogType.INFO);
+
+        Logger.Log($"Executing {fileName}.pirate\n", this.GetType().Name, LogType.INFO);
+
+        var interpreterResult = Interpreter.StartInterpreter(fileName);
+        foreach (var item in interpreterResult)
         {
-            version = Version;
+            Console.WriteLine(item.Value);
         }
-        public void Run(string[] arguments)
-        {
-            var fileArgument = "main";
-            if (arguments.Length >= 2) { fileArgument = arguments[1]; }
+    }
 
-            var exists = File.Exists($"./{fileArgument}.pirate");
-
-            if (!exists)
-            {
-                Error($"File \"{fileArgument}\" not provided or does not exist.");
-                return;
-            }
-
-            var location = $"bin/pirate{version}";
-
-            var fileName = fileArgument.Replace(".pirate", "");
-            var text = File.ReadAllText(fileName + ".pirate");
-
-            var lexer = new Lexer("test", text);
-            var tokens = lexer.MakeTokens();
-            if (tokens.tokens.Count() == 0)
-            {
-                Error("Error occured while lexing tokens.");
-            }
-
-            var parser = new Parser(tokens.tokens);
-            var parseResult = parser.Parse(location);
-            if (parseResult != true)
-            {
-                Error("Error occured while parsing tokens.");
-            }
-
-            var pythonEngine = new PythonEngine(location);
-            var result = pythonEngine.InvokeMain("main");
-        }
-
-        public void Help()
-        {
-            Console.WriteLine(String.Join(
-                Environment.NewLine,
-                "Description",
-                "   pirate run command",
-                "\nUsage",
-                "   pirate run [filename]",
-                "\nOptions",
-                "   -h --help   Show command line help."
-            ));
-        }
-
-        public void Error(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\n{message}");
-            Console.ForegroundColor = ConsoleColor.White;
-        }
+    public override void Help()
+    {
+        Console.WriteLine(String.Join(
+            Environment.NewLine,
+            "Description",
+            "   pirate run command",
+            "\nUsage",
+            "   pirate run [filename]",
+            "\nOptions",
+            "   -h --help   Show command line help."
+        ));
     }
 }
