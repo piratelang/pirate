@@ -6,7 +6,6 @@ namespace PirateLexer;
 
 public class Lexer : ILexer
 {
-    private static Lexer? lexer;
     private readonly ITokenRepository _tokenRepository;
 
     public ILogger Logger { get; set; }
