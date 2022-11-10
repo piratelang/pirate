@@ -15,7 +15,8 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.PLUS, "+"));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
-        var parser = new OperationParser(tokens, tokens[0], logger);
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -35,7 +36,8 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
-        var parser = new OperationParser(tokens, tokens[0], logger);
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -53,7 +55,8 @@ public class ParserTest
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
-        var parser = new OperationParser(tokens, tokens[0], logger);
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -74,13 +77,38 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         var parserFactory = new ParserFactory();
-
-        var parser = new VariableAssignParser(tokens, tokens[0], logger, parserFactory);
+        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
 
         // Act
         var result = parser.CreateNode();
 
         // Assert
         Assert.IsType<VariableAssignNode>(result.node);
+    }
+
+    [Fact]
+    public void ShouldReturnIfStatementNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.IF));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<IfStatementNode>(result.node);
     }
 }

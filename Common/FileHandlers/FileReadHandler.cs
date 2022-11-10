@@ -10,9 +10,9 @@ public class FileReadHandler : IFileReadHandler
     {
         if (name == string.Empty || extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
-        name += extension;
+        var nameAndExtension = name + extension;
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
-        string fileName = Path.Combine(targetFolder, name);
+        string fileName = Path.Combine(targetFolder, nameAndExtension);
 
         if (FileExists(name, extension, location))
         {

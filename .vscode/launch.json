@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/PirateParser/bin/Debug/net6.0/Parser.dll",
-            "args": [""],
-            "cwd": "${workspaceFolder}/PirateParser",
+            "program": "${workspaceFolder}/Shell/bin/Debug/net6.0/Shell.dll",
+            "args": ["run"],
+            "cwd": "${workspaceFolder}/Shell",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "integratedTerminal",
             "stopAtEntry": false,

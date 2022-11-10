@@ -60,6 +60,10 @@ namespace PirateParser.Parsers
                 result = parser.CreateNode();
                 Nodes.Add(result.node);
                 index = result.index;
+                if (_tokens[index++].TokenType.Equals(TokenSyntax.SEMICOLON))
+                {
+                    index++;
+                }
             }
 
             node = new IfStatementNode(Operation, Nodes);
