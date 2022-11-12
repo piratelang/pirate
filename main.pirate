@@ -20,6 +20,11 @@ func main()
         print("Wrong");
     }
 
+    while "Hello" == list[1]
+    {
+        print("Hello");
+    }
+
     for var i = 0 to 3
     {
         print(i);
@@ -30,8 +35,5 @@ func main()
         print(item);
     }
 
-    while "Hello" == list[1]
-    {
-        print("Hello");
-    }
+    
 }

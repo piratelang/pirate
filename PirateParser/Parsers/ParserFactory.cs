@@ -10,6 +10,8 @@ public class ParserFactory: IParserFactory
         {
             case TokenControlKeyword.IF:
                 return new IfStatementParser(tokens, token, logger, this);
+            case TokenControlKeyword.WHILE:
+                return new WhileLoopStatementParser(tokens, token, logger, this);
             case TokenTypeKeyword:
                 return new VariableAssignParser(tokens, token, logger, this);
 
