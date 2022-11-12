@@ -33,6 +33,13 @@ public class IfStatementNodeInterpreter : BaseInterpreter
             }
         }
 
+        if (!conditionBoolean && Node.ElseNode is not null)
+        {
+            foreach (var node in Node.ElseNode)
+            {
+                bodyValues.Add(InterpreterFactory.GetInterpreter(node, Logger).VisitNode());
+            }
+        }
         
         return bodyValues.FirstOrDefault();
     }

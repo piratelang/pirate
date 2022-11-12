@@ -7,13 +7,21 @@ public class IfStatementNode : IIfStatementNode
 {
     public IOperationNode ConditionNode { get; set; }
     public List<INode> BodyNodes { get; set; }
+    public List<INode> ElseNode { get; set; }
+
+    public IfStatementNode(IOperationNode conditionNode, List<INode> bodyNodes, List<INode> elseNode)
+    {
+        ConditionNode = conditionNode;
+        BodyNodes = bodyNodes;
+        ElseNode = elseNode;
+    }
 
     public IfStatementNode(IOperationNode conditionNode, List<INode> bodyNodes)
     {
         ConditionNode = conditionNode;
         BodyNodes = bodyNodes;
     }
-
+    
     public bool IsValid()
     {
         throw new NotImplementedException();

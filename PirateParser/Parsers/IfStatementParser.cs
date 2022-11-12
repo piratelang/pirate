@@ -24,12 +24,6 @@ namespace PirateParser.Parsers
                 throw new ParserException("No If Statement was found");
             }
 
-            if (!_tokens[index += 1].Matches(TokenSyntax.LEFTPARENTHESES))
-            {
-                Logger.Log("No Left Parentheses was found", this.GetType().Name, LogType.ERROR);
-                throw new ParserException("No Left Parentheses was found");
-            }
-
             var parser = _parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
             var result = parser.CreateNode();
             if (result.node is not IOperationNode)
@@ -40,12 +34,6 @@ namespace PirateParser.Parsers
 
             IOperationNode Operation = (IOperationNode)result.node;
             index = result.index;
-
-            if (!_tokens[index += 1].Matches(TokenSyntax.RIGHTPARENTHESES))
-            {
-                Logger.Log("No Right Parentheses was found", this.GetType().Name, LogType.ERROR);
-                throw new ParserException("No Right Parentheses was found");
-            }
 
             if (!_tokens[index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
             {
@@ -66,7 +54,52 @@ namespace PirateParser.Parsers
                 }
             }
 
-            node = new IfStatementNode(Operation, Nodes);
+            if(index + 1 == _tokens.Count)
+            {
+                node = new IfStatementNode(Operation, Nodes);
+                return (node, index);
+            }
+
+            // if (_tokens[index + 1].Matches(TokenControlKeyword.ELSE))
+            // {
+            //     if (!_tokens[index += 2].Matches(TokenSyntax.LEFTCURLYBRACE))
+            //     {
+            //         Logger.Log("No Left Curly Brace was found", this.GetType().Name, LogType.ERROR);
+            //         throw new ParserException("No Left Curly Braces was found");
+            //     }
+            //     parser = _parserFactory.GetParser(_tokens[index += 2], _tokens, Logger);
+            //     result = parser.CreateNode();
+            //     node = new IfStatementNode(Operation, Nodes, result.node);
+            //     return (node, result.index);
+            
+
+            if (!_tokens[index + 1].Matches(TokenControlKeyword.ELSE))
+            {
+                node = new IfStatementNode(Operation, Nodes);
+                return (node, index);
+            }
+
+            if (!_tokens[index += 2].Matches(TokenSyntax.LEFTCURLYBRACE))
+            {
+                Logger.Log("No Left Curly Brace was found", this.GetType().Name, LogType.ERROR);
+                throw new ParserException("No Left Curly Braces was found");
+            }
+
+            List<INode> ElseNodes = new List<INode>();
+
+            while (!_tokens[index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
+            {
+                parser = _parserFactory.GetParser(_tokens[index], _tokens, Logger);
+                result = parser.CreateNode();
+                ElseNodes.Add(result.node);
+                index = result.index;
+                if (_tokens[index++].TokenType.Equals(TokenSyntax.SEMICOLON))
+                {
+                    index++;
+                }
+            }
+
+            node = new IfStatementNode(Operation, Nodes, ElseNodes);
             return (node, index);
         }
     }

@@ -94,11 +94,9 @@ public class ParserTest
         
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.IF));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
         
@@ -110,5 +108,33 @@ public class ParserTest
 
         // Assert
         Assert.IsType<IfStatementNode>(result.node);
+    }
+
+    [Fact]
+    public void ShouldReturnIfStatementNodeWithElseNodes()
+    {
+                // Arrange
+        var logger = A.Fake<ILogger>();
+        
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.IF));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.ELSE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<IfStatementNode>(result.node);
+        Assert.NotNull(((IfStatementNode)result.node).ElseNode);
     }
 }

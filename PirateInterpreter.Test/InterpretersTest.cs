@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using PirateInterpreter.Interpreters;
 using PirateParser.Node;
+using PirateParser.Node.Interfaces;
 
 namespace PirateInterpreter.Test
 {
@@ -116,6 +118,34 @@ namespace PirateInterpreter.Test
 
             // Act
             var interpreter = new VariableAssignNodeInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var result = interpreter.VisitNode();
+
+            // Assert
+            Assert.IsType<Values.Variable>(result);
+            Assert.Equal(1, result.Value);
+        }
+
+        [Fact]
+        public void ShouldInterpretIfStatementNode()
+        {
+            // Arrange
+            var ifStatementNode = new IfStatementNode(
+                new ComparisonOperationNode(
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
+                    new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                ),
+                new List<INode>() {
+                    new VariableAssignNode(
+                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                    )
+                }
+            );
+
+            // Act
+            var interpreter = new IfStatementNodeInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
