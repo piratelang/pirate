@@ -152,5 +152,97 @@ namespace PirateInterpreter.Test
             Assert.IsType<Values.Variable>(result);
             Assert.Equal(1, result.Value);
         }
+
+        [Fact]
+        public void ShouldInterpretIfStatementNodeWithElse()
+        {
+            // Arrange
+            var ifStatementNode = new IfStatementNode(
+                new ComparisonOperationNode(
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
+                    new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 2))
+                ),
+                new List<INode>() {
+                    new VariableAssignNode(
+                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                    )
+                },
+                new List<INode>() {
+                    new VariableAssignNode(
+                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 2))
+                    )
+                }
+            );
+
+            // Act
+            var interpreter = new IfStatementNodeInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var result = interpreter.VisitNode();
+
+            // Assert
+            Assert.IsType<Values.Variable>(result);
+            Assert.Equal(2, result.Value);
+        }
+
+        [Fact]
+        public void ShouldInterpretWhileLoopStatementNode()
+        {
+            // Arrange
+            var whileStatementNode = new WhileLoopStatementNode(
+                new ComparisonOperationNode(
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
+                    new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                ),
+                new List<INode>() {
+                    new VariableAssignNode(
+                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                    )
+                }
+            );
+
+            // Act
+            var interpreter = new WhileLoopStatementNodeInterpreter(whileStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var result = interpreter.VisitNode();
+
+            // Assert
+            Assert.IsType<Values.Variable>(result);
+            Assert.Equal(1, result.Value);
+        }
+
+        [Fact]
+        public void ShouldInterpretForLoopStatementNode()
+        {
+            // Arrange
+            var forStatementNode = new ForLoopStatementNode(
+                new VariableAssignNode(
+                    new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
+                    new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 0))
+                ),
+                new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 10)),
+                new List<INode>() {
+                    new VariableAssignNode(
+                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                    )
+                }
+            );
+
+            // Act
+            var interpreter = new ForLoopStatementNodeInterpreter(forStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var result = interpreter.VisitNode();
+
+            // Assert
+            Assert.IsType<Values.Variable>(result);
+            Assert.Equal(1, result.Value);
+        }
     }
 }

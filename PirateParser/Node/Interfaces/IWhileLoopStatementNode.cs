@@ -1,6 +1,4 @@
-using PirateParser.Node.Interfaces;
-
-namespace PirateParser.Node;
+namespace PirateParser.Node.Interfaces;
 
 public interface IWhileLoopStatementNode : INode
 {

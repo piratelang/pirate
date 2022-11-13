@@ -161,4 +161,31 @@ public class ParserTest
         // Assert
         Assert.IsType<WhileLoopStatementNode>(result.node);
     }
+
+    [Fact]
+    public void ShouldReturnForLoopStatementNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.FOR));
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenControlKeyword.TO));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "10"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<ForLoopStatementNode>(result.node);
+    }
 }
