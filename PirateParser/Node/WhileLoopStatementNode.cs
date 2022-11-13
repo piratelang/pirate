@@ -16,7 +16,15 @@ public class WhileLoopStatementNode : IWhileLoopStatementNode
 
     public bool IsValid()
     {
-        throw new NotImplementedException();
+        if (ConditionNode is not IOperationNode)
+        {
+            return false;
+        }
+        if (BodyNodes is not List<INode>)
+        {
+            return false;
+        }
+        return true;
     }
 
     public override string ToString()

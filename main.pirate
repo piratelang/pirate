@@ -1,4 +1,4 @@
-func main()
+func main() : void
 {
     var one = "one";
     string one = "one";
@@ -36,4 +36,9 @@ func main()
     }
 
     
+}
+
+func print(var value) : void
+{
+    print(value);
 }

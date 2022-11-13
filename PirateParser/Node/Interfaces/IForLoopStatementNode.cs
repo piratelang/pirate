@@ -2,9 +2,9 @@ namespace PirateParser.Node.Interfaces;
 
 public interface IForLoopStatementNode : INode
 {
-    VariableAssignNode VariableNode { get; set; }
-    ValueNode ValueNode { get; set; }
-    List<INode> BodyNodes { get; set; }
+    IVariableAssignNode VariableNode { get; set; }
+    IValueNode ValueNode { get; set; }
+    IList<INode> BodyNodes { get; set; }
 
     bool IsValid();
     string ToString();
