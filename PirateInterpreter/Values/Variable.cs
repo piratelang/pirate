@@ -17,9 +17,17 @@ public class Variable : BaseValue, IValue
         var resultNode = SymbolTable.Instance(Logger).Get(value);
         if (resultNode is not IValueNode)
         {
-           var interpreter = InterpreterFactory.GetInterpreter(resultNode, Logger);
-           var result = interpreter.VisitNode();
-           return result.Value;
+
+            var interpreter = InterpreterFactory.GetInterpreter(resultNode, Logger);
+            var result = interpreter.VisitNode();
+            if (result.Count == 1)
+            {
+                return result[0].Value;
+            }
+            else
+            {
+                throw new Exception("Variable is not a single value");
+            }
         }
         else
         {

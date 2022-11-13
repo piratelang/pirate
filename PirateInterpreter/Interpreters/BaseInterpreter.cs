@@ -13,5 +13,5 @@ public abstract class BaseInterpreter
         InterpreterFactory = interpreterFactory;
     }
     
-    public abstract BaseValue VisitNode();
+    public abstract List<BaseValue> VisitNode();
 }

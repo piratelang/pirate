@@ -17,9 +17,12 @@ public class IfStatementNodeInterpreter : BaseInterpreter
 
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
-    public override BaseValue VisitNode()
+    public override List<BaseValue> VisitNode()
     {
-        var conditionValue = InterpreterFactory.GetInterpreter(Node.ConditionNode, Logger).VisitNode();
+        var conditionValueNode = InterpreterFactory.GetInterpreter(Node.ConditionNode, Logger).VisitNode();
+
+        if (conditionValueNode.Count > 1) throw new Exception("Condition value is not a single value");
+        var conditionValue = conditionValueNode[0];
 
         if (conditionValue is not Values.Boolean) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.Boolean));
         var conditionBoolean = (int)conditionValue.Value != 0;
@@ -29,7 +32,9 @@ public class IfStatementNodeInterpreter : BaseInterpreter
         {
             foreach (var node in Node.BodyNodes)
             {
-                bodyValues.Add(InterpreterFactory.GetInterpreter(node, Logger).VisitNode());
+                var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
+                if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
+                bodyValues.Add(bodyValue[0]);
             }
         }
 
@@ -37,10 +42,12 @@ public class IfStatementNodeInterpreter : BaseInterpreter
         {
             foreach (var node in Node.ElseNode)
             {
-                bodyValues.Add(InterpreterFactory.GetInterpreter(node, Logger).VisitNode());
+                var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
+                if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
+                bodyValues.Add(bodyValue[0]);
             }
         }
         
-        return bodyValues.FirstOrDefault();
+        return bodyValues;
     }
 }

@@ -14,14 +14,18 @@ public class BinaryOperationNodeInterpreter : BaseInterpreter
         Logger.Log($"Created {this.GetType().Name} : \"{_node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
-    public override BaseValue VisitNode()
+    public override List<BaseValue> VisitNode()
     {
         var interpreter = InterpreterFactory.GetInterpreter(_node.Left, Logger);
         var left = interpreter.VisitNode();
 
+        if (left.Count > 1) throw new Exception("Left value is not a single value");
+
         interpreter = InterpreterFactory.GetInterpreter(_node.Right, Logger);
         var Right = interpreter.VisitNode();
+
+        if (Right.Count > 1) throw new Exception("Right value is not a single value");
         
-        return left.OperatedBy(_node.Operator, Right);
+        return new List<BaseValue> {left[0].OperatedBy(_node.Operator, Right[0])};
     }
 }

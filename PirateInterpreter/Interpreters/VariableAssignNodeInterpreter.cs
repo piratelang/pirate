@@ -14,7 +14,7 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
-    public override BaseValue VisitNode()
+    public override List<BaseValue> VisitNode()
     {
         if (Node.Identifier.Value.Value is not string)
         {
@@ -29,6 +29,6 @@ public class VariableAssignNodeInterpreter : BaseInterpreter
         SymbolTable.Instance(Logger).Set(Identifier, Node.Value);
 
         var variable = new Variable(Identifier, Logger, InterpreterFactory);
-        return variable;
+        return new List<BaseValue> { variable };
     }
 }
