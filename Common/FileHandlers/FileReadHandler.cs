@@ -1,4 +1,5 @@
 using System.Globalization;
+using Common.Enum;
 using Common.FileHandlers.Interfaces;
 
 namespace Common.FileHandlers;
@@ -6,11 +7,11 @@ namespace Common.FileHandlers;
 [Serializable]
 public class FileReadHandler : IFileReadHandler
 {
-    public async Task<string> ReadAllTextFromFile(string name, string extension, string location)
+    public async Task<string> ReadAllTextFromFile(string name, FileExtension extension, string location)
     {
-        if (name == string.Empty || extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
+        if (name == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
-        var nameAndExtension = name + extension;
+        var nameAndExtension = name + "." + extension.ToString().ToLower();
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
         string fileName = Path.Combine(targetFolder, nameAndExtension);
 
@@ -24,11 +25,11 @@ public class FileReadHandler : IFileReadHandler
         }
     }
 
-    public bool FileExists(string name, string extension, string location)
+    public bool FileExists(string name, FileExtension extension, string location)
     {
-        if (name == string.Empty || extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
+        if (name == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
-        name += extension;
+        name += "." + extension.ToString().ToLower();
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
         string fileName = Path.Combine(targetFolder, name);
 

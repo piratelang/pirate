@@ -23,8 +23,8 @@ public class Logger : ILogger
             logFileName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
         }
 
-        location = $"bin/pirate{version}/logs";
         version = environmentVariables.GetVariable("version");
+        location = $"bin/pirate{version}/logs";
     }
 
     public bool Log(string message, string orginFile, LogType logType)
@@ -32,7 +32,7 @@ public class Logger : ILogger
         var time = DateTime.Now.ToString();
         var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {message}\n");
 
-        _fileWriteHandler.AppendToFile(new FileWriteModel("log", ".log", location, text));
+        _fileWriteHandler.AppendToFile(new FileWriteModel(logFileName, FileExtension.LOG, location, text));
 
         return true;
     }

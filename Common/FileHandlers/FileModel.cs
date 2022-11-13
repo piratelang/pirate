@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Common.Enum;
 
 namespace Common.FileHandlers;
 
@@ -19,10 +16,10 @@ public class FileWriteModel
     /// <param name="extension">Extension of the file with dot</param>
     /// <param name="location">Location of the file without root folder, i.e. without "./"</param>
     /// <param name="text">Text to write to the file</param>
-    public FileWriteModel(string fileName, string fileExtension, string fileLocation, string fileText)
+    public FileWriteModel(string fileName, FileExtension fileExtension, string fileLocation, string fileText)
     {
         Name = fileName;
-        Extension = fileExtension;
+        Extension = "." + fileExtension.ToString().ToLower();
         Location = fileLocation;
         Text = fileText;
     }
