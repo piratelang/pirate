@@ -227,7 +227,7 @@ public class NodeTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        var variableAssignNode = A.Fake<IVariableAssignNode>();
+        var variableAssignNode = A.Fake<IVariableDeclarationNode>();
         var valueNode = A.Fake<IValueNode>();
         var body = A.Fake<List<INode>>();
 
@@ -245,7 +245,7 @@ public class NodeTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        var variableAssignNode = A.Fake<IVariableAssignNode>();
+        var variableAssignNode = A.Fake<IVariableDeclarationNode>();
         var valueNode = A.Fake<IValueNode>();
         var body = A.Fake<List<INode>>();
 

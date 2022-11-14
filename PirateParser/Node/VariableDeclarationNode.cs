@@ -3,7 +3,7 @@ using PirateParser.Node.Interfaces;
 namespace PirateParser.Node;
 
 [Serializable]
-public class VariableDeclarationNode : IVariableAssignNode
+public class VariableDeclarationNode : IVariableDeclarationNode
 {
     public Token TypeToken { get; set; }
     public IValueNode Identifier { get; set; }
