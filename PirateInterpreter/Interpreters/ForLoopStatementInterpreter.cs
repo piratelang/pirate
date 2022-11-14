@@ -6,11 +6,11 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class ForLoopStatementNodeInterpreter : BaseInterpreter
+public class ForLoopStatementInterpreter : BaseInterpreter
 {
     public IForLoopStatementNode Node { get; set; }
 
-    public ForLoopStatementNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public ForLoopStatementInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IForLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         Node = (IForLoopStatementNode)node;

@@ -83,7 +83,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<VariableAssignNode>(result.node);
+        Assert.IsType<VariableDeclarationNode>(result.node);
     }
 
     [Fact]

@@ -4,11 +4,11 @@ using PirateParser.Node;
 
 namespace PirateParser.Parsers;
 
-public class VariableAssignParser : BaseParser, ITokenParser
+public class VariableDeclarationParser : BaseParser, ITokenParser
 {
     private ParserFactory _parserFactory { get; set; }
     
-    public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory) : base(tokens, currentToken, logger)
+    public VariableDeclarationParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory) : base(tokens, currentToken, logger)
     {
         _parserFactory = parserFactory;
     }
@@ -45,7 +45,7 @@ public class VariableAssignParser : BaseParser, ITokenParser
         INode Value = result.node;
         index = result.index;
 
-        node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
+        node = new VariableDeclarationNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
         return (node, index);
     }
 }

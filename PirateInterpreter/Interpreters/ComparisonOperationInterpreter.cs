@@ -2,10 +2,10 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class ComparisonOperationNodeInterpreter : BaseInterpreter
+public class ComparisonOperationInterpreter : BaseInterpreter
 {
     public IOperationNode Node { get; set; }
-    public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public ComparisonOperationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
         Node = (IOperationNode)node;

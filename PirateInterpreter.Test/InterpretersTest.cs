@@ -19,7 +19,7 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new BinaryOperationNodeInterpreter(binaryOperationNode, new InterpreterFactory() ,A.Fake<ILogger>());
+            var interpreter = new BinaryOperationInterpreter(binaryOperationNode, new InterpreterFactory() ,A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -39,7 +39,7 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new ComparisonOperationNodeInterpreter(comparisonOperationNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new ComparisonOperationInterpreter(comparisonOperationNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -55,7 +55,7 @@ namespace PirateInterpreter.Test
             var valueNode = new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1));
 
             // Act
-            var interpreter = new ValueNodeInterpreter(valueNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new ValueInterpreter(valueNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -68,14 +68,14 @@ namespace PirateInterpreter.Test
         public void ShouldInterpretVariableAssignNode()
         {
             // Arrange
-            var variableAssignNode = new VariableAssignNode(
+            var variableAssignNode = new VariableDeclarationNode(
                 new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.INT),
                 new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                 new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
             );
 
             // Act
-            var interpreter = new VariableAssignNodeInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -88,7 +88,7 @@ namespace PirateInterpreter.Test
         public void ShouldInterpretVariableAssignNodeWithBinaryOperation()
         {
             // Arrange
-            var variableAssignNode = new VariableAssignNode(
+            var variableAssignNode = new VariableDeclarationNode(
                 new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.INT),
                 new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                 new BinaryOperationNode(
@@ -99,7 +99,7 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new VariableAssignNodeInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -112,7 +112,7 @@ namespace PirateInterpreter.Test
         public void ShouldInterpretVariableAssignNodeWithComparisonOperation()
         {
             // Arrange
-            var variableAssignNode = new VariableAssignNode(
+            var variableAssignNode = new VariableDeclarationNode(
                 new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
                 new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                 new ComparisonOperationNode(
@@ -123,7 +123,7 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new VariableAssignNodeInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -143,7 +143,7 @@ namespace PirateInterpreter.Test
                     new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
                 ),
                 new List<INode>() {
-                    new VariableAssignNode(
+                    new VariableDeclarationNode(
                         new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
                         new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                         new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
@@ -152,7 +152,7 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new IfStatementNodeInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new IfStatementInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -172,14 +172,14 @@ namespace PirateInterpreter.Test
                     new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 2))
                 ),
                 new List<INode>() {
-                    new VariableAssignNode(
+                    new VariableDeclarationNode(
                         new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
                         new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                         new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
                     )
                 },
                 new List<INode>() {
-                    new VariableAssignNode(
+                    new VariableDeclarationNode(
                         new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
                         new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                         new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 2))
@@ -188,7 +188,7 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new IfStatementNodeInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new IfStatementInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
@@ -230,14 +230,14 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var forStatementNode = new ForLoopStatementNode(
-                new VariableAssignNode(
+                new VariableDeclarationNode(
                     new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
                     new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                     new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 0))
                 ),
                 new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 10)),
                 new List<INode>() {
-                    new VariableAssignNode(
+                    new VariableDeclarationNode(
                         new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
                         new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
                         new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
@@ -246,7 +246,7 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new ForLoopStatementNodeInterpreter(forStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var interpreter = new ForLoopStatementInterpreter(forStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert

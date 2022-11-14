@@ -26,13 +26,13 @@ public class ForLoopStatementParser : BaseParser
 
         var parser = _parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
         var result = parser.CreateNode();
-        if (result.node is not VariableAssignNode)
+        if (result.node is not VariableDeclarationNode)
         {
             Logger.Log("For Statement does not contain a valid variable assignment", this.GetType().Name, LogType.ERROR);
             throw new ParserException("For Statement does not contain a valid variable assignment");
         }
 
-        VariableAssignNode VariableAssign = (VariableAssignNode)result.node;
+        VariableDeclarationNode VariableAssign = (VariableDeclarationNode)result.node;
         index = result.index;
 
         if (!_tokens[index += 1].Matches(TokenControlKeyword.TO))

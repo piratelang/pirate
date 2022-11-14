@@ -6,11 +6,11 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class WhileLoopStatementNodeInterpreter : BaseInterpreter
+public class WhileLoopStatementInterpreter : BaseInterpreter
 {
     public IWhileLoopStatementNode Node { get; set; }
 
-    public WhileLoopStatementNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public WhileLoopStatementInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IWhileLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         Node = (IWhileLoopStatementNode)node;

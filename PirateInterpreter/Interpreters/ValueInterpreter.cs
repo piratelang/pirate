@@ -2,10 +2,10 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class ValueNodeInterpreter : BaseInterpreter
+public class ValueInterpreter : BaseInterpreter
 {
     private IValueNode Node { get; set; }
-    public ValueNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public ValueInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IValueNode) throw new TypeConversionException(node.GetType(), typeof(IValueNode));
         Node = (IValueNode)node;

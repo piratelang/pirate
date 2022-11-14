@@ -123,7 +123,7 @@ public class NodeTest
         var identifier = A.Fake<IValueNode>();
         var value = A.Fake<INode>();
 
-        var node = new VariableAssignNode(typetoken, identifier, value);
+        var node = new VariableDeclarationNode(typetoken, identifier, value);
 
         // Act
         var result = node.IsValid();
@@ -142,7 +142,7 @@ public class NodeTest
         var identifier = A.Fake<IValueNode>();
         var value = A.Fake<INode>();
 
-        var node = new VariableAssignNode(typetoken, identifier, value);
+        var node = new VariableDeclarationNode(typetoken, identifier, value);
         node.Value = null;
 
         // Act

@@ -2,14 +2,14 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class VariableAssignNodeInterpreter : BaseInterpreter
+public class VariableDeclarationInterpreter : BaseInterpreter
 {
-    public VariableAssignNode Node { get; set; }
+    public VariableDeclarationNode Node { get; set; }
 
-    public VariableAssignNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public VariableDeclarationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
-        if (node is not VariableAssignNode)throw new TypeConversionException(node.GetType(), typeof(VariableAssignNode));
-        Node = (VariableAssignNode)node;
+        if (node is not VariableDeclarationNode)throw new TypeConversionException(node.GetType(), typeof(VariableDeclarationNode));
+        Node = (VariableDeclarationNode)node;
 
         Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }

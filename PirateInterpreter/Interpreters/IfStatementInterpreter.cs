@@ -6,11 +6,11 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class IfStatementNodeInterpreter : BaseInterpreter
+public class IfStatementInterpreter : BaseInterpreter
 {
     public IIfStatementNode Node { get; set; }
 
-    public IfStatementNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public IfStatementInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IIfStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         Node = (IIfStatementNode)node;

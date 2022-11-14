@@ -15,7 +15,7 @@ public class ParserFactory: IParserFactory
             case TokenControlKeyword.FOR:
                 return new ForLoopStatementParser(tokens, token, logger, this);
             case TokenTypeKeyword:
-                return new VariableAssignParser(tokens, token, logger, this);
+                return new VariableDeclarationParser(tokens, token, logger, this);
 
             case TokenSyntax.IDENTIFIER:
                 return new OperationParser(tokens, token, logger);

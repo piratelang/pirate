@@ -2,11 +2,11 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class BinaryOperationNodeInterpreter : BaseInterpreter
+public class BinaryOperationInterpreter : BaseInterpreter
 {
     private IOperationNode _node { get; set; }
 
-    public BinaryOperationNodeInterpreter(INode node, InterpreterFactory interpreterFactory, ILogger logger) : base(logger, interpreterFactory)
+    public BinaryOperationInterpreter(INode node, InterpreterFactory interpreterFactory, ILogger logger) : base(logger, interpreterFactory)
     {
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));            
         _node = (IOperationNode)node;
