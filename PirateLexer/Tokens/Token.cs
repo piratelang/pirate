@@ -23,9 +23,7 @@ public class Token
         {
             return TokenType.Equals(tokenType);
         }
-        var een = TokenType.Equals(tokenType);
-        var twee = Value.Equals(value);
-        return een && twee;
+        return TokenType.Equals(tokenType) && Value.Equals(value);;
     }
 
     public override string ToString()

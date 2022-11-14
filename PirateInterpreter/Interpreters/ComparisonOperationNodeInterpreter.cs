@@ -4,32 +4,26 @@ namespace PirateInterpreter.Interpreters;
 
 public class ComparisonOperationNodeInterpreter : BaseInterpreter
 {
-    public IOperationNode Node { get; set; }
+    public IOperationNode operationNode { get; set; }
     public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
-        Node = (IOperationNode)node;
+        operationNode = (IOperationNode)node;
         
-        Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        var interpreter = InterpreterFactory.GetInterpreter(Node.Left, Logger );
-        var leftNode = interpreter.VisitNode();
+        var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left, Logger );
+        var left = interpreter.VisitSingleNode();
 
-        if (leftNode.Count > 1) throw new Exception("Left value is not a single value");
-        var left = leftNode[0];
-
-        interpreter = InterpreterFactory.GetInterpreter(Node.Right, Logger);
-        var rightNode = interpreter.VisitNode();  
-
-        if (rightNode.Count > 1) throw new Exception("Right value is not a single value");
-        var right = rightNode[0];
+        interpreter = InterpreterFactory.GetInterpreter(operationNode.Right, Logger);
+        var right = interpreter.VisitSingleNode();
 
         var value = 0;
 
-        switch (Node.Operator.TokenType)
+        switch (operationNode.Operator.TokenType)
         {
             case TokenComparisonOperators.DOUBLEEQUALS:
                 value = left.Matches(right);

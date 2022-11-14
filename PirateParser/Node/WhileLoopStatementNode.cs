@@ -35,6 +35,6 @@ public class WhileLoopStatementNode : IWhileLoopStatementNode
         {
             resultString += node.ToString() + '\n';
         }
-        return $"if ({ConditionNode.ToString()}) \n{{ \n {string.Join(" ", BodyNodes)} \n}}";
+        return $"while ({ConditionNode.ToString()}) \n{{ \n {string.Join(" ", BodyNodes)} \n}}";
     }
 }

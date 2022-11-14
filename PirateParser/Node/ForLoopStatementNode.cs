@@ -41,6 +41,6 @@ public class ForLoopStatementNode : IForLoopStatementNode
         {
             resultString += node.ToString() + '\n';
         }
-        return $"if ({VariableNode.ToString()}) \n{{ \n {string.Join(" ", BodyNodes)} \n}}";
+        return $"for {VariableNode.ToString()} to {ValueNode.ToString()}\n {{ \n {string.Join(" ", BodyNodes)} \n}}";
     }
 }
