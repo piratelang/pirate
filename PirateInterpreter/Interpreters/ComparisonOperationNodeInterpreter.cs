@@ -4,47 +4,47 @@ namespace PirateInterpreter.Interpreters;
 
 public class ComparisonOperationNodeInterpreter : BaseInterpreter
 {
-    public IOperationNode Node { get; set; }
+    public IOperationNode operationNode { get; set; }
     public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
-        Node = (IOperationNode)node;
+        operationNode = (IOperationNode)node;
         
-        Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
-    public override BaseValue VisitNode()
+    public override List<BaseValue> VisitNode()
     {
-        var interpreter = InterpreterFactory.GetInterpreter(Node.Left, Logger );
-        var left = interpreter.VisitNode();
+        var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left, Logger );
+        var left = interpreter.VisitSingleNode();
 
-        interpreter = InterpreterFactory.GetInterpreter(Node.Right, Logger);
-        var Right = interpreter.VisitNode();  
+        interpreter = InterpreterFactory.GetInterpreter(operationNode.Right, Logger);
+        var right = interpreter.VisitSingleNode();
 
         var value = 0;
 
-        switch (Node.Operator.TokenType)
+        switch (operationNode.Operator.TokenType)
         {
             case TokenComparisonOperators.DOUBLEEQUALS:
-                value = left.Matches(Right);
+                value = left.Matches(right);
                 break;
             case TokenComparisonOperators.NOTEQUALS:
-                var result = left.Matches(Right);
+                var result = left.Matches(right);
                 if(result == 0) { value = 1; }
                 break;
             case TokenComparisonOperators.GREATERTHAN:
-                if (left.Value is int && Right.Value is int)
+                if (left.Value is int && right.Value is int)
                 {
-                    if(Convert.ToInt32(left.Value) > Convert.ToInt32(Right.Value))
+                    if(Convert.ToInt32(left.Value) > Convert.ToInt32(right.Value))
                     {
                         value = 1;
                     }
                 }
                 break;
             case TokenComparisonOperators.GREATERTHANEQUALS:
-                if (left.Value is int && Right.Value is int)
+                if (left.Value is int && right.Value is int)
                 {
-                    if (Convert.ToInt32(left.Value) >= Convert.ToInt32(Right.Value))
+                    if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))
                     {
                         value = 1;
                     }
@@ -52,18 +52,18 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
                 break;
 
             case TokenComparisonOperators.LESSTHAN:
-                if (left.Value is int && Right.Value is int)
+                if (left.Value is int && right.Value is int)
                 {
-                    if (Convert.ToInt32(left.Value) < Convert.ToInt32(Right.Value))
+                    if (Convert.ToInt32(left.Value) < Convert.ToInt32(right.Value))
                     {
                         value = 1;
                     }
                 }
                 break;
             case TokenComparisonOperators.LESSTHANEQUALS:
-                if (left.Value is int && Right.Value is int)
+                if (left.Value is int && right.Value is int)
                 {
-                    if (Convert.ToInt32(left.Value) >= Convert.ToInt32(Right.Value))
+                    if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))
                     {
                         value = 1;
                     }
@@ -71,8 +71,6 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
                 break;
         }
 
-        return new Values.Boolean(value, Logger);
+        return new List<BaseValue> { new Values.Boolean(value, Logger) };
     }
-
-
 }

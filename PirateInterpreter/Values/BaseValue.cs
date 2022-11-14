@@ -20,12 +20,12 @@ public abstract class BaseValue : IValue
     {
         if (Value.GetType() != other.Value.GetType())
         {
-            Console.WriteLine("Types dont match");
+            Logger.Log($"Types dont match. {Value} | {other.Value}", this.GetType().Name, Common.Enum.LogType.ERROR);
             return 0;
         }
         if (!Value.Equals(other.Value))
         {
-            Console.WriteLine("Values don't match");
+            Logger.Log($"Values don't match. {Value} | {other.Value}", this.GetType().Name, Common.Enum.LogType.ERROR);
             return 0;
         }
         return 1;

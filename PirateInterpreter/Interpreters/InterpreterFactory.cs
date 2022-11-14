@@ -6,6 +6,12 @@ public class InterpreterFactory
     {
         switch (node)
         {
+            case IfStatementNode:
+                return new IfStatementNodeInterpreter(node, this, logger);
+            case WhileLoopStatementNode:
+                return new WhileLoopStatementNodeInterpreter(node, this, logger);
+            case ForLoopStatementNode:
+                return new ForLoopStatementNodeInterpreter(node, this, logger);
             case VariableAssignNode:
                 return new VariableAssignNodeInterpreter(node, this, logger);
             case BinaryOperationNode:

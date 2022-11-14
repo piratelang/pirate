@@ -4,23 +4,16 @@ using PirateParser.Node;
 
 namespace PirateParser.Parsers;
 
-public class VariableAssignParser : ITokenParser
+public class VariableAssignParser : BaseParser, ITokenParser
 {
-    private List<Token> _tokens;
-    private Token _currentToken;
-    public ParserFactory ParserFactory { get; set; }
-    public ILogger Logger { get; set; }
+    private ParserFactory _parserFactory { get; set; }
     
-    public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory)
+    public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory) : base(tokens, currentToken, logger)
     {
-        _tokens = tokens;
-        _currentToken = currentToken;
-        Logger = logger;
-        ParserFactory = parserFactory;
-        logger.Log("Creating Variable Assign Parser", this.GetType().Name, LogType.INFO);
+        _parserFactory = parserFactory;
     }
 
-    public (INode node, int index) CreateNode()
+    public override (INode node, int index) CreateNode()
     {
         INode node;
 
@@ -28,7 +21,7 @@ public class VariableAssignParser : ITokenParser
         var VariableType = _currentToken;
 
         
-        var parser = ParserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
+        var parser = _parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
         var result = parser.CreateNode();
 
         var IdentifierNode = result.node;
@@ -47,7 +40,7 @@ public class VariableAssignParser : ITokenParser
             throw new ParserException("No Equals assign Operator was found, following the Identifier");
         }
 
-        parser = ParserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
+        parser = _parserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
         result = parser.CreateNode();
         INode Value = result.node;
         index = result.index;

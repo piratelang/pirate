@@ -4,24 +4,24 @@ namespace PirateInterpreter.Interpreters;
 
 public class BinaryOperationNodeInterpreter : BaseInterpreter
 {
-    private IOperationNode _node { get; set; }
+    private IOperationNode _operationNode { get; set; }
 
     public BinaryOperationNodeInterpreter(INode node, InterpreterFactory interpreterFactory, ILogger logger) : base(logger, interpreterFactory)
     {
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));            
-        _node = (IOperationNode)node;
+        _operationNode = (IOperationNode)node;
         
-        Logger.Log($"Created {this.GetType().Name} : \"{_node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{_operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 
-    public override BaseValue VisitNode()
+    public override List<BaseValue> VisitNode()
     {
-        var interpreter = InterpreterFactory.GetInterpreter(_node.Left, Logger);
-        var left = interpreter.VisitNode();
+        var interpreter = InterpreterFactory.GetInterpreter(_operationNode.Left, Logger);
+        var left = interpreter.VisitSingleNode();
 
-        interpreter = InterpreterFactory.GetInterpreter(_node.Right, Logger);
-        var Right = interpreter.VisitNode();
+        interpreter = InterpreterFactory.GetInterpreter(_operationNode.Right, Logger);
+        var Right = interpreter.VisitSingleNode();
         
-        return left.OperatedBy(_node.Operator, Right);
+        return new List<BaseValue> {left.OperatedBy(_operationNode.Operator, Right)};
     }
 }

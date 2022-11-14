@@ -62,11 +62,12 @@ public class TokenRepository : ITokenRepository
     {
         var idString = string.Empty;
 
-        while (Char.IsLetterOrDigit(text[position]) || text[position] != ' ')
+        while (Char.IsLetter(text[position]) || !Char.IsNumber(text[position]) || !Char.IsWhiteSpace(text[position]) || !Char.IsSeparator(text[position]))
         {
             idString += text[position];
             position += 1;
             if (position == text.Length) break;
+            if (Char.IsNumber(text[position]) || Char.IsPunctuation(text[position]) || Char.IsWhiteSpace(text[position]) || Char.IsSeparator(text[position])) break;
         }
 
         var tokenTypeKeywordType = _KeyWordService.GetTypeKeyword(idString);

@@ -1,4 +1,4 @@
-func main()
+func main() : void
 {
     var one = "one";
     string one = "one";
@@ -10,31 +10,35 @@ func main()
 
     var listOne = list[1];
 
-    if(listOne == list[1])
+    if listOne == list[1]
     {
         print(listOne);
     }
-    elif(listOne == list[2])
-    {
-        print("Oh no");
-    }
+    
     else
     {
         print("Wrong");
     }
 
-    for(var i = 0 to 3)
+    while "Hello" == list[1]
+    {
+        print("Hello");
+    }
+
+    for var i = 0 to 3
     {
         print(i);
     }
 
-    foreach(var item in list)
+    foreach var item in list
     {
         print(item);
     }
 
-    while("Hello" == list[1])
-    {
-        print("Hello");
-    }
+    
+}
+
+func print(var value) : void
+{
+    print(value);
 }

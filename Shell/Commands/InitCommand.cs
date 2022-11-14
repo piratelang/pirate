@@ -26,7 +26,7 @@ public class InitCommand : Command, ICommand, IInitCommand
             "    print(\"Hello World\");",
             "}"
         );
-        _fileWriteHandler.WriteToFile(new FileWriteModel(fileName, ".pirate", "", text));
+        _fileWriteHandler.WriteToFile(new FileWriteModel(fileName, FileExtension.PIRATE, "", text));
 
         Logger.Log($"Created {nameArgument} file", this.GetType().Name, LogType.INFO);
         Console.WriteLine($"\nCreated {fileName}.pirate");

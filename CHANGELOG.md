@@ -9,6 +9,14 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Added XML documentation for `FileReadHandler` and `FileWriteHandler`
 - Removed not referenced objects
 
+### ([#74](https://github.com/joerivanarkel/PirateLang/pull/74)) Control Statements
+
+- Added parsers and interpreters for: `IfStatementNode`, `ForLoopStatementNode` and `WhileLoopStatementNode`
+- Additional `Token.Matches()` test after Value check fix
+- Added `FileExtension` enum to Filehandlers
+- Created `BaseFileHandler`
+- Changed Interpreter returns to `List<BaseValue>`
+
 ## 1.0.0
 
 ### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter
