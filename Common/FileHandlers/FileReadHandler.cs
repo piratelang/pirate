@@ -5,13 +5,13 @@ using Common.FileHandlers.Interfaces;
 namespace Common.FileHandlers;
 
 [Serializable]
-public class FileReadHandler : IFileReadHandler
+public class FileReadHandler : BaseFileHandler, IFileReadHandler
 {
     public async Task<string> ReadAllTextFromFile(string name, FileExtension extension, string location)
     {
         if (name == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
-        var nameAndExtension = name + "." + extension.ToString().ToLower();
+        var nameAndExtension = name + GetFileExtension(extension);
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
         string fileName = Path.Combine(targetFolder, nameAndExtension);
 
@@ -29,7 +29,7 @@ public class FileReadHandler : IFileReadHandler
     {
         if (name == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
-        name += "." + extension.ToString().ToLower();
+        name += GetFileExtension(extension);
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
         string fileName = Path.Combine(targetFolder, name);
 

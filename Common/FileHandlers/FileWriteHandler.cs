@@ -3,7 +3,7 @@ using Common.FileHandlers.Interfaces;
 namespace Common.FileHandlers;
 
 [Serializable]
-public class FileWriteHandler : IFileWriteHandler
+public class FileWriteHandler : BaseFileHandler, IFileWriteHandler
 {
     /// <inheritdoc/>
     public bool WriteToFile(FileWriteModel fileWriteModel, bool encryption = false)

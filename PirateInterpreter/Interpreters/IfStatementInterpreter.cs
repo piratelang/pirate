@@ -8,29 +8,27 @@ namespace PirateInterpreter.Interpreters;
 
 public class IfStatementInterpreter : BaseInterpreter
 {
-    public IIfStatementNode Node { get; set; }
+    public IIfStatementNode ifStatementNode { get; set; }
 
     public IfStatementInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IIfStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
-        Node = (IIfStatementNode)node;
+        ifStatementNode = (IIfStatementNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{Node.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
     public override List<BaseValue> VisitNode()
     {
-        var conditionValueNode = InterpreterFactory.GetInterpreter(Node.ConditionNode, Logger).VisitNode();
-
-        if (conditionValueNode.Count > 1) throw new Exception("Condition value is not a single value");
-        var conditionValue = conditionValueNode[0];
+        var interpreter = InterpreterFactory.GetInterpreter(ifStatementNode.ConditionNode, Logger);
+        var conditionValue = interpreter.VisitSingleNode();
 
         if (conditionValue is not Values.Boolean) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.Boolean));
         var conditionBoolean = (int)conditionValue.Value != 0;
         
         List<BaseValue> bodyValues = new();
-        if (conditionBoolean && Node.BodyNodes.Count > 0)
+        if (conditionBoolean && ifStatementNode.BodyNodes.Count > 0)
         {
-            foreach (var node in Node.BodyNodes)
+            foreach (var node in ifStatementNode.BodyNodes)
             {
                 var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
                 if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
@@ -38,9 +36,9 @@ public class IfStatementInterpreter : BaseInterpreter
             }
         }
 
-        if (!conditionBoolean && Node.ElseNode is not null)
+        if (!conditionBoolean && ifStatementNode.ElseNode is not null)
         {
-            foreach (var node in Node.ElseNode)
+            foreach (var node in ifStatementNode.ElseNode)
             {
                 var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
                 if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");

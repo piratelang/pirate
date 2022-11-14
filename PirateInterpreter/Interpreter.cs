@@ -29,10 +29,7 @@ public class Interpreter : IInterpreter
         {
             Logger.Log($"Interpreting {item.GetType().Name}", this.GetType().Name, LogType.INFO);
             var interpreter = interpreterFactory.GetInterpreter(item, Logger);
-            foreach (var value in interpreter.VisitNode())
-            {
-                result.Add(value);
-            }
+            result.AddRange(interpreter.VisitNode());
         }
         return result;
     }

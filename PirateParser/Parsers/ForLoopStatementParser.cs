@@ -49,7 +49,7 @@ public class ForLoopStatementParser : BaseParser
             throw new ParserException("For Statement does not contain a valid value");
         }
 
-        ValueNode Value = (ValueNode)result.node;
+        var Value = (ValueNode)result.node;
         index = result.index;
 
         if (!_tokens[index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))

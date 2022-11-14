@@ -7,7 +7,7 @@ public class IfStatementNode : IIfStatementNode
 {
     public IOperationNode ConditionNode { get; set; }
     public List<INode> BodyNodes { get; set; }
-    public List<INode> ElseNode { get; set; }
+    public List<INode> ElseNode { get; set; } = default!;
 
     public IfStatementNode(IOperationNode conditionNode, List<INode> bodyNodes, List<INode> elseNode)
     {
@@ -43,6 +43,6 @@ public class IfStatementNode : IIfStatementNode
         {
             resultString += node.ToString() + '\n';
         }
-        return $"if ({ConditionNode.ToString()}) \n{{ \n {string.Join(" ", BodyNodes)} \n}}";
+        return $"if {ConditionNode.ToString()} \n{{ \n {string.Join(" ", BodyNodes)} \n}}";
     }
 }
