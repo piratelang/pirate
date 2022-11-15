@@ -5,13 +5,13 @@ namespace PirateParser.Parsers;
 public abstract class BaseParser
 {
     protected List<Token> _tokens;
-    protected Token _currentToken;
+    protected int _index;
     protected ILogger Logger;
 
-    public BaseParser(List<Token> tokens, Token currentToken, ILogger logger)
+    public BaseParser(List<Token> tokens, int index, ILogger logger)
     {
         _tokens = tokens;
-        _currentToken = currentToken;
+        _index = index;
         Logger = logger;
     }
 

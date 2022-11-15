@@ -7,7 +7,7 @@ public class WhileLoopStatementParser : BaseParser
 {
     private ParserFactory _parserFactory { get; set; }
 
-    public WhileLoopStatementParser(List<Token> tokens, Token token, ILogger logger, ParserFactory parserFactory) : base(tokens, token, logger)
+    public WhileLoopStatementParser(List<Token> tokens, int index, ILogger logger, ParserFactory parserFactory) : base(tokens, index, logger)
     {
         _parserFactory = parserFactory;
     }
@@ -16,15 +16,13 @@ public class WhileLoopStatementParser : BaseParser
     {
         INode node;
 
-        var index = _tokens.IndexOf(_currentToken);
-
-        if (!_currentToken.Matches(TokenControlKeyword.WHILE))
+        if (!_tokens[_index].Matches(TokenControlKeyword.WHILE))
         {
             Logger.Log("No While Statement was found", this.GetType().Name, LogType.ERROR);
             throw new ParserException("No While Statement was found");
         }
 
-        var parser = _parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
+        var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         var result = parser.CreateNode();
         if (result.node is not IOperationNode)
         {
@@ -33,29 +31,29 @@ public class WhileLoopStatementParser : BaseParser
         }
 
         IOperationNode Operation = (IOperationNode)result.node;
-        index = result.index;
+        _index = result.index;
 
-        if (!_tokens[index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
+        if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
         {
             Logger.Log("No Left Curly Brace was found", this.GetType().Name, LogType.ERROR);
             throw new ParserException("No Left Curly Braces was found");
         }
 
         List<INode> Nodes = new List<INode>();
-        while (!_tokens[index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
+        while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
         {
-            parser = _parserFactory.GetParser(_tokens[index], _tokens, Logger);
+            parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
             Nodes.Add(result.node);
-            index = result.index;
-            if (_tokens[index++].TokenType.Equals(TokenSyntax.SEMICOLON))
+            _index = result.index;
+            if (_tokens[_index++].TokenType.Equals(TokenSyntax.SEMICOLON))
             {
-                index++;
+                _index++;
             }
         }
 
         node = new WhileLoopStatementNode(Operation, Nodes);
-        return (node, index);
+        return (node, _index);
 
     }
 }

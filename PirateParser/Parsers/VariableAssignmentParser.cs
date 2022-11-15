@@ -6,26 +6,22 @@ namespace PirateParser.Parsers;
 public class VariableAssignmentParser : BaseParser
 {
     private ParserFactory _parserFactory;
-    private OperationParser _operationParser;
 
-    public VariableAssignmentParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory, OperationParser operationParser) : base(tokens, currentToken, logger)
+    public VariableAssignmentParser(List<Token> tokens, int index, ILogger logger, ParserFactory parserFactory) : base(tokens, index, logger)
     {
         _parserFactory = parserFactory;
-        _operationParser = operationParser;
     }
     
     public override (INode node, int index) CreateNode()
     {
         INode node;
 
-        var index = _tokens.IndexOf(_currentToken);
-        var VariableType = _currentToken;
-
-        var parser = _parserFactory.GetParser(_currentToken, _tokens, Logger);
-        var result = parser.CreateNode();
+        var VariableType = _tokens[_index];
+        var operationParser = new OperationParser(_tokens, _index, Logger);
+        var result = operationParser.CreateNode();
 
         var identifierNode = result.node;
-        index = result.index;
+        _index = result.index;
 
         if (identifierNode is not ValueNode)
         {
@@ -34,19 +30,20 @@ public class VariableAssignmentParser : BaseParser
         }
         var identifierValueNode = (IValueNode)identifierNode;
 
-        var Operator = _tokens[index += 1];
+        var Operator = _tokens[_index += 1];
         if (!Operator.Matches(TokenSyntax.EQUALS))
         {
-            return _operationParser.CreateNode();
+            operationParser = new OperationParser(_tokens, _index, Logger);
+            return operationParser.CreateNode();
         }
 
-        parser = _parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
+        var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
 
         INode Value = result.node;
-        index = result.index;
+        _index = result.index;
 
         node = new VariableAssignmentNode(identifierValueNode, Value);
-        return (node, index);
+        return (node, _index);
     }
 }

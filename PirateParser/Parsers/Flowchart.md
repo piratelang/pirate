@@ -1,3 +1,4 @@
+<!-- 15-11-2022 | 22w45a -->
 ```mermaid
 stateDiagram-v2
     direction LR
@@ -27,8 +28,17 @@ stateDiagram-v2
         direction LR
         [*] --> VariableDeclarationNode : Checks for syntax [type] [identifier] = [value]
     }
+
+    Fork--> VariableAssignmentParser : TokenSyntax.IDENTIFIER
+    state VariableAssignmentParser {
+        direction LR
+        state EqualsOperator <<choice>>
+        [*] --> EqualsOperator : Checks for operator following Identifier
+        EqualsOperator --> VariableassignemntNode : Equals was found
+    }
+    EqualsOperator --> Operator
     
-    Fork --> OperationParser : TokenSyntax.IDENTIFIER, TokenValue
+    Fork --> OperationParser : TokenValue
     state OperationParser{
         direction LR
         state Operator <<choice>>

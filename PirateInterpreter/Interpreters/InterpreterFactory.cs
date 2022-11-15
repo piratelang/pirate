@@ -14,6 +14,8 @@ public class InterpreterFactory
                 return new ForLoopStatementInterpreter(node, this, logger);
             case VariableDeclarationNode:
                 return new VariableDeclarationInterpreter(node, this, logger);
+            case VariableAssignmentNode:
+                return new VariableAssignmentInterpreter(node, logger, this);
             case BinaryOperationNode:
                 return new BinaryOperationInterpreter(node, this, logger);
             case ComparisonOperationNode:

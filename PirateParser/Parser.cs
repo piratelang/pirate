@@ -26,7 +26,7 @@ public class Parser : IParser
                 Logger.Log("No Tokens Found", this.GetType().Name, LogType.ERROR);
                 throw new ArgumentNullException(nameof(tokens));
             }
-            var tokenParser = parserFactory.GetParser(tokens[index], tokens, Logger);
+            var tokenParser = parserFactory.GetParser(index, tokens, Logger);
             var parseResult = tokenParser.CreateNode();
 
             Logger.Log($"Created {parseResult.node.GetType().Name} | \"{parseResult.node.ToString()}\"", this.GetType().Name, LogType.INFO);
