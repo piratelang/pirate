@@ -5,11 +5,11 @@ namespace PirateParser.Node;
 [Serializable]
 public class ForLoopStatementNode : IForLoopStatementNode
 {
-    public IVariableAssignNode VariableNode { get; set; }
+    public IVariableDeclarationNode VariableNode { get; set; }
     public IValueNode ValueNode { get; set; }
     public IList<INode> BodyNodes { get; set; }
 
-    public ForLoopStatementNode(IVariableAssignNode variableNode,IValueNode valueNode, IList<INode> bodyNodes)
+    public ForLoopStatementNode(IVariableDeclarationNode variableNode,IValueNode valueNode, IList<INode> bodyNodes)
     {
         VariableNode = variableNode;
         ValueNode = valueNode;
@@ -18,7 +18,7 @@ public class ForLoopStatementNode : IForLoopStatementNode
 
     public bool IsValid()
     {
-        if (VariableNode is not IVariableAssignNode)
+        if (VariableNode is not IVariableDeclarationNode)
         {
             return false;
         }

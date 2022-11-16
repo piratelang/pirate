@@ -7,41 +7,40 @@ namespace PirateParser.Parsers;
 public class OperationParser : BaseParser, ITokenParser
 {
 
-    public OperationParser(List<Token> tokens, Token currentToken, ILogger logger) : base(tokens, currentToken, logger) {}
+    public OperationParser(List<Token> tokens, int index, ILogger logger) : base(tokens, index, logger) {}
 
     public override (INode node, int index) CreateNode()
     {
         INode node = null;
 
-        var index = _tokens.IndexOf(_currentToken);
-        INode LeftNode = new ValueNode(_tokens[index]);
+        INode LeftNode = new ValueNode(_tokens[_index]);
 
-        if (_tokens.Count == index + 1)
+        if (_tokens.Count == _index + 1)
         {
             Logger.Log("Returning Single ValueNode", this.GetType().Name, LogType.INFO);
-            return (LeftNode, index);
+            return (LeftNode, _index);
         }
 
-        var OperatorNode = _tokens[index + 1];
+        var OperatorNode = _tokens[_index + 1];
 
         if (OperatorNode.TokenGroup != TokenGroup.OPERATORS && OperatorNode.TokenGroup != TokenGroup.COMPARISONOPERATORS)
         {
             Logger.Log("Returning Single ValueNode", this.GetType().Name, LogType.INFO);
-            return (LeftNode, index);
+            return (LeftNode, _index);
         }
 
         if (OperatorNode.TokenGroup == TokenGroup.OPERATORS)
         {
             while (true)
             {
-                var result = CreateBinaryOperationNode(index, LeftNode);
+                var result = CreateBinaryOperationNode(_index, LeftNode);
                 node = result.node;
-                index = result.index;
+                _index = result.index;
 
                 LeftNode = node;
-                if (_tokens.Count != index + 1)
+                if (_tokens.Count != _index + 1)
                 {
-                    if (_tokens[index + 1].TokenGroup == TokenGroup.OPERATORS)
+                    if (_tokens[_index + 1].TokenGroup == TokenGroup.OPERATORS)
                     {
                         continue;
                     }
@@ -49,7 +48,7 @@ public class OperationParser : BaseParser, ITokenParser
                 break;
             }
         }
-        if (_tokens.Count == index + 1)
+        if (_tokens.Count == _index + 1)
         {
             Logger.Log("Returning Binary Operation Node", this.GetType().Name, LogType.INFO);
             if(node == null)
@@ -57,23 +56,23 @@ public class OperationParser : BaseParser, ITokenParser
                 Logger.Log("Node provided is null", this.GetType().Name, LogType.ERROR);
                 throw new NullReferenceException("Node provided is null");
             }
-            return (node, index);
+            return (node, _index);
         }
 
-        OperatorNode = _tokens[index + 1];
+        OperatorNode = _tokens[_index + 1];
         if (OperatorNode.TokenGroup == TokenGroup.COMPARISONOPERATORS)
         {
-            OperatorNode = _tokens[index += 1];
-            INode RightNode = new ValueNode(_tokens[index += 1]);
+            OperatorNode = _tokens[_index += 1];
+            INode RightNode = new ValueNode(_tokens[_index += 1]);
             node = new ComparisonOperationNode(LeftNode, OperatorNode, RightNode);
 
-            if (_tokens.Count != index + 1)
+            if (_tokens.Count != _index + 1)
             {
-                if (_tokens[index + 1].TokenGroup == TokenGroup.OPERATORS)
+                if (_tokens[_index + 1].TokenGroup == TokenGroup.OPERATORS)
                 {
-                    var result = CreateBinaryOperationNode(index, RightNode);
+                    var result = CreateBinaryOperationNode(_index, RightNode);
                     RightNode = result.node;
-                    index = result.index;
+                    _index = result.index;
 
                     node = new ComparisonOperationNode(LeftNode, OperatorNode, RightNode);
                 }
@@ -86,7 +85,7 @@ public class OperationParser : BaseParser, ITokenParser
             Logger.Log("Node provided is null", this.GetType().Name, LogType.ERROR);
             throw new NullReferenceException("Node provided is null");
         }
-        return (node, index);
+        return (node, _index);
     }
 
     private (INode node, int index) CreateBinaryOperationNode(int index, INode LeftNode)

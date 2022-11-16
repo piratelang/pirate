@@ -2,10 +2,11 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class ComparisonOperationNodeInterpreter : BaseInterpreter
+public class ComparisonOperationInterpreter : BaseInterpreter
 {
     public IOperationNode operationNode { get; set; }
-    public ComparisonOperationNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public ComparisonOperationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+
     {
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
         operationNode = (IOperationNode)node;
@@ -15,10 +16,11 @@ public class ComparisonOperationNodeInterpreter : BaseInterpreter
 
     public override List<BaseValue> VisitNode()
     {
-        var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left, Logger );
+        Logger.Log($"Visiting {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        var interpreter = _interpreterFactory.GetInterpreter(operationNode.Left, Logger );
         var left = interpreter.VisitSingleNode();
 
-        interpreter = InterpreterFactory.GetInterpreter(operationNode.Right, Logger);
+        interpreter = _interpreterFactory.GetInterpreter(operationNode.Right, Logger);
         var right = interpreter.VisitSingleNode();
 
         var value = 0;

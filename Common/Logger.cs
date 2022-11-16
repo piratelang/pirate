@@ -30,10 +30,25 @@ public class Logger : ILogger
     public bool Log(string message, string orginFile, LogType logType)
     {
         var time = DateTime.Now.ToString();
-        var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {message}\n");
+        var checkedmessage = CheckMessage(message);
+        var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {checkedmessage}\n");
 
         _fileWriteHandler.AppendToFile(new FileWriteModel(logFileName, FileExtension.LOG, location, text));
 
         return true;
+    }
+
+    public string CheckMessage(string message)
+    {
+        if (message.Contains('\n'))
+        {
+            message = message.Replace('\n', ' ');
+        }
+        if (message.Contains('\r'))
+        {
+            message = message.Replace('\r', ' ');
+        }
+        
+        return message;
     }
 }

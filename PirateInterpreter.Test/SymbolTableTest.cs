@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PirateInterpreter.Interpreters;
-using PirateInterpreter.Values;
 using PirateParser.Node;
-using Xunit;
 
 namespace PirateInterpreter.Test
 {
@@ -16,7 +9,7 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-            var value = new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+            var value = new Values.String("test", A.Fake<ILogger>());
 
             // Act
             var result = symbolTable.Set("test", value);
@@ -30,7 +23,7 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-            var value = new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+            var value = new Values.String("test", A.Fake<ILogger>());
             symbolTable.Set("test", value);
 
             // Act
@@ -40,11 +33,12 @@ namespace PirateInterpreter.Test
             Assert.Equal(value, result);
         }
 
+        [Fact]
         public void ShouldRemoveValue()
         {
             // Arrange
             var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-            var value = new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+            var value = new Values.String("test", A.Fake<ILogger>());
             symbolTable.Set("test", value);
 
             // Act

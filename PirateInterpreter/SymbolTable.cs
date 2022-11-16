@@ -1,9 +1,11 @@
+using PirateInterpreter.Values;
+
 namespace PirateInterpreter;
 
 public sealed class SymbolTable
 {
     private static SymbolTable? symbolTable;
-    public Dictionary<string, INode> SymbolList { get; set; } = new ();
+    public Dictionary<string, BaseValue> SymbolList { get; set; } = new ();
     public ILogger Logger { get; set; }
 
     private SymbolTable(ILogger logger)
@@ -20,7 +22,7 @@ public sealed class SymbolTable
         return symbolTable;
     }
 
-    public INode Get(string name)
+    public BaseValue Get(string name)
     {
         var value = SymbolList.GetValueOrDefault(name);
         if (value == null) 
@@ -32,7 +34,7 @@ public sealed class SymbolTable
         return value;
     }
 
-    public bool Set(string name, INode value)
+    public bool Set(string name, BaseValue value)
     {
         SymbolList[name] = value;
         Logger.Log($"Added {name}: {value.ToString()} to SymbolTable", this.GetType().Name, Common.Enum.LogType.INFO);

@@ -4,11 +4,11 @@ using PirateParser.Node;
 
 namespace PirateParser.Parsers;
 
-public class VariableAssignParser : BaseParser, ITokenParser
+public class VariableDeclarationParser : BaseParser, ITokenParser
 {
     private ParserFactory _parserFactory { get; set; }
     
-    public VariableAssignParser(List<Token> tokens, Token currentToken, ILogger logger, ParserFactory parserFactory) : base(tokens, currentToken, logger)
+    public VariableDeclarationParser(List<Token> tokens, int index, ILogger logger, ParserFactory parserFactory) : base(tokens, index, logger)
     {
         _parserFactory = parserFactory;
     }
@@ -16,16 +16,13 @@ public class VariableAssignParser : BaseParser, ITokenParser
     public override (INode node, int index) CreateNode()
     {
         INode node;
+        var VariableType = _tokens[_index];
 
-        var index = _tokens.IndexOf(_currentToken);
-        var VariableType = _currentToken;
-
-        
-        var parser = _parserFactory.GetParser(_tokens[index += 1], _tokens, Logger);
-        var result = parser.CreateNode();
+        var operationParser = new OperationParser(_tokens, _index+=1, Logger);
+        var result = operationParser.CreateNode();
 
         var IdentifierNode = result.node;
-        index = result.index;
+        _index = result.index;
 
         if (IdentifierNode is not ValueNode)
         {
@@ -33,19 +30,20 @@ public class VariableAssignParser : BaseParser, ITokenParser
             throw new ParserException("Variable Identifier is not a single value");
         }
 
-        var Operator = _tokens[index += 1];
+        var Operator = _tokens[_index += 1];
         if (!Operator.Matches(TokenSyntax.EQUALS))
         {
             Logger.Log("No Equals assign Operator was found", this.GetType().Name, LogType.ERROR);
             throw new ParserException("No Equals assign Operator was found, following the Identifier");
         }
 
-        parser = _parserFactory.GetParser(_tokens[index +=1], _tokens, Logger);
+        var parser = _parserFactory.GetParser(_index +=1, _tokens, Logger);
         result = parser.CreateNode();
         INode Value = result.node;
-        index = result.index;
+        _index = result.index;
 
-        node = new VariableAssignNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
-        return (node, index);
+        node = new VariableDeclarationNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
+        return (node, _index);
     }
 }
+

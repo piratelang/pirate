@@ -6,11 +6,11 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
-public class ForLoopStatementNodeInterpreter : BaseInterpreter
+public class ForLoopStatementInterpreter : BaseInterpreter
 {
     public IForLoopStatementNode forLoopStatementNode { get; set; }
 
-    public ForLoopStatementNodeInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public ForLoopStatementInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
         if (node is not IForLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         forLoopStatementNode = (IForLoopStatementNode)node;
@@ -19,10 +19,11 @@ public class ForLoopStatementNodeInterpreter : BaseInterpreter
     }
     public override List<BaseValue> VisitNode()
     {
-        var interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode, Logger);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        var interpreter = _interpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode, Logger);
         var variableValue = interpreter.VisitSingleNode();
 
-        interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.ValueNode, Logger);
+        interpreter = _interpreterFactory.GetInterpreter(forLoopStatementNode.ValueNode, Logger);
         var startValue = interpreter.VisitSingleNode();
 
         if (variableValue is not Values.Variable) throw new TypeConversionException(variableValue.GetType(), typeof(Values.Variable));
@@ -37,12 +38,15 @@ public class ForLoopStatementNodeInterpreter : BaseInterpreter
         List<BaseValue> bodyValues = new();
         for (int i = variable; i < start; i++)
         {
+            Logger.Log($"For Loop iteration: {i}", this.GetType().Name, Common.Enum.LogType.INFO);
             foreach (var node in forLoopStatementNode.BodyNodes)
             {
-                var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
+                var bodyValue = _interpreterFactory.GetInterpreter(node, Logger).VisitNode();
                 if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
                 bodyValues.Add(bodyValue[0]);
             }
+
+            SymbolTable.Instance(Logger).Set((string)forLoopStatementNode.VariableNode.Identifier.Value.Value, new Integer(i, Logger));
         }
 
         return bodyValues;

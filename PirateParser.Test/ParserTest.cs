@@ -16,7 +16,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -37,7 +37,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -56,7 +56,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -77,13 +77,13 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<VariableAssignNode>(result.node);
+        Assert.IsType<VariableDeclarationNode>(result.node);
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
         
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -128,7 +128,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
         
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -153,7 +153,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
         
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -180,7 +180,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
 
         var parserFactory = new ParserFactory();
-        var parser = parserFactory.GetParser(tokens[0], tokens, logger);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
