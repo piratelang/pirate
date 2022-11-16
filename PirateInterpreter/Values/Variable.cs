@@ -17,7 +17,7 @@ public class Variable : BaseValue, IValue
         Logger.Log($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}", this.GetType().Name, LogType.INFO);
         switch (Value.GetType())
         {
-            case Type intType when Value.GetType() is int:
+            case Type intType when Value.GetType()== typeof(int):
                 return new Integer(Value, Logger).OperatedBy(_operator, other);
             case Type stringType when Value.GetType() == typeof(string):
                 return new String(Value, Logger).OperatedBy(_operator, other);

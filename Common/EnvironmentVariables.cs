@@ -13,7 +13,7 @@ namespace Common
             {
                 var directory = Directory.GetCurrentDirectory();
                 var secretConfig = new ConfigurationBuilder()
-                    .AddJsonFile($"{directory}/../Shell/variables.json", false, true)
+                    .AddJsonFile($"{directory}/variables.json", false, true)
                     .Build();
                 return secretConfig[variablename];
             }

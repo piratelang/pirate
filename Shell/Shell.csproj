@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\PirateInterpreter\Interpreter.csproj" />
     <ProjectReference Include="..\PirateLexer\Lexer.csproj" />
@@ -16,11 +16,18 @@
     <Company>vanarkel</Company>
     <RepositoryUrl>https://github.com/joerivanarkel/PirateLang</RepositoryUrl>
     <PackageProjectUrl>https://github.com/joerivanarkel/PirateLang</PackageProjectUrl>
-    <OutputType>Exe</OutputType>
+
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>pirate</ToolCommandName>
+
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <OutputType>Exe</OutputType>
+    <PublishDir>bin\publish\</PublishDir>
   </PropertyGroup>
 </Project>
