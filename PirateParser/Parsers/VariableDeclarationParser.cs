@@ -18,7 +18,7 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
         INode node;
         var VariableType = _tokens[_index];
 
-        var operationParser = new OperationParser(_tokens, _index, Logger);
+        var operationParser = new OperationParser(_tokens, _index+=1, Logger);
         var result = operationParser.CreateNode();
 
         var IdentifierNode = result.node;
@@ -46,3 +46,4 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
         return (node, _index);
     }
 }
+

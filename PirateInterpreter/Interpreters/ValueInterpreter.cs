@@ -15,6 +15,7 @@ public class ValueInterpreter : BaseInterpreter
 
     public override List<BaseValue> VisitNode()
     {
+        Logger.Log($"Visiting {this.GetType().Name} : \"{valueNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
         if (valueNode.Value.Value == null) throw new ArgumentNullException($"{valueNode.Value.GetType().Name} does not contain a vaild value type.");
         switch (valueNode.Value.TokenType)
         {
@@ -27,7 +28,7 @@ public class ValueInterpreter : BaseInterpreter
             case TokenValue.FLOAT:
                 return new List<BaseValue> { new Float(valueNode.Value.Value, Logger) };
             case TokenSyntax.IDENTIFIER:
-                return new List<BaseValue> { new Variable((string)valueNode.Value.Value, Logger, InterpreterFactory) };
+                return new List<BaseValue> { new Variable((string)valueNode.Value.Value, Logger, _interpreterFactory) };
         } 
         throw new ArgumentNullException($"{valueNode.Value.GetType().Name} is not trecognized as a BaseValue type.");
 

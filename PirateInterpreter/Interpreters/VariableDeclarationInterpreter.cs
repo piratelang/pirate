@@ -16,6 +16,7 @@ public class VariableDeclarationInterpreter : BaseInterpreter
 
     public override List<BaseValue> VisitNode()
     {
+        Logger.Log($"Visiting {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
         if (variableDeclarationNode.Identifier.Value.Value is not string)
         {
             if (variableDeclarationNode.Identifier.Value.Value != null)
@@ -26,9 +27,12 @@ public class VariableDeclarationInterpreter : BaseInterpreter
         }
 
         var Identifier = (string)variableDeclarationNode.Identifier.Value.Value;
-        SymbolTable.Instance(Logger).Set(Identifier, variableDeclarationNode.Value);
+        var interpreter = _interpreterFactory.GetInterpreter(variableDeclarationNode.Value, Logger);
+        var result = interpreter.VisitSingleNode();
 
-        var variable = new Variable(Identifier, Logger, InterpreterFactory);
+        SymbolTable.Instance(Logger).Set(Identifier, result);
+
+        var variable = new Variable(Identifier, Logger, _interpreterFactory);
         return new List<BaseValue> { variable };
     }
 }

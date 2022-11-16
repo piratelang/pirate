@@ -5,10 +5,12 @@ namespace PirateParser.Parsers;
 
 public class VariableAssignmentParser : BaseParser
 {
+    private int _startindex;
     private ParserFactory _parserFactory;
 
     public VariableAssignmentParser(List<Token> tokens, int index, ILogger logger, ParserFactory parserFactory) : base(tokens, index, logger)
     {
+        _startindex = index;
         _parserFactory = parserFactory;
     }
     
@@ -25,15 +27,15 @@ public class VariableAssignmentParser : BaseParser
 
         if (identifierNode is not ValueNode)
         {
-            Logger.Log("Variable Identifier is not a single value", this.GetType().Name, LogType.ERROR);
-            throw new ParserException("Variable Identifier is not a single value");
+            operationParser = new OperationParser(_tokens, _startindex, Logger);
+            return operationParser.CreateNode();
         }
         var identifierValueNode = (IValueNode)identifierNode;
 
         var Operator = _tokens[_index += 1];
         if (!Operator.Matches(TokenSyntax.EQUALS))
         {
-            operationParser = new OperationParser(_tokens, _index, Logger);
+            operationParser = new OperationParser(_tokens, _startindex, Logger);
             return operationParser.CreateNode();
         }
 
