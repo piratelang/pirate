@@ -5,12 +5,12 @@ namespace PirateInterpreter.Interpreters;
 public abstract class BaseInterpreter
 {
     protected readonly ILogger Logger;
-    protected InterpreterFactory _interpreterFactory { get; private set; }
+    protected InterpreterFactory InterpreterFactory { get; private set; }
     
     public BaseInterpreter(ILogger logger, InterpreterFactory interpreterFactory)
     {
         Logger = logger;
-        _interpreterFactory = interpreterFactory;
+        InterpreterFactory = interpreterFactory;
     }
     
     public abstract List<BaseValue> VisitNode();

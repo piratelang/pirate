@@ -17,10 +17,10 @@ public class ComparisonOperationInterpreter : BaseInterpreter
     public override List<BaseValue> VisitNode()
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
-        var interpreter = _interpreterFactory.GetInterpreter(operationNode.Left, Logger );
+        var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left, Logger );
         var left = interpreter.VisitSingleNode();
 
-        interpreter = _interpreterFactory.GetInterpreter(operationNode.Right, Logger);
+        interpreter = InterpreterFactory.GetInterpreter(operationNode.Right, Logger);
         var right = interpreter.VisitSingleNode();
 
         var value = 0;

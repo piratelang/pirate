@@ -27,12 +27,12 @@ public class VariableDeclarationInterpreter : BaseInterpreter
         }
 
         var Identifier = (string)variableDeclarationNode.Identifier.Value.Value;
-        var interpreter = _interpreterFactory.GetInterpreter(variableDeclarationNode.Value, Logger);
+        var interpreter = InterpreterFactory.GetInterpreter(variableDeclarationNode.Value, Logger);
         var result = interpreter.VisitSingleNode();
 
-        SymbolTable.Instance(Logger).Set(Identifier, result);
+        SymbolTable.Instance(Logger).SetBaseValue(Identifier, result);
 
-        var variable = new Variable(Identifier, Logger, _interpreterFactory);
+        var variable = new Variable(Identifier, Logger, InterpreterFactory);
         return new List<BaseValue> { variable };
     }
 }
