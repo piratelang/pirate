@@ -2,6 +2,36 @@
 
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
+# 1.1.0
+
+### ([#71](https://github.com/joerivanarkel/PirateLang/pull/71)) XML docs for filehandler usage
+
+- Added XML documentation for `FileReadHandler` and `FileWriteHandler`
+- Removed not referenced objects
+
+### ([#74](https://github.com/joerivanarkel/PirateLang/pull/74)) Control Statements
+
+- Added parsers and interpreters for: `IfStatementNode`, `ForLoopStatementNode` and `WhileLoopStatementNode`
+- Additional `Token.Matches()` test after Value check fix
+- Added `FileExtension` enum to Filehandlers
+- Created `BaseFileHandler`
+- Changed Interpreter returns to `List<BaseValue>`
+
+### ([#82](https://github.com/joerivanarkel/PirateLang/pull/82)) Variable Assignment
+
+- Added parser Flowchart.
+- Changed SymbolTable to type of `Dictionary<string, BaseValue>`
+- Split Variable Nodes
+  - Variable decalaration looks like: `var a = 10`
+  - Variable assignment looks like: `a = 10`
+    - Variable must have been declared before being reassigned.
+- Changed Interpreters to use `int index` insted of `Token currentToken`
+- Further `Logger` improvements
+
+### ([#85](https://github.com/joerivanarkel/PirateLang/pull/85)) Further changes following #82
+
+- Small renaming improvements
+
 ## 1.0.0
 
 ### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter

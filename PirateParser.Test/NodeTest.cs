@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace PirateParser.Test;
 
 public class NodeTest
@@ -121,7 +123,7 @@ public class NodeTest
         var identifier = A.Fake<IValueNode>();
         var value = A.Fake<INode>();
 
-        var node = new VariableAssignNode(typetoken, identifier, value);
+        var node = new VariableDeclarationNode(typetoken, identifier, value);
 
         // Act
         var result = node.IsValid();
@@ -140,8 +142,115 @@ public class NodeTest
         var identifier = A.Fake<IValueNode>();
         var value = A.Fake<INode>();
 
-        var node = new VariableAssignNode(typetoken, identifier, value);
+        var node = new VariableDeclarationNode(typetoken, identifier, value);
         node.Value = null;
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void IfStatementNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var condition = A.Fake<IOperationNode>();
+        var body = A.Fake<List<INode>>();
+
+        var node = new IfStatementNode(condition, body);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void IfStatementNodeIsNotValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var condition = A.Fake<IOperationNode>();
+        var body = A.Fake<List<INode>>();
+
+        var node = new IfStatementNode(condition, body);
+        node.ConditionNode = null;
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void WhileLoopStatementNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var condition = A.Fake<IOperationNode>();
+        var body = A.Fake<List<INode>>();
+
+        var node = new WhileLoopStatementNode(condition, body);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void WhileLoopStatementNodeIsNotValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var condition = A.Fake<IOperationNode>();
+        var body = A.Fake<List<INode>>();
+
+        var node = new WhileLoopStatementNode(condition, body);
+        node.ConditionNode = null;
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void ForLoopStatementNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var variableAssignNode = A.Fake<IVariableDeclarationNode>();
+        var valueNode = A.Fake<IValueNode>();
+        var body = A.Fake<List<INode>>();
+
+        var node = new ForLoopStatementNode(variableAssignNode, valueNode, body);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void ForLoopStatementNodeIsNotValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var variableAssignNode = A.Fake<IVariableDeclarationNode>();
+        var valueNode = A.Fake<IValueNode>();
+        var body = A.Fake<List<INode>>();
+
+        var node = new ForLoopStatementNode(variableAssignNode, valueNode, body);
+        node.VariableNode = null;
 
         // Act
         var result = node.IsValid();

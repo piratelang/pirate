@@ -9,30 +9,15 @@ public class Variable : BaseValue, IValue
     public Variable(string value, ILogger logger, InterpreterFactory interpreterFactory): base(value, logger)
     {
         InterpreterFactory = interpreterFactory;
-        Value = GetValue(value);
-    }
-
-    public object GetValue(string value)
-    {
-        var resultNode = SymbolTable.Instance(Logger).Get(value);
-        if (resultNode is not IValueNode)
-        {
-           var interpreter = InterpreterFactory.GetInterpreter(resultNode, Logger);
-           var result = interpreter.VisitNode();
-           return result.Value;
-        }
-        else
-        {
-            var valueNode = (IValueNode)resultNode;
-            return valueNode.Value.Value;
-        }
+        Value = SymbolTable.Instance(Logger).GetBaseValue(value).Value;
     }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
+        Logger.Log($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}", this.GetType().Name, LogType.INFO);
         switch (Value.GetType())
         {
-            case Type intType when Value.GetType() == typeof(int):
+            case Type intType when Value.GetType() is int:
                 return new Integer(Value, Logger).OperatedBy(_operator, other);
             case Type stringType when Value.GetType() == typeof(string):
                 return new String(Value, Logger).OperatedBy(_operator, other);

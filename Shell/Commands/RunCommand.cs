@@ -26,7 +26,7 @@ public class RunCommand : Command, ICommand, IRunCommand
         if (arguments.Length >= 2) { fileArgument = arguments[1]; }
         var fileName = fileArgument.Replace(".pirate", "");
 
-        if (!_fileReadHandler.FileExists(fileName, ".pirate", "")) Error($"File \"{fileArgument}\" not provided or does not exist.");
+        if (!_fileReadHandler.FileExists(fileName, FileExtension.PIRATE, "")) Error($"File \"{fileArgument}\" not provided or does not exist.");
 
         Logger.Log("Starting build", this.GetType().Name, LogType.INFO);
         BuildCommand.Run(arguments);
@@ -37,7 +37,10 @@ public class RunCommand : Command, ICommand, IRunCommand
         var interpreterResult = Interpreter.StartInterpreter(fileName);
         foreach (var item in interpreterResult)
         {
-            Console.WriteLine(item.Value);
+            if (item is not null)
+            {
+                Console.WriteLine(item.Value.ToString());
+            }
         }
     }
 

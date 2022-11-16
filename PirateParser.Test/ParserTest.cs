@@ -15,7 +15,8 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.PLUS, "+"));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
-        var parser = new OperationParser(tokens, tokens[0], logger);
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -35,7 +36,8 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
-        var parser = new OperationParser(tokens, tokens[0], logger);
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -53,7 +55,8 @@ public class ParserTest
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         
-        var parser = new OperationParser(tokens, tokens[0], logger);
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
@@ -74,13 +77,115 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS));
         tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
         var parserFactory = new ParserFactory();
-
-        var parser = new VariableAssignParser(tokens, tokens[0], logger, parserFactory);
+        var parser = parserFactory.GetParser(0, tokens, logger);
 
         // Act
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<VariableAssignNode>(result.node);
+        Assert.IsType<VariableDeclarationNode>(result.node);
+    }
+
+    [Fact]
+    public void ShouldReturnIfStatementNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.IF));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<IfStatementNode>(result.node);
+    }
+
+    [Fact]
+    public void ShouldReturnIfStatementNodeWithElseNodes()
+    {
+                // Arrange
+        var logger = A.Fake<ILogger>();
+        
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.IF));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.ELSE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<IfStatementNode>(result.node);
+        Assert.NotNull(((IfStatementNode)result.node).ElseNode);
+    }
+
+    [Fact]
+    public void ShouldReturnWhileLoopStatementNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.WHILE));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<WhileLoopStatementNode>(result.node);
+    }
+
+    [Fact]
+    public void ShouldReturnForLoopStatementNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.FOR));
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenControlKeyword.TO));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "10"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<ForLoopStatementNode>(result.node);
     }
 }

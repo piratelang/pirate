@@ -19,13 +19,11 @@ public class Token
 
     public bool Matches(object tokenType, object value=null)
     {
-        if (Value == null)
+        if (value == null || Value == null)
         {
             return TokenType.Equals(tokenType);
         }
-        var een = TokenType.Equals(tokenType);
-        var twee = Value.Equals(value);
-        return een && twee;
+        return TokenType.Equals(tokenType) && Value.Equals(value);;
     }
 
     public override string ToString()
