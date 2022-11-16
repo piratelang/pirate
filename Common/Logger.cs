@@ -11,11 +11,11 @@ public class Logger : ILogger
     private string logFileName { get; set; }
     private string version { get; set; }
     private string location { get; set; }
-    private readonly IFileWriteHandler _fileHandler;
+    private readonly IFileWriteHandler _fileWriteHandler;
 
-    public Logger(IFileWriteHandler FileHandler, IEnvironmentVariables environmentVariables, string Name = "")
+    public Logger(IFileWriteHandler FileWriteHandler, IEnvironmentVariables environmentVariables, string Name = "")
     {
-        _fileHandler = FileHandler;
+        _fileWriteHandler = FileWriteHandler;
 
         logFileName = Name;
         if (Name == "")

@@ -12,7 +12,7 @@ public class FileReadHandler : BaseFileHandler, IFileReadHandler
     // Name: Without extension
     // Extension: With! dot
     // Location: Without root folder, i.e. "./"
-    public async Task<string> ReadAllTextFromFile(string name, string extension, string location)
+    public async Task<string> ReadAllTextFromFile(string name, FileExtension extension, string location)
     {
         if (name == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
