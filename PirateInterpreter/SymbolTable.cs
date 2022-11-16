@@ -22,7 +22,7 @@ public sealed class SymbolTable
         return symbolTable;
     }
 
-    public BaseValue Get(string name)
+    public BaseValue GetBaseValue(string name)
     {
         var value = SymbolList.GetValueOrDefault(name);
         if (value == null) 
@@ -34,7 +34,7 @@ public sealed class SymbolTable
         return value;
     }
 
-    public bool Set(string name, BaseValue value)
+    public bool SetBaseValue(string name, BaseValue value)
     {
         SymbolList[name] = value;
         Logger.Log($"Added {name}: {value.ToString()} to SymbolTable", this.GetType().Name, Common.Enum.LogType.INFO);

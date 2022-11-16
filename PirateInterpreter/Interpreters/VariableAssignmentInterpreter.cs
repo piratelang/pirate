@@ -25,12 +25,12 @@ public class VariableAssignmentInterpreter : BaseInterpreter
         }
 
         var identifier = (string)variableAssignmentNode.Identifier.Value.Value;
-        var interpreter = _interpreterFactory.GetInterpreter(variableAssignmentNode.Value, Logger);
+        var interpreter = InterpreterFactory.GetInterpreter(variableAssignmentNode.Value, Logger);
         var result = interpreter.VisitSingleNode();
 
-        SymbolTable.Instance(Logger).Set(identifier, result);
+        SymbolTable.Instance(Logger).SetBaseValue(identifier, result);
 
-        var variable = new Variable(identifier, Logger, _interpreterFactory);
+        var variable = new Variable(identifier, Logger, InterpreterFactory);
         return new List<BaseValue> { variable };
     }
 }

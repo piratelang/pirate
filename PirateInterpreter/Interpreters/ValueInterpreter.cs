@@ -28,7 +28,7 @@ public class ValueInterpreter : BaseInterpreter
             case TokenValue.FLOAT:
                 return new List<BaseValue> { new Float(valueNode.Value.Value, Logger) };
             case TokenSyntax.IDENTIFIER:
-                return new List<BaseValue> { new Variable((string)valueNode.Value.Value, Logger, _interpreterFactory) };
+                return new List<BaseValue> { new Variable((string)valueNode.Value.Value, Logger, InterpreterFactory) };
         } 
         throw new ArgumentNullException($"{valueNode.Value.GetType().Name} is not trecognized as a BaseValue type.");
 
