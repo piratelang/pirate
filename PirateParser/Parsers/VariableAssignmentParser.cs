@@ -35,6 +35,13 @@ public class VariableAssignmentParser : BaseParser
         var Operator = _tokens[_index += 1];
         if (!Operator.Matches(TokenSyntax.EQUALS))
         {
+            if (Operator.Matches(TokenSyntax.LEFTPARENTHESES))
+            {
+                var functionCallParser = new FunctionCallParser(_tokens, _index, Logger, _parserFactory);
+                result = functionCallParser.CreateNode();
+                _index = result.index;
+                return (result.node, _index);
+            }
             operationParser = new OperationParser(_tokens, _startindex, Logger);
             return operationParser.CreateNode();
         }

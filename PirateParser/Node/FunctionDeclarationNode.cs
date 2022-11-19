@@ -1,16 +1,15 @@
-using PirateParser.Node;
 using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-public class FunctionDeclarationNode : INode
+public class FunctionDeclarationNode : IFunctionDeclarationNode
 {
     public IValueNode identifier { get; set; }
     public List<INode> parameters { get; set; }
-    public INode returnType { get; set; }
+    public Token returnType { get; set; }
     public List<INode> statements { get; set; }
 
-    public FunctionDeclarationNode(ValueNode Identifier, List<INode> Parameters, INode ReturnType, List<INode> Statements)
+    public FunctionDeclarationNode(ValueNode Identifier, List<INode> Parameters, Token ReturnType, List<INode> Statements)
     {
         identifier = Identifier;
         parameters = Parameters;
