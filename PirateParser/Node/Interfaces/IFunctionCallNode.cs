@@ -1,11 +1,11 @@
+using PirateParser.Node.Interfaces;
+
 namespace PirateParser.Node.Interfaces;
 
-public interface IFunctionDeclarationNode : INode
+public interface IFunctionCallNode : INode
 {
     IValueNode Identifier { get; set; }
     List<INode> Parameters { get; set; }
-    Token ReturnType { get; set; }
-    List<INode> Statements { get; set; }
 
     bool IsValid();
 }

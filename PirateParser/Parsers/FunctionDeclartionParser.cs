@@ -17,22 +17,15 @@ public class FunctionDeclartionParser : BaseParser
 
         if (!_currentToken.Matches(TokenControlKeyword.FUNC)) throw new ParserException("No Function Declaration was found");
         
-        var parser = new ParserFactory().GetParser(_index += 1, _tokens, Logger);
-        var result = parser.CreateNode();
-
-        if (result.node is not ValueNode) throw new ParserException("Function Declaration does not contain a valid name");
-        
-
-        var identifierNode = (ValueNode)result.node;
-        _index = result.index;
+        var identifierNode = new ValueNode(_tokens[_index += 1]);
 
         if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTPARENTHESES)) throw new ParserException("No Left Parenthesis was found");
         
         List<INode> parameters = new List<INode>();
         while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTPARENTHESES))
         {
-            parser = new ParserFactory().GetParser(_index, _tokens, Logger);
-            result = parser.CreateNode();
+            var parser = new ParserFactory().GetParser(_index, _tokens, Logger);
+            var result = parser.CreateNode();
             if (result.node is not ParameterDefinitionNode) throw new ParserException("Function Declaration does not contain a valid parameter");
             
             _index = result.index;
@@ -48,8 +41,8 @@ public class FunctionDeclartionParser : BaseParser
         List<INode> Nodes = new List<INode>();
         while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
         {
-            parser = new ParserFactory().GetParser(_index, _tokens, Logger);
-            result = parser.CreateNode();
+            var parser = new ParserFactory().GetParser(_index, _tokens, Logger);
+            var result = parser.CreateNode();
             Nodes.Add(result.node);
             _index = result.index;
             if (_tokens[_index+1].TokenType.Equals(TokenSyntax.SEMICOLON))

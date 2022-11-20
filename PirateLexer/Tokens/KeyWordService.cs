@@ -5,7 +5,7 @@ namespace PirateLexer.Tokens;
 
 public class KeyWordService : IKeyWordService
 {
-    private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char"};
+    private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char", "void" };
 
     private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class", "new"};
 
@@ -25,6 +25,8 @@ public class KeyWordService : IKeyWordService
                     return TokenTypeKeyword.STRING;
                 case "char":
                     return TokenTypeKeyword.CHAR;
+                case "void":
+                    return TokenTypeKeyword.VOID;
             }
             throw new NotImplementedException($"Type keyword, {idString} has not been implemented");
         }

@@ -2,36 +2,37 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
+[Serializable]
 public class FunctionDeclarationNode : IFunctionDeclarationNode
 {
-    public IValueNode identifier { get; set; }
-    public List<INode> parameters { get; set; }
-    public Token returnType { get; set; }
-    public List<INode> statements { get; set; }
+    public IValueNode Identifier { get; set; }
+    public List<INode> Parameters { get; set; }
+    public Token ReturnType { get; set; }
+    public List<INode> Statements { get; set; }
 
-    public FunctionDeclarationNode(ValueNode Identifier, List<INode> Parameters, Token ReturnType, List<INode> Statements)
+    public FunctionDeclarationNode(ValueNode identifier, List<INode> parameters, Token returnType, List<INode> statements)
     {
-        identifier = Identifier;
-        parameters = Parameters;
-        returnType = ReturnType;
-        statements = Statements;
+        Identifier = identifier;
+        Parameters = parameters;
+        ReturnType = returnType;
+        Statements = statements;
     }
 
     public bool IsValid()
     {
-        if (identifier is not IValueNode)
+        if (Identifier is not IValueNode)
         {
             return false;
         }
-        if (parameters is not List<INode>)
+        if (Parameters is not List<INode>)
         {
             return false;
         }
-        if (returnType is not INode)
+        if (ReturnType is not INode)
         {
             return false;
         }
-        if (statements is not List<INode>)
+        if (Statements is not List<INode>)
         {
             return false;
         }

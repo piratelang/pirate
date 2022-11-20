@@ -6,6 +6,8 @@ public class InterpreterFactory
     {
         switch (node)
         {
+            case FunctionDeclarationNode functionDeclarationNode:
+                return new FunctionDeclarationInterpreter(functionDeclarationNode, this, logger);
             case IfStatementNode:
                 return new IfStatementInterpreter(node, this, logger);
             case WhileLoopStatementNode:

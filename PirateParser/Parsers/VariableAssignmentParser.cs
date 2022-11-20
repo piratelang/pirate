@@ -37,10 +37,7 @@ public class VariableAssignmentParser : BaseParser
         {
             if (Operator.Matches(TokenSyntax.LEFTPARENTHESES))
             {
-                var functionCallParser = new FunctionCallParser(_tokens, _index, Logger, _parserFactory);
-                result = functionCallParser.CreateNode();
-                _index = result.index;
-                return (result.node, _index);
+                return CreateFunctionCallNode(result, identifierValueNode);
             }
             operationParser = new OperationParser(_tokens, _startindex, Logger);
             return operationParser.CreateNode();
@@ -54,5 +51,22 @@ public class VariableAssignmentParser : BaseParser
 
         node = new VariableAssignmentNode(identifierValueNode, Value);
         return (node, _index);
+    }
+
+    private (INode node, int index) CreateFunctionCallNode((INode node, int index) result, IValueNode identifierValueNode)
+    {
+        var parameterNodes = new List<INode>();
+        while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTPARENTHESES))
+        {
+            var typeToken = _tokens[_index];
+            var valueParser = _parserFactory.GetParser(_index, _tokens, Logger);
+            result = valueParser.CreateNode();
+
+            if (result.node is not ValueNode) throw new ParserException("Function Declaration does not contain a valid parameter");
+            _index = result.index;
+            parameterNodes.Add(new ParameterDefinitionNode(typeToken, (ValueNode)result.node));
+
+        }
+        return (new FunctionCallNode(identifierValueNode, parameterNodes), _index);
     }
 }

@@ -34,7 +34,11 @@ stateDiagram-v2
         direction LR
         state EqualsOperator <<choice>>
         [*] --> EqualsOperator : Checks for operator following Identifier
-        EqualsOperator --> VariableassignemntNode : Equals was found
+        state LeftParantheses <<choice>>
+        EqualsOperator --> LeftParantheses: Equals was found
+        LeftParantheses --> FunctionCallNode : Parentheses found
+        LeftParantheses --> VariableassignemntNode : No Parentheses found
+
     }
     EqualsOperator --> Operator
     

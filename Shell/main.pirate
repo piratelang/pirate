@@ -1,15 +1,4 @@
-for var i = 0 to 3
+func test(): void
 {
-    if i == 1
-    {
-        "een";
-    }
-    if i == 2
-    {
-        "twee";
-    }
-    if i == 3
-    {
-        "drie";
-    }
+    var a = 20;
 }
