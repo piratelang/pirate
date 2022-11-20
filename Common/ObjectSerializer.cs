@@ -17,6 +17,8 @@ public class ObjectSerializer : IObjectSerializer
             System.IO.Directory.CreateDirectory(Location);
         Logger = logger;
     }
+
+    [Obsolete]
     public void SerializeObject(object ObjectToSerialize, string FileName)
     {
         try
@@ -42,6 +44,8 @@ public class ObjectSerializer : IObjectSerializer
             throw;
         }
     }
+
+    [Obsolete]
     public T Deserialize<T>(string FileName) where T : class
     {
         try
