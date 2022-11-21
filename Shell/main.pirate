@@ -1,6 +1,11 @@
-func hello(string test): void
+func hello(string test) : string
 {
-    test;
+    return "Hello World" + test;
 }
 
-hello("test");
+func triple(string input): string
+{
+    return input * 3;
+}
+
+hello(triple("test"));

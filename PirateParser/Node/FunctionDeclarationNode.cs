@@ -9,6 +9,7 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
     public List<IParameterDefinitionNode> Parameters { get; set; }
     public Token ReturnType { get; set; }
     public List<INode> Statements { get; set; }
+    public INode ReturnNode { get; set; } = default!;
 
     public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements)
     {
@@ -16,6 +17,15 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         Parameters = parameters;
         ReturnType = returnType;
         Statements = statements;
+    }
+
+    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements, INode returnNode)
+    {
+        Identifier = identifier;
+        Parameters = parameters;
+        ReturnType = returnType;
+        Statements = statements;
+        ReturnNode = returnNode;
     }
 
     public bool IsValid()

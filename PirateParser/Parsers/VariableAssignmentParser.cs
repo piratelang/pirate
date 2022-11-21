@@ -58,14 +58,14 @@ public class VariableAssignmentParser : BaseParser
         var parameterNodes = new List<INode>();
         while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTPARENTHESES))
         {
-            var typeToken = _tokens[_index];
             var valueParser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = valueParser.CreateNode();
 
-            if (result.node is not ValueNode) throw new ParserException("Function Declaration does not contain a valid parameter");
             _index = result.index;
-            parameterNodes.Add(new ParameterDefinitionNode(typeToken, (ValueNode)result.node));
+            parameterNodes.Add(result.node);
 
+            if (_tokens[_index+=1].Matches(TokenSyntax.COMMA)) continue;
+            if (_tokens[_index].Matches(TokenSyntax.RIGHTPARENTHESES)) break;
         }
         return (new FunctionCallNode(identifierValueNode, parameterNodes), _index);
     }

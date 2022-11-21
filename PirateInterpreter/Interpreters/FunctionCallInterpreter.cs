@@ -27,12 +27,17 @@ public class FunctionCallInterpreter : BaseInterpreter
             SymbolTable.Instance(Logger).SetBaseValue((string)parameter.Identifier.Value.Value, InterpreterFactory.GetInterpreter(value, Logger).VisitSingleNode());
         }
 
-        var resultList = new List<BaseValue>();
         foreach (var node in function.functionDeclarationNode.Statements)
         {
             var interpreter = InterpreterFactory.GetInterpreter(node, Logger);
             var values = interpreter.VisitNode();
-            resultList.AddRange(values);
+        }
+
+        
+        var resultList = new List<BaseValue>();
+        if (function.functionDeclarationNode.ReturnNode is not null)
+        {
+            resultList.Add(InterpreterFactory.GetInterpreter(function.functionDeclarationNode.ReturnNode, Logger).VisitSingleNode());
         }
         return resultList;
     }

@@ -7,6 +7,7 @@ public interface IFunctionDeclarationNode : INode
     List<IParameterDefinitionNode> Parameters { get; set; }
     Token ReturnType { get; set; }
     List<INode> Statements { get; set; }
+    INode ReturnNode { get; set; }
 
     bool IsValid();
 }
