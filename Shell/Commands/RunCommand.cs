@@ -35,17 +35,23 @@ public class RunCommand : Command, ICommand, IRunCommand
         Logger.Log($"Executing {fileName}.pirate\n", this.GetType().Name, LogType.INFO);
 
         var interpreterResult = Interpreter.StartInterpreter(fileName);
-        foreach (var item in interpreterResult)
-        {
-            if (item.Value is not null)
-            {
-                Console.WriteLine(item.Value.ToString());
-            }
-            else
-            {
-                Console.WriteLine("item is null");
-            }
-        }
+        // foreach (var item in interpreterResult)
+        // {
+        //     if (item == null)
+        //     {
+        //         Logger.Log("Interpreter returned null", this.GetType().Name, LogType.ERROR);
+        //         continue;
+        //     }
+
+        //     if (item.Value is not null)
+        //     {
+        //         Console.WriteLine(item.Value.ToString());
+        //     }
+        //     else
+        //     {
+        //         Console.WriteLine("item is null");
+        //     }
+        // }
     }
 
     public override void Help()

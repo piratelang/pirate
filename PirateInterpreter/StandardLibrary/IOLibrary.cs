@@ -8,7 +8,7 @@ public class IOLibrary
     {
         foreach (var parameter in parameters)
         {
-            System.Console.WriteLine(parameter.ToString());
+            System.Console.WriteLine(parameter.Value.ToString());
         }
         return null;
     }

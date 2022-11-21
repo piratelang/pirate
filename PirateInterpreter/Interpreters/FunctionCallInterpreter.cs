@@ -22,20 +22,21 @@ public class FunctionCallInterpreter : BaseInterpreter
         Logger.Log($"Visiting {this.GetType().Name} : \"{functionCallNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
 
         var functionValue = SymbolTable.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
-        if (functionValue is not FunctionValue) throw new TypeConversionException(functionValue.GetType(), typeof(FunctionValue));
-        var function = (FunctionValue)functionValue;
-
-        if (function.functionDeclarationNode == null)
+        
+        if (functionValue is FunctionValuePlaceHolder)
         {
-            if (function.functionDeclarationNode.Identifier.Value.Value is not string) throw new TypeConversionException(function.functionDeclarationNode.Identifier.Value.Value.GetType(), typeof(string));
+            var functionPlaceholder = (FunctionValuePlaceHolder)functionValue;
             List<BaseValue> parameters = new List<BaseValue>();
             foreach (var parameter in functionCallNode.Parameters)
             {
                 var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter, Logger);
                 parameters.AddRange(parameterInterpreter.VisitNode());
             }
-            StandardLibraryFactory.GetFunction((string)function.functionDeclarationNode.Identifier.Value.Value, parameters);
+            return new List<BaseValue>() { StandardLibraryFactory.GetFunction(functionPlaceholder.Name, parameters) };
         }
+
+        if (functionValue is not FunctionValue) throw new TypeConversionException(functionValue.GetType(), typeof(FunctionValue));
+        var function = (FunctionValue)functionValue;
 
         foreach (var (parameter, value) in function.functionDeclarationNode.Parameters.Zip(functionCallNode.Parameters))
         {

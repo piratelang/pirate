@@ -1,1 +1,6 @@
-print("Hello World")
+func foo(string bar): void
+{
+    return bar + "foo";
+}
+
+print(foo("bar"));

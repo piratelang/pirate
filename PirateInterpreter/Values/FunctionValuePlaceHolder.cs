@@ -2,7 +2,7 @@ namespace PirateInterpreter.Values;
 
 public class FunctionValuePlaceHolder : BaseValue
 {
-    private string Name { get; set; }
+    public string Name { get; set; }
     public FunctionValuePlaceHolder(string name, ILogger logger) : base(null, logger)
     {
         Name = name;
