@@ -22,8 +22,8 @@ public class FunctionCallInterpreter : BaseInterpreter
         Logger.Log($"Visiting {this.GetType().Name} : \"{functionCallNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
 
         var functionValue = SymbolTable.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
-        if (functionValue is not Function) throw new TypeConversionException(functionValue.GetType(), typeof(Function));
-        var function = (Function)functionValue;
+        if (functionValue is not FunctionValue) throw new TypeConversionException(functionValue.GetType(), typeof(FunctionValue));
+        var function = (FunctionValue)functionValue;
 
         if (function.functionDeclarationNode == null)
         {

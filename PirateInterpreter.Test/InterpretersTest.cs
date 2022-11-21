@@ -24,7 +24,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Integer>(result[0]);
+            Assert.IsType<Values.IntegerValue>(result[0]);
             Assert.Equal(2, result[0].Value);
         }
 
@@ -44,7 +44,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Boolean>(result[0]);
+            Assert.IsType<Values.BooleanValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -60,7 +60,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Integer>(result[0]);
+            Assert.IsType<Values.IntegerValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -80,7 +80,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -104,7 +104,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(2, result[0].Value);
         }
 
@@ -128,7 +128,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -157,7 +157,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -193,7 +193,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(2, result[0].Value);
         }
 
@@ -251,7 +251,7 @@ namespace PirateInterpreter.Test
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
     }

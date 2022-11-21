@@ -30,7 +30,7 @@ public class VariableAssignmentInterpreter : BaseInterpreter
 
         SymbolTable.Instance(Logger).SetBaseValue(identifier, result);
 
-        var variable = new Variable(identifier, Logger, InterpreterFactory);
+        var variable = new VariableValue(identifier, Logger, InterpreterFactory);
         return new List<BaseValue> { variable };
     }
 }

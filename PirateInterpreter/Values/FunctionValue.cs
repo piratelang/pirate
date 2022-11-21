@@ -1,10 +1,10 @@
 namespace PirateInterpreter.Values;
 
-public class Function : BaseValue
+public class FunctionValue : BaseValue
 {
     public IFunctionDeclarationNode functionDeclarationNode { get; set; }
 
-    public Function(IFunctionDeclarationNode FunctionDeclarationNode, ILogger logger) : base(null, logger)
+    public FunctionValue(IFunctionDeclarationNode FunctionDeclarationNode, ILogger logger) : base(null, logger)
     {
         functionDeclarationNode = FunctionDeclarationNode;
         Logger.Log($"Created {this.GetType().Name} : \"{functionDeclarationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);

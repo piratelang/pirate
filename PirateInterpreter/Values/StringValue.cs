@@ -2,9 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
-public class String : BaseValue, IValue
+public class StringValue : BaseValue, IValue
 {
-    public String(object value, ILogger logger) :base(value, logger) {}
+    public StringValue(object value, ILogger logger) :base(value, logger) {}
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
@@ -24,7 +24,7 @@ public class String : BaseValue, IValue
                         throw new TypeConversionException(typeof(string));
                     }
                     var otherValue = (string)other.Value;
-                    return new String(string.Concat(value, otherValue), Logger);
+                    return new StringValue(string.Concat(value, otherValue), Logger);
                 }
                 catch (Exception ex)
                 {
@@ -44,7 +44,7 @@ public class String : BaseValue, IValue
                         throw new TypeConversionException(typeof(string));
                     }
                     var otherValueInt = (int)other.Value;
-                    return new String(string.Concat(Enumerable.Repeat(value, otherValueInt)), Logger);
+                    return new StringValue(string.Concat(Enumerable.Repeat(value, otherValueInt)), Logger);
                 }
                 catch (Exception ex)
                 {

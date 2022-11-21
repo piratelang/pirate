@@ -73,6 +73,6 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 break;
         }
 
-        return new List<BaseValue> { new Values.Boolean(value, Logger) };
+        return new List<BaseValue> { new Values.BooleanValue(value, Logger) };
     }
 }

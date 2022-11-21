@@ -18,7 +18,7 @@ public class FunctionDeclarationInterpreter : BaseInterpreter
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{functionDeclarationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
 
-        var function = new Function(functionDeclarationNode, Logger);
+        var function = new FunctionValue(functionDeclarationNode, Logger);
         SymbolTable.Instance(Logger).SetBaseValue((string)functionDeclarationNode.Identifier.Value.Value, function);
         return new List<BaseValue>();
     }

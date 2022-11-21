@@ -9,7 +9,7 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-            var value = new Values.String("test", A.Fake<ILogger>());
+            var value = new Values.StringValue("test", A.Fake<ILogger>());
 
             // Act
             var result = symbolTable.SetBaseValue("test", value);
@@ -23,7 +23,7 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-            var value = new Values.String("test", A.Fake<ILogger>());
+            var value = new Values.StringValue("test", A.Fake<ILogger>());
             symbolTable.SetBaseValue("test", value);
 
             // Act
@@ -38,7 +38,7 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-            var value = new Values.String("test", A.Fake<ILogger>());
+            var value = new Values.StringValue("test", A.Fake<ILogger>());
             symbolTable.SetBaseValue("test", value);
 
             // Act

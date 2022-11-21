@@ -23,7 +23,7 @@ public class WhileLoopStatementInterpreter : BaseInterpreter
         var interpreter = InterpreterFactory.GetInterpreter(whileLoopStatementNode.ConditionNode, Logger);
         var conditionValue = interpreter.VisitSingleNode();
 
-        if (conditionValue is not Values.Boolean) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.Boolean));
+        if (conditionValue is not Values.BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.BooleanValue));
         var conditionBoolean = (int)conditionValue.Value != 0;
 
         List<BaseValue> bodyValues = new();

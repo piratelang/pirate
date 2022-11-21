@@ -22,9 +22,9 @@ public class ForLoopStatementInterpreter : BaseInterpreter
         interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.ValueNode, Logger);
         var startValue = interpreter.VisitSingleNode();
 
-        if (variableValue is not Values.Variable) throw new TypeConversionException(variableValue.GetType(), typeof(Values.Variable));
-        if (startValue is not Values.Integer) throw new TypeConversionException(startValue.GetType(), typeof(Values.Integer));
-        if (variableValue.Value is not int) throw new TypeConversionException(variableValue.Value.GetType(), typeof(Values.Integer));
+        if (variableValue is not Values.VariableValue) throw new TypeConversionException(variableValue.GetType(), typeof(Values.VariableValue));
+        if (startValue is not Values.IntegerValue) throw new TypeConversionException(startValue.GetType(), typeof(Values.IntegerValue));
+        if (variableValue.Value is not int) throw new TypeConversionException(variableValue.Value.GetType(), typeof(Values.IntegerValue));
         if (startValue.Value is not int) throw new TypeConversionException(startValue.Value.GetType(), typeof(int));
 
 
@@ -42,7 +42,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
                 bodyValues.Add(bodyValue[0]);
             }
 
-            SymbolTable.Instance(Logger).SetBaseValue((string)forLoopStatementNode.VariableNode.Identifier.Value.Value, new Integer(i, Logger));
+            SymbolTable.Instance(Logger).SetBaseValue((string)forLoopStatementNode.VariableNode.Identifier.Value.Value, new IntegerValue(i, Logger));
         }
 
         return bodyValues;

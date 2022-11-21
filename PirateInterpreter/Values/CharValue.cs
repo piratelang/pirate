@@ -2,9 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
-public class Char : BaseValue, IValue
+public class CharValue : BaseValue, IValue
 {
-    public Char(object value, ILogger logger) :base(value, logger) {}
+    public CharValue(object value, ILogger logger) :base(value, logger) {}
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
