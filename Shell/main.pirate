@@ -3,5 +3,4 @@ func hello(string test): void
     test;
 }
 
-var test = hello;
-hello(test);
+hello("test");

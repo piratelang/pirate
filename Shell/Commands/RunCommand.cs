@@ -37,9 +37,13 @@ public class RunCommand : Command, ICommand, IRunCommand
         var interpreterResult = Interpreter.StartInterpreter(fileName);
         foreach (var item in interpreterResult)
         {
-            if (item is not null)
+            if (item.Value is not null)
             {
                 Console.WriteLine(item.Value.ToString());
+            }
+            else
+            {
+                Console.WriteLine("item is null");
             }
         }
     }

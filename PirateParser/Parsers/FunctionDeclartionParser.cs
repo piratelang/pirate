@@ -21,15 +21,15 @@ public class FunctionDeclartionParser : BaseParser
 
         if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTPARENTHESES)) throw new ParserException("No Left Parenthesis was found");
         
-        List<INode> parameters = new List<INode>();
+        List<IParameterDefinitionNode> parameters = new List<IParameterDefinitionNode>();
         while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTPARENTHESES))
         {
-            var parser = new ParserFactory().GetParser(_index, _tokens, Logger);
-            var result = parser.CreateNode();
-            if (result.node is not ParameterDefinitionNode) throw new ParserException("Function Declaration does not contain a valid parameter");
-            
-            _index = result.index;
-            parameters.Add(result.node);
+            var parameter = new ParameterDefinitionNode(_tokens[_index], new ValueNode(_tokens[_index += 1]));
+            parameters.Add(parameter);
+
+            if (_tokens[_index += 1].Matches(TokenSyntax.COMMA)) continue;
+            if (_tokens[_index].Matches(TokenSyntax.RIGHTPARENTHESES)) break;
+            throw new ParserException("No Right Parenthesis was found");
         }
 
         if (!_tokens[_index += 1].Matches(TokenSyntax.COLON)) throw new ParserException("No Colon was found");

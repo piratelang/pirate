@@ -22,6 +22,11 @@ public class FunctionCallInterpreter : BaseInterpreter
         if (functionValue is not Function) throw new TypeConversionException(functionValue.GetType(), typeof(Function));
         var function = (Function)functionValue;
 
+        foreach (var (parameter, value) in function.functionDeclarationNode.Parameters.Zip(functionCallNode.Parameters))
+        {
+            SymbolTable.Instance(Logger).SetBaseValue((string)parameter.Identifier.Value.Value, InterpreterFactory.GetInterpreter(value, Logger).VisitSingleNode());
+        }
+
         var resultList = new List<BaseValue>();
         foreach (var node in function.functionDeclarationNode.Statements)
         {

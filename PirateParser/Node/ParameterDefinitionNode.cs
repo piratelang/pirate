@@ -2,24 +2,25 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
+[Serializable]
 public class ParameterDefinitionNode : IParameterDefinitionNode
 {
-    public Token typeToken { get; set; }
-    public IValueNode identifier { get; set; }
+    public Token TypeToken { get; set; }
+    public IValueNode Identifier { get; set; }
 
-    public ParameterDefinitionNode(Token TypeToken, IValueNode Identifier)
+    public ParameterDefinitionNode(Token typeToken, IValueNode identifier)
     {
-        typeToken = TypeToken;
-        identifier = Identifier;
+        TypeToken = typeToken;
+        Identifier = identifier;
     }
 
     public bool IsValid()
     {
-        if (typeToken is not Token)
+        if (TypeToken is not Token)
         {
             return false;
         }
-        if (identifier is not IValueNode)
+        if (Identifier is not IValueNode)
         {
             return false;
         }

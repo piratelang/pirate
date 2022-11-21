@@ -6,11 +6,11 @@ namespace PirateParser.Node;
 public class FunctionDeclarationNode : IFunctionDeclarationNode
 {
     public IValueNode Identifier { get; set; }
-    public List<INode> Parameters { get; set; }
+    public List<IParameterDefinitionNode> Parameters { get; set; }
     public Token ReturnType { get; set; }
     public List<INode> Statements { get; set; }
 
-    public FunctionDeclarationNode(ValueNode identifier, List<INode> parameters, Token returnType, List<INode> statements)
+    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements)
     {
         Identifier = identifier;
         Parameters = parameters;
@@ -24,7 +24,7 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         {
             return false;
         }
-        if (Parameters is not List<INode>)
+        if (Parameters is not List<IParameterDefinitionNode>)
         {
             return false;
         }

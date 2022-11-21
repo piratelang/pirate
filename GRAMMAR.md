@@ -7,7 +7,7 @@ Definition:
 
 Control Statement:
     If Statement:
-        if (<Expression.Comparison> <extension operator> <Expression.Comparison>)
+        if <Expression.Comparison> <extension operator> <Expression.Comparison>
         {
             <then>
         }
@@ -17,12 +17,12 @@ Control Statement:
             
         }
     While Loop:
-        while (<Expression.Comparison>)
+        while <Expression.Comparison>
         {
 
         }
     For Loop:
-        for(<expression.assignment.int> to <value.int>)
+        for <expression.assignment.int> to <value.int>
         {
 
         }
