@@ -18,14 +18,17 @@ public class FunctionCallInterpreter : BaseInterpreter
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{functionCallNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
 
-        var function = SymbolTable.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
-        if (function is not Function) throw new TypeConversionException(function.GetType(), typeof(Function));
+        var functionValue = SymbolTable.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
+        if (functionValue is not Function) throw new TypeConversionException(functionValue.GetType(), typeof(Function));
+        var function = (Function)functionValue;
 
-        foreach (var node in functionCallNode.Parameters)
+        var resultList = new List<BaseValue>();
+        foreach (var node in function.functionDeclarationNode.Statements)
         {
             var interpreter = InterpreterFactory.GetInterpreter(node, Logger);
             var values = interpreter.VisitNode();
+            resultList.AddRange(values);
         }
-        return new List<BaseValue>();
+        return resultList;
     }
 }

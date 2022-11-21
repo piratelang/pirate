@@ -1,4 +1,7 @@
-for var i = 0 to 3
+func hello(string test): void
 {
-    "test";
+    test;
 }
+
+var test = hello;
+hello(test);

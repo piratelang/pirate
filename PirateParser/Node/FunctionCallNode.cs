@@ -2,6 +2,7 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
+[Serializable]
 public class FunctionCallNode : IFunctionCallNode
 {
     public IValueNode Identifier { get; set; }
