@@ -25,14 +25,7 @@ public class FunctionCallInterpreter : BaseInterpreter
         
         if (functionValue is FunctionValuePlaceHolder)
         {
-            var functionPlaceholder = (FunctionValuePlaceHolder)functionValue;
-            List<BaseValue> parameters = new List<BaseValue>();
-            foreach (var parameter in functionCallNode.Parameters)
-            {
-                var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter, Logger);
-                parameters.AddRange(parameterInterpreter.VisitNode());
-            }
-            return new List<BaseValue>() { StandardLibraryFactory.GetFunction(functionPlaceholder.Name, parameters) };
+            return CallLibraryFunction(functionValue);
         }
 
         if (functionValue is not FunctionValue) throw new TypeConversionException(functionValue.GetType(), typeof(FunctionValue));
@@ -55,5 +48,17 @@ public class FunctionCallInterpreter : BaseInterpreter
             resultList.Add(InterpreterFactory.GetInterpreter(function.functionDeclarationNode.ReturnNode, Logger).VisitSingleNode());
         }
         return resultList;
+    }
+
+    private List<BaseValue> CallLibraryFunction(BaseValue functionValue)
+    {
+        var functionPlaceholder = (FunctionValuePlaceHolder)functionValue;
+        List<BaseValue> parameters = new List<BaseValue>();
+        foreach (var parameter in functionCallNode.Parameters)
+        {
+            var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter, Logger);
+            parameters.AddRange(parameterInterpreter.VisitNode());
+        }
+        return new List<BaseValue>() { StandardLibraryFactory.GetFunction(functionPlaceholder.Name, parameters, Logger) };
     }
 }

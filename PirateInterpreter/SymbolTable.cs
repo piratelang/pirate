@@ -53,5 +53,6 @@ public sealed class SymbolTable
     {
         // IO Functions, Require C# code
         symbolTable.SetBaseValue("print", new FunctionValuePlaceHolder("print", Logger));
+        symbolTable.SetBaseValue("read", new FunctionValuePlaceHolder("read", Logger));
     }
 }

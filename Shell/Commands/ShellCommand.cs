@@ -50,7 +50,19 @@ public class ShellCommand : Command, ICommand, IShellCommand
                 var interpreterResult = Interpreter.StartInterpreter("repl");
                 foreach (var item in interpreterResult)
                 {
-                    Console.WriteLine(item.Value);
+                    if (item == null)
+                    {
+                        Logger.Log("Interpreter returned null", this.GetType().Name, LogType.ERROR);
+                        continue;
+                    }
+                    if (item.Value is not null)
+                    {
+                        Console.WriteLine(item.Value.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("item is null");
+                    }
                 }
             }
             catch (Exception ex)
