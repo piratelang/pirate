@@ -1,3 +1,4 @@
+using PirateInterpreter.StandardLibrary;
 using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
@@ -5,11 +6,13 @@ namespace PirateInterpreter.Interpreters;
 public class FunctionCallInterpreter : BaseInterpreter
 {
     public IFunctionCallNode functionCallNode { get; set; }
+    private StandardLibraryFactory StandardLibraryFactory;
 
-    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, StandardLibraryFactory standardLibraryFactory) : base(logger, InterpreterFactory)
     {
         if (node is not IFunctionCallNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionCallNode));
         functionCallNode = (IFunctionCallNode)node;
+        StandardLibraryFactory = standardLibraryFactory;
 
         Logger.Log($"Created {this.GetType().Name} : \"{functionCallNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
     }
@@ -22,6 +25,18 @@ public class FunctionCallInterpreter : BaseInterpreter
         if (functionValue is not Function) throw new TypeConversionException(functionValue.GetType(), typeof(Function));
         var function = (Function)functionValue;
 
+        if (function.functionDeclarationNode == null)
+        {
+            if (function.functionDeclarationNode.Identifier.Value.Value is not string) throw new TypeConversionException(function.functionDeclarationNode.Identifier.Value.Value.GetType(), typeof(string));
+            List<BaseValue> parameters = new List<BaseValue>();
+            foreach (var parameter in functionCallNode.Parameters)
+            {
+                var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter, Logger);
+                parameters.AddRange(parameterInterpreter.VisitNode());
+            }
+            StandardLibraryFactory.GetFunction((string)function.functionDeclarationNode.Identifier.Value.Value, parameters);
+        }
+
         foreach (var (parameter, value) in function.functionDeclarationNode.Parameters.Zip(functionCallNode.Parameters))
         {
             SymbolTable.Instance(Logger).SetBaseValue((string)parameter.Identifier.Value.Value, InterpreterFactory.GetInterpreter(value, Logger).VisitSingleNode());
@@ -33,7 +48,6 @@ public class FunctionCallInterpreter : BaseInterpreter
             var values = interpreter.VisitNode();
         }
 
-        
         var resultList = new List<BaseValue>();
         if (function.functionDeclarationNode.ReturnNode is not null)
         {

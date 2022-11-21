@@ -1,11 +1,1 @@
-func hello(string test) : string
-{
-    return "Hello World" + test;
-}
-
-func triple(string input): string
-{
-    return input * 3;
-}
-
-hello(triple("test"));
+print("Hello World")

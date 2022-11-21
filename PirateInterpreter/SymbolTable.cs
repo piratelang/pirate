@@ -18,6 +18,7 @@ public sealed class SymbolTable
         if (symbolTable == null)
         {
             symbolTable = new SymbolTable(logger);
+            symbolTable.FillSymbolTable();
         }
         return symbolTable;
     }
@@ -46,5 +47,11 @@ public sealed class SymbolTable
         SymbolList.Remove(name);
         Logger.Log($"Removed {name} from SymbolTable", this.GetType().Name, Common.Enum.LogType.INFO);
         return true;
+    }
+
+    private void FillSymbolTable()
+    {
+        // IO Functions, Require C# code
+        symbolTable.SetBaseValue("print", null);
     }
 }
