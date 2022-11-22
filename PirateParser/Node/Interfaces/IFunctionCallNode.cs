@@ -9,3 +9,4 @@ public interface IFunctionCallNode : INode
 
     bool IsValid();
 }
+

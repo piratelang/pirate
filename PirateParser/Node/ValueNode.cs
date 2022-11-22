@@ -14,7 +14,7 @@ public class ValueNode : IValueNode
 
     public override string ToString()
     {
-        return $"({Value.ToString()})";
+        return $"{Value.ToString()}";
     }
 
     public bool IsValid()

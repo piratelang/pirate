@@ -14,6 +14,11 @@ public class FunctionCallNode : IFunctionCallNode
         Parameters = parameters;
     }
 
+    public override string ToString()
+    {
+        return $"{Identifier.ToString()}({string.Join(", ", Parameters)})";
+    }
+
     public bool IsValid()
     {
         if (Identifier is not IValueNode)

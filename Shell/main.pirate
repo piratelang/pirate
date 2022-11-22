@@ -1,1 +1,3 @@
-IO.print(IO.read("From here:"))
+IO.print(
+    IO.read("Write here: ")
+    )

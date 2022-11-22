@@ -60,7 +60,6 @@ public class TokenRepository : ITokenRepository
 
     public TokenResult MakeIdentifier(string text, int position)
     {
-        Token token;
         var idString = string.Empty;
 
         while (Char.IsLetter(text[position]) || !Char.IsNumber(text[position]) || !Char.IsWhiteSpace(text[position]) || !Char.IsSeparator(text[position]))
@@ -72,7 +71,7 @@ public class TokenRepository : ITokenRepository
                 idString += text[position];
                 position += 1;
             }
-            
+
             if (position == text.Length) break;
             if (Char.IsNumber(text[position]) || Char.IsPunctuation(text[position]) || Char.IsWhiteSpace(text[position]) || Char.IsSeparator(text[position])) break;
         }

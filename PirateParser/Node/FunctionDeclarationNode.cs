@@ -27,6 +27,17 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         Statements = statements;
         ReturnNode = returnNode;
     }
+    
+    public override string ToString()
+    {
+        var resultString = string.Empty;
+        foreach (var node in Statements)
+        {
+            resultString += node.ToString() + '\n';
+        }
+        return $"function {Identifier.ToString()}({string.Join(", ", Parameters)}) : {ReturnType.ToString()}\n {{ \n {resultString} \n}}";
+    }
+
 
     public bool IsValid()
     {
@@ -43,6 +54,10 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
             return false;
         }
         if (Statements is not List<INode>)
+        {
+            return false;
+        }
+        if (ReturnNode is not INode || ReturnNode is null)
         {
             return false;
         }

@@ -14,6 +14,11 @@ public class ParameterDefinitionNode : IParameterDefinitionNode
         Identifier = identifier;
     }
 
+    public override string ToString()
+    {
+        return $"{TypeToken.ToString()} {Identifier.ToString()}";
+    }
+
     public bool IsValid()
     {
         if (TypeToken is not Token)
