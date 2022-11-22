@@ -67,6 +67,12 @@ public class TokenRepository : ITokenRepository
         {
             idString += text[position];
             position += 1;
+            if (text[position] == '.')
+            {
+                idString += text[position];
+                position += 1;
+            }
+            
             if (position == text.Length) break;
             if (Char.IsNumber(text[position]) || Char.IsPunctuation(text[position]) || Char.IsWhiteSpace(text[position]) || Char.IsSeparator(text[position])) break;
         }

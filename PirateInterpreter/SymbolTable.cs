@@ -51,8 +51,10 @@ public sealed class SymbolTable
 
     private void FillSymbolTable()
     {
-        // IO Functions, Require C# code
-        symbolTable.SetBaseValue("print", new FunctionValuePlaceHolder("print", Logger));
-        symbolTable.SetBaseValue("read", new FunctionValuePlaceHolder("read", Logger));
+        symbolTable.SetBaseValue("IO", new Library(
+            "IO", 
+            new List<string> { "read", "print" },
+            Logger)
+        );
     }
 }

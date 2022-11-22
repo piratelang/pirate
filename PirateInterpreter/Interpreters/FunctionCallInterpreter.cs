@@ -7,6 +7,7 @@ public class FunctionCallInterpreter : BaseInterpreter
 {
     public IFunctionCallNode functionCallNode { get; set; }
     private StandardLibraryFactory StandardLibraryFactory;
+    private List<string> LibraryList = new() { "IO" };
 
     public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, StandardLibraryFactory standardLibraryFactory) : base(logger, InterpreterFactory)
     {
@@ -21,13 +22,15 @@ public class FunctionCallInterpreter : BaseInterpreter
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{functionCallNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
 
-        var functionValue = SymbolTable.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
-        
-        if (functionValue is FunctionValuePlaceHolder)
+        var possibleLibraryName = (string)functionCallNode.Identifier.Value.Value;
+        if (LibraryList.Contains(possibleLibraryName.Split('.')[0]))
         {
-            return CallLibraryFunction(functionValue);
+            var possibleLibrary = SymbolTable.Instance(Logger).GetBaseValue(possibleLibraryName.Split('.')[0]);
+            return CallLibraryFunction(possibleLibraryName.Split('.'), possibleLibrary);
         }
 
+
+        var functionValue = SymbolTable.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
         if (functionValue is not FunctionValue) throw new TypeConversionException(functionValue.GetType(), typeof(FunctionValue));
         var function = (FunctionValue)functionValue;
 
@@ -50,15 +53,16 @@ public class FunctionCallInterpreter : BaseInterpreter
         return resultList;
     }
 
-    private List<BaseValue> CallLibraryFunction(BaseValue functionValue)
+    private List<BaseValue> CallLibraryFunction(string[] splitidentifier, BaseValue functionValue)
     {
-        var functionPlaceholder = (FunctionValuePlaceHolder)functionValue;
+        if (splitidentifier.Count() > 2) throw new InvalidOperationException("Cannot call a function in a library in a library");
+        var functionPlaceholder = (Library)functionValue;
         List<BaseValue> parameters = new List<BaseValue>();
         foreach (var parameter in functionCallNode.Parameters)
         {
             var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter, Logger);
             parameters.AddRange(parameterInterpreter.VisitNode());
         }
-        return new List<BaseValue>() { StandardLibraryFactory.GetFunction(functionPlaceholder.Name, parameters, Logger) };
+        return new List<BaseValue>() { StandardLibraryFactory.GetFunction(splitidentifier[0], splitidentifier[1], parameters, Logger) };
     }
 }

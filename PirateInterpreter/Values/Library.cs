@@ -1,11 +1,13 @@
 namespace PirateInterpreter.Values;
 
-public class FunctionValuePlaceHolder : BaseValue
+public class Library : BaseValue
 {
     public string Name { get; set; }
-    public FunctionValuePlaceHolder(string name, ILogger logger) : base(null, logger)
+    public List<string> Callables { get; set; }
+    public Library(string name, List<string> callables, ILogger logger) : base(null, logger)
     {
         Name = name;
+        Callables = callables;
         Logger.Log($"Created {this.GetType().Name}", this.GetType().Name, Common.Enum.LogType.INFO);
     }
 

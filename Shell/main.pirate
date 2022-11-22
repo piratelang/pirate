@@ -1,1 +1,1 @@
-print(read())
+IO.print(IO.read("From here:"))
