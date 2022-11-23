@@ -14,7 +14,7 @@ public class VariableValue : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        Logger.Log($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}", this.GetType().Name, LogType.INFO);
+        Logger.Log($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}", LogType.INFO);
         switch (Value.GetType())
         {
             case Type intType when Value.GetType()== typeof(int):

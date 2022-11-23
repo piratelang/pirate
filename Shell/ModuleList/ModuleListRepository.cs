@@ -28,11 +28,11 @@ public class ModuleListRepository : IModuleListRepository
 
             var lastModifiedDate = File.GetLastWriteTimeUtc(item);
 
-            _logger.Log($"Found Module {fileName}", "ModuleListRepository", LogType.INFO);
+            _logger.Log($"Found Module {fileName}", LogType.INFO);
             moduleList.Add(new Module(fileName, filePath, lastModifiedDate));
         }
         string jsonString = JsonConvert.SerializeObject(moduleList, Formatting.Indented);
-        _logger.Log($"Writing module list to \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
+        _logger.Log($"Writing module list to \"{location}/modules.json\"", LogType.INFO);
         _fileWriteHandler.WriteToFile(new FileWriteModel("modules", FileExtension.JSON, location, jsonString));
     }
 
@@ -40,7 +40,7 @@ public class ModuleListRepository : IModuleListRepository
     {
         if (!_fileReadHandler.FileExists("modules", FileExtension.JSON, location))
         {
-            _logger.Log($"Creating module list at \"{location}/modules.json\"", "ModuleListRepository", LogType.INFO);
+            _logger.Log($"Creating module list at \"{location}/modules.json\"", LogType.INFO);
             _fileWriteHandler.WriteToFile(new FileWriteModel("modules", FileExtension.JSON, location, " "));
         }
         var file = _fileReadHandler.ReadAllTextFromFile("modules", FileExtension.JSON, location).Result;

@@ -17,7 +17,7 @@ public class OperationParser : BaseParser, ITokenParser
 
         if (_tokens.Count == _index + 1)
         {
-            Logger.Log("Returning Single ValueNode", this.GetType().Name, LogType.INFO);
+            Logger.Log("Returning Single ValueNode", LogType.INFO);
             return (LeftNode, _index);
         }
 
@@ -25,7 +25,7 @@ public class OperationParser : BaseParser, ITokenParser
 
         if (OperatorNode.TokenGroup != TokenGroup.OPERATORS && OperatorNode.TokenGroup != TokenGroup.COMPARISONOPERATORS)
         {
-            Logger.Log("Returning Single ValueNode", this.GetType().Name, LogType.INFO);
+            Logger.Log("Returning Single ValueNode", LogType.INFO);
             return (LeftNode, _index);
         }
 
@@ -50,10 +50,10 @@ public class OperationParser : BaseParser, ITokenParser
         }
         if (_tokens.Count == _index + 1)
         {
-            Logger.Log("Returning Binary Operation Node", this.GetType().Name, LogType.INFO);
+            Logger.Log("Returning Binary Operation Node", LogType.INFO);
             if(node == null)
             {
-                Logger.Log("Node provided is null", this.GetType().Name, LogType.ERROR);
+                Logger.Log("Node provided is null", LogType.ERROR);
                 throw new NullReferenceException("Node provided is null");
             }
             return (node, _index);
@@ -79,10 +79,10 @@ public class OperationParser : BaseParser, ITokenParser
             }
         }
 
-        Logger.Log("Returning Comparison or Binary Operation Node", this.GetType().Name, LogType.INFO);
+        Logger.Log("Returning Comparison or Binary Operation Node", LogType.INFO);
         if(node == null)
         {
-            Logger.Log("Node provided is null", this.GetType().Name, LogType.ERROR);
+            Logger.Log("Node provided is null", LogType.ERROR);
             throw new NullReferenceException("Node provided is null");
         }
         return (node, _index);

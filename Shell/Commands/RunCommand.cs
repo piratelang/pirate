@@ -21,25 +21,25 @@ public class RunCommand : Command, ICommand, IRunCommand
     }
     public override void Run(string[] arguments)
     {
-        Logger.Log("Starting Run Command", this.GetType().Name, LogType.INFO);
+        Logger.Log("Starting Run Command", LogType.INFO);
         var fileArgument = "main";
         if (arguments.Length >= 2) { fileArgument = arguments[1]; }
         var fileName = fileArgument.Replace(".pirate", "");
 
         if (!_fileReadHandler.FileExists(fileName, FileExtension.PIRATE, "")) Error($"File \"{fileArgument}\" not provided or does not exist.");
 
-        Logger.Log("Starting build", this.GetType().Name, LogType.INFO);
+        Logger.Log("Starting build", LogType.INFO);
         BuildCommand.Run(arguments);
-        Logger.Log("Completed Build", this.GetType().Name, LogType.INFO);
+        Logger.Log("Completed Build", LogType.INFO);
 
-        Logger.Log($"Executing {fileName}.pirate\n", this.GetType().Name, LogType.INFO);
+        Logger.Log($"Executing {fileName}.pirate\n", LogType.INFO);
 
         var interpreterResult = Interpreter.StartInterpreter(fileName);
         // foreach (var item in interpreterResult)
         // {
         //     if (item == null)
         //     {
-        //         Logger.Log("Interpreter returned null", this.GetType().Name, LogType.ERROR);
+        //         Logger.Log("Interpreter returned null", LogType.ERROR);
         //         continue;
         //     }
 

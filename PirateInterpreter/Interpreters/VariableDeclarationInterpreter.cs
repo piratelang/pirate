@@ -11,12 +11,12 @@ public class VariableDeclarationInterpreter : BaseInterpreter
         if (node is not VariableDeclarationNode)throw new TypeConversionException(node.GetType(), typeof(VariableDeclarationNode));
         variableDeclarationNode = (VariableDeclarationNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
         if (variableDeclarationNode.Identifier.Value.Value is not string)
         {
             if (variableDeclarationNode.Identifier.Value.Value != null)

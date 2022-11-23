@@ -13,13 +13,13 @@ public class NewCommand : Command, ICommand, INewCommand
     }
     public override void Run(string[] arguments)
     {
-        Logger.Log("Starting New Command", this.GetType().Name, LogType.INFO);
+        Logger.Log("Starting New Command", LogType.INFO);
         var typeArgument = string.Empty;
         if (arguments.Length >= 2) { typeArgument = arguments[1]; }
 
         if (typeArgument == string.Empty)
         {
-            Logger.Log("Argument is empty", this.GetType().Name, LogType.INFO);
+            Logger.Log("Argument is empty", LogType.INFO);
             Console.WriteLine(String.Join(
                 Environment.NewLine,
                 "\nThe \"pirate new [type]\" command creates a new file from a template",
@@ -38,12 +38,12 @@ public class NewCommand : Command, ICommand, INewCommand
             };
         if (!typeOptions.Contains(typeArgument))
         {
-            Logger.Log($"Specified file \"{typeArgument}\" not able to be created", this.GetType().Name, LogType.ERROR);
+            Logger.Log($"Specified file \"{typeArgument}\" not able to be created", LogType.ERROR);
             Error($"Specified file \"{typeArgument}\" not able to be created");
             return;
         }
 
-        Logger.Log($"Creating {typeArgument} file", this.GetType().Name, LogType.INFO);
+        Logger.Log($"Creating {typeArgument} file", LogType.INFO);
         switch (typeArgument)
         {
             case "gitignore":

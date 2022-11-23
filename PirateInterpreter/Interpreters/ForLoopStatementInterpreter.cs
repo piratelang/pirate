@@ -11,11 +11,11 @@ public class ForLoopStatementInterpreter : BaseInterpreter
         if (node is not IForLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         forLoopStatementNode = (IForLoopStatementNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
     }
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
         var interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode, Logger);
         var variableValue = interpreter.VisitSingleNode();
 
@@ -34,7 +34,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
         List<BaseValue> bodyValues = new();
         for (int i = variable; i < start; i++)
         {
-            Logger.Log($"For Loop iteration: {i}", this.GetType().Name, Common.Enum.LogType.INFO);
+            Logger.Log($"For Loop iteration: {i}", Common.Enum.LogType.INFO);
             foreach (var node in forLoopStatementNode.BodyNodes)
             {
                 var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();

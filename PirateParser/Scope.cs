@@ -23,7 +23,7 @@ public class Scope
         }
         catch (Exception ex)
         {
-            Logger.Log($"Scope.AddNode() returned an error of {ex.ToString()}", this.GetType().Name, Common.Enum.LogType.ERROR);
+            Logger.Log($"Scope.AddNode() returned an error of {ex.ToString()}", Common.Enum.LogType.ERROR);
             Console.WriteLine(ex);
             return false;
         }

@@ -28,12 +28,12 @@ public class StringValue : BaseValue, IValue
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log($" <string> + <value> returned an error of: {ex.ToString()}", this.GetType().Name, Common.Enum.LogType.ERROR);
+                    Logger.Log($" <string> + <value> returned an error of: {ex.ToString()}", Common.Enum.LogType.ERROR);
                     throw ex;
                 }
 
             case TokenOperators.MINUS:
-                Logger.Log("<string> - <string> is not supported", this.GetType().Name, Common.Enum.LogType.ERROR);
+                Logger.Log("<string> - <string> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
             case TokenOperators.MULTIPLY:
@@ -48,16 +48,16 @@ public class StringValue : BaseValue, IValue
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log($" <string> * <value> returned an error of: \"{ex.ToString()}\"", this.GetType().Name, Common.Enum.LogType.ERROR);
+                    Logger.Log($" <string> * <value> returned an error of: \"{ex.ToString()}\"", Common.Enum.LogType.ERROR);
                     throw ex;
                 }
 
             case TokenOperators.DIVIDE:
-                Logger.Log("<string> / <string> is not supported", this.GetType().Name, Common.Enum.LogType.ERROR);
+                Logger.Log("<string> / <string> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
             case TokenOperators.POWER:
-                Logger.Log("<string> ^ <string> is not supported", this.GetType().Name, Common.Enum.LogType.ERROR);
+                Logger.Log("<string> ^ <string> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
         }

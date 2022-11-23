@@ -27,7 +27,7 @@ public class Interpreter : IInterpreter
         var interpreterFactory = new InterpreterFactory();
         foreach (var item in scopeList.Nodes)
         {
-            Logger.Log($"Interpreting {item.GetType().Name}", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Interpreting {item.GetType().Name}", LogType.INFO);
             var interpreter = interpreterFactory.GetInterpreter(item, Logger);
             result.AddRange(interpreter.VisitNode());
         }

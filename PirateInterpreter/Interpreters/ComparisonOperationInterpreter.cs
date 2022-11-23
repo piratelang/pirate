@@ -11,12 +11,12 @@ public class ComparisonOperationInterpreter : BaseInterpreter
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
         operationNode = (IOperationNode)node;
         
-        Logger.Log($"Created {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{operationNode.ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{operationNode.ToString()}\"", Common.Enum.LogType.INFO);
         var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left, Logger );
         var left = interpreter.VisitSingleNode();
 

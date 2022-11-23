@@ -36,11 +36,11 @@ public class ObjectSerializer : IObjectSerializer
                     }
                 }
             }
-            Logger.Log($"Serialized and written \"{FileName}\" to \"{FileName}\".bin", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Serialized and written \"{FileName}\" to \"{FileName}\".bin", LogType.INFO);
         }
         catch (Exception ex)
         {
-            Logger.Log($"Failed to Serialize {FileName}.bin. \"{ex.ToString()}\"", this.GetType().Name, LogType.ERROR);
+            Logger.Log($"Failed to Serialize {FileName}.bin. \"{ex.ToString()}\"", LogType.ERROR);
             throw;
         }
     }
@@ -54,13 +54,13 @@ public class ObjectSerializer : IObjectSerializer
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 var @object = (T)binaryFormatter.Deserialize(streamReader.BaseStream);
-                Logger.Log($"Deserialized and converted {FileName} to {FileName}.bin", this.GetType().Name, LogType.INFO);
+                Logger.Log($"Deserialized and converted {FileName} to {FileName}.bin", LogType.INFO);
                 return @object;
             }
         }
         catch (SerializationException ex)
         {
-            Logger.Log($"Failed to Deserialize {FileName}.bin. \"{((object)ex).ToString() + "\n" + ex.Source}\"", this.GetType().Name, LogType.ERROR);
+            Logger.Log($"Failed to Deserialize {FileName}.bin. \"{((object)ex).ToString() + "\n" + ex.Source}\"", LogType.ERROR);
             throw new SerializationException(((object)ex).ToString() + "\n" + ex.Source);
         }
 

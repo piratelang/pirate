@@ -11,7 +11,7 @@ public class StandardLibraryFactory
             case "IO":
                 return GetIOFunction(functionName, parameters, logger);
             default:
-                logger.Log($"No library was found for name: {libraryname}", this.GetType().Name, Common.Enum.LogType.ERROR);
+                logger.Log($"No library was found for name: {libraryname}", Common.Enum.LogType.ERROR);
                 throw new NullReferenceException("Requested element from the Standard Library does not exist.");
         }
     }

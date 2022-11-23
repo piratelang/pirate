@@ -14,7 +14,7 @@ public class Token
         TokenGroup = tokenGroup;
         TokenType = tokenType;
         Value = value;
-        // logger.Log($"Creating Token \"{ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        // logger.Log($"Creating Token \"{ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public bool Matches(object tokenType, object value=null)

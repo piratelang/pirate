@@ -10,12 +10,12 @@ public class ValueInterpreter : BaseInterpreter
         if (node is not IValueNode) throw new TypeConversionException(node.GetType(), typeof(IValueNode));
         valueNode = (IValueNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{valueNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{valueNode.ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{valueNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{valueNode.ToString()}\"", Common.Enum.LogType.INFO);
         if (valueNode.Value.Value == null) throw new ArgumentNullException($"{valueNode.Value.GetType().Name} does not contain a vaild value type.");
         switch (valueNode.Value.TokenType)
         {
