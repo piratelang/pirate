@@ -14,7 +14,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTypeKeyword("var");
 
-            Assert.Equal(TokenTypeKeyword.VAR, result);
+            Assert.Equal(TokenType.VAR, result);
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTypeKeyword("int");
 
-            Assert.Equal(TokenTypeKeyword.INT, result);
+            Assert.Equal(TokenType.INT, result);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTypeKeyword("float");
 
-            Assert.Equal(TokenTypeKeyword.FLOAT, result);
+            Assert.Equal(TokenType.FLOAT, result);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTypeKeyword("string");
 
-            Assert.Equal(TokenTypeKeyword.STRING, result);
+            Assert.Equal(TokenType.STRING, result);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTypeKeyword("char");
 
-            Assert.Equal(TokenTypeKeyword.CHAR, result);
+            Assert.Equal(TokenType.CHAR, result);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("if");
 
-            Assert.Equal(TokenControlKeyword.IF, result);
+            Assert.Equal(TokenType.IF, result);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("else");
 
-            Assert.Equal(TokenControlKeyword.ELSE, result);
+            Assert.Equal(TokenType.ELSE, result);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("for");
 
-            Assert.Equal(TokenControlKeyword.FOR, result);
+            Assert.Equal(TokenType.FOR, result);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("to");
 
-            Assert.Equal(TokenControlKeyword.TO, result);
+            Assert.Equal(TokenType.TO, result);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("foreach");
 
-            Assert.Equal(TokenControlKeyword.FOREACH, result);
+            Assert.Equal(TokenType.FOREACH, result);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("in");
 
-            Assert.Equal(TokenControlKeyword.IN, result);
+            Assert.Equal(TokenType.IN, result);
         }
 
         [Fact]
@@ -113,7 +113,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("while");
 
-            Assert.Equal(TokenControlKeyword.WHILE, result);
+            Assert.Equal(TokenType.WHILE, result);
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("func");
 
-            Assert.Equal(TokenControlKeyword.FUNC, result);
+            Assert.Equal(TokenType.FUNC, result);
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("class");
 
-            Assert.Equal(TokenControlKeyword.CLASS, result);
+            Assert.Equal(TokenType.CLASS, result);
         }
 
         [Fact]
@@ -140,7 +140,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTokenControlKeywork("new");
 
-            Assert.Equal(TokenControlKeyword.NEW, result);
+            Assert.Equal(TokenType.NEW, result);
         }
 
         [Fact]
@@ -149,7 +149,7 @@ namespace PirateLexer.Test
             var keyWordService = new KeyWordService();
             var result = keyWordService.GetTypeKeyword("void");
 
-            Assert.Equal(TokenTypeKeyword.VOID, result);
+            Assert.Equal(TokenType.VOID, result);
         }
 
 

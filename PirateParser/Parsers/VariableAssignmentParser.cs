@@ -33,9 +33,9 @@ public class VariableAssignmentParser : BaseParser
         var identifierValueNode = (IValueNode)identifierNode;
 
         var Operator = _tokens[_index += 1];
-        if (!Operator.Matches(TokenSyntax.EQUALS))
+        if (!Operator.Matches(TokenType.EQUALS))
         {
-            if (Operator.Matches(TokenSyntax.LEFTPARENTHESES))
+            if (Operator.Matches(TokenType.LEFTPARENTHESES))
             {
                 return CreateFunctionCallNode(result, identifierValueNode);
             }
@@ -56,7 +56,7 @@ public class VariableAssignmentParser : BaseParser
     private (INode node, int index) CreateFunctionCallNode((INode node, int index) result, IValueNode identifierValueNode)
     {
         var parameterNodes = new List<INode>();
-        while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTPARENTHESES))
+        while (!_tokens[_index += 1].Matches(TokenType.RIGHTPARENTHESES))
         {
             var valueParser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = valueParser.CreateNode();
@@ -64,8 +64,8 @@ public class VariableAssignmentParser : BaseParser
             _index = result.index;
             parameterNodes.Add(result.node);
 
-            if (_tokens[_index+=1].Matches(TokenSyntax.COMMA)) continue;
-            if (_tokens[_index].Matches(TokenSyntax.RIGHTPARENTHESES)) break;
+            if (_tokens[_index+=1].Matches(TokenType.COMMA)) continue;
+            if (_tokens[_index].Matches(TokenType.RIGHTPARENTHESES)) break;
         }
         return (new FunctionCallNode(identifierValueNode, parameterNodes), _index);
     }

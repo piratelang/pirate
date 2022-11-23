@@ -18,7 +18,7 @@ public class ForLoopStatementParser : BaseParser
 
         var _currentToken = _tokens[_index];
 
-        if (!_currentToken.Matches(TokenControlKeyword.FOR)) throw new ParserException("No For Statement was found");
+        if (!_currentToken.Matches(TokenType.FOR)) throw new ParserException("No For Statement was found");
         
 
         var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
@@ -29,7 +29,7 @@ public class ForLoopStatementParser : BaseParser
         VariableDeclarationNode VariableAssign = (VariableDeclarationNode)result.node;
         _index = result.index;
 
-        if (!_tokens[_index += 1].Matches(TokenControlKeyword.TO)) throw new ParserException("No To Statement was found");
+        if (!_tokens[_index += 1].Matches(TokenType.TO)) throw new ParserException("No To Statement was found");
         
 
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
@@ -40,21 +40,21 @@ public class ForLoopStatementParser : BaseParser
         var Value = (ValueNode)result.node;
         _index = result.index;
 
-        if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
         
 
         List<INode> Nodes = new List<INode>();
-        while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
+        while (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE))
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
             Nodes.Add(result.node);
             _index = result.index;
-            if (_tokens[_index+1].TokenType.Equals(TokenSyntax.SEMICOLON))
+            if (_index + 1>= _tokens.Count) break;
+            if (_tokens[_index+1].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;
             }
-            if (_index >= _tokens.Count) break;
         }
 
         node = new ForLoopStatementNode(VariableAssign, Value, Nodes);

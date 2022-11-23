@@ -11,9 +11,9 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
         
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.OPERATORS, TokenOperators.PLUS, "+"));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.PLUS, "+"));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -32,9 +32,9 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
         
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -53,7 +53,7 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
         
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -72,10 +72,10 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
         
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.EQUALS));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
 
@@ -93,12 +93,12 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
         
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.IF));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.IF));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
         
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -117,15 +117,15 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
         
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.IF));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
-        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.ELSE));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.IF));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.ELSE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
         
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -145,12 +145,12 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
         
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.WHILE));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS, "=="));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.WHILE));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS, "=="));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
         
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -169,15 +169,15 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
 
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenControlKeyword.FOR));
-        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "1"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenControlKeyword.TO));
-        tokens.Add(new Token(TokenGroup.VALUE, TokenValue.INT, "10"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.FOR));
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.EQUALS));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.TO));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "10"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
 
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -196,14 +196,14 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
 
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenControlKeyword.FUNC));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COLON));
-        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VOID));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenType.FUNC));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.COLON));
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenType.VOID));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
 
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
@@ -222,9 +222,9 @@ public class ParserTest
         var logger = A.Fake<ILogger>();
 
         var tokens = new List<Token>();
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
-        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTPARENTHESES));
 
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);

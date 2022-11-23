@@ -31,7 +31,7 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
         }
 
         var Operator = _tokens[_index += 1];
-        if (!Operator.Matches(TokenSyntax.EQUALS))
+        if (!Operator.Matches(TokenType.EQUALS))
         {
             Logger.Log("No Equals assign Operator was found", LogType.ERROR);
             throw new ParserException("No Equals assign Operator was found, following the Identifier");

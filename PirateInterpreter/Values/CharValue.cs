@@ -16,23 +16,23 @@ public class CharValue : BaseValue, IValue
 
         switch (_operator.TokenType)
         {
-            case TokenOperators.PLUS:
+            case TokenType.PLUS:
                 Logger.Log("<char> + <char> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.MINUS:
+            case TokenType.MINUS:
                 Logger.Log("<char> - <char> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.MULTIPLY:
+            case TokenType.MULTIPLY:
                 Logger.Log("<char> * <char> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.DIVIDE:
+            case TokenType.DIVIDE:
                 Logger.Log("<char> / <char> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.POWER:
+            case TokenType.POWER:
                 Logger.Log("<char> ^ <char> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 

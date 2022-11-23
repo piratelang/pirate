@@ -14,9 +14,9 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var binaryOperationNode = new BinaryOperationNode(
-                new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
-                new Token(TokenGroup.OPERATORS, TokenOperators.PLUS),
-                new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+                new Token(TokenGroup.OPERATORS, TokenType.PLUS),
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
             );
 
             // Act
@@ -36,9 +36,9 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var comparisonOperationNode = new ComparisonOperationNode(
-                new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
-                new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
-                new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+                new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS),
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
             );
 
             // Act
@@ -57,7 +57,7 @@ namespace PirateInterpreter.Test
         public void ShouldInterpretValueNode()
         {
             // Arrange
-            var valueNode = new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1));
+            var valueNode = new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1));
 
             // Act
             var logger = A.Fake<ILogger>();
@@ -76,9 +76,9 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var variableAssignNode = new VariableDeclarationNode(
-                new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.INT),
-                new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
-                new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                new Token(TokenGroup.TYPEKEYWORD, TokenType.INT),
+                new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
             );
 
             // Act
@@ -98,12 +98,12 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var variableAssignNode = new VariableDeclarationNode(
-                new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.INT),
-                new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                new Token(TokenGroup.TYPEKEYWORD, TokenType.INT),
+                new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
                 new BinaryOperationNode(
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
-                    new Token(TokenGroup.OPERATORS, TokenOperators.PLUS),
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+                    new Token(TokenGroup.OPERATORS, TokenType.PLUS),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
                 )
             );
 
@@ -124,12 +124,12 @@ namespace PirateInterpreter.Test
         {
             // Arrange
             var variableAssignNode = new VariableDeclarationNode(
-                new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
-                new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
+                new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR),
+                new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
                 new ComparisonOperationNode(
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
-                    new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+                    new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
                 )
             );
 
@@ -151,15 +151,15 @@ namespace PirateInterpreter.Test
             // Arrange
             var ifStatementNode = new IfStatementNode(
                 new ComparisonOperationNode(
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
-                    new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+                    new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
                 ),
                 new List<INode>() {
                     new VariableDeclarationNode(
-                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
-                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
-                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                        new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
                     )
                 }
             );
@@ -182,22 +182,22 @@ namespace PirateInterpreter.Test
             // Arrange
             var ifStatementNode = new IfStatementNode(
                 new ComparisonOperationNode(
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
-                    new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 2))
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+                    new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 2))
                 ),
                 new List<INode>() {
                     new VariableDeclarationNode(
-                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
-                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
-                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                        new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
                     )
                 },
                 new List<INode>() {
                     new VariableDeclarationNode(
-                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
-                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
-                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 2))
+                        new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 2))
                     )
                 }
             );
@@ -220,15 +220,15 @@ namespace PirateInterpreter.Test
         //     // Arrange
         //     var whileStatementNode = new WhileLoopStatementNode(
         //         new ComparisonOperationNode(
-        //             new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1)),
-        //             new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS),
-        //             new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+        //             new ValueNode(new Token(TokenGroup.VALUE, TokenType.INTVALUE, 1)),
+        //             new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS),
+        //             new ValueNode(new Token(TokenGroup.VALUE, TokenType.INTVALUE, 1))
         //         ),
         //         new List<INode>() {
         //             new VariableAssignNode(
-        //                 new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
-        //                 new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
-        //                 new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+        //                 new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR),
+        //                 new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
+        //                 new ValueNode(new Token(TokenGroup.VALUE, TokenType.INTVALUE, 1))
         //             )
         //         }
         //     );
@@ -248,16 +248,16 @@ namespace PirateInterpreter.Test
             // Arrange
             var forStatementNode = new ForLoopStatementNode(
                 new VariableDeclarationNode(
-                    new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
-                    new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
-                    new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 0))
+                    new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR),
+                    new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
+                    new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 0))
                 ),
-                new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 10)),
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 10)),
                 new List<INode>() {
                     new VariableDeclarationNode(
-                        new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VAR),
-                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a")),
-                        new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1))
+                        new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR),
+                        new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
+                        new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
                     )
                 }
             );

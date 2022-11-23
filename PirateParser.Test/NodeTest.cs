@@ -12,7 +12,7 @@ public class NodeTest
         var left = A.Fake<INode>();
         var right = A.Fake<INode>();
         var tokenoperator = A.Fake<Token>();
-        tokenoperator.TokenType = TokenOperators.PLUS;
+        tokenoperator.TokenType = TokenType.PLUS;
         var node = new BinaryOperationNode(left, tokenoperator, right);
 
         // Act
@@ -30,7 +30,7 @@ public class NodeTest
         var left = A.Fake<INode>();
         var right = A.Fake<INode>();
         var tokenoperator = A.Fake<Token>();
-        tokenoperator.TokenType = TokenOperators.PLUS;
+        tokenoperator.TokenType = TokenType.PLUS;
         var node = new BinaryOperationNode(left, tokenoperator, right);
         node.Left = null;
 
@@ -49,7 +49,7 @@ public class NodeTest
         var left = A.Fake<INode>();
         var right = A.Fake<INode>();
         var tokenoperator = A.Fake<Token>();
-        tokenoperator.TokenType = TokenComparisonOperators.DOUBLEEQUALS;
+        tokenoperator.TokenType = TokenType.DOUBLEEQUALS;
         var node = new ComparisonOperationNode(left, tokenoperator, right);
 
         // Act
@@ -67,7 +67,7 @@ public class NodeTest
         var left = A.Fake<INode>();
         var right = A.Fake<INode>();
         var tokenoperator = A.Fake<Token>();
-        tokenoperator.TokenType = TokenComparisonOperators.DOUBLEEQUALS;
+        tokenoperator.TokenType = TokenType.DOUBLEEQUALS;
         var node = new ComparisonOperationNode(left, tokenoperator, right);
         node.Left = null;
 
@@ -84,7 +84,7 @@ public class NodeTest
         // Arrange
         var logger = A.Fake<ILogger>();
         var token = A.Fake<Token>();
-        token.TokenType = TokenValue.INT;
+        token.TokenType = TokenType.INT;
         token.Value = 1;
         var node = new ValueNode(token);
 
@@ -101,7 +101,7 @@ public class NodeTest
         // Arrange
         var logger = A.Fake<ILogger>();
         var token = A.Fake<Token>();
-        token.TokenType = TokenValue.INT;
+        token.TokenType = TokenType.INT;
         token.Value = 1;
         var node = new ValueNode(token);
         node.Value = null;
@@ -119,7 +119,7 @@ public class NodeTest
         // Arrange
         var logger = A.Fake<ILogger>();
         var typetoken = A.Fake<Token>();
-        typetoken.TokenType = TokenTypeKeyword.INT;
+        typetoken.TokenType = TokenType.INT;
         var identifier = A.Fake<IValueNode>();
         var value = A.Fake<INode>();
 
@@ -138,7 +138,7 @@ public class NodeTest
         // Arrange
         var logger = A.Fake<ILogger>();
         var typetoken = A.Fake<Token>();
-        typetoken.TokenType = TokenTypeKeyword.INT;
+        typetoken.TokenType = TokenType.INT;
         var identifier = A.Fake<IValueNode>();
         var value = A.Fake<INode>();
 

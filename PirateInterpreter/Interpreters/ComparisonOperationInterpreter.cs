@@ -27,14 +27,14 @@ public class ComparisonOperationInterpreter : BaseInterpreter
 
         switch (operationNode.Operator.TokenType)
         {
-            case TokenComparisonOperators.DOUBLEEQUALS:
+            case TokenType.DOUBLEEQUALS:
                 value = left.Matches(right);
                 break;
-            case TokenComparisonOperators.NOTEQUALS:
+            case TokenType.NOTEQUALS:
                 var result = left.Matches(right);
                 if(result == 0) { value = 1; }
                 break;
-            case TokenComparisonOperators.GREATERTHAN:
+            case TokenType.GREATERTHAN:
                 if (left.Value is int && right.Value is int)
                 {
                     if(Convert.ToInt32(left.Value) > Convert.ToInt32(right.Value))
@@ -43,7 +43,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                     }
                 }
                 break;
-            case TokenComparisonOperators.GREATERTHANEQUALS:
+            case TokenType.GREATERTHANEQUALS:
                 if (left.Value is int && right.Value is int)
                 {
                     if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))
@@ -53,7 +53,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 }
                 break;
 
-            case TokenComparisonOperators.LESSTHAN:
+            case TokenType.LESSTHAN:
                 if (left.Value is int && right.Value is int)
                 {
                     if (Convert.ToInt32(left.Value) < Convert.ToInt32(right.Value))
@@ -62,7 +62,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                     }
                 }
                 break;
-            case TokenComparisonOperators.LESSTHANEQUALS:
+            case TokenType.LESSTHANEQUALS:
                 if (left.Value is int && right.Value is int)
                 {
                     if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))

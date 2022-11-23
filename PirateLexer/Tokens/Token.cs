@@ -6,10 +6,10 @@ namespace PirateLexer.Tokens;
 public class Token
 {
     public TokenGroup TokenGroup { get; set; }
-    public object TokenType { get; set; }
+    public TokenType TokenType { get; set; }
     public object Value { get; set; }
 
-    public Token(TokenGroup tokenGroup, object tokenType, object value = null)
+    public Token(TokenGroup tokenGroup, TokenType tokenType, object value = null)
     {
         TokenGroup = tokenGroup;
         TokenType = tokenType;

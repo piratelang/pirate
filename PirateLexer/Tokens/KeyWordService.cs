@@ -9,71 +9,71 @@ public class KeyWordService : IKeyWordService
 
     private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class", "new", "return" };
 
-    public TokenTypeKeyword GetTypeKeyword(string idString)
+    public TokenType GetTypeKeyword(string idString)
     {
         if (typeKeywords.Contains(idString))
         {
             switch (idString)
             {
                 case "var":
-                    return TokenTypeKeyword.VAR;
+                    return TokenType.VAR;
                 case "int":
-                    return TokenTypeKeyword.INT;
+                    return TokenType.INT;
                 case "float":
-                    return TokenTypeKeyword.FLOAT;
+                    return TokenType.FLOAT;
                 case "string":
-                    return TokenTypeKeyword.STRING;
+                    return TokenType.STRING;
                 case "char":
-                    return TokenTypeKeyword.CHAR;
+                    return TokenType.CHAR;
                 case "void":
-                    return TokenTypeKeyword.VOID;
+                    return TokenType.VOID;
             }
             throw new NotImplementedException($"Type keyword, {idString} has not been implemented");
         }
-        return TokenTypeKeyword.Empty;
+        return TokenType.Empty;
     }
 
-    public TokenControlKeyword GetTokenControlKeywork(string idString)
+    public TokenType GetTokenControlKeywork(string idString)
     {
         if (controlKeywords.Contains(idString))
         {
             switch (idString)
             {
                 case "if":
-                    return TokenControlKeyword.IF;
+                    return TokenType.IF;
 
                 case "else":
-                    return TokenControlKeyword.ELSE;
+                    return TokenType.ELSE;
 
                 case "for":
-                    return TokenControlKeyword.FOR;
+                    return TokenType.FOR;
 
                 case "to":
-                    return TokenControlKeyword.TO;
+                    return TokenType.TO;
 
                 case "foreach":
-                    return TokenControlKeyword.FOREACH;
+                    return TokenType.FOREACH;
 
                 case "in":
-                    return TokenControlKeyword.IN;
+                    return TokenType.IN;
 
                 case "while":
-                    return TokenControlKeyword.WHILE;
+                    return TokenType.WHILE;
 
                 case "func":
-                    return TokenControlKeyword.FUNC;
+                    return TokenType.FUNC;
 
                 case "class":
-                    return TokenControlKeyword.CLASS;
+                    return TokenType.CLASS;
 
                 case "new":
-                    return TokenControlKeyword.NEW;
+                    return TokenType.NEW;
 
                 case "return":
-                    return TokenControlKeyword.RETURN;
+                    return TokenType.RETURN;
             }
             throw new NotImplementedException($"Control keyword, {idString} has not been implemented");
         }
-        return TokenControlKeyword.Empty;
+        return TokenType.Empty;
     }
 }

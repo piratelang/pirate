@@ -27,7 +27,7 @@ public class BinaryOperationNode : IOperationNode
         {
             return false;
         }
-        if (Operator.TokenType is not TokenOperators)
+        if (Operator.TokenType is not TokenType.PLUS and not TokenType.MINUS and not TokenType.MULTIPLY and not TokenType.DIVIDE)
         {
             return false;
         }

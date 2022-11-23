@@ -23,7 +23,7 @@ public class VariableDeclarationNode : IVariableDeclarationNode
 
     public bool IsValid()
     {
-        if (TypeToken.TokenType is not TokenTypeKeyword)
+        if (TypeToken.TokenType is not TokenType.INT and not TokenType.STRING and not TokenType.CHAR and not TokenType.FLOAT)
         {
             return false;
         }

@@ -16,7 +16,7 @@ public class StringValue : BaseValue, IValue
 
         switch (_operator.TokenType)
         {
-            case TokenOperators.PLUS:
+            case TokenType.PLUS:
                 try
                 {
                     if (other.Value is not string)
@@ -32,11 +32,11 @@ public class StringValue : BaseValue, IValue
                     throw ex;
                 }
 
-            case TokenOperators.MINUS:
+            case TokenType.MINUS:
                 Logger.Log("<string> - <string> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.MULTIPLY:
+            case TokenType.MULTIPLY:
                 try
                 {
                     if (other.Value is not int)
@@ -52,11 +52,11 @@ public class StringValue : BaseValue, IValue
                     throw ex;
                 }
 
-            case TokenOperators.DIVIDE:
+            case TokenType.DIVIDE:
                 Logger.Log("<string> / <string> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.POWER:
+            case TokenType.POWER:
                 Logger.Log("<string> ^ <string> is not supported", Common.Enum.LogType.ERROR);
                 throw new NotImplementedException();
 

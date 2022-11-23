@@ -16,7 +16,7 @@ public class WhileLoopStatementParser : BaseParser
     {
         INode node;
 
-        if (!_tokens[_index].Matches(TokenControlKeyword.WHILE))
+        if (!_tokens[_index].Matches(TokenType.WHILE))
         {
             Logger.Log("No While Statement was found", LogType.ERROR);
             throw new ParserException("No While Statement was found");
@@ -33,20 +33,20 @@ public class WhileLoopStatementParser : BaseParser
         IOperationNode Operation = (IOperationNode)result.node;
         _index = result.index;
 
-        if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE))
         {
             Logger.Log("No Left Curly Brace was found", LogType.ERROR);
             throw new ParserException("No Left Curly Braces was found");
         }
 
         List<INode> Nodes = new List<INode>();
-        while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
+        while (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE))
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
             Nodes.Add(result.node);
             _index = result.index;
-            if (_tokens[_index++].TokenType.Equals(TokenSyntax.SEMICOLON))
+            if (_tokens[_index++].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;
             }

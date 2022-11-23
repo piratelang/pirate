@@ -19,15 +19,15 @@ public class ValueInterpreter : BaseInterpreter
         if (valueNode.Value.Value == null) throw new ArgumentNullException($"{valueNode.Value.GetType().Name} does not contain a vaild value type.");
         switch (valueNode.Value.TokenType)
         {
-            case TokenValue.INT:
+            case TokenType.INT:
                 return new List<BaseValue> { new IntegerValue(valueNode.Value.Value, Logger) };
-            case TokenValue.STRING:
+            case TokenType.STRING:
                 return new List<BaseValue> { new Values.StringValue(valueNode.Value.Value, Logger) };
-            case TokenValue.CHAR:
+            case TokenType.CHAR:
                 return new List<BaseValue> { new Values.CharValue(valueNode.Value.Value, Logger) };
-            case TokenValue.FLOAT:
+            case TokenType.FLOAT:
                 return new List<BaseValue> { new FloatValue(valueNode.Value.Value, Logger) };
-            case TokenSyntax.IDENTIFIER:
+            case TokenType.IDENTIFIER:
                 return new List<BaseValue> { new VariableValue((string)valueNode.Value.Value, Logger, InterpreterFactory) };
         } 
         throw new ArgumentNullException($"{valueNode.Value.GetType().Name} is not trecognized as a BaseValue type.");

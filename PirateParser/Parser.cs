@@ -36,7 +36,7 @@ public class Parser : IParser
             index++;
             if (index + 1 <= tokens.Count())
             {
-                if (tokens[index].TokenType.Equals(TokenSyntax.SEMICOLON))
+                if (tokens[index].TokenType.Equals(TokenType.SEMICOLON))
                 {
                     index++;
                 }

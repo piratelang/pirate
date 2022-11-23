@@ -16,15 +16,15 @@ public class FloatValue : BaseValue, IValue
         var otherValue = (float)other.Value;
         switch (_operator.TokenType)
         {
-            case TokenOperators.PLUS:
+            case TokenType.PLUS:
                 return new FloatValue(value + otherValue, Logger);
-            case TokenOperators.MINUS:
+            case TokenType.MINUS:
                 return new FloatValue(value - otherValue, Logger);
-            case TokenOperators.MULTIPLY:
+            case TokenType.MULTIPLY:
                 return new FloatValue(value * otherValue, Logger);
-            case TokenOperators.DIVIDE:
+            case TokenType.DIVIDE:
                 return new FloatValue(value / otherValue, Logger);
-            case TokenOperators.POWER:
+            case TokenType.POWER:
                 var doubleValue = Convert.ToDouble(Value);
                 var doubleOtherValue = Convert.ToDouble(otherValue);
                 return new FloatValue(Math.Pow(doubleValue, doubleOtherValue), Logger);
