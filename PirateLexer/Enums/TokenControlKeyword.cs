@@ -1,5 +1,6 @@
 namespace PirateLexer.Enums;
 
+[JsonConverter(typeof(StringEnumConverter))]
 public enum TokenControlKeyword
 {
     IF,

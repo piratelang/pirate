@@ -1,4 +1,6 @@
 namespace PirateLexer.Enums;
+
+[JsonConverter(typeof(StringEnumConverter))]
 public enum TokenSyntax
 {
     IDENTIFIER,

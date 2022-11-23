@@ -11,16 +11,12 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
     public List<INode> Statements { get; set; }
     public INode ReturnNode { get; set; } = default!;
 
-    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements)
+    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements, INode returnNode = default!)
     {
         Identifier = identifier;
         Parameters = parameters;
         ReturnType = returnType;
         Statements = statements;
-    }
-
-    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements, INode returnNode) : this(identifier, parameters, returnType, statements)
-    {
         ReturnNode = returnNode;
     }
     
