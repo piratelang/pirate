@@ -1,5 +1,3 @@
-var a = 0;
-while a != 2
-{
-    a = a + 1;
-}
+IO.print(
+    IO.read("Write here: ")
+    )

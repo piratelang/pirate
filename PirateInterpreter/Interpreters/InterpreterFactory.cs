@@ -1,27 +1,44 @@
+using PirateInterpreter.StandardLibrary;
+using PirateInterpreter.StandardLibrary.Interfaces;
+using PirateInterpreter.Interpreters.Interfaces;
+
 namespace PirateInterpreter.Interpreters;
 
-public class InterpreterFactory
+public class InterpreterFactory : IInterpreterFactory
 {
-    public BaseInterpreter GetInterpreter(INode node, ILogger logger)
+    private IStandardLibraryCallManager StandardLibraryFactory;
+    private ILogger Logger;
+
+    public InterpreterFactory(IStandardLibraryCallManager standardLibraryFactory, ILogger logger)
+    {
+        StandardLibraryFactory = standardLibraryFactory;
+        Logger = logger;
+    }
+
+    public BaseInterpreter GetInterpreter(INode node)
     {
         switch (node)
         {
+            case FunctionDeclarationNode:
+                return new FunctionDeclarationInterpreter(node, this, Logger);
+            case FunctionCallNode:
+                return new FunctionCallInterpreter(node, this, Logger, StandardLibraryFactory);
             case IfStatementNode:
-                return new IfStatementInterpreter(node, this, logger);
+                return new IfStatementInterpreter(node, this, Logger);
             case WhileLoopStatementNode:
-                return new WhileLoopStatementInterpreter(node, this, logger);
+                return new WhileLoopStatementInterpreter(node, this, Logger);
             case ForLoopStatementNode:
-                return new ForLoopStatementInterpreter(node, this, logger);
+                return new ForLoopStatementInterpreter(node, this, Logger);
             case VariableDeclarationNode:
-                return new VariableDeclarationInterpreter(node, this, logger);
+                return new VariableDeclarationInterpreter(node, this, Logger);
             case VariableAssignmentNode:
-                return new VariableAssignmentInterpreter(node, logger, this);
+                return new VariableAssignmentInterpreter(node, Logger, this);
             case BinaryOperationNode:
-                return new BinaryOperationInterpreter(node, this, logger);
+                return new BinaryOperationInterpreter(node, this, Logger);
             case ComparisonOperationNode:
-                return new ComparisonOperationInterpreter(node, this, logger);
+                return new ComparisonOperationInterpreter(node, this, Logger);
             case ValueNode:
-                return new ValueInterpreter(node, this, logger);
+                return new ValueInterpreter(node, this, Logger);
         }
         throw new ArgumentNullException("node", $"Factory cannot find interpreter for {node.GetType().Name}");
     }

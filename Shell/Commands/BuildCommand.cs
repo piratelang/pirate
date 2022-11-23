@@ -28,7 +28,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
     
     public override void Run(string[] arguments)
     {
-        Logger.Log("Starting Build Command", this.GetType().Name, LogType.INFO);
+        Logger.Log("Starting Build Command", LogType.INFO);
 
         // Check for files
         var foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
@@ -42,7 +42,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 
             // Starting build
             Console.WriteLine($"Building {file}\n");
-            Logger.Log($"Building {file}", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Building {file}", LogType.INFO);
 
             var fileName = file.Replace(".pirate", "").Replace("./", "");
             
@@ -50,16 +50,16 @@ public class BuildCommand : Command, ICommand, IBuildCommand
             if (text == null) Error($"{fileName} contains no text");
 
             // Running Lexer
-            Logger.Log($"Lexing {file}\n", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Lexing {file}\n", LogType.INFO);
             var tokens = _lexer.MakeTokens(text, "test");
             if (tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file {fileName}.");
 
             // Running Parser
-            Logger.Log($"Parsing {file}\n", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Parsing {file}\n", LogType.INFO);
             var parseResult = _parser.StartParse(tokens, fileName);
             if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
         }
-        Logger.Log($"Updating ModuleList\n", this.GetType().Name, LogType.INFO);
+        Logger.Log($"Updating ModuleList\n", LogType.INFO);
         _moduleListRepository.SetList(foundFiles, Location);
     }
     
@@ -88,7 +88,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
                 foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
             )
             {
-                Logger.Log($"{foundModule.moduleName} was not modified since last build", this.GetType().Name, LogType.INFO);
+                Logger.Log($"{foundModule.moduleName} was not modified since last build", LogType.INFO);
                 return true;
             }
         }

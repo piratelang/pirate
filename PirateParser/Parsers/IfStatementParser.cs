@@ -20,7 +20,7 @@ public class IfStatementParser : BaseParser
 
         if (!_currentToken.Matches(TokenControlKeyword.IF))
         {
-            Logger.Log("No If Statement was found", this.GetType().Name, LogType.ERROR);
+            Logger.Log("No If Statement was found", LogType.ERROR);
             throw new ParserException("No If Statement was found");
         }
 
@@ -28,7 +28,7 @@ public class IfStatementParser : BaseParser
         var result = parser.CreateNode();
         if (result.node is not IOperationNode)
         {
-            Logger.Log("If Statement does not contain a valid operation", this.GetType().Name, LogType.ERROR);
+            Logger.Log("If Statement does not contain a valid operation", LogType.ERROR);
             throw new ParserException("If Statement does not contain a valid operation");
         }
 
@@ -37,7 +37,7 @@ public class IfStatementParser : BaseParser
 
         if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
         {
-            Logger.Log("No Left Curly Brace was found", this.GetType().Name, LogType.ERROR);
+            Logger.Log("No Left Curly Brace was found", LogType.ERROR);
             throw new ParserException("No Left Curly Braces was found");
         }
 
@@ -68,7 +68,7 @@ public class IfStatementParser : BaseParser
 
         if (!_tokens[_index += 2].Matches(TokenSyntax.LEFTCURLYBRACE))
         {
-            Logger.Log("No Left Curly Brace was found", this.GetType().Name, LogType.ERROR);
+            Logger.Log("No Left Curly Brace was found", LogType.ERROR);
             throw new ParserException("No Left Curly Braces was found");
         }
 

@@ -6,7 +6,7 @@ namespace PirateLexer;
 
 public class Lexer : ILexer
 {
-    private static Lexer? lexer;
+    private static Lexer lexer;
     private readonly ITokenRepository _tokenRepository;
 
     public ILogger Logger { get; set; }
@@ -19,7 +19,7 @@ public class Lexer : ILexer
     {
         Logger = logger;
         _tokenRepository = tokenRepository;
-        logger.Log("Created Lexer", this.GetType().Name, LogType.INFO);
+        logger.Log("Created Lexer", LogType.INFO);
     }
 
     public List<Token> MakeTokens(string Text, string FileName)
@@ -51,7 +51,7 @@ public class Lexer : ILexer
                 var tokenResult = _tokenRepository.MakeNumber(text, position);
                 tokens.Add(tokenResult.Token);
                 position = tokenResult.Position;
-                Logger.Log($"Creating Token \"{tokenResult.Token.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+                Logger.Log($"Creating Token \"{tokenResult.Token.ToString()}\"", Common.Enum.LogType.INFO);
                 continue;
             }
             if (Char.IsLetter(text[position]))

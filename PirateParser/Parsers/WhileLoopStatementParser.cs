@@ -18,7 +18,7 @@ public class WhileLoopStatementParser : BaseParser
 
         if (!_tokens[_index].Matches(TokenControlKeyword.WHILE))
         {
-            Logger.Log("No While Statement was found", this.GetType().Name, LogType.ERROR);
+            Logger.Log("No While Statement was found", LogType.ERROR);
             throw new ParserException("No While Statement was found");
         }
 
@@ -26,7 +26,7 @@ public class WhileLoopStatementParser : BaseParser
         var result = parser.CreateNode();
         if (result.node is not IOperationNode)
         {
-            Logger.Log("While Statement does not contain a valid operation", this.GetType().Name, LogType.ERROR);
+            Logger.Log("While Statement does not contain a valid operation", LogType.ERROR);
             throw new ParserException("While Statement does not contain a valid operation");
         }
 
@@ -35,7 +35,7 @@ public class WhileLoopStatementParser : BaseParser
 
         if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
         {
-            Logger.Log("No Left Curly Brace was found", this.GetType().Name, LogType.ERROR);
+            Logger.Log("No Left Curly Brace was found", LogType.ERROR);
             throw new ParserException("No Left Curly Braces was found");
         }
 

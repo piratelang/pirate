@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using PirateInterpreter.Interpreters;
+using PirateInterpreter.StandardLibrary;
 using PirateInterpreter.Values;
 using PirateParser.Node;
 using PirateParser.Node.Interfaces;
@@ -19,12 +20,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new BinaryOperationInterpreter(binaryOperationNode, new InterpreterFactory() ,A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new BinaryOperationInterpreter(binaryOperationNode, interpreterFactory, logger);
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Integer>(result[0]);
+            Assert.IsType<Values.IntegerValue>(result[0]);
             Assert.Equal(2, result[0].Value);
         }
 
@@ -39,12 +42,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new ComparisonOperationInterpreter(comparisonOperationNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new ComparisonOperationInterpreter(comparisonOperationNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Boolean>(result[0]);
+            Assert.IsType<Values.BooleanValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -55,12 +60,14 @@ namespace PirateInterpreter.Test
             var valueNode = new ValueNode(new Token(TokenGroup.VALUE, TokenValue.INT, 1));
 
             // Act
-            var interpreter = new ValueInterpreter(valueNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new ValueInterpreter(valueNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Integer>(result[0]);
+            Assert.IsType<Values.IntegerValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -75,12 +82,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -99,12 +108,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(2, result[0].Value);
         }
 
@@ -123,12 +134,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -152,12 +165,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new IfStatementInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new IfStatementInterpreter(ifStatementNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
 
@@ -188,12 +203,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new IfStatementInterpreter(ifStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new IfStatementInterpreter(ifStatementNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(2, result[0].Value);
         }
 
@@ -217,7 +234,7 @@ namespace PirateInterpreter.Test
         //     );
 
         //     // Act
-        //     var interpreter = new WhileLoopStatementNodeInterpreter(whileStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+        //     var interpreter = new WhileLoopStatementNodeInterpreter(whileStatementNode, interpreterFactory, A.Fake<ILogger>());
         //     var result = interpreter.VisitNode();
 
         //     // Assert
@@ -246,12 +263,14 @@ namespace PirateInterpreter.Test
             );
 
             // Act
-            var interpreter = new ForLoopStatementInterpreter(forStatementNode, new InterpreterFactory(), A.Fake<ILogger>());
+            var logger = A.Fake<ILogger>();
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+            var interpreter = new ForLoopStatementInterpreter(forStatementNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
             // Assert
             Assert.IsType<List<BaseValue>>(result);
-            Assert.IsType<Values.Variable>(result[0]);
+            Assert.IsType<Values.VariableValue>(result[0]);
             Assert.Equal(1, result[0].Value);
         }
     }

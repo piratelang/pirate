@@ -1,33 +1,30 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell", "Shell\Shell.csproj", "{12B19978-5BBE-43F9-B73F-941AE86CDE6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell", "Shell\Shell.csproj", "{12B19978-5BBE-43F9-B73F-941AE86CDE6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Test", "Common.Test\Common.Test.csproj", "{F07A2F50-E7E9-440D-8077-E3C2F425E129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Test", "Common.Test\Common.Test.csproj", "{F07A2F50-E7E9-440D-8077-E3C2F425E129}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer", "PirateLexer\Lexer.csproj", "{8D39609C-C369-405C-A762-6FC9DFB8FE5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer", "PirateLexer\Lexer.csproj", "{8D39609C-C369-405C-A762-6FC9DFB8FE5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser", "PirateParser\Parser.csproj", "{86E58DCE-0009-4F02-AA90-928DE16188DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser", "PirateParser\Parser.csproj", "{86E58DCE-0009-4F02-AA90-928DE16188DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "PirateInterpreter\Interpreter.csproj", "{27D6C87E-8763-4108-B57D-ED6702377A74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interpreter", "PirateInterpreter\Interpreter.csproj", "{27D6C87E-8763-4108-B57D-ED6702377A74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter.Test", "PirateInterpreter.Test\Interpreter.Test.csproj", "{5B9BAF88-8564-4596-A976-020DF568C991}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interpreter.Test", "PirateInterpreter.Test\Interpreter.Test.csproj", "{5B9BAF88-8564-4596-A976-020DF568C991}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lexer.Test", "PirateLexer.Test\Lexer.Test.csproj", "{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer.Test", "PirateLexer.Test\Lexer.Test.csproj", "{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser.Test", "PirateParser.Test\Parser.Test.csproj", "{100016EC-FF10-4763-864C-265ABC3291FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser.Test", "PirateParser.Test\Parser.Test.csproj", "{100016EC-FF10-4763-864C-265ABC3291FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{12B19978-5BBE-43F9-B73F-941AE86CDE6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -66,5 +63,11 @@ Global
 		{100016EC-FF10-4763-864C-265ABC3291FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{100016EC-FF10-4763-864C-265ABC3291FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{100016EC-FF10-4763-864C-265ABC3291FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {279A73C5-70E8-4B6D-B235-3467F0CC98A9}
 	EndGlobalSection
 EndGlobal

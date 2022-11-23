@@ -188,4 +188,51 @@ public class ParserTest
         // Assert
         Assert.IsType<ForLoopStatementNode>(result.node);
     }
+
+    [Fact]
+    public void ShouldReturnFunctionDeclarationNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenControlKeyword.FUNC));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.COLON));
+        tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenTypeKeyword.VOID));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTCURLYBRACE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTCURLYBRACE));
+
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<FunctionDeclarationNode>(result.node);
+    }
+
+    [Fact]
+    public void ShouldReturnFunctionCallNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.LEFTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenSyntax.RIGHTPARENTHESES));
+
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<FunctionCallNode>(result.node);
+    }
 }

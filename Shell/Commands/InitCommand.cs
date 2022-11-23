@@ -12,11 +12,11 @@ public class InitCommand : Command, ICommand, IInitCommand
 
     public override void Run(string[] arguments)
     {
-        Logger.Log("Starting Init Command", this.GetType().Name, LogType.INFO);
+        Logger.Log("Starting Init Command", LogType.INFO);
         var nameArgument = "main";
         if (arguments.Length == 2) { nameArgument = arguments[1]; }
 
-        Logger.Log($"Creating {nameArgument} file", this.GetType().Name, LogType.INFO);
+        Logger.Log($"Creating {nameArgument} file", LogType.INFO);
         var fileName = nameArgument.Replace(".pirate", "");
 
         var text = String.Join(
@@ -28,7 +28,7 @@ public class InitCommand : Command, ICommand, IInitCommand
         );
         _fileWriteHandler.WriteToFile(new FileWriteModel(fileName, FileExtension.PIRATE, "", text));
 
-        Logger.Log($"Created {nameArgument} file", this.GetType().Name, LogType.INFO);
+        Logger.Log($"Created {nameArgument} file", LogType.INFO);
         Console.WriteLine($"\nCreated {fileName}.pirate");
     }
 
