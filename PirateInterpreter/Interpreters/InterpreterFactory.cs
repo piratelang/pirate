@@ -6,10 +6,10 @@ namespace PirateInterpreter.Interpreters;
 
 public class InterpreterFactory : IInterpreterFactory
 {
-    private IStandardLibraryFactory StandardLibraryFactory;
+    private IStandardLibraryCallManager StandardLibraryFactory;
     private ILogger Logger;
 
-    public InterpreterFactory(IStandardLibraryFactory standardLibraryFactory, ILogger logger)
+    public InterpreterFactory(IStandardLibraryCallManager standardLibraryFactory, ILogger logger)
     {
         StandardLibraryFactory = standardLibraryFactory;
         Logger = logger;
@@ -22,7 +22,7 @@ public class InterpreterFactory : IInterpreterFactory
             case FunctionDeclarationNode:
                 return new FunctionDeclarationInterpreter(node, this, Logger);
             case FunctionCallNode:
-                return new FunctionCallInterpreter(node, this, Logger, new StandardLibraryFactory());
+                return new FunctionCallInterpreter(node, this, Logger, StandardLibraryFactory);
             case IfStatementNode:
                 return new IfStatementInterpreter(node, this, Logger);
             case WhileLoopStatementNode:

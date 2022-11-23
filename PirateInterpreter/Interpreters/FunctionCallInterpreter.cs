@@ -1,4 +1,5 @@
 using PirateInterpreter.StandardLibrary;
+using PirateInterpreter.StandardLibrary.Interfaces;
 using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
@@ -7,10 +8,10 @@ public class FunctionCallInterpreter : BaseInterpreter
 {
     public IFunctionCallNode functionCallNode { get; set; }
 
-    private StandardLibraryFactory StandardLibraryFactory;
+    private IStandardLibraryCallManager StandardLibraryFactory;
     private List<string> LibraryList = new() { "IO" };
 
-    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, StandardLibraryFactory standardLibraryFactory) : base(logger, InterpreterFactory)
+    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryCallManager standardLibraryFactory) : base(logger, InterpreterFactory)
     {
         if (node is not IFunctionCallNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionCallNode));
         functionCallNode = (IFunctionCallNode)node;
@@ -39,23 +40,23 @@ public class FunctionCallInterpreter : BaseInterpreter
         if (foundFunctionValue is not FunctionValue) throw new TypeConversionException(foundFunctionValue.GetType(), typeof(FunctionValue));
         var foundFunction = (FunctionValue)foundFunctionValue;
 
-        foreach (var (parameter, value) in foundFunction.functionDeclarationNode.Parameters.Zip(functionCallNode.Parameters))
+        foreach (var (parameter, value) in foundFunction.FunctionDeclarationNode.Parameters.Zip(functionCallNode.Parameters))
         {
             var parameterName = (string)parameter.Identifier.Value.Value;
             var parameterValue = InterpreterFactory.GetInterpreter(value).VisitSingleNode();
             SymbolTable.Instance(Logger).SetBaseValue(parameterName, parameterValue);
         }
 
-        foreach (var node in foundFunction.functionDeclarationNode.Statements)
+        foreach (var node in foundFunction.FunctionDeclarationNode.Statements)
         {
             var interpreter = InterpreterFactory.GetInterpreter(node);
             interpreter.VisitNode();
         }
 
         var resultList = new List<BaseValue>();
-        if (foundFunction.functionDeclarationNode.ReturnNode is not null)
+        if (foundFunction.FunctionDeclarationNode.ReturnNode is not null)
         {
-            var result = InterpreterFactory.GetInterpreter(foundFunction.functionDeclarationNode.ReturnNode).VisitSingleNode();
+            var result = InterpreterFactory.GetInterpreter(foundFunction.FunctionDeclarationNode.ReturnNode).VisitSingleNode();
             resultList.Add(result);
         }
         return resultList;
@@ -72,6 +73,6 @@ public class FunctionCallInterpreter : BaseInterpreter
             var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter);
             parameters.AddRange(parameterInterpreter.VisitNode());
         }
-        return new List<BaseValue>() { StandardLibraryFactory.CallFunction(splitidentifier[0], splitidentifier[1], parameters, Logger) };
+        return new List<BaseValue>() { StandardLibraryFactory.CallFunction(splitidentifier[0], splitidentifier[1], parameters) };
     }
 }

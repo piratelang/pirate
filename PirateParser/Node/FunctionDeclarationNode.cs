@@ -19,12 +19,8 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         Statements = statements;
     }
 
-    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements, INode returnNode)
+    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements, INode returnNode) : this(identifier, parameters, returnType, statements)
     {
-        Identifier = identifier;
-        Parameters = parameters;
-        ReturnType = returnType;
-        Statements = statements;
         ReturnNode = returnNode;
     }
     

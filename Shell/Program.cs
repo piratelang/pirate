@@ -48,7 +48,7 @@ builder.AddTransient<IParser, Parser>();
 //Interpreter
 builder.AddTransient<IInterpreter, Interpreter>();
 builder.AddTransient<IInterpreterFactory, InterpreterFactory>();
-builder.AddTransient<IStandardLibraryFactory, StandardLibraryFactory>();
+builder.AddTransient<IStandardLibraryCallManager, StandardLibraryCallManager>();
 
 var provider = builder.BuildServiceProvider();
 var app = provider.GetRequiredService<Application>();

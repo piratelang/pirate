@@ -21,7 +21,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new BinaryOperationInterpreter(binaryOperationNode, interpreterFactory, logger);
             var result = interpreter.VisitNode();
 
@@ -43,7 +43,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new ComparisonOperationInterpreter(comparisonOperationNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
@@ -61,7 +61,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new ValueInterpreter(valueNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
@@ -83,7 +83,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
@@ -109,7 +109,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
@@ -135,7 +135,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
@@ -166,7 +166,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new IfStatementInterpreter(ifStatementNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
@@ -204,7 +204,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new IfStatementInterpreter(ifStatementNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 
@@ -264,7 +264,7 @@ namespace PirateInterpreter.Test
 
             // Act
             var logger = A.Fake<ILogger>();
-            var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), logger);
+            var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
             var interpreter = new ForLoopStatementInterpreter(forStatementNode, interpreterFactory, A.Fake<ILogger>());
             var result = interpreter.VisitNode();
 

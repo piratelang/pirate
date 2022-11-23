@@ -24,7 +24,7 @@ while (true)
         Console.WriteLine("stuk");
         return;
     }
-    var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), Logger);
+    var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(Logger), Logger);
     var interpreter = new Interpreter(objectSerializer, Logger, interpreterFactory);
     var Result = interpreter.StartInterpreter("Test");
 

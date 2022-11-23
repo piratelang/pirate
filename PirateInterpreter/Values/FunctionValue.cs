@@ -2,17 +2,17 @@ namespace PirateInterpreter.Values;
 
 public class FunctionValue : BaseValue
 {
-    public IFunctionDeclarationNode functionDeclarationNode { get; set; }
+    public IFunctionDeclarationNode FunctionDeclarationNode { get; set; }
 
-    public FunctionValue(IFunctionDeclarationNode FunctionDeclarationNode, ILogger logger) : base(null, logger)
+    public FunctionValue(IFunctionDeclarationNode functionDeclarationNode, ILogger logger) : base(null, logger)
     {
-        functionDeclarationNode = FunctionDeclarationNode;
-        Logger.Log($"Created {this.GetType().Name} : \"{functionDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
+        FunctionDeclarationNode = functionDeclarationNode;
+        Logger.Log($"Created {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public override string ToString()
     {
-        return functionDeclarationNode.ToString();
+        return FunctionDeclarationNode.ToString();
     }
 
     public override BaseValue OperatedBy(Token Operator, BaseValue Value)
