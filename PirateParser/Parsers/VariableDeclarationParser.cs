@@ -26,14 +26,14 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
 
         if (IdentifierNode is not ValueNode)
         {
-            Logger.Log("Variable Identifier is not a single value", this.GetType().Name, LogType.ERROR);
+            Logger.Log("Variable Identifier is not a single value", LogType.ERROR);
             throw new ParserException("Variable Identifier is not a single value");
         }
 
         var Operator = _tokens[_index += 1];
         if (!Operator.Matches(TokenSyntax.EQUALS))
         {
-            Logger.Log("No Equals assign Operator was found", this.GetType().Name, LogType.ERROR);
+            Logger.Log("No Equals assign Operator was found", LogType.ERROR);
             throw new ParserException("No Equals assign Operator was found, following the Identifier");
         }
 

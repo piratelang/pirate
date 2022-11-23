@@ -11,16 +11,16 @@ public class ComparisonOperationInterpreter : BaseInterpreter
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
         operationNode = (IOperationNode)node;
         
-        Logger.Log($"Created {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{operationNode.ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{operationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
-        var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left, Logger );
+        Logger.Log($"Visiting {this.GetType().Name} : \"{operationNode.ToString()}\"", Common.Enum.LogType.INFO);
+        var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left);
         var left = interpreter.VisitSingleNode();
 
-        interpreter = InterpreterFactory.GetInterpreter(operationNode.Right, Logger);
+        interpreter = InterpreterFactory.GetInterpreter(operationNode.Right);
         var right = interpreter.VisitSingleNode();
 
         var value = 0;
@@ -73,6 +73,6 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 break;
         }
 
-        return new List<BaseValue> { new Values.Boolean(value, Logger) };
+        return new List<BaseValue> { new Values.BooleanValue(value, Logger) };
     }
 }

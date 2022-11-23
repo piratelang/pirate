@@ -24,7 +24,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
     public override void Run(string[] arguments)
     {
         Console.WriteLine($"PirateLang version {EnvironmentVariables.GetVariable("version")}");
-        Logger.Log("Starting Shell Command", this.GetType().Name, LogType.INFO);
+        Logger.Log("Starting Shell Command", LogType.INFO);
         while (true)
         {
             try
@@ -50,7 +50,19 @@ public class ShellCommand : Command, ICommand, IShellCommand
                 var interpreterResult = Interpreter.StartInterpreter("repl");
                 foreach (var item in interpreterResult)
                 {
-                    Console.WriteLine(item.Value);
+                    if (item == null)
+                    {
+                        Logger.Log("Interpreter returned null", LogType.ERROR);
+                        continue;
+                    }
+                    if (item.Value is not null)
+                    {
+                        Console.WriteLine(item.Value.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("item is null");
+                    }
                 }
             }
             catch (Exception ex)

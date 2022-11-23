@@ -8,6 +8,8 @@ public class ParserFactory: IParserFactory
     {
         switch(tokens[index].TokenType)
         {
+            case TokenControlKeyword.FUNC:
+                return new FunctionDeclartionParser(tokens, index, logger);
             case TokenControlKeyword.IF:
                 return new IfStatementParser(tokens, index, logger, this);
             case TokenControlKeyword.WHILE:

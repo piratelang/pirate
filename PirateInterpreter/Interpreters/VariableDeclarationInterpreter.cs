@@ -11,12 +11,12 @@ public class VariableDeclarationInterpreter : BaseInterpreter
         if (node is not VariableDeclarationNode)throw new TypeConversionException(node.GetType(), typeof(VariableDeclarationNode));
         variableDeclarationNode = (VariableDeclarationNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", this.GetType().Name, Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
         if (variableDeclarationNode.Identifier.Value.Value is not string)
         {
             if (variableDeclarationNode.Identifier.Value.Value != null)
@@ -27,12 +27,12 @@ public class VariableDeclarationInterpreter : BaseInterpreter
         }
 
         var Identifier = (string)variableDeclarationNode.Identifier.Value.Value;
-        var interpreter = InterpreterFactory.GetInterpreter(variableDeclarationNode.Value, Logger);
+        var interpreter = InterpreterFactory.GetInterpreter(variableDeclarationNode.Value);
         var result = interpreter.VisitSingleNode();
 
         SymbolTable.Instance(Logger).SetBaseValue(Identifier, result);
 
-        var variable = new Variable(Identifier, Logger, InterpreterFactory);
+        var variable = new VariableValue(Identifier, Logger, InterpreterFactory);
         return new List<BaseValue> { variable };
     }
 }
