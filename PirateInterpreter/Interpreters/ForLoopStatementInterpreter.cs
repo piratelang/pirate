@@ -16,10 +16,10 @@ public class ForLoopStatementInterpreter : BaseInterpreter
     public override List<BaseValue> VisitNode()
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
-        var interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode, Logger);
+        var interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode);
         var variableValue = interpreter.VisitSingleNode();
 
-        interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.ValueNode, Logger);
+        interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.ValueNode);
         var startValue = interpreter.VisitSingleNode();
 
         if (variableValue is not Values.VariableValue) throw new TypeConversionException(variableValue.GetType(), typeof(Values.VariableValue));
@@ -37,7 +37,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
             Logger.Log($"For Loop iteration: {i}", Common.Enum.LogType.INFO);
             foreach (var node in forLoopStatementNode.BodyNodes)
             {
-                var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
+                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
                 if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
                 bodyValues.Add(bodyValue[0]);
             }

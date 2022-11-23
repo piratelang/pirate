@@ -2,17 +2,22 @@ using PirateInterpreter.Interpreters;
 using PirateInterpreter.Values;
 using PirateInterpreter.Interfaces;
 using PirateParser;
+using PirateInterpreter.Interpreters.Interfaces;
 
 namespace PirateInterpreter;
 
 public class Interpreter : IInterpreter
 {
     private IObjectSerializer ObjectSerializer;
+    private IInterpreterFactory InterpreterFactory;
+
     public ILogger Logger { get; set; }
-    public Interpreter(IObjectSerializer objectSerializer, ILogger logger)
+
+    public Interpreter(IObjectSerializer objectSerializer, ILogger logger, IInterpreterFactory interpreterFactory)
     {
         ObjectSerializer = objectSerializer;
         Logger = logger;
+        InterpreterFactory = interpreterFactory;
     }
 
     public List<BaseValue> StartInterpreter(string filename)
@@ -24,11 +29,10 @@ public class Interpreter : IInterpreter
         var scopeList = ObjectSerializer.Deserialize<Scope>(filename + ".pirate");
 
         List<BaseValue> result = new();
-        var interpreterFactory = new InterpreterFactory();
         foreach (var item in scopeList.Nodes)
         {
             Logger.Log($"Interpreting {item.GetType().Name}", LogType.INFO);
-            var interpreter = interpreterFactory.GetInterpreter(item, Logger);
+            var interpreter = InterpreterFactory.GetInterpreter(item);
             result.AddRange(interpreter.VisitNode());
         }
         return result;

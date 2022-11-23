@@ -20,7 +20,7 @@ public class IfStatementInterpreter : BaseInterpreter
     public override List<BaseValue> VisitNode()
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
-        var interpreter = InterpreterFactory.GetInterpreter(ifStatementNode.ConditionNode, Logger);
+        var interpreter = InterpreterFactory.GetInterpreter(ifStatementNode.ConditionNode);
         var conditionValue = interpreter.VisitSingleNode();
 
         if (conditionValue is not Values.BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.BooleanValue));
@@ -31,7 +31,7 @@ public class IfStatementInterpreter : BaseInterpreter
         {
             foreach (var node in ifStatementNode.BodyNodes)
             {
-                var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
+                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
                 if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
                 bodyValues.Add(bodyValue[0]);
             }
@@ -41,7 +41,7 @@ public class IfStatementInterpreter : BaseInterpreter
         {
             foreach (var node in ifStatementNode.ElseNode)
             {
-                var bodyValue = InterpreterFactory.GetInterpreter(node, Logger).VisitNode();
+                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
                 if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
                 bodyValues.Add(bodyValue[0]);
             }

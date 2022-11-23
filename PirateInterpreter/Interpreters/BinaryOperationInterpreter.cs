@@ -17,10 +17,10 @@ public class BinaryOperationInterpreter : BaseInterpreter
     public override List<BaseValue> VisitNode()
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{_operationNode.ToString()}\"", Common.Enum.LogType.INFO);
-        var interpreter = InterpreterFactory.GetInterpreter(_operationNode.Left, Logger);
+        var interpreter = InterpreterFactory.GetInterpreter(_operationNode.Left);
         var left = interpreter.VisitSingleNode();
 
-        interpreter = InterpreterFactory.GetInterpreter(_operationNode.Right, Logger);
+        interpreter = InterpreterFactory.GetInterpreter(_operationNode.Right);
         var Right = interpreter.VisitSingleNode();
         
         return new List<BaseValue> {left.OperatedBy(_operationNode.Operator, Right)};

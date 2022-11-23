@@ -1,5 +1,7 @@
 ﻿using Common;
 using PirateInterpreter;
+using PirateInterpreter.Interpreters;
+using PirateInterpreter.StandardLibrary;
 using PirateLexer;
 using PirateParser;
 
@@ -22,8 +24,8 @@ while (true)
         Console.WriteLine("stuk");
         return;
     }
-
-    var interpreter = new Interpreter(objectSerializer, Logger);
+    var interpreterFactory = new InterpreterFactory(new StandardLibraryFactory(), Logger);
+    var interpreter = new Interpreter(objectSerializer, Logger, interpreterFactory);
     var Result = interpreter.StartInterpreter("Test");
 
     if (Result == null)

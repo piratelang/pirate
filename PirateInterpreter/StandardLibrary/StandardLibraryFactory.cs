@@ -1,22 +1,23 @@
 using PirateInterpreter.Values;
+using PirateInterpreter.StandardLibrary.Interfaces;
 
 namespace PirateInterpreter.StandardLibrary;
 
-public class StandardLibraryFactory
+public class StandardLibraryFactory : IStandardLibraryFactory
 {
-    public BaseValue GetFunction(string libraryname, string functionName, List<BaseValue> parameters, ILogger logger)
+    public BaseValue CallFunction(string libraryname, string functionName, List<BaseValue> parameters, ILogger logger)
     {
         switch (libraryname)
         {
             case "IO":
-                return GetIOFunction(functionName, parameters, logger);
+                return CallIOFunction(functionName, parameters, logger);
             default:
                 logger.Log($"No library was found for name: {libraryname}", Common.Enum.LogType.ERROR);
                 throw new NullReferenceException("Requested element from the Standard Library does not exist.");
         }
     }
 
-    private BaseValue GetIOFunction(string functionName, List<BaseValue> parameters, ILogger logger)
+    private BaseValue CallIOFunction(string functionName, List<BaseValue> parameters, ILogger logger)
     {
         switch (functionName)
         {
