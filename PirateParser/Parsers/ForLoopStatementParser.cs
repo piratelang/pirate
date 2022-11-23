@@ -18,45 +18,30 @@ public class ForLoopStatementParser : BaseParser
 
         var _currentToken = _tokens[_index];
 
-        if (!_currentToken.Matches(TokenControlKeyword.FOR))
-        {
-            Logger.Log("No For Statement was found", this.GetType().Name, LogType.ERROR);
-            throw new ParserException("No For Statement was found");
-        }
+        if (!_currentToken.Matches(TokenControlKeyword.FOR)) throw new ParserException("No For Statement was found");
+        
 
         var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         var result = parser.CreateNode();
-        if (result.node is not VariableDeclarationNode)
-        {
-            Logger.Log("For Statement does not contain a valid variable assignment", this.GetType().Name, LogType.ERROR);
-            throw new ParserException("For Statement does not contain a valid variable assignment");
-        }
+        if (result.node is not VariableDeclarationNode) throw new ParserException("For Statement does not contain a valid variable assignment");
+        
 
         VariableDeclarationNode VariableAssign = (VariableDeclarationNode)result.node;
         _index = result.index;
 
-        if (!_tokens[_index += 1].Matches(TokenControlKeyword.TO))
-        {
-            Logger.Log("No To Statement was found", this.GetType().Name, LogType.ERROR);
-            throw new ParserException("No To Statement was found");
-        }
+        if (!_tokens[_index += 1].Matches(TokenControlKeyword.TO)) throw new ParserException("No To Statement was found");
+        
 
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.node is not ValueNode)
-        {
-            Logger.Log("For Statement does not contain a valid value", this.GetType().Name, LogType.ERROR);
-            throw new ParserException("For Statement does not contain a valid value");
-        }
+        if (result.node is not ValueNode) throw new ParserException("For Statement does not contain a valid value");
+        
 
         var Value = (ValueNode)result.node;
         _index = result.index;
 
-        if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
-        {
-            Logger.Log("No Left Curly Brace was found", this.GetType().Name, LogType.ERROR);
-            throw new ParserException("No Left Curly Braces was found");
-        }
+        if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+        
 
         List<INode> Nodes = new List<INode>();
         while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))

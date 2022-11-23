@@ -12,5 +12,6 @@ public enum TokenControlKeyword
     FUNC,
     CLASS,
     NEW,
+    RETURN,
     Empty
 }

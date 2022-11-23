@@ -32,6 +32,19 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
 - Small renaming improvements
 
+### ([#90](https://github.com/joerivanarkel/PirateLang/pull/90)) Functions
+- Add functions to the language
+    - New `FunctionDefinitionParser` parser and  new `FunctionCallNode`, `FunctionDefinitionNode`, `ParameterDefinitionNode` nodes
+    - Added `FunctionCallInterpreter` and `FunctionDefinitionInterpreter`
+    - Removed the automatic result printing, replaced by the new `IO.print()` function
+- Started the Standard Libraries
+    - Added a Function Call manager
+    - Created the `IOLibrary`
+- Moved `variables.json` into `/bin` folder
+    - Template created upon start
+- Update to .net 7
+- Small Logger rework
+
 ## 1.0.0
 
 ### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter

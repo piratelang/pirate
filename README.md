@@ -9,8 +9,7 @@ Pirate comes completely installed in a dotnet tool. Sinmply install the NuGet pa
 
 ## Syntax and Structure
 A simple Hello World in pirate looks like this:
-
-```nim
+```pirate
 IO.print("Hello World");
 ```
 More syntax is defined in the [Syntax.md](syntax.md) file.

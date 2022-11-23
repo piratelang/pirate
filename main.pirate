@@ -5,7 +5,7 @@ func main() : void
     int one = 1;
     var bool = true;
 
-    var bool = ("Hello" != "World");
+    var bool = "Hello" != "World";
     var list = ["Hello", "World"];
 
     var listOne = list[1];

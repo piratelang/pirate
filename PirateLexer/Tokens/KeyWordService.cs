@@ -5,9 +5,9 @@ namespace PirateLexer.Tokens;
 
 public class KeyWordService : IKeyWordService
 {
-    private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char"};
+    private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char", "void" };
 
-    private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class", "new"};
+    private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class", "new", "return" };
 
     public TokenTypeKeyword GetTypeKeyword(string idString)
     {
@@ -25,6 +25,8 @@ public class KeyWordService : IKeyWordService
                     return TokenTypeKeyword.STRING;
                 case "char":
                     return TokenTypeKeyword.CHAR;
+                case "void":
+                    return TokenTypeKeyword.VOID;
             }
             throw new NotImplementedException($"Type keyword, {idString} has not been implemented");
         }
@@ -66,6 +68,9 @@ public class KeyWordService : IKeyWordService
 
                 case "new":
                     return TokenControlKeyword.NEW;
+
+                case "return":
+                    return TokenControlKeyword.RETURN;
             }
             throw new NotImplementedException($"Control keyword, {idString} has not been implemented");
         }

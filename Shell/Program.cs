@@ -10,6 +10,10 @@ using Shell.ModuleList;
 using PirateLexer.Interfaces;
 using PirateLexer.Tokens;
 using PirateInterpreter.Interfaces;
+using PirateInterpreter.Interpreters.Interfaces;
+using PirateInterpreter.StandardLibrary.Interfaces;
+using PirateInterpreter.Interpreters;
+using PirateInterpreter.StandardLibrary;
 
 var version = "1.0.0";
 
@@ -43,6 +47,8 @@ builder.AddTransient<IParser, Parser>();
 
 //Interpreter
 builder.AddTransient<IInterpreter, Interpreter>();
+builder.AddTransient<IInterpreterFactory, InterpreterFactory>();
+builder.AddTransient<IStandardLibraryCallManager, StandardLibraryCallManager>();
 
 var provider = builder.BuildServiceProvider();
 var app = provider.GetRequiredService<Application>();

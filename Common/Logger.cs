@@ -1,4 +1,5 @@
-﻿using Common.Enum;
+﻿using System.Diagnostics;
+using Common.Enum;
 using Common.FileHandlers;
 using Common.FileHandlers.Interfaces;
 using Common.Interfaces;
@@ -27,11 +28,11 @@ public class Logger : ILogger
         location = $"bin/pirate{version}/logs";
     }
 
-    public bool Log(string message, string orginFile, LogType logType)
+    public bool Log(string message, LogType logType)
     {
         var time = DateTime.Now.ToString();
         var formattedMessage = FormatMessage(message);
-        var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {orginFile}.cs: {formattedMessage}\n");
+        var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {GetCallingClassName()}.cs: {formattedMessage}\n");
 
         _fileWriteHandler.AppendToFile(new FileWriteModel(logFileName, FileExtension.LOG, location, text));
 
@@ -40,15 +41,18 @@ public class Logger : ILogger
 
     public string FormatMessage(string message)
     {
-        if (message.Contains('\n'))
-        {
-            message = message.Replace('\n', ' ');
-        }
-        if (message.Contains('\r'))
-        {
-            message = message.Replace('\r', ' ');
-        }
+        if (message.Contains('\n')) message = message.Replace('\n', ' ');
+        if (message.Contains('\r')) message = message.Replace('\r', ' ');
         
         return message;
+    }
+
+    public string GetCallingClassName()
+    {
+        var stackTrace = new StackTrace();
+        var callingClass = stackTrace.GetFrame(2).GetMethod().DeclaringType.Name;
+        if (callingClass == null) callingClass = "Unknown";
+
+        return callingClass;
     }
 }

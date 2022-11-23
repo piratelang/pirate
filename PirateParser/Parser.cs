@@ -13,7 +13,7 @@ public class Parser : IParser
     {
         Logger = logger;
         ObjectSerializer = objectSerializer;
-        logger.Log("Created Parser", this.GetType().Name, LogType.INFO);
+        logger.Log("Created Parser", LogType.INFO);
     }
     public Scope StartParse(List<Token> tokens, string fileName)
     {
@@ -23,13 +23,13 @@ public class Parser : IParser
         {
             if (tokens == null)
             {
-                Logger.Log("No Tokens Found", this.GetType().Name, LogType.ERROR);
+                Logger.Log("No Tokens Found", LogType.ERROR);
                 throw new ArgumentNullException(nameof(tokens));
             }
             var tokenParser = parserFactory.GetParser(index, tokens, Logger);
             var parseResult = tokenParser.CreateNode();
 
-            Logger.Log($"Created {parseResult.node.GetType().Name} | \"{parseResult.node.ToString()}\"", this.GetType().Name, LogType.INFO);
+            Logger.Log($"Created {parseResult.node.GetType().Name} | \"{parseResult.node.ToString()}\"", LogType.INFO);
 
             scope.AddNode(parseResult.node);
             index = parseResult.index;
@@ -43,7 +43,7 @@ public class Parser : IParser
             }
         }
 
-        Logger.Log("Finished Parsing", this.GetType().Name, LogType.INFO);
+        Logger.Log("Finished Parsing", LogType.INFO);
 
         ObjectSerializer.SerializeObject(scope, $"{fileName}.pirate");
 
