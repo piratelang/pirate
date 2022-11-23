@@ -90,7 +90,7 @@ public class ObjectSerializer : IObjectSerializer
                 var @object = (T)binaryFormatter.Deserialize(streamReader.BaseStream);
                 
                 Logger.Log($"Deserialized and converted {FileName} to {FileName}.bin", LogType.INFO);
-                var test =  DeserializeFromJSON<T>(FileName);
+                return DeserializeFromJSON<T>(FileName);
                 
                 return @object;
             }

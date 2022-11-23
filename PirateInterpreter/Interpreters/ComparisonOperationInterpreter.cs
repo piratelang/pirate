@@ -28,6 +28,8 @@ public class ComparisonOperationInterpreter : BaseInterpreter
         switch (operationNode.Operator.TokenType)
         {
             case TokenType.DOUBLEEQUALS:
+                left.Value = Convert.ToInt32(left.Value);
+                right.Value = Convert.ToInt32(right.Value);
                 value = left.Matches(right);
                 break;
             case TokenType.NOTEQUALS:
@@ -35,7 +37,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 if(result == 0) { value = 1; }
                 break;
             case TokenType.GREATERTHAN:
-                if (left.Value is int && right.Value is int)
+                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
                     if(Convert.ToInt32(left.Value) > Convert.ToInt32(right.Value))
                     {
@@ -44,7 +46,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 }
                 break;
             case TokenType.GREATERTHANEQUALS:
-                if (left.Value is int && right.Value is int)
+                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
                     if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))
                     {
@@ -54,7 +56,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 break;
 
             case TokenType.LESSTHAN:
-                if (left.Value is int && right.Value is int)
+                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
                     if (Convert.ToInt32(left.Value) < Convert.ToInt32(right.Value))
                     {
@@ -63,7 +65,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 }
                 break;
             case TokenType.LESSTHANEQUALS:
-                if (left.Value is int && right.Value is int)
+                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
                     if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))
                     {
@@ -73,6 +75,6 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 break;
         }
 
-        return new List<BaseValue> { new Values.BooleanValue(value, Logger) };
+        return new List<BaseValue> { new BooleanValue(value, Logger) };
     }
 }

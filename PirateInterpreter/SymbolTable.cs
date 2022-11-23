@@ -28,24 +28,25 @@ public sealed class SymbolTable
         var value = SymbolList.GetValueOrDefault(name);
         if (value == null) 
         {
-            Logger.Log($"No value was found for name: {name}", Common.Enum.LogType.ERROR);
+            Logger.Log($"No value was found for name: {name}", LogType.ERROR);
             throw new NullReferenceException("Requested element from the Symbol Table does not exist.");
         }
-        Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", Common.Enum.LogType.INFO);
+        Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", LogType.INFO);
         return value;
     }
 
     public bool SetBaseValue(string name, BaseValue value)
     {
         SymbolList[name] = value;
-        Logger.Log($"Added {name}: {value.ToString()} to SymbolTable", Common.Enum.LogType.INFO);
+        Logger.Log($"Added {name}: {value.ToString()} to SymbolTable", LogType.INFO);
+        Logger.Log($"SymbolTable now contains {SymbolList[name]}", LogType.INFO);
         return true;
     }
 
     public bool Remove(string name)
     {
         SymbolList.Remove(name);
-        Logger.Log($"Removed {name} from SymbolTable", Common.Enum.LogType.INFO);
+        Logger.Log($"Removed {name} from SymbolTable", LogType.INFO);
         return true;
     }
 

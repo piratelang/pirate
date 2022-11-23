@@ -18,6 +18,7 @@ public abstract class BaseInterpreter
     public BaseValue VisitSingleNode()
     {
         var node = VisitNode();
+        if (node.Count == 0) return null;
         if (node.Count > 1 && node.Count < 0) throw new Exception("Value is not a single value");
         return node[0];
     }

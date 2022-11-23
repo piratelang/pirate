@@ -6,3 +6,8 @@ for var i = 0 to 10
     {
         IO.print("a is equal to i");
     }
+    else
+    {
+        IO.print("a is not equal to i");
+    }
+}

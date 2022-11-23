@@ -20,7 +20,7 @@ public abstract class BaseValue : IValue
     {
         if (Value.GetType() != other.Value.GetType())
         {
-            Logger.Log($"Types dont match. {Value} | {other.Value}", Common.Enum.LogType.INFO);
+            Logger.Log($"Types dont match. {Value.GetType()} : {Value} | {other.Value.GetType()} : {other.Value}", Common.Enum.LogType.INFO);
             return 0;
         }
         if (!Value.Equals(other.Value))
