@@ -1,11 +1,20 @@
 <p align="center">
+    <img height="88" src=".github/owllogo.jpg" alt="Material Bread logo" style="margin-right:10px;">
     <img width="500" src=".github/logo.png" alt="Material Bread logo">
+    <br>
+    <a href="https://www.nuget.org/packages/PirateLang.CLI">
+        <img src="https://img.shields.io/nuget/v/PirateLang.CLI.svg" alt="HTML tutorial">
+    </a>
+    <a href="https://marketplace.visualstudio.com/items?itemName=joerivanarkel.piratelang">
+        <img src="https://img.shields.io/visual-studio-marketplace/v/joerivanarkel.piratelang?label=VSCode%20Extension" alt="HTML tutorial">
+    </a>
+    <a href="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml">
+        <img src="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml/badge.svg" alt="HTML tutorial">
+    </a>
+    <a href="https://github.com/piratelang/PirateLang/releases">
+        <img src="https://img.shields.io/github/v/release/joerivanarkel/piratelang" alt="HTML tutorial">
+    </a>
 </p>
-
-[![NuGet](https://img.shields.io/nuget/v/PirateLang.CLI.svg)](https://www.nuget.org/packages/PirateLang.CLI)
-[![VSCODE](https://img.shields.io/visual-studio-marketplace/v/joerivanarkel.piratelang?label=VSCode%20Extension)](https://marketplace.visualstudio.com/items?itemName=joerivanarkel.piratelang)
-[![.NET](https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml/badge.svg)](https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml)
-![release](https://img.shields.io/github/v/release/joerivanarkel/piratelang)
 
 # Pirate Programming Language
 
@@ -15,7 +24,7 @@ Pirate comes completely installed in a dotnet tool. Sinmply install the NuGet pa
 
 ## Syntax and Structure
 A simple Hello World in pirate looks like this:
-```pirate
+```nim
 IO.print("Hello World");
 ```
 More syntax is defined in the [Syntax.md](syntax.md) file.
