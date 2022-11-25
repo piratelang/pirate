@@ -8,12 +8,12 @@ public class IntegerValue : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        if (Value is not int && other.Value is not int)
+        if ((Value is not int && Value is not Int64) && (other.Value is not int && other.Value is not Int64))
         {
             throw new TypeConversionException(typeof(int));
         }
-        var value = (int)Value;
-        var otherValue = (int)other.Value;
+        var value = Int32.Parse(Value.ToString());
+        var otherValue = Int32.Parse(Value.ToString());
         switch (_operator.TokenType)
         {
             case TokenType.PLUS:

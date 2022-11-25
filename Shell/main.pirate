@@ -2,12 +2,9 @@ var a = 2;
 
 for var i = 0 to 10
 {
-    if a == i
-    {
-        IO.print("a is equal to i");
-    }
-    else
-    {
-        IO.print("a is not equal to i");
-    }
+    IO.print("a", a);
+    IO.print("i", i);
+    a = a + i;
+    IO.print("a+i", a);
+    IO.print("  ");
 }

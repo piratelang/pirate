@@ -28,8 +28,6 @@ public class ComparisonOperationInterpreter : BaseInterpreter
         switch (operationNode.Operator.TokenType)
         {
             case TokenType.DOUBLEEQUALS:
-                left.Value = Convert.ToInt32(left.Value);
-                right.Value = Convert.ToInt32(right.Value);
                 value = left.Matches(right);
                 break;
             case TokenType.NOTEQUALS:
