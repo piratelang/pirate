@@ -46,6 +46,7 @@ public class TokenRepositoryTest
         var position = 0;
         //Act
         var result = tokenRepository.MakeIdentifier(text, position);
+        
         //Assert
         Assert.Equal(4, result.Position);
         Assert.Equal(TokenGroup.SYNTAX, result.Token.TokenGroup);

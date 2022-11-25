@@ -193,68 +193,68 @@ namespace PirateInterpreter.Test
         public void ShouldOperateFloatPlusFloat()
         {
             // Arrange
-            var float1 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
-            var float2 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
+            var float1 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
+            var float2 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.PLUS);
             // Act
             var result = float1.OperatedBy(tokenOperator, float2);
 
             // Assert
             Assert.IsType<Values.FloatValue>(result);
-            Assert.Equal((float)2.2, result.Value);
+            Assert.Equal((double)2.2, result.Value);
         }
 
         [Fact]
         public void ShouldOperateFloatMinusFloat()
         {
             // Arrange
-            var float1 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
-            var float2 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
+            var float1 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
+            var float2 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.MINUS);
             // Act
             var result = float1.OperatedBy(tokenOperator, float2);
 
             // Assert
             Assert.IsType<Values.FloatValue>(result);
-            Assert.Equal((float)0, result.Value);
+            Assert.Equal((double)0, result.Value);
         }
 
         [Fact]
         public void ShouldOperateFloatMultiplyFloat()
         {
             // Arrange
-            var float1 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
-            var float2 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
+            var float1 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
+            var float2 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.MULTIPLY);
             // Act
             var result = float1.OperatedBy(tokenOperator, float2);
 
             // Assert
             Assert.IsType<Values.FloatValue>(result);
-            Assert.Equal((float)1.21, result.Value);
+            Assert.Equal((double)1.21, Math.Round((double)result.Value, 2));
         }
 
         [Fact]
         public void ShouldOperateFloatDivideFloat()
         {
             // Arrange
-            var float1 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
-            var float2 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
+            var float1 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
+            var float2 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.DIVIDE);
             // Act
             var result = float1.OperatedBy(tokenOperator, float2);
 
             // Assert
             Assert.IsType<Values.FloatValue>(result);
-            Assert.Equal((float)1, result.Value);
+            Assert.Equal((double)1, result.Value);
         }
 
         [Fact]
         public void ShouldOperateFloatPowerFloat()
         {
             // Arrange
-            var float1 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
-            var float2 = new Values.FloatValue((float)1.1, A.Fake<ILogger>());
+            var float1 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
+            var float2 = new Values.FloatValue((double)1.1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.POWER);
             // Act
             var result = float1.OperatedBy(tokenOperator, float2);
