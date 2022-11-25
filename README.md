@@ -1,5 +1,5 @@
 <p align="center">
-    <img height="88" src=".github/owllogo.jpg" alt="Material Bread logo" style="margin-right:10px;">
+    <img height="88" src=".github/owllogowhite.png" alt="Material Bread logo" style="margin-right:12px;">
     <img width="500" src=".github/logo.png" alt="Material Bread logo">
     <br>
     <a href="https://www.nuget.org/packages/PirateLang.CLI">
