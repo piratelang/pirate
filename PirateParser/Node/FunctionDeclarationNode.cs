@@ -41,7 +41,7 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         {
             return false;
         }
-        if (ReturnType is not INode)
+        if (ReturnType is not Token)
         {
             return false;
         }
@@ -49,7 +49,7 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         {
             return false;
         }
-        if (ReturnNode is not INode || ReturnNode is null)
+        if (ReturnNode is not INode && ReturnNode is not null)
         {
             return false;
         }

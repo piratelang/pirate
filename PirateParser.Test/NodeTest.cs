@@ -258,4 +258,152 @@ public class NodeTest
         // Assert
         Assert.False(result);
     }
+
+    [Fact]
+    public void FunctionDeclarationNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var parameters = A.Fake<List<IParameterDefinitionNode>>();
+        var returnTypeToken = A.Fake<Token>();
+        var statements = A.Fake<List<INode>>();
+
+        var node = new FunctionDeclarationNode(identifier, parameters, returnTypeToken, statements);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void FunctionDeclarationNodeIsNotValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var parameters = A.Fake<List<IParameterDefinitionNode>>();
+        var returnTypeToken = A.Fake<Token>();
+        var statements = A.Fake<List<INode>>();
+
+        var node = new FunctionDeclarationNode(identifier, parameters, returnTypeToken, statements);
+        node.Identifier = null;
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void FunctionCallNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var parameters = A.Fake<List<INode>>();
+
+        var node = new FunctionCallNode(identifier, parameters);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void FunctionCallNodeIsNotValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var parameters = A.Fake<List<INode>>();
+
+        var node = new FunctionCallNode(identifier, parameters);
+        node.Identifier = null;
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void ParameterDefinitionNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var typeToken = A.Fake<Token>();
+
+        var node = new ParameterDefinitionNode(typeToken, identifier);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void ParameterDefinitionNodeIsNotValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var typeToken = A.Fake<Token>();
+
+        var node = new ParameterDefinitionNode(typeToken, identifier);
+        node.Identifier = null;
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void VariableDeclarationNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var typeToken = A.Fake<Token>();
+        typeToken.TokenType = TokenType.STRING;
+        typeToken.TokenGroup = TokenGroup.TYPEKEYWORD;
+        var valueNode = A.Fake<IValueNode>();
+
+        var node = new VariableDeclarationNode(typeToken, identifier, valueNode);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void VariableDeclarationNodeIsNotValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var identifier = A.Fake<ValueNode>();
+        var typeToken = A.Fake<Token>();
+        var valueNode = A.Fake<IValueNode>();
+
+        var node = new VariableDeclarationNode(typeToken, identifier, valueNode);
+        node.Identifier = null;
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.False(result);
+    }
 }

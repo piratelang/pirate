@@ -152,6 +152,13 @@ namespace PirateLexer.Test
             Assert.Equal(TokenType.VOID, result);
         }
 
+        [Fact]
+        public void ShouldReturnTrue()
+        {
+            var keyWordService = new KeyWordService();
+            var result = keyWordService.GetTokenControlKeywork("return");
 
+            Assert.Equal(TokenType.RETURN, result);
+        }
     }
 }
