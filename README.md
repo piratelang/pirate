@@ -1,8 +1,14 @@
+<p align="center">
+    <img width="500" src=".github/logo.png" alt="Material Bread logo">
+</p>
+
 [![NuGet](https://img.shields.io/nuget/v/PirateLang.CLI.svg)](https://www.nuget.org/packages/PirateLang.CLI)
 [![VSCODE](https://img.shields.io/visual-studio-marketplace/v/joerivanarkel.piratelang?label=VSCode%20Extension)](https://marketplace.visualstudio.com/items?itemName=joerivanarkel.piratelang)
 [![.NET](https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml/badge.svg)](https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml)
 ![release](https://img.shields.io/github/v/release/joerivanarkel/piratelang)
+
 # Pirate Programming Language
+
 
 ## Installation
 Pirate comes completely installed in a dotnet tool. Sinmply install the NuGet package linked and use `pirate init` to create the first module. A VSCode extension is available for syntax highlighting [here](https://github.com/joerivanarkel/PirateLang.VSCode). Laso a standalone executable is availeble in the releases tab.
