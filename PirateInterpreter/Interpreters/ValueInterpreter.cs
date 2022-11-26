@@ -7,7 +7,6 @@ namespace PirateInterpreter.Interpreters;
 /// </summary>
 /// eg. a ValueNode with the Value of 32 becomes a list of BaseValue with one IntegerValue with the value of 32
 
-
 public class ValueInterpreter : BaseInterpreter
 {
     private IValueNode valueNode { get; set; }

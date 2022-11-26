@@ -4,5 +4,5 @@ namespace PirateParser.Parsers.Interfaces;
 
 public interface ITokenParser
 {
-    (INode node, int index) CreateNode();
+    ParseResult CreateNode();
 }

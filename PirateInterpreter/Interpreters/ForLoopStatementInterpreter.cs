@@ -25,14 +25,20 @@ public class ForLoopStatementInterpreter : BaseInterpreter
 
         if (variableValue is not Values.VariableValue) throw new TypeConversionException(variableValue.GetType(), typeof(Values.VariableValue));
         if (startValue is not Values.IntegerValue) throw new TypeConversionException(startValue.GetType(), typeof(Values.IntegerValue));
-        if (variableValue.Value is not Int64 && variableValue.Value is not int) throw new TypeConversionException(variableValue.Value.GetType(),typeof(Int64));
+        if (variableValue.Value is not Int64 && variableValue.Value is not int) throw new TypeConversionException(variableValue.Value.GetType(), typeof(Int64));
         if (startValue.Value is not Int64 && startValue.Value is not int) throw new TypeConversionException(startValue.Value.GetType(), typeof(Int64));
-
 
         // var variable = (int)variableValue.Value;
         Int64.TryParse(variableValue.Value.ToString(), out Int64 variable);
         Int64.TryParse(startValue.Value.ToString(), out Int64 start);
 
+        List<BaseValue> bodyValues = InterpretBodyNodes(ref interpreter, variable, start);
+
+        return bodyValues;
+    }
+
+    private List<BaseValue> InterpretBodyNodes(ref BaseInterpreter interpreter, long variable, long start)
+    {
         List<BaseValue> bodyValues = new();
         for (Int64 i = variable; i < start; i++)
         {

@@ -39,13 +39,7 @@ public class FunctionCallInterpreter : BaseInterpreter
         var foundFunctionValue = SymbolTable.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
         if (foundFunctionValue is not FunctionValue) throw new TypeConversionException(foundFunctionValue.GetType(), typeof(FunctionValue));
         var foundFunction = (FunctionValue)foundFunctionValue;
-
-        foreach (var (parameter, value) in foundFunction.FunctionDeclarationNode.Parameters.Zip(functionCallNode.Parameters))
-        {
-            var parameterName = (string)parameter.Identifier.Value.Value;
-            var parameterValue = InterpreterFactory.GetInterpreter(value).VisitSingleNode();
-            SymbolTable.Instance(Logger).SetBaseValue(parameterName, parameterValue);
-        }
+        SetVariables(foundFunction);
 
         foreach (var node in foundFunction.FunctionDeclarationNode.Statements)
         {
@@ -53,13 +47,30 @@ public class FunctionCallInterpreter : BaseInterpreter
             interpreter.VisitNode();
         }
 
+        List<BaseValue> resultList = InterpretResultNode(foundFunction);
+        return resultList;
+    }
+
+    private List<BaseValue> InterpretResultNode(FunctionValue foundFunction)
+    {
         var resultList = new List<BaseValue>();
         if (foundFunction.FunctionDeclarationNode.ReturnNode is not null)
         {
             var result = InterpreterFactory.GetInterpreter(foundFunction.FunctionDeclarationNode.ReturnNode).VisitSingleNode();
             resultList.Add(result);
         }
+
         return resultList;
+    }
+
+    private void SetVariables(FunctionValue foundFunction)
+    {
+        foreach (var (parameter, value) in foundFunction.FunctionDeclarationNode.Parameters.Zip(functionCallNode.Parameters))
+        {
+            var parameterName = (string)parameter.Identifier.Value.Value;
+            var parameterValue = InterpreterFactory.GetInterpreter(value).VisitSingleNode();
+            SymbolTable.Instance(Logger).SetBaseValue(parameterName, parameterValue);
+        }
     }
 
     private List<BaseValue> CallLibraryFunction(string[] splitidentifier, string functionCallName)

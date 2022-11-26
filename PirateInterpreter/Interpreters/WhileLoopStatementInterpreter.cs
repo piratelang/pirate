@@ -20,15 +20,17 @@ public class WhileLoopStatementInterpreter : BaseInterpreter
     public override List<BaseValue> VisitNode()
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", LogType.INFO);
-        var interpreter = InterpreterFactory.GetInterpreter(whileLoopStatementNode.ConditionNode);
-        var conditionValue = interpreter.VisitSingleNode();
+        bool condition = GetCondition();
+        List<BaseValue> bodyValues = InterpretBodyNodes(ref condition);
 
-        if (conditionValue is not Values.BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.BooleanValue));
-        var conditionBoolean = (int)conditionValue.Value != 0;
+        return bodyValues;
+    }
 
+    private List<BaseValue> InterpretBodyNodes(ref bool condition)
+    {
         List<BaseValue> bodyValues = new();
         var i = 0;
-        while (conditionBoolean)
+        while (condition)
         {
             Logger.Log($"While Loop iteration {i++}", LogType.INFO);
             foreach (var node in whileLoopStatementNode.BodyNodes)
@@ -38,9 +40,19 @@ public class WhileLoopStatementInterpreter : BaseInterpreter
                 bodyValues.Add(bodyValue[0]);
             }
             var newConditionValueNode = InterpreterFactory.GetInterpreter(whileLoopStatementNode.ConditionNode).VisitSingleNode();
-            conditionBoolean = (int)newConditionValueNode.Value != 0;
+            condition = (int)newConditionValueNode.Value != 0;
         }
 
         return bodyValues;
+    }
+
+    private bool GetCondition()
+    {
+        var interpreter = InterpreterFactory.GetInterpreter(whileLoopStatementNode.ConditionNode);
+        var conditionValue = interpreter.VisitSingleNode();
+
+        if (conditionValue is not Values.BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.BooleanValue));
+        var conditionBoolean = (int)conditionValue.Value != 0;
+        return conditionBoolean;
     }
 }

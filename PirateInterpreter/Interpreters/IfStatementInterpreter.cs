@@ -23,30 +23,23 @@ public class IfStatementInterpreter : BaseInterpreter
         var interpreter = InterpreterFactory.GetInterpreter(ifStatementNode.ConditionNode);
         var conditionValue = interpreter.VisitSingleNode();
 
-        if (conditionValue is not Values.BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.BooleanValue));
+        if (conditionValue is not BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(BooleanValue));
         var conditionBoolean = (int)conditionValue.Value != 0;
         
-        List<BaseValue> bodyValues = new();
-        if (conditionBoolean && ifStatementNode.BodyNodes.Count > 0)
-        {
-            foreach (var node in ifStatementNode.BodyNodes)
-            {
-                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
-                if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
-                bodyValues.Add(bodyValue[0]);
-            }
-        }
-
-        if (!conditionBoolean && ifStatementNode.ElseNode is not null)
-        {
-            foreach (var node in ifStatementNode.ElseNode)
-            {
-                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
-                if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
-                bodyValues.Add(bodyValue[0]);
-            }
-        }
+        List<BaseValue> resultValues = new();
+        if (conditionBoolean && ifStatementNode.BodyNodes.Count > 0) InterpretBodyNodes(resultValues);
+        if (!conditionBoolean && ifStatementNode.ElseNode is not null) InterpretBodyNodes(resultValues);
         
-        return bodyValues;
+        return resultValues;
+    }
+
+    private void InterpretBodyNodes(List<BaseValue> resultValues)
+    {
+        foreach (var node in ifStatementNode.BodyNodes)
+        {
+            var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
+            if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
+            resultValues.Add(bodyValue[0]);
+        }
     }
 }

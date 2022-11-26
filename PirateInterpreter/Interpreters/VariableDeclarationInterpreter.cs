@@ -17,14 +17,7 @@ public class VariableDeclarationInterpreter : BaseInterpreter
     public override List<BaseValue> VisitNode()
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", LogType.INFO);
-        if (variableDeclarationNode.Identifier.Value.Value is not string)
-        {
-            if (variableDeclarationNode.Identifier.Value.Value != null)
-            {
-                throw new TypeConversionException(variableDeclarationNode.Identifier.Value.Value.GetType(), typeof(string));
-            }
-            throw new TypeConversionException(typeof(string));
-        }
+        if (variableDeclarationNode.Identifier.Value.Value is not string) throw new TypeConversionException(typeof(string));
 
         var Identifier = (string)variableDeclarationNode.Identifier.Value.Value;
         var interpreter = InterpreterFactory.GetInterpreter(variableDeclarationNode.Value);

@@ -15,5 +15,5 @@ public abstract class BaseParser
         Logger = logger;
     }
 
-    public abstract (INode node, int index) CreateNode();
+    public abstract ParseResult CreateNode();
 }

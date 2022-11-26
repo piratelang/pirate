@@ -7,7 +7,7 @@ public class FunctionDeclartionParser : BaseParser
 {
     public FunctionDeclartionParser(List<Token> tokens, int index, ILogger logger) : base(tokens, index, logger) { }
     
-    public override (INode node, int index) CreateNode()
+    public override ParseResult CreateNode()
     {
         INode node;
 
@@ -33,10 +33,10 @@ public class FunctionDeclartionParser : BaseParser
         }
 
         node = new FunctionDeclarationNode(identifierNode, parameters, returnTypeToken, Nodes);
-        return (node, _index);
+        return new ParseResult(node, _index);
     }
 
-    private (INode node, int index) CreateNodeWithReturn(out INode node, ValueNode identifierNode, List<IParameterDefinitionNode> parameters, Token returnTypeToken, List<INode> Nodes)
+    private ParseResult CreateNodeWithReturn(out INode node, ValueNode identifierNode, List<IParameterDefinitionNode> parameters, Token returnTypeToken, List<INode> Nodes)
     {
         var valueNode = new ParserFactory().GetParser(_index += 1, _tokens, Logger);
         var result = valueNode.CreateNode();
@@ -47,7 +47,7 @@ public class FunctionDeclartionParser : BaseParser
         if (!_tokens[_index += 1].Matches(TokenType.SEMICOLON)) throw new ParserException("No Semicolon was found");
         if (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE)) throw new ParserException("No Right Curly Braces was found");
 
-        return (node, _index);
+        return new ParseResult(node, _index);
     }
 
     private List<INode> CreateBodyNodes()

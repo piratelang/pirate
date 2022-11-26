@@ -23,7 +23,7 @@ public class ParserFactory : IParserFactory
             case TokenType.CHAR when tokens[index].TokenGroup == TokenGroup.TYPEKEYWORD:
                 return new VariableDeclarationParser(tokens, index, logger, this);
             case TokenType.IDENTIFIER:
-                return new VariableAssignmentParser(tokens, index, logger, this);
+                return new IdentifierParser(tokens, index, logger, this);
             case TokenType.STRING when tokens[index].TokenGroup == TokenGroup.VALUE:
             case TokenType.INT when tokens[index].TokenGroup == TokenGroup.VALUE:
             case TokenType.FLOAT when tokens[index].TokenGroup == TokenGroup.VALUE:
