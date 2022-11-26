@@ -85,7 +85,7 @@ public class TokenRepository : ITokenRepository
             };
         }
 
-        TokenTypeType = _KeyWordService.GetTokenControlKeywork(idString);
+        TokenTypeType = _KeyWordService.GetTokenControlKeyword(idString);
 
         if (TokenTypeType != TokenType.Empty)
         {

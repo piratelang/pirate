@@ -37,7 +37,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
             case TokenType.GREATERTHAN:
                 if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
-                    if(Convert.ToInt32(left.Value) > Convert.ToInt32(right.Value))
+                    if(Convert.ToInt64(left.Value) > Convert.ToInt64(right.Value))
                     {
                         value = 1;
                     }
@@ -46,7 +46,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
             case TokenType.GREATERTHANEQUALS:
                 if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
-                    if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))
+                    if (Convert.ToInt64(left.Value) >= Convert.ToInt64(right.Value))
                     {
                         value = 1;
                     }
@@ -56,7 +56,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
             case TokenType.LESSTHAN:
                 if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
-                    if (Convert.ToInt32(left.Value) < Convert.ToInt32(right.Value))
+                    if (Convert.ToInt64(left.Value) < Convert.ToInt64(right.Value))
                     {
                         value = 1;
                     }
@@ -65,7 +65,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
             case TokenType.LESSTHANEQUALS:
                 if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
                 {
-                    if (Convert.ToInt32(left.Value) >= Convert.ToInt32(right.Value))
+                    if (Convert.ToInt64(left.Value) >= Convert.ToInt64(right.Value))
                     {
                         value = 1;
                     }

@@ -4,6 +4,6 @@ namespace PirateLexer.Interfaces;
 
 public interface IKeyWordService
 {
-    TokenType GetTokenControlKeywork(string idString);
+    TokenType GetTokenControlKeyword(string idString);
     TokenType GetTypeKeyword(string idString);
 }

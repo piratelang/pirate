@@ -16,6 +16,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
     public override List<BaseValue> VisitNode()
     {
         Logger.Log($"Visiting {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+
         var interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode);
         var variableValue = interpreter.VisitSingleNode();
 
@@ -24,21 +25,22 @@ public class ForLoopStatementInterpreter : BaseInterpreter
 
         if (variableValue is not Values.VariableValue) throw new TypeConversionException(variableValue.GetType(), typeof(Values.VariableValue));
         if (startValue is not Values.IntegerValue) throw new TypeConversionException(startValue.GetType(), typeof(Values.IntegerValue));
-        if (variableValue.Value is not Int64 && variableValue.Value is not int) throw new TypeConversionException(variableValue.Value.GetType(),typeof(int));
-        if (startValue.Value is not Int64 && startValue.Value is not int) throw new TypeConversionException(startValue.Value.GetType(), typeof(int));
+        if (variableValue.Value is not Int64 && variableValue.Value is not int) throw new TypeConversionException(variableValue.Value.GetType(),typeof(Int64));
+        if (startValue.Value is not Int64 && startValue.Value is not int) throw new TypeConversionException(startValue.Value.GetType(), typeof(Int64));
 
 
         // var variable = (int)variableValue.Value;
-        int.TryParse(variableValue.Value.ToString(), out int variable);
-        int.TryParse(startValue.Value.ToString(), out int start);
+        Int64.TryParse(variableValue.Value.ToString(), out Int64 variable);
+        Int64.TryParse(startValue.Value.ToString(), out Int64 start);
 
         List<BaseValue> bodyValues = new();
-        for (int i = variable; i < start; i++)
+        for (Int64 i = variable; i < start; i++)
         {
-            Logger.Log($"For Loop iteration: {i}", Common.Enum.LogType.INFO);
+            Logger.Log($"For Loop iteration: {i}", LogType.INFO);
             foreach (var node in forLoopStatementNode.BodyNodes)
             {
-                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitSingleNode();
+                interpreter = InterpreterFactory.GetInterpreter(node);
+                var bodyValue = interpreter.VisitSingleNode();
                 bodyValues.Add(bodyValue);
             }
 

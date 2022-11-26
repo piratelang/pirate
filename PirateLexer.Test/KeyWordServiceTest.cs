@@ -57,7 +57,7 @@ namespace PirateLexer.Test
         public void ShouldReturnIf()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("if");
+            var result = keyWordService.GetTokenControlKeyword("if");
 
             Assert.Equal(TokenType.IF, result);
         }
@@ -66,7 +66,7 @@ namespace PirateLexer.Test
         public void ShouldReturnElse()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("else");
+            var result = keyWordService.GetTokenControlKeyword("else");
 
             Assert.Equal(TokenType.ELSE, result);
         }
@@ -75,7 +75,7 @@ namespace PirateLexer.Test
         public void ShouldReturnFor()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("for");
+            var result = keyWordService.GetTokenControlKeyword("for");
 
             Assert.Equal(TokenType.FOR, result);
         }
@@ -84,7 +84,7 @@ namespace PirateLexer.Test
         public void ShouldReturnTo()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("to");
+            var result = keyWordService.GetTokenControlKeyword("to");
 
             Assert.Equal(TokenType.TO, result);
         }
@@ -93,7 +93,7 @@ namespace PirateLexer.Test
         public void ShouldReturnForeach()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("foreach");
+            var result = keyWordService.GetTokenControlKeyword("foreach");
 
             Assert.Equal(TokenType.FOREACH, result);
         }
@@ -102,7 +102,7 @@ namespace PirateLexer.Test
         public void ShouldReturnIn()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("in");
+            var result = keyWordService.GetTokenControlKeyword("in");
 
             Assert.Equal(TokenType.IN, result);
         }
@@ -111,7 +111,7 @@ namespace PirateLexer.Test
         public void ShouldReturnWhile()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("while");
+            var result = keyWordService.GetTokenControlKeyword("while");
 
             Assert.Equal(TokenType.WHILE, result);
         }
@@ -120,7 +120,7 @@ namespace PirateLexer.Test
         public void ShouldReturnFunc()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("func");
+            var result = keyWordService.GetTokenControlKeyword("func");
 
             Assert.Equal(TokenType.FUNC, result);
         }
@@ -129,7 +129,7 @@ namespace PirateLexer.Test
         public void ShouldReturnClass()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("class");
+            var result = keyWordService.GetTokenControlKeyword("class");
 
             Assert.Equal(TokenType.CLASS, result);
         }
@@ -138,7 +138,7 @@ namespace PirateLexer.Test
         public void ShouldReturnNew()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("new");
+            var result = keyWordService.GetTokenControlKeyword("new");
 
             Assert.Equal(TokenType.NEW, result);
         }
@@ -156,7 +156,7 @@ namespace PirateLexer.Test
         public void ShouldReturnTrue()
         {
             var keyWordService = new KeyWordService();
-            var result = keyWordService.GetTokenControlKeywork("return");
+            var result = keyWordService.GetTokenControlKeyword("return");
 
             Assert.Equal(TokenType.RETURN, result);
         }

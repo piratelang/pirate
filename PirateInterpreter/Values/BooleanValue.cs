@@ -6,6 +6,7 @@ public class BooleanValue : BaseValue, IValue
 {
     public BooleanValue(object value, ILogger logger) :base(value, logger) {}
 
+
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
         if (Value is not int || other.Value is not int)

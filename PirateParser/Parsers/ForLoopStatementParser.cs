@@ -26,7 +26,7 @@ public class ForLoopStatementParser : BaseParser
         if (result.node is not VariableDeclarationNode) throw new ParserException("For Statement does not contain a valid variable assignment");
         
 
-        VariableDeclarationNode VariableAssign = (VariableDeclarationNode)result.node;
+        var VariableAssign = (VariableDeclarationNode)result.node;
         _index = result.index;
 
         if (!_tokens[_index += 1].Matches(TokenType.TO)) throw new ParserException("No To Statement was found");

@@ -8,10 +8,7 @@ public class StringValue : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        if (Value is not string)
-        {
-            throw new TypeConversionException(typeof(string));
-        }
+        if (Value is not string) throw new TypeConversionException(typeof(string));
         var value = Convert.ToString(Value);
 
         switch (_operator.TokenType)

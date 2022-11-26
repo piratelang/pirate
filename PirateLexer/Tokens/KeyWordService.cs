@@ -9,6 +9,7 @@ public class KeyWordService : IKeyWordService
 
     private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class", "new", "return" };
 
+
     public TokenType GetTypeKeyword(string idString)
     {
         if (typeKeywords.Contains(idString))
@@ -33,7 +34,7 @@ public class KeyWordService : IKeyWordService
         return TokenType.Empty;
     }
 
-    public TokenType GetTokenControlKeywork(string idString)
+    public TokenType GetTokenControlKeyword(string idString)
     {
         if (controlKeywords.Contains(idString))
         {
