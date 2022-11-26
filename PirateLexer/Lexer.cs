@@ -51,7 +51,7 @@ public class Lexer : ILexer
                 var tokenResult = _tokenRepository.MakeNumber(text, position);
                 tokens.Add(tokenResult.Token);
                 position = tokenResult.Position;
-                Logger.Log($"Creating Token \"{tokenResult.Token.ToString()}\"", Common.Enum.LogType.INFO);
+                Logger.Log($"Creating Token \"{tokenResult.Token.ToString()}\"", LogType.INFO);
                 continue;
             }
             if (Char.IsLetter(text[position]))

@@ -8,7 +8,7 @@ public class Library : BaseValue
     {
         Name = name;
         Callables = callables;
-        Logger.Log($"Created {this.GetType().Name}", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name}", LogType.INFO);
     }
 
     public override string ToString()

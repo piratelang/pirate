@@ -15,11 +15,11 @@ public class IfStatementInterpreter : BaseInterpreter
         if (node is not IIfStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         ifStatementNode = (IIfStatementNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", LogType.INFO);
     }
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", LogType.INFO);
         var interpreter = InterpreterFactory.GetInterpreter(ifStatementNode.ConditionNode);
         var conditionValue = interpreter.VisitSingleNode();
 

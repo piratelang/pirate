@@ -17,12 +17,12 @@ public class FunctionCallInterpreter : BaseInterpreter
         functionCallNode = (IFunctionCallNode)node;
         StandardLibraryFactory = standardLibraryFactory;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{functionCallNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{functionCallNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
 
         var functionCallName = (string)functionCallNode.Identifier.Value.Value;
         var splitFunctionCallName = functionCallName.Split(".");

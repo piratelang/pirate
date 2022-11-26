@@ -15,11 +15,11 @@ public class WhileLoopStatementInterpreter : BaseInterpreter
         if (node is not IWhileLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         whileLoopStatementNode = (IWhileLoopStatementNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", LogType.INFO);
     }
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", LogType.INFO);
         var interpreter = InterpreterFactory.GetInterpreter(whileLoopStatementNode.ConditionNode);
         var conditionValue = interpreter.VisitSingleNode();
 
@@ -30,7 +30,7 @@ public class WhileLoopStatementInterpreter : BaseInterpreter
         var i = 0;
         while (conditionBoolean)
         {
-            Logger.Log($"While Loop iteration {i++}", Common.Enum.LogType.INFO);
+            Logger.Log($"While Loop iteration {i++}", LogType.INFO);
             foreach (var node in whileLoopStatementNode.BodyNodes)
             {
                 var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();

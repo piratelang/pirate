@@ -7,7 +7,7 @@ public class FunctionValue : BaseValue
     public FunctionValue(IFunctionDeclarationNode functionDeclarationNode, ILogger logger) : base(null, logger)
     {
         FunctionDeclarationNode = functionDeclarationNode;
-        Logger.Log($"Created {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
     }
 
     public override string ToString()

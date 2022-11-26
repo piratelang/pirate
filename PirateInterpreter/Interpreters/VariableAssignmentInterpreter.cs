@@ -14,7 +14,7 @@ public class VariableAssignmentInterpreter : BaseInterpreter
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{variableAssignmentNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{variableAssignmentNode.ToString()}\"", LogType.INFO);
         if (variableAssignmentNode.Identifier.Value.Value is not string)
         {
             if (variableAssignmentNode.Identifier.Value.Value != null)

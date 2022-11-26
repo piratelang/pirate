@@ -11,12 +11,12 @@ public class FunctionDeclarationInterpreter : BaseInterpreter
         if (node is not IFunctionDeclarationNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionDeclarationNode));
         FunctionDeclarationNode = (IFunctionDeclarationNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
 
         var function = new FunctionValue(FunctionDeclarationNode, Logger);
         SymbolTable.Instance(Logger).SetBaseValue((string)FunctionDeclarationNode.Identifier.Value.Value, function);

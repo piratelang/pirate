@@ -11,11 +11,11 @@ public class ForLoopStatementInterpreter : BaseInterpreter
         if (node is not IForLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         forLoopStatementNode = (IForLoopStatementNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", LogType.INFO);
     }
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{forLoopStatementNode.ToString()}\"", LogType.INFO);
 
         var interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode);
         var variableValue = interpreter.VisitSingleNode();
