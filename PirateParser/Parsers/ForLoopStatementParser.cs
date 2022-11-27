@@ -3,6 +3,10 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser looking for a for loop statement.
+/// Defines a Variable node, a Value node and a list of body nodes.
+/// </summary>
 public class ForLoopStatementParser : BaseParser
 {
     private ParserFactory _parserFactory { get; set; }
@@ -12,52 +16,68 @@ public class ForLoopStatementParser : BaseParser
         _parserFactory = parserFactory;
     }
 
-    public override (INode node, int index) CreateNode()
+    public override ParseResult CreateNode()
     {
         INode node;
-
-        var _currentToken = _tokens[_index];
-
-        if (!_currentToken.Matches(TokenControlKeyword.FOR)) throw new ParserException("No For Statement was found");
+        BaseParser? parser;
         
+        ParseResult? result;
+        VariableDeclarationNode VariableAssign;
+        ValueNode Value;
 
-        var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
-        var result = parser.CreateNode();
-        if (result.node is not VariableDeclarationNode) throw new ParserException("For Statement does not contain a valid variable assignment");
-        
+        if (!_tokens[_index].Matches(TokenType.FOR)) throw new ParserException("No For Statement was found");
 
-        VariableDeclarationNode VariableAssign = (VariableDeclarationNode)result.node;
-        _index = result.index;
+        GetVariableNode(out parser, out result, out VariableAssign);
 
-        if (!_tokens[_index += 1].Matches(TokenControlKeyword.TO)) throw new ParserException("No To Statement was found");
-        
+        if (!_tokens[_index += 1].Matches(TokenType.TO)) throw new ParserException("No To Statement was found");
 
+
+        GetValueNode(out parser, out result, out Value);
+
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+
+        List<INode> Nodes = GetBodyNodes(ref parser, ref result);
+
+        node = new ForLoopStatementNode(VariableAssign, Value, Nodes);
+        return new ParseResult(node, _index);
+    }
+
+    private void GetVariableNode(out BaseParser? parser, out ParseResult? result, out VariableDeclarationNode VariableAssign)
+    {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.node is not ValueNode) throw new ParserException("For Statement does not contain a valid value");
-        
+        if (result.Node is not VariableDeclarationNode) throw new ParserException("For Statement does not contain a valid variable assignment");
 
-        var Value = (ValueNode)result.node;
-        _index = result.index;
+        VariableAssign = (VariableDeclarationNode)result.Node;
+        _index = result.Index;
+    }
 
-        if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
-        
+    private void GetValueNode(out BaseParser parser, out ParseResult result, out ValueNode Value)
+    {
+        parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
+        result = parser.CreateNode();
+        if (result.Node is not ValueNode) throw new ParserException("For Statement does not contain a valid value");
 
+        Value = (ValueNode)result.Node;
+        _index = result.Index;
+    }
+
+    private List<INode> GetBodyNodes(ref BaseParser parser, ref ParseResult result)
+    {
         List<INode> Nodes = new List<INode>();
-        while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
+        while (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE))
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
-            Nodes.Add(result.node);
-            _index = result.index;
-            if (_tokens[_index+1].TokenType.Equals(TokenSyntax.SEMICOLON))
+            Nodes.Add(result.Node);
+            _index = result.Index;
+            if (_index + 1 >= _tokens.Count) break;
+            if (_tokens[_index + 1].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;
             }
-            if (_index >= _tokens.Count) break;
         }
 
-        node = new ForLoopStatementNode(VariableAssign, Value, Nodes);
-        return (node, _index);
+        return Nodes;
     }
 }

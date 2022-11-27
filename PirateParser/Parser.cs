@@ -3,6 +3,9 @@ using PirateParser.Parsers.Interfaces;
 
 namespace PirateParser;
 
+/// <summary>
+/// A starting point for parsing.
+/// </summary>
 public class Parser : IParser
 {
     private IParserFactory parserFactory = new ParserFactory();
@@ -29,14 +32,14 @@ public class Parser : IParser
             var tokenParser = parserFactory.GetParser(index, tokens, Logger);
             var parseResult = tokenParser.CreateNode();
 
-            Logger.Log($"Created {parseResult.node.GetType().Name} | \"{parseResult.node.ToString()}\"", LogType.INFO);
+            Logger.Log($"Created {parseResult.Node.GetType().Name} | \"{parseResult.Node.ToString()}\"", LogType.INFO);
 
-            scope.AddNode(parseResult.node);
-            index = parseResult.index;
+            scope.AddNode(parseResult.Node);
+            index = parseResult.Index;
             index++;
             if (index + 1 <= tokens.Count())
             {
-                if (tokens[index].TokenType.Equals(TokenSyntax.SEMICOLON))
+                if (tokens[index].TokenType.Equals(TokenType.SEMICOLON))
                 {
                     index++;
                 }

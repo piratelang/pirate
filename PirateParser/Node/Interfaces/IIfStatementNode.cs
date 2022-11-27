@@ -1,5 +1,6 @@
 namespace PirateParser.Node.Interfaces;
 
+/// <inheritdoc cref="IfStatementNode"/>
 public interface IIfStatementNode : INode
 {
     IOperationNode ConditionNode { get; set; }

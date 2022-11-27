@@ -1,8 +1,9 @@
-using PirateParser.Node.Interfaces;
-
 namespace PirateParser.Parsers.Interfaces;
 
+/// <summary>
+/// Interface for all token parsers.
+/// </summary>
 public interface ITokenParser
 {
-    (INode node, int index) CreateNode();
+    ParseResult CreateNode();
 }

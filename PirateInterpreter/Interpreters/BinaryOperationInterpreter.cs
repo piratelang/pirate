@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Returns BaseValue result of the binary operation.
+/// </summary>
 public class BinaryOperationInterpreter : BaseInterpreter
 {
     private IOperationNode _operationNode { get; set; }
@@ -11,12 +14,12 @@ public class BinaryOperationInterpreter : BaseInterpreter
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));            
         _operationNode = (IOperationNode)node;
         
-        Logger.Log($"Created {this.GetType().Name} : \"{_operationNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{_operationNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{_operationNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{_operationNode.ToString()}\"", LogType.INFO);
         var interpreter = InterpreterFactory.GetInterpreter(_operationNode.Left);
         var left = interpreter.VisitSingleNode();
 

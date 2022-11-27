@@ -2,7 +2,15 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a for loop.
+/// </summary>
+/// <example>
+/// for var i - 0 to 10
+/// {
+///    IO.print(i);
+/// }
+/// </example>
 public class ForLoopStatementNode : IForLoopStatementNode
 {
     public IVariableDeclarationNode VariableNode { get; set; }

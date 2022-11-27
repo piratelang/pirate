@@ -1,6 +1,8 @@
-using System.Runtime.Serialization;
 namespace Common.Enum;
 
+/// <summary>
+/// This enum contains all useable file extensions.
+/// </summary>
 public enum FileExtension
 {
     LOG,

@@ -1,9 +1,11 @@
-namespace Common.Enum
+namespace Common.Enum;
+
+/// <summary>
+/// This enum contains all log types.
+/// </summary>
+public enum LogType
 {
-    public enum LogType
-    {
-        ERROR  ,
-        WARNING,
-        INFO   
-    }
+    ERROR  ,
+    WARNING,
+    INFO   
 }

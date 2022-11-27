@@ -2,6 +2,9 @@ using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
+/// <summary>
+/// Return the right command based on the command name.
+/// </summary>
 public class CommandFactory : ICommandFactory
 {
     public IInitCommand InitCommand { get; set; }

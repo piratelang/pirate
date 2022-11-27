@@ -1,0 +1,36 @@
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svg55852" viewBox="0 0 1024 768" height="768px" width="1024px" version="1.1">
+  <metadata id="metadata55858">
+    <rdf:rdf>
+      <cc:work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type>
+      </cc:work>
+    </rdf:rdf>
+  </metadata>
+  <defs id="defs55856"></defs>
+  <linearGradient spreadMethod="pad" y2="30%" x2="-10%" y1="120%" x1="30%" id="3d_gradient2-logo-c8b7bc67-8d79-4bd7-893c-fa877f44af6c">
+    <stop id="stop55833" stop-opacity="1" stop-color="#ffffff" offset="0%"></stop>
+    <stop id="stop55835" stop-opacity="1" stop-color="#000000" offset="100%"></stop>
+  </linearGradient>
+  <linearGradient gradientTransform="rotate(-30)" spreadMethod="pad" y2="30%" x2="-10%" y1="120%" x1="30%" id="3d_gradient3-logo-c8b7bc67-8d79-4bd7-893c-fa877f44af6c">
+    <stop id="stop55838" stop-opacity="1" stop-color="#ffffff" offset="0%"></stop>
+    <stop id="stop55840" stop-opacity="1" stop-color="#cccccc" offset="50%"></stop>
+    <stop id="stop55842" stop-opacity="1" stop-color="#000000" offset="100%"></stop>
+  </linearGradient>
+  <g id="logo-group">
+    <image xlink:href="https://app.brandmark.io/v2/icon_large/?id=702820" id="container" x="272" y="144" width="480" height="480" style="display: none;" transform="translate(0 0)"></image>
+    <g id="logo-center" transform="translate(0 0)">
+      <image xlink:href="" id="icon_container" style="display: none;" x="0" y="0"></image>
+      <g id="slogan" style="font-style:normal;font-weight:700;font-size:32px;line-height:1;font-family:Nunito;font-variant-ligatures:none;text-align:center;text-anchor:middle" transform="translate(0 0)"></g>
+      <g id="title" style="font-style:normal;font-weight:normal;font-size:72px;line-height:1;font-family:'Brandmark Sans 5 Spectrum';font-variant-ligatures:normal;text-align:center;text-anchor:middle" transform="translate(0 0)">
+        <g id="path55861" aria-label="P" transform="translate(0 325.62388) translate(278.4582154 16.352240000000002) scale(1.67) translate(-372.11862 50.328)"> <rect x="75.2088" y="75.20882" class="c3" width="21.69232" height="49.5824" transform="translate(296.909826 -125.53676)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#cbdff7" stroke="#cbdff7"></rect> <path class="c1" d="M106.19781,75.20876H75.2088v37.18683h30.98901c10.26886,0,18.59338-8.32452,18.59338-18.59338 S116.46667,75.20876,106.19781,75.20876z" transform="translate(296.909826 -125.53676)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#528de6" stroke="#528de6"></path> <rect x="75.20879" y="75.20884" class="c2" width="21.69226" height="37.18677" transform="translate(296.909826 -125.53676)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#a1c4f2" stroke="#a1c4f2"></rect> </g>
+        <g id="path55863" aria-label="I" transform="translate(0 325.62388) translate(368.7584554 16.232000000000006) scale(1.67) translate(-426.19062 50.4)"> <rect x="89.15384" y="75.2088" class="c3" width="21.69232" height="12.39557" transform="translate(337.036781 -125.608801)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#cbdff7" stroke="#cbdff7"></rect> <rect x="89.15384" y="93.80212" class="c1" width="21.69232" height="30.98907" transform="translate(337.036781 -125.608801)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#528de6" stroke="#528de6"></rect> </g>
+        <g id="path55865" aria-label="R" transform="translate(0 325.62388) translate(411.73487 16.232000000000006) scale(1.67) translate(-451.925 50.4)"> <polygon class="c3" points="124.79122,124.79121 75.20879,124.79121 75.20879,75.20879 " transform="translate(376.71622 -125.60876)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#cbdff7" stroke="#cbdff7"></polygon> <path class="c1" d="M106.19781,75.20876H75.2088v37.18683h30.98901c10.26886,0,18.59338-8.32452,18.59338-18.59338 S116.46667,75.20876,106.19781,75.20876z" transform="translate(376.71622 -125.60876)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#528de6" stroke="#528de6"></path> <path class="c2" d="M75.20878,75.20885v37.18677h30.98901c1.87744,0,3.6875-0.28418,5.396-0.80176L75.20878,75.20885z" transform="translate(376.71622 -125.60876)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#a1c4f2" stroke="#a1c4f2"></path> </g>
+        <g id="path55867" aria-label="A" transform="translate(0 325.62388) translate(502.1497054000001 16.232000000000006) scale(1.67) translate(-506.06562 50.4)"> <polygon class="c1" points="124.7912,124.79123 100,75.20877 75.2088,124.79123 " transform="translate(430.85682 -125.60877)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#528de6" stroke="#528de6"></polygon> </g>
+        <g id="path55869" aria-label="T" transform="translate(0 325.62388) translate(571.1937679 16.232000000000006) scale(1.67) translate(-547.40937 50.4)"> <rect x="89.15385" y="75.20879" class="c1" width="21.69232" height="49.5824" transform="translate(472.200592 -125.608794)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#528de6" stroke="#528de6"></rect> <rect x="75.20878" y="75.20879" class="c3" width="49.5824" height="12.39557" transform="translate(472.200592 -125.608794)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#cbdff7" stroke="#cbdff7"></rect> <rect x="89.15388" y="75.20881" class="c2" width="21.69226" height="12.39559" transform="translate(472.200592 -125.608794)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#a1c4f2" stroke="#a1c4f2"></rect> </g>
+        <g id="path55871" aria-label="E" transform="translate(0 325.62388) translate(661.3737679000001 16.232000000000006) scale(1.67) translate(-601.40937 50.4)"> <rect x="75.20881" y="91.73634" class="c1" width="49.58238" height="33.05467" transform="translate(526.200561 -125.609)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#528de6" stroke="#528de6"></rect> <rect x="75.20881" y="75.209" class="c3" width="49.58238" height="33.05467" transform="translate(526.200561 -125.609)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#cbdff7" stroke="#cbdff7"></rect> <rect x="75.20881" y="91.73634" class="c2" width="49.58238" height="16.52733" transform="translate(526.200561 -125.609)" stroke-width="0" stroke-linejoin="miter" stroke-miterlimit="2" fill="#a1c4f2" stroke="#a1c4f2"></rect> </g>
+            </g>
+      <image xlink:href="https://app.brandmark.io/nounpreview/1318919.png" id="icon" style="display: none;" x="0" y="0"></image>
+    </g>
+  </g>
+</svg>

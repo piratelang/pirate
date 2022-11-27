@@ -2,6 +2,9 @@ using Common.Enum;
 
 namespace Common.FileHandlers;
 
+/// <summary>
+/// This is a model for the file handlers.
+/// </summary>
 public class FileWriteModel
 {
     public string Name { get; set; }

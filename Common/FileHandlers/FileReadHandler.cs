@@ -1,17 +1,14 @@
-
-using System.Globalization;
 using Common.Enum;
 
 using Common.FileHandlers.Interfaces;
 
 namespace Common.FileHandlers;
 
-[Serializable]
+/// <summary>
+/// This class handles reading files.
+/// </summary>
 public class FileReadHandler : BaseFileHandler, IFileReadHandler
 {
-    // Name: Without extension
-    // Extension: With! dot
-    // Location: Without root folder, i.e. "./"
     public async Task<string> ReadAllTextFromFile(string name, FileExtension extension, string location)
     {
         if (name == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }

@@ -2,8 +2,9 @@ using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
-
-
+/// <summary>
+/// A class which handles the commands.
+/// </summary>
 public class CommandManager : ICommandManager
 {
     private readonly ILogger _logger;

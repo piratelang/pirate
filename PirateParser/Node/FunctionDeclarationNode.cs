@@ -2,7 +2,15 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node declaring a function.
+/// </summary>
+/// <example>
+/// func add(a, b)
+/// {
+///    return a + b;
+/// }
+/// </example>    
 public class FunctionDeclarationNode : IFunctionDeclarationNode
 {
     public IValueNode Identifier { get; set; }
@@ -11,16 +19,12 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
     public List<INode> Statements { get; set; }
     public INode ReturnNode { get; set; } = default!;
 
-    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements)
+    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements, INode returnNode = default!)
     {
         Identifier = identifier;
         Parameters = parameters;
         ReturnType = returnType;
         Statements = statements;
-    }
-
-    public FunctionDeclarationNode(ValueNode identifier, List<IParameterDefinitionNode> parameters, Token returnType, List<INode> statements, INode returnNode) : this(identifier, parameters, returnType, statements)
-    {
         ReturnNode = returnNode;
     }
     
@@ -45,7 +49,7 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         {
             return false;
         }
-        if (ReturnType is not INode)
+        if (ReturnType is not Token)
         {
             return false;
         }
@@ -53,7 +57,7 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         {
             return false;
         }
-        if (ReturnNode is not INode || ReturnNode is null)
+        if (ReturnNode is not INode && ReturnNode is not null)
         {
             return false;
         }

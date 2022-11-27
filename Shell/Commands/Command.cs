@@ -3,6 +3,9 @@ using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
+/// <summary>
+/// A base class for all commands.
+/// </summary>
 public abstract class Command : ICommand
 {
     protected string Version { get; set; }

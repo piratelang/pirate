@@ -1,6 +1,6 @@
-using System.Reflection.Metadata.Ecma335;
 namespace PirateParser.Node.Interfaces;
 
+/// <inheritdoc cref="FunctionDeclarationNode"/>
 public interface IFunctionDeclarationNode : INode
 {
     IValueNode Identifier { get; set; }

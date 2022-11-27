@@ -1,5 +1,6 @@
 namespace PirateParser.Node.Interfaces;
 
+/// <inheritdoc cref="ForLoopStatementNode"/>
 public interface IForLoopStatementNode : INode
 {
     IVariableDeclarationNode VariableNode { get; set; }

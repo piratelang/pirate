@@ -2,21 +2,21 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A string value.
+/// </summary>
 public class StringValue : BaseValue, IValue
 {
     public StringValue(object value, ILogger logger) :base(value, logger) {}
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        if (Value is not string)
-        {
-            throw new TypeConversionException(typeof(string));
-        }
+        if (Value is not string) throw new TypeConversionException(typeof(string));
         var value = Convert.ToString(Value);
 
         switch (_operator.TokenType)
         {
-            case TokenOperators.PLUS:
+            case TokenType.PLUS:
                 try
                 {
                     if (other.Value is not string)
@@ -28,15 +28,15 @@ public class StringValue : BaseValue, IValue
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log($" <string> + <value> returned an error of: {ex.ToString()}", Common.Enum.LogType.ERROR);
+                    Logger.Log($" <string> + <value> returned an error of: {ex.ToString()}", LogType.ERROR);
                     throw ex;
                 }
 
-            case TokenOperators.MINUS:
-                Logger.Log("<string> - <string> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.MINUS:
+                Logger.Log("<string> - <string> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.MULTIPLY:
+            case TokenType.MULTIPLY:
                 try
                 {
                     if (other.Value is not int)
@@ -48,16 +48,16 @@ public class StringValue : BaseValue, IValue
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log($" <string> * <value> returned an error of: \"{ex.ToString()}\"", Common.Enum.LogType.ERROR);
+                    Logger.Log($" <string> * <value> returned an error of: \"{ex.ToString()}\"", LogType.ERROR);
                     throw ex;
                 }
 
-            case TokenOperators.DIVIDE:
-                Logger.Log("<string> / <string> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.DIVIDE:
+                Logger.Log("<string> / <string> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.POWER:
-                Logger.Log("<string> ^ <string> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.POWER:
+                Logger.Log("<string> ^ <string> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
         }

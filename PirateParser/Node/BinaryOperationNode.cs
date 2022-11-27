@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a binary operation.
+/// </summary>
+/// <example>
+/// 1 + 2
+/// </example>
 public class BinaryOperationNode : IOperationNode
 {
     public INode Left { get; set; }
@@ -27,7 +32,7 @@ public class BinaryOperationNode : IOperationNode
         {
             return false;
         }
-        if (Operator.TokenType is not TokenOperators)
+        if (Operator.TokenType is not TokenType.PLUS and not TokenType.MINUS and not TokenType.MULTIPLY and not TokenType.DIVIDE)
         {
             return false;
         }

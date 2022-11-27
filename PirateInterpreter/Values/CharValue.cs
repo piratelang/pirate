@@ -2,6 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A character value.
+/// </summary>
 public class CharValue : BaseValue, IValue
 {
     public CharValue(object value, ILogger logger) :base(value, logger) {}
@@ -16,24 +19,24 @@ public class CharValue : BaseValue, IValue
 
         switch (_operator.TokenType)
         {
-            case TokenOperators.PLUS:
-                Logger.Log("<char> + <char> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.PLUS:
+                Logger.Log("<char> + <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.MINUS:
-                Logger.Log("<char> - <char> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.MINUS:
+                Logger.Log("<char> - <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.MULTIPLY:
-                Logger.Log("<char> * <char> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.MULTIPLY:
+                Logger.Log("<char> * <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.DIVIDE:
-                Logger.Log("<char> / <char> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.DIVIDE:
+                Logger.Log("<char> / <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
-            case TokenOperators.POWER:
-                Logger.Log("<char> ^ <char> is not supported", Common.Enum.LogType.ERROR);
+            case TokenType.POWER:
+                Logger.Log("<char> ^ <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
         }

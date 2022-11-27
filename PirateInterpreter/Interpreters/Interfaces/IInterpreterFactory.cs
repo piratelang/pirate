@@ -1,5 +1,6 @@
 namespace PirateInterpreter.Interpreters.Interfaces;
 
+/// <inheritdoc cref="InterpreterFactory"/>
 public interface IInterpreterFactory
 {
     BaseInterpreter GetInterpreter(INode node);

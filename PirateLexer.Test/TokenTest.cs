@@ -6,9 +6,9 @@ public class TokenTest
     public void ShouldMatchToken()
     {
         //Arrange
-        var token = new Token(TokenGroup.VALUE, TokenValue.INT, 123);
+        var token = new Token(TokenGroup.VALUE, TokenType.INT, 123);
         //Act
-        var result = token.Matches(TokenValue.INT, 123);
+        var result = token.Matches(TokenType.INT, 123);
         //Assert
         Assert.True(result);
     }
@@ -17,9 +17,9 @@ public class TokenTest
     public void ShouldNotMatchToken()
     {
         //Arrange
-        var token = new Token(TokenGroup.VALUE, TokenValue.INT, 123);
+        var token = new Token(TokenGroup.VALUE, TokenType.INT, 123);
         //Act
-        var result = token.Matches(TokenValue.INT, 456);
+        var result = token.Matches(TokenType.INT, 456);
         //Assert
         Assert.False(result);
     }
@@ -28,9 +28,9 @@ public class TokenTest
     public void ShouldMatchTokenWithoutValue()
     {
         //Arrange
-        var token = new Token(TokenGroup.VALUE, TokenValue.INT, 123);
+        var token = new Token(TokenGroup.VALUE, TokenType.INT, 123);
         //Act
-        var result = token.Matches(TokenValue.INT);
+        var result = token.Matches(TokenType.INT);
         //Assert
         Assert.True(result);
     }
@@ -39,9 +39,9 @@ public class TokenTest
     public void ShouldNotMatchTokenWithoutValue()
     {
         //Arrange
-        var token = new Token(TokenGroup.VALUE, TokenValue.INT, 123);
+        var token = new Token(TokenGroup.VALUE, TokenType.INT, 123);
         //Act
-        var result = token.Matches(TokenValue.FLOAT);
+        var result = token.Matches(TokenType.FLOAT);
         //Assert
         Assert.False(result);
     }

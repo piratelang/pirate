@@ -2,7 +2,9 @@ using System.Runtime.Serialization;
 
 namespace Common.Errors;
 
-[Serializable]
+/// <summary>
+/// This is a custom exception for file errors.
+/// </summary>
 public class FileException : Exception
 {
     public FileException() { }

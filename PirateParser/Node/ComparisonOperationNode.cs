@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a comparison operation.
+/// </summary>
+/// <example>
+/// 1 == 2
+/// </example>
 public class ComparisonOperationNode : IOperationNode
 {
     public INode Left { get; set; }
@@ -27,7 +32,7 @@ public class ComparisonOperationNode : IOperationNode
         {
             return false;
         }
-        if (Operator.TokenType is not TokenComparisonOperators)
+        if (Operator.TokenType is not TokenType.DOUBLEEQUALS and not TokenType.NOTEQUALS and not TokenType.GREATERTHAN and not TokenType.GREATERTHANEQUALS and not TokenType.LESSTHAN and not TokenType.LESSTHANEQUALS)
         {
             return false;
         }

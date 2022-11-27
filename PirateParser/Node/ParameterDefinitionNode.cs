@@ -2,7 +2,13 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node defining a parameter.
+/// It contains a type and a name.
+/// </summary>
+/// <example>
+/// int x
+/// </example>
 public class ParameterDefinitionNode : IParameterDefinitionNode
 {
     public Token TypeToken { get; set; }

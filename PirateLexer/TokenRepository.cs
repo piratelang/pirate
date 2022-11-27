@@ -2,9 +2,13 @@ using System.Globalization;
 using PirateLexer.Tokens;
 using PirateLexer.Enums;
 using PirateLexer.Interfaces;
+using PirateLexer.Tokens.Interfaces;
 
 namespace PirateLexer;
 
+/// <summary>
+/// A class which handles the complex logic of the lexer.
+/// </summary>
 public class TokenRepository : ITokenRepository
 {
     private readonly IKeyWordService _KeyWordService;
@@ -41,14 +45,14 @@ public class TokenRepository : ITokenRepository
 
         if (dotCount == 0)
         {
-            token = new Token(TokenGroup.VALUE, TokenValue.INT, int.Parse(numberString));
+            token = new Token(TokenGroup.VALUE, TokenType.INT, int.Parse(numberString));
 
         }
         else
         {
             CultureInfo cultureInfo = (CultureInfo)CultureInfo.CurrentCulture.Clone();
             cultureInfo.NumberFormat.CurrencyDecimalSeparator = "."; cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
-            token = new Token(TokenGroup.VALUE, TokenValue.FLOAT, float.Parse(numberString, cultureInfo));
+            token = new Token(TokenGroup.VALUE, TokenType.FLOAT, float.Parse(numberString, cultureInfo));
         }
 
         return new TokenResult()
@@ -66,40 +70,39 @@ public class TokenRepository : ITokenRepository
         {
             idString += text[position];
             position += 1;
+            if (position == text.Length) break;
             if (text[position] == '.')
             {
                 idString += text[position];
                 position += 1;
             }
-
-            if (position == text.Length) break;
             if (Char.IsNumber(text[position]) || Char.IsPunctuation(text[position]) || Char.IsWhiteSpace(text[position]) || Char.IsSeparator(text[position])) break;
         }
 
-        var tokenTypeKeywordType = _KeyWordService.GetTypeKeyword(idString);
-        if (tokenTypeKeywordType != TokenTypeKeyword.Empty)
+        var TokenTypeType = _KeyWordService.GetTypeKeyword(idString);
+        if (TokenTypeType != TokenType.Empty)
         {
             return new TokenResult()
             {
-                Token = new Token(TokenGroup.TYPEKEYWORD, tokenTypeKeywordType, idString),
+                Token = new Token(TokenGroup.TYPEKEYWORD, TokenTypeType, idString),
                 Position = position
             };
         }
 
-        var tokenControlKeywordType = _KeyWordService.GetTokenControlKeywork(idString);
+        TokenTypeType = _KeyWordService.GetTokenControlKeyword(idString);
 
-        if (tokenControlKeywordType != TokenControlKeyword.Empty)
+        if (TokenTypeType != TokenType.Empty)
         {
             return new TokenResult()
             {
-                Token = new Token(TokenGroup.CONTROLKEYWORD, tokenControlKeywordType, idString),
+                Token = new Token(TokenGroup.CONTROLKEYWORD, TokenTypeType, idString),
                 Position = position
             };
         }
 
         return new TokenResult()
         {
-            Token = new Token(TokenGroup.SYNTAX, TokenSyntax.IDENTIFIER, idString),
+            Token = new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, idString),
             Position = position
         };
     }
@@ -139,7 +142,7 @@ public class TokenRepository : ITokenRepository
 
         return new TokenResult()
         {
-            Token = new Token(TokenGroup.VALUE, TokenValue.STRING, resultString),
+            Token = new Token(TokenGroup.VALUE, TokenType.STRING, resultString),
             Position = position
         };
     }
@@ -157,7 +160,7 @@ public class TokenRepository : ITokenRepository
 
         return new TokenResult()
         {
-            Token = new Token(TokenGroup.VALUE, TokenValue.CHAR, resultString),
+            Token = new Token(TokenGroup.VALUE, TokenType.CHAR, resultString),
             Position = position
         };
     }
@@ -171,7 +174,7 @@ public class TokenRepository : ITokenRepository
             position += 1;
             return new TokenResult()
             {
-                Token = new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.NOTEQUALS),
+                Token = new Token(TokenGroup.COMPARISONOPERATORS, TokenType.NOTEQUALS),
                 Position = position
             };
         }
@@ -182,13 +185,13 @@ public class TokenRepository : ITokenRepository
 
     public TokenResult MakeGreaterThan(string text, int position)
     {
-        var tokenType = TokenComparisonOperators.GREATERTHAN;
+        var tokenType = TokenType.GREATERTHAN;
         position += 1;
 
         if (text[position] == '=')
         {
             position += 1;
-            tokenType = TokenComparisonOperators.GREATERTHANEQUALS;
+            tokenType = TokenType.GREATERTHANEQUALS;
         }
 
         return new TokenResult()
@@ -201,13 +204,13 @@ public class TokenRepository : ITokenRepository
 
     public TokenResult MakeLessThan(string text, int position)
     {
-        var tokenType = TokenComparisonOperators.LESSTHAN;
+        var tokenType = TokenType.LESSTHAN;
         position += 1;
 
         if (text[position] == '=')
         {
             position += 1;
-            tokenType = TokenComparisonOperators.LESSTHANEQUALS;
+            tokenType = TokenType.LESSTHANEQUALS;
         }
 
         return new TokenResult()
@@ -224,11 +227,11 @@ public class TokenRepository : ITokenRepository
         if (text[position] == '=')
         {
             position += 1;
-            token = new Token(TokenGroup.COMPARISONOPERATORS, TokenComparisonOperators.DOUBLEEQUALS);
+            token = new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS);
         }
         else
         {
-            token = new Token(TokenGroup.SYNTAX, TokenSyntax.EQUALS);
+            token = new Token(TokenGroup.SYNTAX, TokenType.EQUALS);
         }
 
         return new TokenResult()
@@ -245,11 +248,11 @@ public class TokenRepository : ITokenRepository
         if (text[position] == '=')
         {
             position += 1;
-            token = new Token(TokenGroup.SYNTAX, TokenSyntax.PLUSEQUALS);
+            token = new Token(TokenGroup.SYNTAX, TokenType.PLUSEQUALS);
         }
         else
         {
-            token = new Token(TokenGroup.OPERATORS, TokenOperators.PLUS);
+            token = new Token(TokenGroup.OPERATORS, TokenType.PLUS);
         }
 
         return new TokenResult()
@@ -266,11 +269,11 @@ public class TokenRepository : ITokenRepository
         if (text[position] == '/')
         {
             position += 1;
-            token = new Token(TokenGroup.SYNTAX, TokenSyntax.DOUBLEDIVIDE);
+            token = new Token(TokenGroup.SYNTAX, TokenType.DOUBLEDIVIDE);
         }
         else
         {
-            token = new Token(TokenGroup.OPERATORS, TokenOperators.DIVIDE);
+            token = new Token(TokenGroup.OPERATORS, TokenType.DIVIDE);
         }
 
         return new TokenResult()

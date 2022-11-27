@@ -2,7 +2,10 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser;
 
-[Serializable]
+/// <summary>
+/// A object which is returned by the parser.
+/// It contains a list of nodes.
+/// </summary>
 public class Scope
 {
     public List<INode> Nodes { get; private set; }
@@ -23,8 +26,7 @@ public class Scope
         }
         catch (Exception ex)
         {
-            Logger.Log($"Scope.AddNode() returned an error of {ex.ToString()}", Common.Enum.LogType.ERROR);
-            Console.WriteLine(ex);
+            Logger.Log($"Scope.AddNode() returned an error of {ex.ToString()}", LogType.ERROR);
             return false;
         }
 

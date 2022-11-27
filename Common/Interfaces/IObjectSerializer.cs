@@ -1,5 +1,6 @@
 namespace Common.Interfaces;
 
+/// <inheritdoc cref="ObjectSerializer"/>
 public interface IObjectSerializer
 {
     string Location { get; set; }
