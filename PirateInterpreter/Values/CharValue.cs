@@ -32,6 +32,10 @@ public class CharValue : BaseValue, IValue
             case TokenType.POWER:
                 Logger.Log("<char> ^ <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
+            
+            case TokenType.MODULO:
+                Logger.Log("<char> % <char> is not supported", LogType.ERROR);
+                throw new NotImplementedException();
 
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");

@@ -38,6 +38,11 @@ public class IntegerValue : BaseValue, IValue
                 otherValue = ConvertValueToInt(other.Value);
                 
                 return new IntegerValue(Convert.ToInt64(Math.Pow(value, otherValue)), Logger);
+            case TokenType.MODULO:
+                value = ConvertValueToInt(Value);
+                otherValue = ConvertValueToInt(other.Value);
+                
+                return new IntegerValue(value % otherValue, Logger);
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }

@@ -26,9 +26,11 @@ public class StringValue : BaseValue, IValue
             case TokenType.DIVIDE:
                 Logger.Log("<string> / <string> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
-
             case TokenType.POWER:
                 Logger.Log("<string> ^ <string> is not supported", LogType.ERROR);
+                throw new NotImplementedException();
+            case TokenType.MODULO:
+                Logger.Log("<string> % <string> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
 
         }

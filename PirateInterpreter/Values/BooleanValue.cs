@@ -14,17 +14,29 @@ public class BooleanValue : BaseValue, IValue
         switch (_operator.TokenType)
         {
             case TokenType.PLUS:
-                return new IntegerValue(ConvertValueToInt(Value) + ConvertValueToInt(other.Value), Logger);
+                var value = ConvertValueToInt(Value);
+                var otherValue = ConvertValueToInt(other.Value);
+                return new IntegerValue(value + otherValue, Logger);
             case TokenType.MINUS:
-                return new IntegerValue(ConvertValueToInt(Value) - ConvertValueToInt(other.Value), Logger);
+                value = ConvertValueToInt(Value);
+                otherValue = ConvertValueToInt(other.Value);
+                return new IntegerValue(value - otherValue, Logger);
             case TokenType.MULTIPLY:
-                return new IntegerValue(ConvertValueToInt(Value) * ConvertValueToInt(other.Value), Logger);
+                value = ConvertValueToInt(Value);
+                otherValue = ConvertValueToInt(other.Value);
+                return new IntegerValue(value * otherValue, Logger);
             case TokenType.DIVIDE:
-                return new IntegerValue(ConvertValueToInt(Value) / ConvertValueToInt(other.Value), Logger);
+                value = ConvertValueToInt(Value);
+                otherValue = ConvertValueToInt(other.Value);
+                return new IntegerValue(value / otherValue, Logger);
             case TokenType.POWER:
                 var doubleValue = Convert.ToDouble(Value);
                 var doubleOtherValue = Convert.ToDouble(other.Value);
                 return new IntegerValue(Convert.ToInt64(Math.Pow(doubleValue, doubleOtherValue)), Logger);
+            case TokenType.MODULO:
+                value = ConvertValueToInt(Value);
+                otherValue = ConvertValueToInt(other.Value);
+                return new IntegerValue(value % otherValue, Logger);
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }

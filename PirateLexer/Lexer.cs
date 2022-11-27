@@ -89,6 +89,10 @@ public class Lexer : ILexer
                     tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MULTIPLY, Logger));
                     position += 1;
                     continue;
+                case '%':
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MODULO, Logger));
+                    position += 1;
+                    continue;
                 case '/':
                     tokenResult = _tokenRepository.MakeDivide(text, position);
                     tokens.Add(tokenResult.Token);

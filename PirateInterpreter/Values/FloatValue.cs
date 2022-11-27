@@ -37,6 +37,10 @@ public class FloatValue : BaseValue, IValue
                 value = ConvertValueToDoubleOrInt(Value);
                 otherValue = ConvertValueToDoubleOrInt(other.Value);
                 return new FloatValue(Math.Pow(value, otherValue), Logger);
+            case TokenType.MODULO:
+                value = ConvertValueToDoubleOrInt(Value);
+                otherValue = ConvertValueToDoubleOrInt(other.Value);
+                return new FloatValue(value % otherValue, Logger);
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
