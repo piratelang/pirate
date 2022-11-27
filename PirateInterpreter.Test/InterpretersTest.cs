@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PirateInterpreter.Interpreters;
 using PirateInterpreter.StandardLibrary;
@@ -15,9 +16,9 @@ public class InterpretersTest
     {
         // Arrange
         var binaryOperationNode = new BinaryOperationNode(
-            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1)),
             new Token(TokenGroup.OPERATORS, TokenType.PLUS),
-            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
+            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1))
         );
 
         // Act
@@ -29,7 +30,7 @@ public class InterpretersTest
         // Assert
         Assert.IsType<List<BaseValue>>(result);
         Assert.IsType<Values.IntegerValue>(result[0]);
-        Assert.Equal(2, result[0].Value);
+        Assert.Equal((Int64)2, result[0].Value);
     }
 
     [Fact]
@@ -102,9 +103,9 @@ public class InterpretersTest
             new Token(TokenGroup.TYPEKEYWORD, TokenType.INT),
             new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
             new BinaryOperationNode(
-                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1)),
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1)),
                 new Token(TokenGroup.OPERATORS, TokenType.PLUS),
-                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1))
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1))
             )
         );
 
@@ -117,7 +118,7 @@ public class InterpretersTest
         // Assert
         Assert.IsType<List<BaseValue>>(result);
         Assert.IsType<Values.VariableValue>(result[0]);
-        Assert.Equal(2, result[0].Value);
+        Assert.Equal((Int64)2, result[0].Value);
     }
 
     [Fact]
