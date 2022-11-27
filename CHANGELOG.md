@@ -45,6 +45,14 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Update to .net 7
 - Small Logger rework
 
+### ([#100](https://github.com/joerivanarkel/PirateLang/pull/100)) Removing Binary serialization
+- Replacing Binary serialization with JSON serialization
+    - Changed interpreters to use `Int64` instead of `int` and `double` instead of `single`
+    - Refined token to just use `TokenGroup` and `TokenType` enums
+- Added Logo to `README.md`
+- Refactored Parser and Interpreter methods
+- Added XML documentation comment per class
+
 ## 1.0.0
 
 ### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter
