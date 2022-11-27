@@ -47,7 +47,7 @@ public class OperationParser : BaseParser, ITokenParser
 
         if (_tokens.Count != _index + 1)
         {
-            if (_tokens[_index + 1].TokenGroup == TokenGroup.OPERATORS)
+            if (_tokens[_index + 1].TokenGroup == TokenGroup.COMPARISONOPERATORS)
             {
                 var result = CreateBinaryOperationNode(_index, RightNode);
                 RightNode = result.node;
@@ -65,6 +65,8 @@ public class OperationParser : BaseParser, ITokenParser
     private INode ExploreBinaryOperation(ref INode LeftNode)
     {
         INode node;
+        if (_tokens.Count == _index + 1) return LeftNode;
+        if (_tokens[_index + 1].TokenGroup != TokenGroup.OPERATORS) return LeftNode;
         while (true)
         {
             var result = CreateBinaryOperationNode(_index, LeftNode);

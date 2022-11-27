@@ -26,15 +26,15 @@ public class IfStatementInterpreter : BaseInterpreter
         var conditionBoolean = (int)conditionValue.Value != 0;
         
         List<BaseValue> resultValues = new();
-        if (conditionBoolean && ifStatementNode.BodyNodes.Count > 0) InterpretBodyNodes(resultValues);
-        if (!conditionBoolean && ifStatementNode.ElseNode is not null) InterpretBodyNodes(resultValues);
+        if (conditionBoolean && ifStatementNode.BodyNodes.Count > 0) InterpretBodyNodes(resultValues, ifStatementNode.BodyNodes);
+        if (!conditionBoolean && ifStatementNode.ElseNode is not null) InterpretBodyNodes(resultValues, ifStatementNode.ElseNode);
         
         return resultValues;
     }
 
-    private void InterpretBodyNodes(List<BaseValue> resultValues)
+    private void InterpretBodyNodes(List<BaseValue> resultValues, List<INode> bodyNodes)
     {
-        foreach (var node in ifStatementNode.BodyNodes)
+        foreach (var node in bodyNodes)
         {
             var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
             if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
