@@ -11,27 +11,41 @@ public class FloatValue : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        if (Value is not double && other.Value is not double)
-        {
-            throw new TypeConversionException(typeof(double));
-        }
-        var value = (double)Value;
-        var otherValue = (double)other.Value;
         switch (_operator.TokenType)
         {
             case TokenType.PLUS:
+                var value = ConvertValueToDoubleOrInt(Value);
+                var otherValue = ConvertValueToDoubleOrInt(other.Value);
+                
                 return new FloatValue(value + otherValue, Logger);
             case TokenType.MINUS:
+                value = ConvertValueToDoubleOrInt(Value);
+                otherValue = ConvertValueToDoubleOrInt(other.Value);
+                
                 return new FloatValue(value - otherValue, Logger);
             case TokenType.MULTIPLY:
+                value = ConvertValueToDoubleOrInt(Value);
+                otherValue = ConvertValueToDoubleOrInt(other.Value);
+                
                 return new FloatValue(value * otherValue, Logger);
             case TokenType.DIVIDE:
+                value = ConvertValueToDoubleOrInt(Value);
+                otherValue = ConvertValueToDoubleOrInt(other.Value);
+                
                 return new FloatValue(value / otherValue, Logger);
             case TokenType.POWER:
-                var doubleValue = Convert.ToDouble(Value);
-                var doubleOtherValue = Convert.ToDouble(otherValue);
-                return new FloatValue(Math.Pow(doubleValue, doubleOtherValue), Logger);
+                value = ConvertValueToDoubleOrInt(Value);
+                otherValue = ConvertValueToDoubleOrInt(other.Value);
+                return new FloatValue(Math.Pow(value, otherValue), Logger);
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
+    }
+    private double ConvertValueToDoubleOrInt(object value)
+    {
+        if (value is not double && value is not Int64)
+        {
+            throw new TypeConversionException(typeof(double));
+        }
+        return value is double ? (double)value : (Int64)value;
     }
 }

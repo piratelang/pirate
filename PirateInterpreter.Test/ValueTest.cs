@@ -13,75 +13,75 @@ namespace PirateInterpreter.Test
         public void ShouldOperateBooleanPlusBoolean()
         {
             // Arrange
-            var boolean1 = new Values.BooleanValue(1, A.Fake<ILogger>());
-            var boolean2 = new Values.BooleanValue(1, A.Fake<ILogger>());
+            var boolean1 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
+            var boolean2 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.PLUS);
             // Act
             var result = boolean1.OperatedBy(tokenOperator, boolean2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(2, result.Value);
+            Assert.Equal((Int64)2, result.Value);
         }
 
         [Fact]
         public void ShouldOperateBooleanMinusBoolean()
         {
             // Arrange
-            var boolean1 = new Values.BooleanValue(1, A.Fake<ILogger>());
-            var boolean2 = new Values.BooleanValue(1, A.Fake<ILogger>());
+            var boolean1 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
+            var boolean2 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.MINUS);
             // Act
             var result = boolean1.OperatedBy(tokenOperator, boolean2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(0, result.Value);
+            Assert.Equal((Int64)0, result.Value);
         }
 
         [Fact]
         public void ShouldOperateBooleanMultiplyBoolean()
         {
             // Arrange
-            var boolean1 = new Values.BooleanValue(1, A.Fake<ILogger>());
-            var boolean2 = new Values.BooleanValue(1, A.Fake<ILogger>());
+            var boolean1 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
+            var boolean2 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.MULTIPLY);
             // Act
             var result = boolean1.OperatedBy(tokenOperator, boolean2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(1, result.Value);
+            Assert.Equal((Int64)1, result.Value);
         }
 
         [Fact]
         public void ShouldOperateBooleanDivideBoolean()
         {
             // Arrange
-            var boolean1 = new Values.BooleanValue(1, A.Fake<ILogger>());
-            var boolean2 = new Values.BooleanValue(1, A.Fake<ILogger>());
+            var boolean1 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
+            var boolean2 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.DIVIDE);
             // Act
             var result = boolean1.OperatedBy(tokenOperator, boolean2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(1, result.Value);
+            Assert.Equal((Int64)1, result.Value);
         }
 
         [Fact]
         public void ShouldOperateBooleanPowerBoolean()
         {
             // Arrange
-            var boolean1 = new Values.BooleanValue(1, A.Fake<ILogger>());
-            var boolean2 = new Values.BooleanValue(1, A.Fake<ILogger>());
+            var boolean1 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
+            var boolean2 = new Values.BooleanValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.POWER);
             // Act
             var result = boolean1.OperatedBy(tokenOperator, boolean2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(1, result.Value);
+            Assert.Equal((Int64)1, result.Value);
         }
 
         [Fact]

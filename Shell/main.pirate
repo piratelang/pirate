@@ -1,1 +1,1 @@
-IO.print("d" +"f2" )
+IO.print(3.3 + 3)

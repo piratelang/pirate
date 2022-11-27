@@ -11,27 +11,31 @@ public class BooleanValue : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        if (Value is not int || other.Value is not int)
-        {
-            throw new TypeConversionException(typeof(int));
-        }
-        var value = (int)Value;
-        var otherValue = (int)other.Value;
         switch (_operator.TokenType)
         {
             case TokenType.PLUS:
-                return new IntegerValue(value + otherValue, Logger);
+                return new IntegerValue(ConvertValueToInt(Value) + ConvertValueToInt(other.Value), Logger);
             case TokenType.MINUS:
-                return new IntegerValue(value - otherValue, Logger);
+                return new IntegerValue(ConvertValueToInt(Value) - ConvertValueToInt(other.Value), Logger);
             case TokenType.MULTIPLY:
-                return new IntegerValue(value * otherValue, Logger);
+                return new IntegerValue(ConvertValueToInt(Value) * ConvertValueToInt(other.Value), Logger);
             case TokenType.DIVIDE:
-                return new IntegerValue(value / otherValue, Logger);
+                return new IntegerValue(ConvertValueToInt(Value) / ConvertValueToInt(other.Value), Logger);
             case TokenType.POWER:
                 var doubleValue = Convert.ToDouble(Value);
-                var doubleOtherValue = Convert.ToDouble(otherValue);
-                return new IntegerValue(Convert.ToInt32(Math.Pow(doubleValue, doubleOtherValue)), Logger);
+                var doubleOtherValue = Convert.ToDouble(other.Value);
+                return new IntegerValue(Convert.ToInt64(Math.Pow(doubleValue, doubleOtherValue)), Logger);
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
+
+    private Int64 ConvertValueToInt(object value)
+    {
+        if (value is not Int64)
+        {
+            throw new TypeConversionException(typeof(Int64));
+        }
+        return (Int64)value;
+    }
+
 }
