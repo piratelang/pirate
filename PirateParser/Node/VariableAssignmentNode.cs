@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node assigning a value to a variable.
+/// </summary>
+/// <example>
+/// x = 5;
+/// </example>
 public class VariableAssignmentNode : IVariableAssignmentNode
 {
     public IValueNode Identifier { get; set; }

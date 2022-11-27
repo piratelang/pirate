@@ -1,3 +1,1 @@
-IO.print(
-    IO.read("Write here: ")
-    )
+IO.print("d" +"f2" )

@@ -2,24 +2,31 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a if statement.<br/>
+/// If a else statement is present, the else statement is stored in the ElseStatement property.
+/// </summary>
+/// <example>
+/// if 1 == 2
+/// {<br/>
+///    IO.print("Hello World");<br/>
+/// }<br/>
+/// else 
+/// {<br/>
+///   IO.print("Goodbye World");<br/>
+/// }
+/// </example>
 public class IfStatementNode : IIfStatementNode
 {
     public IOperationNode ConditionNode { get; set; }
     public List<INode> BodyNodes { get; set; }
-    public List<INode> ElseNode { get; set; } = default!;
+    public List<INode> ElseNode { get; set; }
 
-    public IfStatementNode(IOperationNode conditionNode, List<INode> bodyNodes, List<INode> elseNode)
+    public IfStatementNode(IOperationNode conditionNode, List<INode> bodyNodes, List<INode> elseNode = default!)
     {
         ConditionNode = conditionNode;
         BodyNodes = bodyNodes;
         ElseNode = elseNode;
-    }
-
-    public IfStatementNode(IOperationNode conditionNode, List<INode> bodyNodes)
-    {
-        ConditionNode = conditionNode;
-        BodyNodes = bodyNodes;
     }
     
     public bool IsValid()

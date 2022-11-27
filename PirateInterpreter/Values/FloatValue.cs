@@ -2,29 +2,32 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A float value.
+/// </summary>
 public class FloatValue : BaseValue, IValue
 {
     public FloatValue(object value, ILogger logger) :base(value, logger) {}
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        if (Value is not float && other.Value is not float)
+        if (Value is not double && other.Value is not double)
         {
-            throw new TypeConversionException(typeof(float));
+            throw new TypeConversionException(typeof(double));
         }
-        var value = (float)Value;
-        var otherValue = (float)other.Value;
+        var value = (double)Value;
+        var otherValue = (double)other.Value;
         switch (_operator.TokenType)
         {
-            case TokenOperators.PLUS:
+            case TokenType.PLUS:
                 return new FloatValue(value + otherValue, Logger);
-            case TokenOperators.MINUS:
+            case TokenType.MINUS:
                 return new FloatValue(value - otherValue, Logger);
-            case TokenOperators.MULTIPLY:
+            case TokenType.MULTIPLY:
                 return new FloatValue(value * otherValue, Logger);
-            case TokenOperators.DIVIDE:
+            case TokenType.DIVIDE:
                 return new FloatValue(value / otherValue, Logger);
-            case TokenOperators.POWER:
+            case TokenType.POWER:
                 var doubleValue = Convert.ToDouble(Value);
                 var doubleOtherValue = Convert.ToDouble(otherValue);
                 return new FloatValue(Math.Pow(doubleValue, doubleOtherValue), Logger);

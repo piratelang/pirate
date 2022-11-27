@@ -2,19 +2,20 @@ using PirateLexer.Enums;
 
 namespace PirateLexer.Tokens;
 
-[Serializable]
+/// <summary>
+/// A model for all the tokens.
+/// </summary>
 public class Token
 {
     public TokenGroup TokenGroup { get; set; }
-    public object TokenType { get; set; }
+    public TokenType TokenType { get; set; }
     public object Value { get; set; }
 
-    public Token(TokenGroup tokenGroup, object tokenType, object value = null)
+    public Token(TokenGroup tokenGroup, TokenType tokenType, object value = null)
     {
         TokenGroup = tokenGroup;
         TokenType = tokenType;
         Value = value;
-        // logger.Log($"Creating Token \"{ToString()}\"", Common.Enum.LogType.INFO);
     }
 
     public bool Matches(object tokenType, object value=null)

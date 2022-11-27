@@ -1,5 +1,8 @@
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A placeholder value for a standard library function.
+/// </summary>
 public class Library : BaseValue
 {
     public string Name { get; set; }
@@ -8,7 +11,7 @@ public class Library : BaseValue
     {
         Name = name;
         Callables = callables;
-        Logger.Log($"Created {this.GetType().Name}", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name}", LogType.INFO);
     }
 
     public override string ToString()

@@ -17,7 +17,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(3, result.Position);
         Assert.Equal(TokenGroup.VALUE, result.Token.TokenGroup);
-        Assert.Equal(TokenValue.INT, result.Token.TokenType);
+        Assert.Equal(TokenType.INT, result.Token.TokenType);
         Assert.Equal(123, result.Token.Value);
     }
 
@@ -33,7 +33,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(7, result.Position);
         Assert.Equal(TokenGroup.VALUE, result.Token.TokenGroup);
-        Assert.Equal(TokenValue.FLOAT, result.Token.TokenType);
+        Assert.Equal(TokenType.FLOAT, result.Token.TokenType);
         Assert.Equal((float)123.123, result.Token.Value);
     }
 
@@ -46,10 +46,11 @@ public class TokenRepositoryTest
         var position = 0;
         //Act
         var result = tokenRepository.MakeIdentifier(text, position);
+        
         //Assert
         Assert.Equal(4, result.Position);
         Assert.Equal(TokenGroup.SYNTAX, result.Token.TokenGroup);
-        Assert.Equal(TokenSyntax.IDENTIFIER, result.Token.TokenType);
+        Assert.Equal(TokenType.IDENTIFIER, result.Token.TokenType);
         Assert.Equal("test", result.Token.Value);
     }
 
@@ -65,7 +66,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(2, result.Position);
         Assert.Equal(TokenGroup.CONTROLKEYWORD, result.Token.TokenGroup);
-        Assert.Equal(TokenControlKeyword.IF, result.Token.TokenType);
+        Assert.Equal(TokenType.IF, result.Token.TokenType);
         Assert.Equal("if", result.Token.Value);
     }
 
@@ -81,7 +82,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(6, result.Position);
         Assert.Equal(TokenGroup.VALUE, result.Token.TokenGroup);
-        Assert.Equal(TokenValue.STRING, result.Token.TokenType);
+        Assert.Equal(TokenType.STRING, result.Token.TokenType);
         Assert.Equal("test", result.Token.Value);
     }
 
@@ -97,7 +98,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(3, result.Position);
         Assert.Equal(TokenGroup.VALUE, result.Token.TokenGroup);
-        Assert.Equal(TokenValue.CHAR, result.Token.TokenType);
+        Assert.Equal(TokenType.CHAR, result.Token.TokenType);
         Assert.Equal('a', result.Token.Value);
     }
 
@@ -113,7 +114,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(2, result.Position);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenComparisonOperators.NOTEQUALS, result.Token.TokenType);
+        Assert.Equal(TokenType.NOTEQUALS, result.Token.TokenType);
     }
 
     [Fact]
@@ -128,7 +129,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(1, result.Position);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenComparisonOperators.GREATERTHAN, result.Token.TokenType);
+        Assert.Equal(TokenType.GREATERTHAN, result.Token.TokenType);
     }
 
     [Fact]
@@ -143,7 +144,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(2, result.Position);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenComparisonOperators.GREATERTHANEQUALS, result.Token.TokenType);
+        Assert.Equal(TokenType.GREATERTHANEQUALS, result.Token.TokenType);
     }
 
     [Fact]
@@ -158,7 +159,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(1, result.Position);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenComparisonOperators.LESSTHAN, result.Token.TokenType);
+        Assert.Equal(TokenType.LESSTHAN, result.Token.TokenType);
     }
 
     [Fact]
@@ -173,7 +174,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(2, result.Position);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenComparisonOperators.LESSTHANEQUALS, result.Token.TokenType);
+        Assert.Equal(TokenType.LESSTHANEQUALS, result.Token.TokenType);
     }
 
     [Fact]
@@ -188,7 +189,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(1, result.Position);
         Assert.Equal(TokenGroup.SYNTAX, result.Token.TokenGroup);
-        Assert.Equal(TokenSyntax.EQUALS, result.Token.TokenType);
+        Assert.Equal(TokenType.EQUALS, result.Token.TokenType);
     }
 
     [Fact]
@@ -203,7 +204,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(2, result.Position);
         Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenComparisonOperators.DOUBLEEQUALS, result.Token.TokenType);
+        Assert.Equal(TokenType.DOUBLEEQUALS, result.Token.TokenType);
     }
 
     [Fact]
@@ -218,7 +219,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(1, result.Position);
         Assert.Equal(TokenGroup.OPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenOperators.PLUS, result.Token.TokenType);
+        Assert.Equal(TokenType.PLUS, result.Token.TokenType);
     }
 
     [Fact]
@@ -233,7 +234,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(2, result.Position);
         Assert.Equal(TokenGroup.SYNTAX, result.Token.TokenGroup);
-        Assert.Equal(TokenSyntax.PLUSEQUALS, result.Token.TokenType);
+        Assert.Equal(TokenType.PLUSEQUALS, result.Token.TokenType);
     }
 
     [Fact]
@@ -248,7 +249,7 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(1, result.Position);
         Assert.Equal(TokenGroup.OPERATORS, result.Token.TokenGroup);
-        Assert.Equal(TokenOperators.DIVIDE, result.Token.TokenType);
+        Assert.Equal(TokenType.DIVIDE, result.Token.TokenType);
     }
 
     [Fact]
@@ -263,6 +264,6 @@ public class TokenRepositoryTest
         //Assert
         Assert.Equal(2, result.Position);
         Assert.Equal(TokenGroup.SYNTAX, result.Token.TokenGroup);
-        Assert.Equal(TokenSyntax.DOUBLEDIVIDE, result.Token.TokenType);
+        Assert.Equal(TokenType.DOUBLEDIVIDE, result.Token.TokenType);
     }
 }

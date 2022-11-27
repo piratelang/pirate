@@ -1,5 +1,8 @@
 namespace Shell.ModuleList;
 
+/// <summary>
+/// A module which lists a single module.
+/// </summary>
 public class Module
 {
     public string moduleName { get; set; }

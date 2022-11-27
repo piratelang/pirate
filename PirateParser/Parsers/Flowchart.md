@@ -29,13 +29,13 @@ stateDiagram-v2
         [*] --> IfStatementNode : Checks for syntax. if [comparison operation] [body]
     }
 
-    Fork --> VariableDeclarationParser : TokenTypeKeyword
+    Fork --> VariableDeclarationParser : TokenType
     state VariableDeclarationParser {
         direction LR
         [*] --> VariableDeclarationNode : Checks for syntax [type] [identifier] = [value]
     }
 
-    Fork--> VariableAssignmentParser : TokenSyntax.IDENTIFIER
+    Fork--> VariableAssignmentParser : TokenType.IDENTIFIER
     state VariableAssignmentParser {
         direction LR
         state EqualsOperator <<choice>>

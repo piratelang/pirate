@@ -1,7 +1,7 @@
-namespace Common.Interfaces
+namespace Common.Interfaces;
+
+/// <inheritdoc cref="EnvironmentVariables"/>
+public interface IEnvironmentVariables
 {
-    public interface IEnvironmentVariables
-    {
-        string GetVariable(string variablename);
-    }
+    string GetVariable(string variablename);
 }

@@ -3,6 +3,10 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser which parses a while loop statement.
+/// Defines a comaprison operation and a body.
+/// </summary>
 public class WhileLoopStatementParser : BaseParser
 {
     private ParserFactory _parserFactory { get; set; }
@@ -12,48 +16,51 @@ public class WhileLoopStatementParser : BaseParser
         _parserFactory = parserFactory;
     }
 
-    public override (INode node, int index) CreateNode()
+    public override ParseResult CreateNode()
     {
         INode node;
 
-        if (!_tokens[_index].Matches(TokenControlKeyword.WHILE))
-        {
-            Logger.Log("No While Statement was found", LogType.ERROR);
-            throw new ParserException("No While Statement was found");
-        }
+        if (!_tokens[_index].Matches(TokenType.WHILE)) throw new ParserException("No While Statement was found");
 
-        var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
-        var result = parser.CreateNode();
-        if (result.node is not IOperationNode)
-        {
-            Logger.Log("While Statement does not contain a valid operation", LogType.ERROR);
-            throw new ParserException("While Statement does not contain a valid operation");
-        }
+        BaseParser parser;
+        ParseResult result;
+        IOperationNode Operation;
 
-        IOperationNode Operation = (IOperationNode)result.node;
-        _index = result.index;
+        GetOperationNode(out parser, out result, out Operation);
 
-        if (!_tokens[_index += 1].Matches(TokenSyntax.LEFTCURLYBRACE))
-        {
-            Logger.Log("No Left Curly Brace was found", LogType.ERROR);
-            throw new ParserException("No Left Curly Braces was found");
-        }
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
 
+        List<INode> Nodes = GetBodyNodes(ref parser, ref result);
+
+        node = new WhileLoopStatementNode(Operation, Nodes);
+        return new ParseResult(node, _index);
+    }
+
+    private List<INode> GetBodyNodes(ref BaseParser parser, ref ParseResult result)
+    {
         List<INode> Nodes = new List<INode>();
-        while (!_tokens[_index += 1].Matches(TokenSyntax.RIGHTCURLYBRACE))
+        while (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE))
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
-            Nodes.Add(result.node);
-            _index = result.index;
-            if (_tokens[_index++].TokenType.Equals(TokenSyntax.SEMICOLON))
+            Nodes.Add(result.Node);
+            _index = result.Index;
+            if (_tokens[_index++].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;
             }
         }
 
-        node = new WhileLoopStatementNode(Operation, Nodes);
-        return (node, _index);
+        return Nodes;
+    }
 
+    private void GetOperationNode(out BaseParser parser, out ParseResult result, out IOperationNode Operation)
+    {
+        parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
+        result = parser.CreateNode();
+        if (result.Node is not IOperationNode) throw new ParserException("While Statement does not contain a valid operation");
+
+        Operation = (IOperationNode)result.Node;
+        _index = result.Index;
     }
 }

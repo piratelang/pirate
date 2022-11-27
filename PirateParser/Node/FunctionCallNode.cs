@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a function call.
+/// </summary>
+/// <example>
+/// IO.print("Hello World");
+/// </example>
 public class FunctionCallNode : IFunctionCallNode
 {
     public IValueNode Identifier { get; set; }

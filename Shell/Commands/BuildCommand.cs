@@ -1,4 +1,3 @@
-using Common;
 using PirateParser;
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
@@ -6,6 +5,9 @@ using PirateLexer.Interfaces;
 
 namespace Shell.Commands;
 
+/// <summary>
+/// A command which builds a module.
+/// </summary>
 public class BuildCommand : Command, ICommand, IBuildCommand
 {
     private IObjectSerializer _objectSerializer;

@@ -2,6 +2,9 @@ using Newtonsoft.Json;
 
 namespace Shell.ModuleList;
 
+/// <summary>
+/// A repository handling the module list file.
+/// </summary>
 public class ModuleListRepository : IModuleListRepository
 {
     private ILogger _logger;

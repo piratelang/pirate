@@ -3,6 +3,9 @@ using PirateInterpreter.Interpreters;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A variable value.
+/// </summary>
 public class VariableValue : BaseValue, IValue
 {
     public InterpreterFactory InterpreterFactory { get; set; }
@@ -18,6 +21,8 @@ public class VariableValue : BaseValue, IValue
         switch (Value.GetType())
         {
             case Type intType when Value.GetType()== typeof(int):
+            case Type when Value.GetType()== typeof(Int64):
+            case Type when Value.GetType()== typeof(Int32):
                 return new IntegerValue(Value, Logger).OperatedBy(_operator, other);
             case Type stringType when Value.GetType() == typeof(string):
                 return new StringValue(Value, Logger).OperatedBy(_operator, other);

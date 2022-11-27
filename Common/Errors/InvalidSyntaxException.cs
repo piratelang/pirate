@@ -1,6 +1,8 @@
 namespace Common.Errors;
 
-[Serializable]
+/// <summary>
+/// This is a custom exception for invalid syntax errors.
+/// </summary>
 public class InvalidSyntaxException : System.Exception
 {
     public InvalidSyntaxException() { }

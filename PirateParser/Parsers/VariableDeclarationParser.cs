@@ -4,6 +4,10 @@ using PirateParser.Node;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser handling variable declarations.
+/// Defines a Type, an Identifier and a Value.
+/// </summary>
 public class VariableDeclarationParser : BaseParser, ITokenParser
 {
     private ParserFactory _parserFactory { get; set; }
@@ -13,37 +17,41 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
         _parserFactory = parserFactory;
     }
 
-    public override (INode node, int index) CreateNode()
+    public override ParseResult CreateNode()
     {
         INode node;
         var VariableType = _tokens[_index];
 
-        var operationParser = new OperationParser(_tokens, _index+=1, Logger);
-        var result = operationParser.CreateNode();
+        ParseResult result;
+        INode IdentifierNode;
+        GetIdentifierNode(out result, out IdentifierNode);
 
-        var IdentifierNode = result.node;
-        _index = result.index;
-
-        if (IdentifierNode is not ValueNode)
-        {
-            Logger.Log("Variable Identifier is not a single value", LogType.ERROR);
-            throw new ParserException("Variable Identifier is not a single value");
-        }
+        if (IdentifierNode is not ValueNode) throw new ParserException("Variable Identifier is not a single value");
 
         var Operator = _tokens[_index += 1];
-        if (!Operator.Matches(TokenSyntax.EQUALS))
-        {
-            Logger.Log("No Equals assign Operator was found", LogType.ERROR);
-            throw new ParserException("No Equals assign Operator was found, following the Identifier");
-        }
+        if (!Operator.Matches(TokenType.EQUALS)) throw new ParserException("No Equals assign Operator was found, following the Identifier");
 
-        var parser = _parserFactory.GetParser(_index +=1, _tokens, Logger);
-        result = parser.CreateNode();
-        INode Value = result.node;
-        _index = result.index;
+        INode Value;
+        GetValue(out result, out Value);
 
         node = new VariableDeclarationNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
-        return (node, _index);
+        return new ParseResult(node, _index);
+    }
+
+    private void GetValue(out ParseResult result, out INode Value)
+    {
+        var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
+        result = parser.CreateNode();
+        Value = result.Node;
+        _index = result.Index;
+    }
+
+    private void GetIdentifierNode(out ParseResult result, out INode IdentifierNode)
+    {
+        var operationParser = new OperationParser(_tokens, _index += 1, Logger);
+        result = operationParser.CreateNode();
+        IdentifierNode = result.Node;
+        _index = result.Index;
     }
 }
 

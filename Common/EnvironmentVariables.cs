@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Common;
 
+/// <summary>
+/// This class is used to get the environment variables from the variables.json file.
+/// </summary>
 public class EnvironmentVariables : IEnvironmentVariables
 {
     public IFileReadHandler FileReadHandler { get; set; }

@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// This class is a base class for all interpreters.
+/// </summary>
 public abstract class BaseInterpreter
 {
     protected readonly ILogger Logger;
@@ -18,6 +21,7 @@ public abstract class BaseInterpreter
     public BaseValue VisitSingleNode()
     {
         var node = VisitNode();
+        if (node.Count == 0) return null;
         if (node.Count > 1 && node.Count < 0) throw new Exception("Value is not a single value");
         return node[0];
     }

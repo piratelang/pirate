@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Based on the condition, this interpreter will execute the true or false branch.
+/// </summary>
 public class IfStatementInterpreter : BaseInterpreter
 {
     public IIfStatementNode ifStatementNode { get; set; }
@@ -15,38 +14,31 @@ public class IfStatementInterpreter : BaseInterpreter
         if (node is not IIfStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         ifStatementNode = (IIfStatementNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Created {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", LogType.INFO);
     }
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", Common.Enum.LogType.INFO);
+        Logger.Log($"Visiting {this.GetType().Name} : \"{ifStatementNode.ToString()}\"", LogType.INFO);
         var interpreter = InterpreterFactory.GetInterpreter(ifStatementNode.ConditionNode);
         var conditionValue = interpreter.VisitSingleNode();
 
-        if (conditionValue is not Values.BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.BooleanValue));
+        if (conditionValue is not BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(BooleanValue));
         var conditionBoolean = (int)conditionValue.Value != 0;
         
-        List<BaseValue> bodyValues = new();
-        if (conditionBoolean && ifStatementNode.BodyNodes.Count > 0)
-        {
-            foreach (var node in ifStatementNode.BodyNodes)
-            {
-                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
-                if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
-                bodyValues.Add(bodyValue[0]);
-            }
-        }
-
-        if (!conditionBoolean && ifStatementNode.ElseNode is not null)
-        {
-            foreach (var node in ifStatementNode.ElseNode)
-            {
-                var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
-                if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
-                bodyValues.Add(bodyValue[0]);
-            }
-        }
+        List<BaseValue> resultValues = new();
+        if (conditionBoolean && ifStatementNode.BodyNodes.Count > 0) InterpretBodyNodes(resultValues, ifStatementNode.BodyNodes);
+        if (!conditionBoolean && ifStatementNode.ElseNode is not null) InterpretBodyNodes(resultValues, ifStatementNode.ElseNode);
         
-        return bodyValues;
+        return resultValues;
+    }
+
+    private void InterpretBodyNodes(List<BaseValue> resultValues, List<INode> bodyNodes)
+    {
+        foreach (var node in bodyNodes)
+        {
+            var bodyValue = InterpreterFactory.GetInterpreter(node).VisitNode();
+            if (bodyValue.Count > 1) throw new Exception("Body value is not a single value");
+            resultValues.Add(bodyValue[0]);
+        }
     }
 }

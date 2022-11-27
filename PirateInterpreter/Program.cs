@@ -14,7 +14,9 @@ while (true)
     var lexer = new Lexer(Logger, new TokenRepository(new KeyWordService()));
     var tokens = lexer.MakeTokens(input, "test");
 
-    ObjectSerializer objectSerializer = new(Logger, new EnvironmentVariables(new FileReadHandler(), new FileWriteHandler()));
+    var fileReadHandler = new FileReadHandler();
+    var fileWriteHandler = new FileWriteHandler();
+    ObjectSerializer objectSerializer = new(Logger, new EnvironmentVariables(fileReadHandler, fileWriteHandler), fileWriteHandler, fileReadHandler);
 
     var parser = new Parser(Logger, objectSerializer);
     var parseResult = parser.StartParse(tokens, "Test");

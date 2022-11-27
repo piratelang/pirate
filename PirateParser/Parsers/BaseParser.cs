@@ -1,7 +1,8 @@
-using PirateParser.Node.Interfaces;
-
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A base class for all parsers.
+/// </summary>
 public abstract class BaseParser
 {
     protected List<Token> _tokens;
@@ -15,5 +16,5 @@ public abstract class BaseParser
         Logger = logger;
     }
 
-    public abstract (INode node, int index) CreateNode();
+    public abstract ParseResult CreateNode();
 }

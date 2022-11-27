@@ -2,6 +2,9 @@ using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
+/// <summary>
+/// A command which creates a new file.
+/// </summary>
 public class NewCommand : Command, ICommand, INewCommand
 {
     private IFileWriteHandler _fileWriteHandler;

@@ -1,5 +1,9 @@
 namespace PirateParser.Node.Interfaces;
 
+
+/// <summary>
+/// Interface for all operation nodes.
+/// </summary>
 public interface IOperationNode : INode
 {
     INode Left { get; set; }

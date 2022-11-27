@@ -2,7 +2,15 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node defining a while loop.
+/// </summary>
+/// <example>
+/// while x < 5 
+/// {
+///    x = x + 1;
+/// }
+/// </example>    
 public class WhileLoopStatementNode : IWhileLoopStatementNode
 {
     public IOperationNode ConditionNode { get; set; }

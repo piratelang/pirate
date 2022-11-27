@@ -1,7 +1,6 @@
-using PirateParser.Node.Interfaces;
-
 namespace PirateParser.Node.Interfaces;
 
+/// <inheritdoc cref="ParameterDefinitionNode"/>
 public interface IParameterDefinitionNode : INode
 {
     Token TypeToken { get; set; }

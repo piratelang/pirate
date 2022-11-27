@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node declaring a variable.
+/// </summary>
+/// <example>
+/// var x = 5;
+/// </example>
 public class VariableDeclarationNode : IVariableDeclarationNode
 {
     public Token TypeToken { get; set; }
@@ -23,7 +28,7 @@ public class VariableDeclarationNode : IVariableDeclarationNode
 
     public bool IsValid()
     {
-        if (TypeToken.TokenType is not TokenTypeKeyword)
+        if (TypeToken.TokenGroup is not TokenGroup.TYPEKEYWORD)
         {
             return false;
         }

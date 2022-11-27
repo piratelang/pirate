@@ -1,4 +1,3 @@
-using PirateInterpreter.Interpreters;
 using PirateInterpreter.Values;
 using PirateInterpreter.Interfaces;
 using PirateParser;
@@ -6,6 +5,9 @@ using PirateInterpreter.Interpreters.Interfaces;
 
 namespace PirateInterpreter;
 
+/// <summary>
+/// The starting point for the interpreter.
+/// </summary>
 public class Interpreter : IInterpreter
 {
     private IObjectSerializer ObjectSerializer;
