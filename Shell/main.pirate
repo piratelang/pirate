@@ -1,1 +1,1 @@
-IO.print(3 % 2)
+IO.print(3 % 2); //Hello;
