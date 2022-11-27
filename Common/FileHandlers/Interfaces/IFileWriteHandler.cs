@@ -1,5 +1,6 @@
 namespace Common.FileHandlers.Interfaces;
 
+/// <inheritdoc cref="FileWriteHandler"/>
 public interface IFileWriteHandler
 {
     bool AppendToFile(FileWriteModel fileWriteModel, bool encryption = false);

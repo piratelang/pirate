@@ -2,6 +2,7 @@ using Common.Enum;
 
 namespace Common.FileHandlers.Interfaces;
 
+/// <inheritdoc cref="FileReadHandler"/>
 public interface IFileReadHandler
 {
     ///<summary>

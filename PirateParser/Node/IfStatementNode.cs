@@ -3,15 +3,19 @@ using PirateParser.Node.Interfaces;
 namespace PirateParser.Node;
 
 /// <summary>
-/// A node representing a if statement.
+/// A node representing a if statement.<br/>
 /// If a else statement is present, the else statement is stored in the ElseStatement property.
 /// </summary>
 /// <example>
 /// if 1 == 2
-/// {
-///    IO.print("Hello World");
+/// {<br/>
+///    IO.print("Hello World");<br/>
+/// }<br/>
+/// else 
+/// {<br/>
+///   IO.print("Goodbye World");<br/>
 /// }
-/// <example>    
+/// </example>
 public class IfStatementNode : IIfStatementNode
 {
     public IOperationNode ConditionNode { get; set; }

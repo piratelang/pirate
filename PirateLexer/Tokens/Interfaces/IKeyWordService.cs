@@ -1,7 +1,8 @@
 using PirateLexer.Enums;
 
-namespace PirateLexer.Interfaces;
+namespace PirateLexer.Tokens.Interfaces;
 
+/// <inheritdoc cref="KeyWordService"/>
 public interface IKeyWordService
 {
     TokenType GetTokenControlKeyword(string idString);

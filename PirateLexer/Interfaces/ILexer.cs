@@ -2,6 +2,7 @@ using PirateLexer.Tokens;
 
 namespace PirateLexer.Interfaces;
 
+/// <inheritdoc cref="Lexer"/>
 public interface ILexer
 {
     ILogger Logger { get; set; }

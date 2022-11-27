@@ -1,5 +1,5 @@
 using PirateLexer.Enums;
-using PirateLexer.Interfaces;
+using PirateLexer.Tokens.Interfaces;
 
 namespace PirateLexer.Tokens;
 

@@ -2,6 +2,7 @@ using System.Globalization;
 using PirateLexer.Tokens;
 using PirateLexer.Enums;
 using PirateLexer.Interfaces;
+using PirateLexer.Tokens.Interfaces;
 
 namespace PirateLexer;
 

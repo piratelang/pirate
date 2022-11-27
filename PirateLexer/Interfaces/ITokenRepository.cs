@@ -2,6 +2,7 @@ using PirateLexer.Tokens;
 
 namespace PirateLexer.Interfaces;
 
+/// <inheritdoc cref="TokenRepository"/>
 public interface ITokenRepository
 {
     TokenResult MakeChar(string text, int position);
