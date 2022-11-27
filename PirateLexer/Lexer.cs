@@ -4,6 +4,9 @@ using PirateLexer.Interfaces;
 
 namespace PirateLexer;
 
+/// <summary>
+/// A starting point for the lexer.
+/// </summary>
 public class Lexer : ILexer
 {
     private static Lexer lexer;

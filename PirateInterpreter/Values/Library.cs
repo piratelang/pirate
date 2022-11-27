@@ -1,5 +1,8 @@
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A placeholder value for a standard library function.
+/// </summary>
 public class Library : BaseValue
 {
     public string Name { get; set; }

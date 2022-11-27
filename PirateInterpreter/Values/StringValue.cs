@@ -2,6 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A string value.
+/// </summary>
 public class StringValue : BaseValue, IValue
 {
     public StringValue(object value, ILogger logger) :base(value, logger) {}

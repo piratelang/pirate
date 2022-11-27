@@ -3,6 +3,9 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser which handles all identifiers
+/// </summary>
 public class IdentifierParser : BaseParser
 {
     private int _startindex;
@@ -46,16 +49,16 @@ public class IdentifierParser : BaseParser
         var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
 
-        Value = result.node;
-        _index = result.index;
+        Value = result.Node;
+        _index = result.Index;
     }
 
     private void GetIdentifierNode(out OperationParser? operationParser, out ParseResult result, out INode identifierNode)
     {
         operationParser = new OperationParser(_tokens, _index, Logger);
         result = operationParser.CreateNode();
-        identifierNode = result.node;
-        _index = result.index;
+        identifierNode = result.Node;
+        _index = result.Index;
     }
 
     private ParseResult CreateOperationode(out OperationParser operationParser)
@@ -72,8 +75,8 @@ public class IdentifierParser : BaseParser
             var valueParser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = valueParser.CreateNode();
 
-            _index = result.index;
-            parameterNodes.Add(result.node);
+            _index = result.Index;
+            parameterNodes.Add(result.Node);
 
             if (_tokens[_index+=1].Matches(TokenType.COMMA)) continue;
             if (_tokens[_index].Matches(TokenType.RIGHTPARENTHESES)) break;

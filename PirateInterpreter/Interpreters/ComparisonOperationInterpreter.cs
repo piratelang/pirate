@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Returns the result of the comparison operation.
+/// </summary>
 public class ComparisonOperationInterpreter : BaseInterpreter
 {
     public IOperationNode operationNode { get; set; }

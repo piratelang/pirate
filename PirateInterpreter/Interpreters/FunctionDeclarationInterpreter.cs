@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Converts the function declaration node to a function value.
+/// </summary>
 public class FunctionDeclarationInterpreter : BaseInterpreter
 {
     public IFunctionDeclarationNode FunctionDeclarationNode { get; set; }

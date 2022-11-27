@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Interprets the for loop statement and gets the value from the body nodes.
+/// </summary>
 public class ForLoopStatementInterpreter : BaseInterpreter
 {
     public IForLoopStatementNode forLoopStatementNode { get; set; }
@@ -28,7 +31,6 @@ public class ForLoopStatementInterpreter : BaseInterpreter
         if (variableValue.Value is not Int64 && variableValue.Value is not int) throw new TypeConversionException(variableValue.Value.GetType(), typeof(Int64));
         if (startValue.Value is not Int64 && startValue.Value is not int) throw new TypeConversionException(startValue.Value.GetType(), typeof(Int64));
 
-        // var variable = (int)variableValue.Value;
         Int64.TryParse(variableValue.Value.ToString(), out Int64 variable);
         Int64.TryParse(startValue.Value.ToString(), out Int64 start);
 

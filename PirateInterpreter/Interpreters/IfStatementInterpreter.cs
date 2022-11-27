@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Based on the condition, this interpreter will execute the true or false branch.
+/// </summary>
 public class IfStatementInterpreter : BaseInterpreter
 {
     public IIfStatementNode ifStatementNode { get; set; }

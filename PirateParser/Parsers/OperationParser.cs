@@ -4,9 +4,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser looking for either a Binary operation or a Comparison operation.
+/// Defines a Left and Right node, and an Operator.
+/// </summary>
 public class OperationParser : BaseParser, ITokenParser
 {
-
     public OperationParser(List<Token> tokens, int index, ILogger logger) : base(tokens, index, logger) { }
 
     public override ParseResult CreateNode()

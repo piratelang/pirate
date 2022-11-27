@@ -1,7 +1,8 @@
-using PirateParser.Node.Interfaces;
-
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A base class for all parsers.
+/// </summary>
 public abstract class BaseParser
 {
     protected List<Token> _tokens;

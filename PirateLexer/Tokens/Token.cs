@@ -2,7 +2,9 @@ using PirateLexer.Enums;
 
 namespace PirateLexer.Tokens;
 
-[Serializable]
+/// <summary>
+/// A model for all the tokens.
+/// </summary>
 public class Token
 {
     public TokenGroup TokenGroup { get; set; }

@@ -5,6 +5,9 @@ using PirateLexer.Interfaces;
 
 namespace PirateLexer;
 
+/// <summary>
+/// A class which handles the complex logic of the lexer.
+/// </summary>
 public class TokenRepository : ITokenRepository
 {
     private readonly IKeyWordService _KeyWordService;

@@ -3,6 +3,10 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser which parses a while loop statement.
+/// Defines a comaprison operation and a body.
+/// </summary>
 public class WhileLoopStatementParser : BaseParser
 {
     private ParserFactory _parserFactory { get; set; }
@@ -39,8 +43,8 @@ public class WhileLoopStatementParser : BaseParser
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
-            Nodes.Add(result.node);
-            _index = result.index;
+            Nodes.Add(result.Node);
+            _index = result.Index;
             if (_tokens[_index++].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;
@@ -54,9 +58,9 @@ public class WhileLoopStatementParser : BaseParser
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.node is not IOperationNode) throw new ParserException("While Statement does not contain a valid operation");
+        if (result.Node is not IOperationNode) throw new ParserException("While Statement does not contain a valid operation");
 
-        Operation = (IOperationNode)result.node;
-        _index = result.index;
+        Operation = (IOperationNode)result.Node;
+        _index = result.Index;
     }
 }

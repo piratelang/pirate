@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter;
 
+/// <summary>
+/// A collection of variables values and functions.
+/// </summary>
 public sealed class SymbolTable
 {
     private static SymbolTable? symbolTable = default!;

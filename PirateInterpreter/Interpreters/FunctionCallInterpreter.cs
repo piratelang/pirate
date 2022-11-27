@@ -1,9 +1,13 @@
-using PirateInterpreter.StandardLibrary;
 using PirateInterpreter.StandardLibrary.Interfaces;
 using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// This class is an interpreter for function calls.
+/// It looks for the function in the standard library.
+/// Otherwise it looks for the declared function.
+/// </summary>
 public class FunctionCallInterpreter : BaseInterpreter
 {
     public IFunctionCallNode functionCallNode { get; set; }

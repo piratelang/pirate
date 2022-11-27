@@ -4,6 +4,9 @@ using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
+/// <summary>
+/// A command which builds and then runs the code.
+/// </summary>
 public class RunCommand : Command, ICommand, IRunCommand
 {
     public IObjectSerializer ObjectSerializer;

@@ -3,6 +3,10 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser looking for a function declaration.
+/// Defines a Identifier followed by a list of parameters, a return type and a list of body statements.
+/// </summary>
 public class FunctionDeclartionParser : BaseParser
 {
     public FunctionDeclartionParser(List<Token> tokens, int index, ILogger logger) : base(tokens, index, logger) { }
@@ -41,8 +45,8 @@ public class FunctionDeclartionParser : BaseParser
         var valueNode = new ParserFactory().GetParser(_index += 1, _tokens, Logger);
         var result = valueNode.CreateNode();
 
-        _index = result.index;
-        node = new FunctionDeclarationNode(identifierNode, parameters, returnTypeToken, Nodes, result.node);
+        _index = result.Index;
+        node = new FunctionDeclarationNode(identifierNode, parameters, returnTypeToken, Nodes, result.Node);
 
         if (!_tokens[_index += 1].Matches(TokenType.SEMICOLON)) throw new ParserException("No Semicolon was found");
         if (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE)) throw new ParserException("No Right Curly Braces was found");
@@ -58,8 +62,8 @@ public class FunctionDeclartionParser : BaseParser
             if (_tokens[_index].Matches(TokenType.RETURN)) break;
             var parser = new ParserFactory().GetParser(_index, _tokens, Logger);
             var result = parser.CreateNode();
-            Nodes.Add(result.node);
-            _index = result.index;
+            Nodes.Add(result.Node);
+            _index = result.Index;
             if (_tokens[_index + 1].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;

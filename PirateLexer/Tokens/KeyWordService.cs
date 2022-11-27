@@ -3,6 +3,9 @@ using PirateLexer.Interfaces;
 
 namespace PirateLexer.Tokens;
 
+/// <summary>
+/// A class which checks for keywords.
+/// </summary>
 public class KeyWordService : IKeyWordService
 {
     private string[] typeKeywords = new string[] { "var", "int", "float", "string", "char", "void" };

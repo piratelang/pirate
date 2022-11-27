@@ -4,6 +4,10 @@ using PirateParser.Node;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser handling variable declarations.
+/// Defines a Type, an Identifier and a Value.
+/// </summary>
 public class VariableDeclarationParser : BaseParser, ITokenParser
 {
     private ParserFactory _parserFactory { get; set; }
@@ -38,16 +42,16 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
     {
         var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        Value = result.node;
-        _index = result.index;
+        Value = result.Node;
+        _index = result.Index;
     }
 
     private void GetIdentifierNode(out ParseResult result, out INode IdentifierNode)
     {
         var operationParser = new OperationParser(_tokens, _index += 1, Logger);
         result = operationParser.CreateNode();
-        IdentifierNode = result.node;
-        _index = result.index;
+        IdentifierNode = result.Node;
+        _index = result.Index;
     }
 }
 

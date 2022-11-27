@@ -2,10 +2,12 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A boolean value.
+/// </summary>
 public class BooleanValue : BaseValue, IValue
 {
     public BooleanValue(object value, ILogger logger) :base(value, logger) {}
-
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {

@@ -22,7 +22,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<BinaryOperationNode>(result.node);
+        Assert.IsType<BinaryOperationNode>(result.Node);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<ComparisonOperationNode>(result.node);
+        Assert.IsType<ComparisonOperationNode>(result.Node);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<ValueNode>(result.node);
+        Assert.IsType<ValueNode>(result.Node);
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<VariableDeclarationNode>(result.node);
+        Assert.IsType<VariableDeclarationNode>(result.Node);
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<IfStatementNode>(result.node);
+        Assert.IsType<IfStatementNode>(result.Node);
     }
 
     [Fact]
@@ -134,8 +134,8 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<IfStatementNode>(result.node);
-        Assert.NotNull(((IfStatementNode)result.node).ElseNode);
+        Assert.IsType<IfStatementNode>(result.Node);
+        Assert.NotNull(((IfStatementNode)result.Node).ElseNode);
     }
 
     [Fact]
@@ -159,7 +159,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<WhileLoopStatementNode>(result.node);
+        Assert.IsType<WhileLoopStatementNode>(result.Node);
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<ForLoopStatementNode>(result.node);
+        Assert.IsType<ForLoopStatementNode>(result.Node);
     }
 
     [Fact]
@@ -212,7 +212,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<FunctionDeclarationNode>(result.node);
+        Assert.IsType<FunctionDeclarationNode>(result.Node);
     }
 
     [Fact]
@@ -241,7 +241,7 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<FunctionDeclarationNode>(result.node);
+        Assert.IsType<FunctionDeclarationNode>(result.Node);
     }
 
     [Fact]
@@ -262,6 +262,6 @@ public class ParserTest
         var result = parser.CreateNode();
 
         // Assert
-        Assert.IsType<FunctionCallNode>(result.node);
+        Assert.IsType<FunctionCallNode>(result.Node);
     }
 }

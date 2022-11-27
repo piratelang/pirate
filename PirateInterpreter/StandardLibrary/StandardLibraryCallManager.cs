@@ -3,6 +3,9 @@ using PirateInterpreter.StandardLibrary.Interfaces;
 
 namespace PirateInterpreter.StandardLibrary;
 
+/// <summary>
+/// Calls the right function from the standard library.
+/// </summary>
 public class StandardLibraryCallManager : IStandardLibraryCallManager
 {
     private readonly ILogger Logger;

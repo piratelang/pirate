@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node declaring a variable.
+/// </summary>
+/// <example>
+/// var x = 5;
+/// </example>
 public class VariableDeclarationNode : IVariableDeclarationNode
 {
     public Token TypeToken { get; set; }

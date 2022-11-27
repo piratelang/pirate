@@ -3,6 +3,10 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser looking for a for loop statement.
+/// Defines a Variable node, a Value node and a list of body nodes.
+/// </summary>
 public class ForLoopStatementParser : BaseParser
 {
     private ParserFactory _parserFactory { get; set; }
@@ -42,20 +46,20 @@ public class ForLoopStatementParser : BaseParser
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.node is not VariableDeclarationNode) throw new ParserException("For Statement does not contain a valid variable assignment");
+        if (result.Node is not VariableDeclarationNode) throw new ParserException("For Statement does not contain a valid variable assignment");
 
-        VariableAssign = (VariableDeclarationNode)result.node;
-        _index = result.index;
+        VariableAssign = (VariableDeclarationNode)result.Node;
+        _index = result.Index;
     }
 
     private void GetValueNode(out BaseParser parser, out ParseResult result, out ValueNode Value)
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.node is not ValueNode) throw new ParserException("For Statement does not contain a valid value");
+        if (result.Node is not ValueNode) throw new ParserException("For Statement does not contain a valid value");
 
-        Value = (ValueNode)result.node;
-        _index = result.index;
+        Value = (ValueNode)result.Node;
+        _index = result.Index;
     }
 
     private List<INode> GetBodyNodes(ref BaseParser parser, ref ParseResult result)
@@ -65,8 +69,8 @@ public class ForLoopStatementParser : BaseParser
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
-            Nodes.Add(result.node);
-            _index = result.index;
+            Nodes.Add(result.Node);
+            _index = result.Index;
             if (_index + 1 >= _tokens.Count) break;
             if (_tokens[_index + 1].TokenType.Equals(TokenType.SEMICOLON))
             {

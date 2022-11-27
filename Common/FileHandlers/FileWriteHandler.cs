@@ -2,27 +2,21 @@ using Common.FileHandlers.Interfaces;
 
 namespace Common.FileHandlers;
 
-[Serializable]
+
+/// <summary>
+/// This class handles writing to files.
+/// </summary>
 public class FileWriteHandler : BaseFileHandler, IFileWriteHandler
 {
-
-    // Name: Without extension
-    // Extension: With! dot
-    // Location: Without root folder, i.e. "./"
     public bool WriteToFile(FileWriteModel fileWriteModel, bool encryption = false)
     {
         if (fileWriteModel.Name == string.Empty || fileWriteModel.Extension == string.Empty || fileWriteModel.Extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
-        if (encryption)
-        {
-            fileWriteModel.Text = Encrypt(fileWriteModel.Text);
-        }
-
-
-
+        if (encryption)fileWriteModel.Text = Encrypt(fileWriteModel.Text);
+        
         CreateFolder(fileWriteModel.Location);
 
-       var result = Write(fileWriteModel).Result;
+        var result = Write(fileWriteModel).Result;
 
         return result;
     }
@@ -41,8 +35,6 @@ public class FileWriteHandler : BaseFileHandler, IFileWriteHandler
 
         return result;
     }
-
-    //--------------------------------------------------------------------------------
 
     private string Encrypt(string text)
     {

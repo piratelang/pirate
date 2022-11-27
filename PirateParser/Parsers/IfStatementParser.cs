@@ -3,6 +3,11 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser looking for a if statement.
+/// If a else statement is found, it will be parsed as well.
+/// Defines a Condition node, a list of body nodes and a list of else body nodes.
+/// </summary>
 public class IfStatementParser : BaseParser
 {
     private ParserFactory _parserFactory { get; set; }
@@ -43,8 +48,8 @@ public class IfStatementParser : BaseParser
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
-            ElseNodes.Add(result.node);
-            _index = result.index;
+            ElseNodes.Add(result.Node);
+            _index = result.Index;
             if (_tokens[_index++].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;
@@ -58,10 +63,10 @@ public class IfStatementParser : BaseParser
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.node is not IOperationNode) throw new ParserException("If Statement does not contain a valid operation");
+        if (result.Node is not IOperationNode) throw new ParserException("If Statement does not contain a valid operation");
 
-        Operation = (IOperationNode)result.node;
-        _index = result.index;
+        Operation = (IOperationNode)result.Node;
+        _index = result.Index;
     }
 
     private List<INode> GetBodyNodes(ref BaseParser parser, ref ParseResult result)
@@ -71,8 +76,8 @@ public class IfStatementParser : BaseParser
         {
             parser = _parserFactory.GetParser(_index, _tokens, Logger);
             result = parser.CreateNode();
-            Nodes.Add(result.node);
-            _index = result.index;
+            Nodes.Add(result.Node);
+            _index = result.Index;
             if (_tokens[_index++].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;

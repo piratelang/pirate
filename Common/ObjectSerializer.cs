@@ -1,6 +1,4 @@
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.Json;
 using Common.Enum;
 using Common.FileHandlers;
 using Common.FileHandlers.Interfaces;
@@ -9,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace Common;
 
+/// <summary>
+/// This class is used to serialize and deserialize objects to and from JSON.
+/// </summary>
 public class ObjectSerializer : IObjectSerializer
 {
     public string Location { get; set; }

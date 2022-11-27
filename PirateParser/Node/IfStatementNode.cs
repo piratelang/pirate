@@ -2,7 +2,16 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a if statement.
+/// If a else statement is present, the else statement is stored in the ElseStatement property.
+/// </summary>
+/// <example>
+/// if 1 == 2
+/// {
+///    IO.print("Hello World");
+/// }
+/// <example>    
 public class IfStatementNode : IIfStatementNode
 {
     public IOperationNode ConditionNode { get; set; }

@@ -2,14 +2,17 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser;
 
+/// <summary>
+/// A object which is returned by the parser.
+/// </summary>
 public class ParseResult
 {
-    public INode node { get; set; }
-    public int index { get; set; }
+    public INode Node { get; set; }
+    public int Index { get; set; }
 
     public ParseResult(INode node, int index)
     {
-        this.node = node;
-        this.index = index;
+        Node = node;
+        Index = index;
     }
 }

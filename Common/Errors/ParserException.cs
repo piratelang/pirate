@@ -2,7 +2,9 @@ using System.Runtime.Serialization;
 
 namespace Common.Errors;
 
-[Serializable]
+/// <summary>
+/// This is a custom exception for errors in the parser.
+/// </summary>
 public class ParserException : Exception
 {
     public ParserException() { }

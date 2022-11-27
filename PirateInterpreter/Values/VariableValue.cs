@@ -3,6 +3,9 @@ using PirateInterpreter.Interpreters;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A variable value.
+/// </summary>
 public class VariableValue : BaseValue, IValue
 {
     public InterpreterFactory InterpreterFactory { get; set; }

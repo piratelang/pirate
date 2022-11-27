@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a comparison operation.
+/// </summary>
+/// <example>
+/// 1 == 2
+/// </example>
 public class ComparisonOperationNode : IOperationNode
 {
     public INode Left { get; set; }

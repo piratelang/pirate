@@ -2,7 +2,12 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a binary operation.
+/// </summary>
+/// <example>
+/// 1 + 2
+/// </example>
 public class BinaryOperationNode : IOperationNode
 {
     public INode Left { get; set; }

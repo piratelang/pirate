@@ -2,6 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A integer value.
+/// </summary>
 public class IntegerValue : BaseValue, IValue
 {
     public IntegerValue(object value, ILogger logger) :base(value, logger) {}

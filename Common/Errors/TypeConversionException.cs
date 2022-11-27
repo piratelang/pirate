@@ -2,7 +2,9 @@ using System.Runtime.Serialization;
 
 namespace Common.Errors;
 
-[Serializable]
+/// <summary>
+/// This is a custom exception for type conversion errors.
+/// </summary>
 public class TypeConversionException : Exception
 {
     public Type? OrginType { get; set; }

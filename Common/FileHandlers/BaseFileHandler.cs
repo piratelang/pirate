@@ -2,7 +2,9 @@ using Common.Enum;
 
 namespace Common.FileHandlers;
 
-[Serializable]
+/// <summary>
+/// This class is a base class for all file handlers.
+/// </summary>
 public class BaseFileHandler
 {
     public string GetFileExtension(FileExtension fileExtension)

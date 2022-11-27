@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Executes the while loop statements while the condition is true.
+/// </summary>
 public class WhileLoopStatementInterpreter : BaseInterpreter
 {
     public IWhileLoopStatementNode whileLoopStatementNode { get; set; }

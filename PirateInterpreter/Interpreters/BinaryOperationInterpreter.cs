@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Returns BaseValue result of the binary operation.
+/// </summary>
 public class BinaryOperationInterpreter : BaseInterpreter
 {
     private IOperationNode _operationNode { get; set; }

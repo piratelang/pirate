@@ -2,6 +2,9 @@ using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
+/// <summary>
+/// A command which initializes files based on the parameters.
+/// </summary>
 public class InitCommand : Command, ICommand, IInitCommand
 {
     private IFileWriteHandler _fileWriteHandler;

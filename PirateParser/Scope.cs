@@ -2,7 +2,10 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser;
 
-[Serializable]
+/// <summary>
+/// A object which is returned by the parser.
+/// It contains a list of nodes.
+/// </summary>
 public class Scope
 {
     public List<INode> Nodes { get; private set; }

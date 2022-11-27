@@ -2,6 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A character value.
+/// </summary>
 public class CharValue : BaseValue, IValue
 {
     public CharValue(object value, ILogger logger) :base(value, logger) {}

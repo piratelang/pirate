@@ -2,6 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A float value.
+/// </summary>
 public class FloatValue : BaseValue, IValue
 {
     public FloatValue(object value, ILogger logger) :base(value, logger) {}

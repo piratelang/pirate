@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// This class is a base class for all interpreters.
+/// </summary>
 public abstract class BaseInterpreter
 {
     protected readonly ILogger Logger;

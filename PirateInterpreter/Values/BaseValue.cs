@@ -2,6 +2,9 @@ using PirateInterpreter.Values.Interfaces;
 
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// Represents a value resulting from a interpreted node.
+/// </summary>
 public abstract class BaseValue : IValue
 {
     public object Value {get; set;}

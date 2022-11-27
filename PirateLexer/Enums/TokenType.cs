@@ -1,5 +1,9 @@
 namespace PirateLexer.Enums;
 
+/// <summary>
+/// A enum for token types.
+/// </summary>
+[JsonConverter(typeof(StringEnumConverter))]
 public enum TokenType
 {
     //Comparison Operators

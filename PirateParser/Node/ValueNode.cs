@@ -2,7 +2,9 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node representing a value.
+/// </summary>
 public class ValueNode : IValueNode
 {
     public Token Value { get; set; }

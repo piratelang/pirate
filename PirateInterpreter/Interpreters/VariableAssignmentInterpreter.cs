@@ -2,6 +2,10 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.Interpreters;
 
+/// <summary>
+/// Converts the variable assignment node to a variable value.
+/// Also sets the variable value in the symbol table.
+/// </summary>
 public class VariableAssignmentInterpreter : BaseInterpreter
 {
     public VariableAssignmentNode variableAssignmentNode { get; private set; }

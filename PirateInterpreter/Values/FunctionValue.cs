@@ -1,5 +1,8 @@
 namespace PirateInterpreter.Values;
 
+/// <summary>
+/// A function value.
+/// </summary>
 public class FunctionValue : BaseValue
 {
     public IFunctionDeclarationNode FunctionDeclarationNode { get; set; }

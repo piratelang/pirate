@@ -6,7 +6,9 @@ using Common.Interfaces;
 
 namespace Common;
 
-[Serializable]
+/// <summary>
+/// Writes a log message to the log file.
+/// </summary>
 public class Logger : ILogger
 {
     private string logFileName { get; set; }

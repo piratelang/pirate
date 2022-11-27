@@ -2,7 +2,15 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
-[Serializable]
+/// <summary>
+/// A node declaring a function.
+/// </summary>
+/// <example>
+/// func add(a, b)
+/// {
+///    return a + b;
+/// }
+/// </example>    
 public class FunctionDeclarationNode : IFunctionDeclarationNode
 {
     public IValueNode Identifier { get; set; }

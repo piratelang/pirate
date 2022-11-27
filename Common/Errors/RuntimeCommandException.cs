@@ -2,7 +2,9 @@ using System.Runtime.Serialization;
 
 namespace Common.Errors;
 
-[Serializable]
+/// <summary>
+/// This is a custom exception for runtime command errors.
+/// </summary>
 public class RuntimeCommandException : Exception
 {
     public RuntimeCommandException() { }

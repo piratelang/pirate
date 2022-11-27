@@ -1,14 +1,16 @@
-using Shell.Commands;
-
 namespace Shell;
 
+/// <summary>
+/// A class starting the application.
+/// Firstly checks for arguments, otherwise starts the command manager.
+/// </summary>
 public class Application
 {
     private readonly ICommandManager _commandManager;
 
     public Application(ICommandManager commandManager)
     {
-        this._commandManager = commandManager;
+        _commandManager = commandManager;
     }
 
 

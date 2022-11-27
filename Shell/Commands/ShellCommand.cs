@@ -6,6 +6,9 @@ using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
 
+/// <summary>
+/// A command which starts the pirate repl.
+/// </summary>
 public class ShellCommand : Command, ICommand, IShellCommand
 {
     private IParser Parser;

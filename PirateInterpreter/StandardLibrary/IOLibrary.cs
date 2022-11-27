@@ -2,6 +2,9 @@ using PirateInterpreter.Values;
 
 namespace PirateInterpreter.StandardLibrary;
 
+/// <summary>
+/// Contains the standard library functions for the console.
+/// </summary>
 public class IOLibrary
 {
     private readonly ILogger Logger;
