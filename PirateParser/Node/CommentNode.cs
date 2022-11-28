@@ -4,16 +4,21 @@ namespace PirateParser.Node;
 
 public class CommentNode : INode
 {
-    public string Text { get; set; }
+    public List<Token> Comment { get; set; }
 
-    public CommentNode(string text)
+    public CommentNode(List<Token> comment)
     {
-        Text = text;
+        Comment = comment;
     }
 
     public override string ToString()
     {
-        return $"// {Text}";
+        var comment = string.Empty;
+        foreach (var token in Comment)
+        {
+            comment += token.ToString();
+        }
+        return $"// {comment}";
     }
 
     public bool IsValid()

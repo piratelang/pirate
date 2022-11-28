@@ -82,15 +82,15 @@ public class Lexer : ILexer
                     position = tokenResult.Position;
                     continue;
                 case '-':
-                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MINUS, Logger));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MINUS));
                     position += 1;
                     continue;
                 case '*':
-                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MULTIPLY, Logger));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MULTIPLY));
                     position += 1;
                     continue;
                 case '%':
-                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MODULO, Logger));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.MODULO));
                     position += 1;
                     continue;
                 case '/':
@@ -99,51 +99,51 @@ public class Lexer : ILexer
                     position = tokenResult.Position;
                     continue;
                 case '^':
-                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.POWER, Logger));
+                    tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.POWER));
                     position += 1;
                     continue;
                 case '(':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTPARENTHESES, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTPARENTHESES));
                     position += 1;
                     continue;
                 case ')':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTPARENTHESES, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTPARENTHESES));
                     position += 1;
                     continue;
                 case '{':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
                     position += 1;
                     continue;
                 case '}':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
                     position += 1;
                     continue;
                 case ',':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.COMMA, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.COMMA));
                     position += 1;
                     continue;
                 case ':':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.COLON, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.COLON));
                     position += 1;
                     continue;
                 case ';':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.SEMICOLON, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.SEMICOLON));
                     position += 1;
                     continue;
                 case '.':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.DOT, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.DOT));
                     position += 1;
                     continue;
                 case '$':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.DOLLAR, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.DOLLAR));
                     position += 1;
                     continue;
                 case '[':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTBRACKET, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTBRACKET));
                     position += 1;
                     continue;
                 case ']':
-                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTBRACKET, Logger));
+                    tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTBRACKET));
                     position += 1;
                     continue;
                 case '=':

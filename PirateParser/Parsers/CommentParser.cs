@@ -1,3 +1,5 @@
+using PirateParser.Node;
+
 namespace PirateParser.Parsers;
 
 public class CommentParser : BaseParser
@@ -11,11 +13,12 @@ public class CommentParser : BaseParser
         if (!_tokens[_index].Matches(TokenType.DOUBLEDIVIDE)) throw new ParserException("No Comment was found");
         _index++;
 
+        List<Token> comment = new();
         while(_tokens[_index].TokenType is not TokenType.SEMICOLON)
         {
-            // Save comment and return comment node
-            //Skip comment in interpreter
+            comment.Add(_tokens[_index]);
+            _index++;
         }
-        return new ParseResult(null, _index+1);
+        return new ParseResult(new CommentNode(comment), _index+1);
     }
 }
