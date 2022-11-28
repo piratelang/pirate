@@ -166,7 +166,13 @@ public class Lexer : ILexer
                     tokens.Add(tokenResult.Token);
                     position = tokenResult.Position;
                     continue;
+                default:
+                    tokens.Add(new Token(TokenGroup.Empty, TokenType.Empty, text[position].ToString()));
+                    position += 1;
+                    Logger.Log($"Creating Unknown Token \"{text[position].ToString()}\"", LogType.WARNING);
+                    continue;
             }
+
         }
         return tokens;
     }

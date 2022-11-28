@@ -2,6 +2,9 @@ using PirateParser.Node;
 
 namespace PirateParser.Parsers;
 
+/// <summary>
+/// A parser for comments.
+/// </summary>
 public class CommentParser : BaseParser
 {
     public CommentParser(List<Token> tokens, int index, ILogger logger) : base(tokens, index, logger)

@@ -11,5 +11,6 @@ public enum TokenGroup
     TYPEKEYWORD,
     CONTROLKEYWORD,
     SYNTAX,
-    VALUE
+    VALUE,
+    Empty
 }

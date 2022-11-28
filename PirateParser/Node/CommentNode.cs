@@ -2,6 +2,9 @@ using PirateParser.Node.Interfaces;
 
 namespace PirateParser.Node;
 
+/// <summary>
+/// A comment with a list of tokens.
+/// </summary>
 public class CommentNode : INode
 {
     public List<Token> Comment { get; set; }
@@ -18,7 +21,7 @@ public class CommentNode : INode
         {
             comment += token.ToString();
         }
-        return $"// {comment}";
+        return $"// {comment} ";
     }
 
     public bool IsValid()
