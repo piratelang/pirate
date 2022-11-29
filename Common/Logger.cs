@@ -26,7 +26,7 @@ public class Logger : ILogger
             logFileName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
         }
 
-        version = environmentVariables.GetVariable("version");
+        version = environmentVariables.GetVariable("version") ?? "0.0.0";
         location = $"bin/pirate{version}/logs";
     }
 

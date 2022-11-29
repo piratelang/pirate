@@ -29,6 +29,8 @@ public class ParserFactory : IParserFactory
             case TokenType.FLOAT when tokens[index].TokenGroup == TokenGroup.VALUE:
             case TokenType.CHAR when tokens[index].TokenGroup == TokenGroup.VALUE:
                 return new OperationParser(tokens, index, logger);
+            case TokenType.DOUBLEDIVIDE:
+                return new CommentParser(tokens, index, logger);
         }
         throw new ArgumentNullException("node", $"Factory cannot find parser for {tokens[index].GetType().Name}");
     }

@@ -53,6 +53,13 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 - Refactored Parser and Interpreter methods
 - Added XML documentation comment per class
 
+
+### ([#106](https://github.com/joerivanarkel/PirateLang/pull/106)) Refactor BaseValue operations
+- Cleaned up `OperatedBy` functions
+- Allowed float integer operations
+- Added comments between `//` and `;`
+- Added Modulo `%` operator
+
 ## 1.0.0
 
 ### ([#39](https://github.com/joerivanarkel/PirateLang/pull/39)) New Lexer, Parser and Interpreter

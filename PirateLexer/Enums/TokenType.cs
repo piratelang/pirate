@@ -35,6 +35,7 @@ public enum TokenType
     MULTIPLY,
     DIVIDE,
     POWER,
+    MODULO,
 
     // Syntax
     IDENTIFIER,
