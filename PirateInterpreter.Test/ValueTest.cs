@@ -88,75 +88,75 @@ namespace PirateInterpreter.Test
         public void ShouldOperateIntegerPlusInteger()
         {
             // Arrange
-            var integer1 = new Values.IntegerValue(1, A.Fake<ILogger>());
-            var integer2 = new Values.IntegerValue(1, A.Fake<ILogger>());
+            var integer1 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
+            var integer2 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.PLUS);
             // Act
             var result = integer1.OperatedBy(tokenOperator, integer2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(2, result.Value);
+            Assert.Equal((Int64)2, result.Value);
         }
 
         [Fact]
         public void ShouldOperateIntegerMinusInteger()
         {
             // Arrange
-            var integer1 = new Values.IntegerValue(1, A.Fake<ILogger>());
-            var integer2 = new Values.IntegerValue(1, A.Fake<ILogger>());
+            var integer1 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
+            var integer2 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.MINUS);
             // Act
             var result = integer1.OperatedBy(tokenOperator, integer2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(0, result.Value);
+            Assert.Equal((Int64)0, result.Value);
         }
 
         [Fact]
         public void ShouldOperateIntegerMultiplyInteger()
         {
             // Arrange
-            var integer1 = new Values.IntegerValue(1, A.Fake<ILogger>());
-            var integer2 = new Values.IntegerValue(1, A.Fake<ILogger>());
+            var integer1 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
+            var integer2 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.MULTIPLY);
             // Act
             var result = integer1.OperatedBy(tokenOperator, integer2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(1, result.Value);
+            Assert.Equal((Int64)1, result.Value);
         }
 
         [Fact]
         public void ShouldOperateIntegerDivideInteger()
         {
             // Arrange
-            var integer1 = new Values.IntegerValue(1, A.Fake<ILogger>());
-            var integer2 = new Values.IntegerValue(1, A.Fake<ILogger>());
+            var integer1 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
+            var integer2 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.DIVIDE);
             // Act
             var result = integer1.OperatedBy(tokenOperator, integer2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(1, result.Value);
+            Assert.Equal((Int64)1, result.Value);
         }
 
         [Fact]
         public void ShouldOperateIntegerPowerInteger()
         {
             // Arrange
-            var integer1 = new Values.IntegerValue(1, A.Fake<ILogger>());
-            var integer2 = new Values.IntegerValue(1, A.Fake<ILogger>());
+            var integer1 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
+            var integer2 = new Values.IntegerValue((Int64)1, A.Fake<ILogger>());
             var tokenOperator = new Token(TokenGroup.OPERATORS, TokenType.POWER);
             // Act
             var result = integer1.OperatedBy(tokenOperator, integer2);
 
             // Assert
             Assert.IsType<Values.IntegerValue>(result);
-            Assert.Equal(1, result.Value);
+            Assert.Equal((Int64)1, result.Value);
         }
 
         [Fact]
