@@ -57,6 +57,8 @@ Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 ### ([#106](https://github.com/joerivanarkel/PirateLang/pull/106)) Refactor BaseValue operations
 - Cleaned up `OperatedBy` functions
 - Allowed float integer operations
+- Added comments between `//` and `;`
+- Added Modulo `%` operator
 
 ## 1.0.0
 
