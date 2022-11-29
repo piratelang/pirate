@@ -40,6 +40,7 @@ public class EnvironmentVariables : IEnvironmentVariables
         }
         catch (System.Exception)
         {
+            Console.WriteLine($"Failed to get variable \"{variablename}\" from variables.json");
             throw new FileException($"{variablename} was not found in variables.json");
         }
     }

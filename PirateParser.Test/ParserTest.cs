@@ -264,4 +264,74 @@ public class ParserTest
         // Assert
         Assert.IsType<FunctionCallNode>(result.Node);
     }
+
+    [Fact]
+    public void ShouldReturnFunctionCallNodeWithParameters()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.COMMA));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "2"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTPARENTHESES));
+
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<FunctionCallNode>(result.Node);
+    }
+
+    [Fact]
+    public void ShouldReturnFunctionCallNodeWithParametersAndReturnStatement()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.COMMA));
+        tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "2"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTPARENTHESES));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.SEMICOLON));
+
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<FunctionCallNode>(result.Node);
+    }
+
+    [Fact]
+    public void ShouldReturnCommentNode()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+
+        var tokens = new List<Token>();
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.DOUBLEDIVIDE));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
+        tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.SEMICOLON));
+
+        var parserFactory = new ParserFactory();
+        var parser = parserFactory.GetParser(0, tokens, logger);
+
+        // Act
+        var result = parser.CreateNode();
+
+        // Assert
+        Assert.IsType<CommentNode>(result.Node);
+    }
 }

@@ -32,10 +32,12 @@ public class Parser : IParser
             var tokenParser = parserFactory.GetParser(index, tokens, Logger);
             var parseResult = tokenParser.CreateNode();
 
-            Logger.Log($"Created {parseResult.Node.GetType().Name} | \"{parseResult.Node.ToString()}\"", LogType.INFO);
-
-            scope.AddNode(parseResult.Node);
-            index = parseResult.Index;
+            if (parseResult != null)
+            {
+                Logger.Log($"Created {parseResult.Node.GetType().Name} | \"{parseResult.Node.ToString()}\"", LogType.INFO);
+                scope.AddNode(parseResult.Node);
+                index = parseResult.Index;
+            }
             index++;
             if (index + 1 <= tokens.Count())
             {
