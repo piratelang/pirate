@@ -1,41 +1,12 @@
-func main() : void
+var list = ["Hello", "World"];
+var list2 = ["Hello", "World"];
+
+var list3 = list.zip(list, list2);
+
+foreach var item in list3
 {
-    var one = "one";
-    string one = "one";
-    int one = 1;
-    // var bool = true;
-
-    var bool = "Hello" != "World";
-    var list = ["Hello", "World"];
-
-    var listOne = list[1];
-
-    if listOne == "Hello"
+    foreach var key in item
     {
-        print(listOne);
+        IO.print(key);
     }
-    
-    else
-    {
-        IO.print("Wrong");
-    }
-
-    while "Hello" == listOne
-    {
-        IO.print("Hello");
-    }
-
-    for var i = 0 to 3
-    {
-        IO.print(i);
-    }
-
-    foreach var item in list
-    {
-        IO.print(item);
-    }
-
-    
 }
-
-main();

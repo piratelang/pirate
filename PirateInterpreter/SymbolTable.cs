@@ -57,5 +57,11 @@ public sealed class SymbolTable
             new List<string> { "read", "print" },
             Logger)
         );
+
+        symbolTable?.SetBaseValue("List", new Library(
+            "List", 
+            new List<string> { "add", "remove", "get", "set", "contains", "size", "clear", "zip" },
+            Logger)
+        );
     }
 }
