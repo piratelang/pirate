@@ -13,7 +13,7 @@ public class FunctionCallInterpreter : BaseInterpreter
     public IFunctionCallNode functionCallNode { get; set; }
 
     private IStandardLibraryCallManager StandardLibraryFactory;
-    private List<string> LibraryList = new() { "IO" };
+    private List<string> LibraryList = new() { "IO", "List" };
 
     public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryCallManager standardLibraryFactory) : base(logger, InterpreterFactory)
     {

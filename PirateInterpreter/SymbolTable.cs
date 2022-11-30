@@ -29,7 +29,7 @@ public sealed class SymbolTable
     public BaseValue GetBaseValue(string name)
     {
         var value = SymbolList.GetValueOrDefault(name);
-        if (value == null) throw new NullReferenceException("Requested element from the Symbol Table does not exist.");
+        if (value == null) throw new NullReferenceException($"Requested element {name} from the Symbol Table does not exist.");
         
         Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", LogType.INFO);
         return value;
@@ -55,6 +55,12 @@ public sealed class SymbolTable
         symbolTable?.SetBaseValue("IO", new Library(
             "IO", 
             new List<string> { "read", "print" },
+            Logger)
+        );
+
+        symbolTable?.SetBaseValue("List", new Library(
+            "List", 
+            new List<string> { "add", "remove", "get", "set", "contains", "size", "clear", "zip" },
             Logger)
         );
     }

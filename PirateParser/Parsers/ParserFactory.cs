@@ -16,6 +16,8 @@ public class ParserFactory : IParserFactory
                 return new WhileLoopStatementParser(tokens, index, logger, this);
             case TokenType.FOR:
                 return new ForLoopStatementParser(tokens, index, logger, this);
+            case TokenType.FOREACH:
+                return new ForeachLoopStatementParser(tokens, index, logger, this);
             case TokenType.VAR when tokens[index].TokenGroup == TokenGroup.TYPEKEYWORD:
             case TokenType.STRING when tokens[index].TokenGroup == TokenGroup.TYPEKEYWORD:
             case TokenType.INT when tokens[index].TokenGroup == TokenGroup.TYPEKEYWORD:
@@ -28,10 +30,12 @@ public class ParserFactory : IParserFactory
             case TokenType.INT when tokens[index].TokenGroup == TokenGroup.VALUE:
             case TokenType.FLOAT when tokens[index].TokenGroup == TokenGroup.VALUE:
             case TokenType.CHAR when tokens[index].TokenGroup == TokenGroup.VALUE:
-                return new OperationParser(tokens, index, logger);
+                return new OperationParser(tokens, index, logger, this);
             case TokenType.DOUBLEDIVIDE:
                 return new CommentParser(tokens, index, logger);
+            case TokenType.LEFTBRACKET:
+                return new ListDeclarationParser(tokens, index, logger, this);
         }
-        throw new ArgumentNullException("node", $"Factory cannot find parser for {tokens[index].GetType().Name}");
+        throw new ArgumentNullException("node", $"Factory cannot find parser for {tokens[index].GetType().Name} : {tokens[index].TokenType.ToString()} : {tokens[index].Value}");
     }
 }

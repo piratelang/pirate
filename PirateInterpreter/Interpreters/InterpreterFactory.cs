@@ -28,10 +28,16 @@ public class InterpreterFactory : IInterpreterFactory
                 return new WhileLoopStatementInterpreter(node, this, Logger);
             case ForLoopStatementNode:
                 return new ForLoopStatementInterpreter(node, this, Logger);
+            case ForeachLoopStatementNode:
+                return new ForeachLoopStatementInterpreter(node, Logger, this);
             case VariableDeclarationNode:
                 return new VariableDeclarationInterpreter(node, this, Logger);
             case VariableAssignmentNode:
                 return new VariableAssignmentInterpreter(node, Logger, this);
+            case ListDeclarationNode:
+                return new ListDeclarationInterpreter(node, this, Logger);
+            case ListAccessNode:
+                return new ListAccessInterpreter(node, this, Logger);
             case BinaryOperationNode:
                 return new BinaryOperationInterpreter(node, this, Logger);
             case ComparisonOperationNode:
