@@ -3,26 +3,26 @@ func main() : void
     var one = "one";
     string one = "one";
     int one = 1;
-    var bool = true;
+    // var bool = true;
 
     var bool = "Hello" != "World";
     var list = ["Hello", "World"];
 
     var listOne = list[1];
 
-    if listOne == list[1]
+    if listOne == "Hello"
     {
         print(listOne);
     }
     
     else
     {
-        print("Wrong");
+        IO.print("Wrong");
     }
 
-    while "Hello" == list[1]
+    while "Hello" == listOne
     {
-        print("Hello");
+        IO.print("Hello");
     }
 
     for var i = 0 to 3

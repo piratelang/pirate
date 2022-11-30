@@ -29,7 +29,7 @@ public sealed class SymbolTable
     public BaseValue GetBaseValue(string name)
     {
         var value = SymbolList.GetValueOrDefault(name);
-        if (value == null) throw new NullReferenceException("Requested element from the Symbol Table does not exist.");
+        if (value == null) throw new NullReferenceException($"Requested element {name} from the Symbol Table does not exist.");
         
         Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", LogType.INFO);
         return value;
