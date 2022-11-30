@@ -24,7 +24,7 @@ public class IdentifierParser : BaseParser
         OperationParser? operationParser;
         ParseResult result;
         INode identifierNode;
-        GetIdentifierNode(out operationParser, out result, out identifierNode);
+        GetIdentifierNode(out identifierNode);
 
         if (identifierNode is not ValueNode) return CreateOperationode(out operationParser);
 
@@ -33,7 +33,8 @@ public class IdentifierParser : BaseParser
         var Operator = _tokens[_index += 1];
         if (!Operator.Matches(TokenType.EQUALS))
         {
-            if (Operator.Matches(TokenType.LEFTPARENTHESES)) return CreateFunctionCallNode(result, identifierValueNode);
+            if (Operator.Matches(TokenType.LEFTPARENTHESES)) return CreateFunctionCallNode(identifierValueNode);
+            if (Operator.Matches(TokenType.LEFTBRACKET)) return CreateListAccessNode(identifierValueNode);
             return CreateOperationode(out operationParser);
         }
 
@@ -53,27 +54,24 @@ public class IdentifierParser : BaseParser
         _index = result.Index;
     }
 
-    private void GetIdentifierNode(out OperationParser? operationParser, out ParseResult result, out INode identifierNode)
+    private void GetIdentifierNode(out INode identifierNode)
     {
-        operationParser = new OperationParser(_tokens, _index, Logger);
-        result = operationParser.CreateNode();
-        identifierNode = result.Node;
-        _index = result.Index;
+        identifierNode = new ValueNode(_tokens[_index]);
     }
 
     private ParseResult CreateOperationode(out OperationParser operationParser)
     {
-        operationParser = new OperationParser(_tokens, _startindex, Logger);
+        operationParser = new OperationParser(_tokens, _startindex, Logger, _parserFactory);
         return operationParser.CreateNode();
     }
 
-    private ParseResult CreateFunctionCallNode(ParseResult result, IValueNode identifierValueNode)
+    private ParseResult CreateFunctionCallNode(IValueNode identifierValueNode)
     {
         var parameterNodes = new List<INode>();
         while (!_tokens[_index += 1].Matches(TokenType.RIGHTPARENTHESES))
         {
             var valueParser = _parserFactory.GetParser(_index, _tokens, Logger);
-            result = valueParser.CreateNode();
+            var result = valueParser.CreateNode();
 
             _index = result.Index;
             parameterNodes.Add(result.Node);
@@ -82,5 +80,17 @@ public class IdentifierParser : BaseParser
             if (_tokens[_index].Matches(TokenType.RIGHTPARENTHESES)) break;
         }
         return new ParseResult(new FunctionCallNode(identifierValueNode, parameterNodes), _index);
+    }
+    
+    private ParseResult CreateListAccessNode(IValueNode identifierValueNode)
+    {
+        var parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
+        var result = parser.CreateNode();
+        _index = result.Index;
+
+        if (result.Node is not IValueNode indexNode) throw new ParserException("Index must be a value");
+        if (!_tokens[_index += 1].Matches(TokenType.RIGHTBRACKET)) throw new ParserException("Expected a right bracket");
+        
+        return new ParseResult(new ListAccessNode(identifierValueNode, (IValueNode)result.Node), _index);
     }
 }

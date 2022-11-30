@@ -10,12 +10,27 @@ namespace PirateParser.Parsers;
 /// </summary>
 public class OperationParser : BaseParser, ITokenParser
 {
-    public OperationParser(List<Token> tokens, int index, ILogger logger) : base(tokens, index, logger) { }
+    private ParserFactory _parserFactory { get; set; }
+    public OperationParser(List<Token> tokens, int index, ILogger logger, ParserFactory parserFactory) : base(tokens, index, logger) 
+    {
+        _parserFactory = parserFactory;
+    }
 
     public override ParseResult CreateNode()
     {
         INode node;
-        INode LeftNode = new ValueNode(_tokens[_index]);
+        INode LeftNode;
+        if(_tokens[_index+1].TokenType.Equals(TokenType.LEFTBRACKET) || _tokens[_index+1].TokenType.Equals(TokenType.LEFTPARENTHESES))
+        {
+            var parser = _parserFactory.GetParser(_index, _tokens, Logger);
+            var result = parser.CreateNode();
+            LeftNode = result.Node;
+        }
+        else
+        {
+            LeftNode = new ValueNode(_tokens[_index]);
+        }
+
         if (_tokens.Count == _index + 1) return ReturnValueNode(LeftNode);
 
         var OperatorToken = _tokens[_index + 1];
@@ -97,7 +112,17 @@ public class OperationParser : BaseParser, ITokenParser
     {
         INode node = null;
         var OperatorNode = _tokens[index += 1];
-        var RightNode = new ValueNode(_tokens[index += 1]);
+        INode RightNode;
+        if(_tokens[_index+1].TokenType.Equals(TokenType.LEFTBRACKET) || !_tokens[_index+1].TokenType.Equals(TokenType.LEFTPARENTHESES))
+        {
+            var parser = _parserFactory.GetParser(_index, _tokens, Logger);
+            var result = parser.CreateNode();
+            RightNode = result.Node;
+        }
+        else
+        {
+            RightNode = new ValueNode(_tokens[_index]);
+        }
         node = new BinaryOperationNode(LeftNode, OperatorNode, RightNode);
         return (node, index);
     }

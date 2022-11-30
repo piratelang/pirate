@@ -48,7 +48,7 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
 
     private void GetIdentifierNode(out ParseResult result, out INode IdentifierNode)
     {
-        var operationParser = new OperationParser(_tokens, _index += 1, Logger);
+        var operationParser = new OperationParser(_tokens, _index += 1, Logger, _parserFactory);
         result = operationParser.CreateNode();
         IdentifierNode = result.Node;
         _index = result.Index;

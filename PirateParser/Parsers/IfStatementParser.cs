@@ -82,6 +82,9 @@ public class IfStatementParser : BaseParser
             {
                 _index++;
             }
+            if (_tokens[_index].Matches(TokenType.RIGHTCURLYBRACE)) break;
+            if (_index == _tokens.Count) break;
+
         }
 
         return Nodes;

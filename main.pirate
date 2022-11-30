@@ -27,18 +27,15 @@ func main() : void
 
     for var i = 0 to 3
     {
-        print(i);
+        IO.print(i);
     }
 
     foreach var item in list
     {
-        print(item);
+        IO.print(item);
     }
 
     
 }
 
-func print(var value) : void
-{
-    print(value);
-}
+main();
