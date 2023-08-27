@@ -1,8 +1,6 @@
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
 using Pirate.Common.Interfaces;
-using Pirate.Common.Enum;
-using Pirate.Common.FileHandlers.Interfaces;
 using Pirate.Parser;
 using Pirate.Lexer.Interfaces;
 

@@ -1,6 +1,7 @@
-using Pirate.Common.Enum;
-using Pirate.Common.FileHandlers.Interfaces;
-using Pirate.Common.Interfaces;
+using Pirate.Common.FileHandler.Enum;
+using Pirate.Common.FileHandler.Interfaces;
+using Pirate.Common.Logger.Enum;
+using Pirate.Common.Logger.Interfaces;
 using Pirate.Interpreter.Interfaces;
 using Shell.Commands.Interfaces;
 
