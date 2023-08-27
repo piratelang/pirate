@@ -41,7 +41,7 @@ public class CommandManager : ICommandManager
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n{exception}");
                 Console.ForegroundColor = ConsoleColor.White;
-                throw exception;
+                throw;
             }
         }
     }

@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/joerivanarkel/PirateLang</RepositoryUrl>
     <PackageProjectUrl>https://github.com/joerivanarkel/PirateLang</PackageProjectUrl>
 
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 

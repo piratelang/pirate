@@ -13,12 +13,12 @@ public class LoggerTest
     public void ShouldLog()
     {
         // Arrange
-        var FileWriteHandler = A.Fake<IFileWriteHandler>();
-        var EnvironmentVariables = A.Fake<IEnvironmentVariables>();
-        var logger = new Logger(FileWriteHandler, EnvironmentVariables);
+        var fileWriteHandler = A.Fake<IFileWriteHandler>();
+        var environmentVariables = A.Fake<IEnvironmentVariables>();
+        var logger = new Logger(fileWriteHandler, environmentVariables);
 
-        A.CallTo(() => FileWriteHandler.WriteToFile(A<FileWriteModel>.Ignored, A<bool>.Ignored)).Returns(true);
-        A.CallTo(() => EnvironmentVariables.GetVariable("version")).Returns("1.0.0");
+        A.CallTo(() => fileWriteHandler.WriteToFile(A<FileWriteModel>.Ignored, A<bool>.Ignored)).Returns(true);
+        A.CallTo(() => environmentVariables.GetVariable("version")).Returns("1.0.0");
         var message = "Test message";
         var type = LogType.INFO;
 
