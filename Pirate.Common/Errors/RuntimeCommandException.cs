@@ -5,7 +5,7 @@ namespace Pirate.Common.Errors;
 /// <summary>
 /// This is a custom exception for runtime command errors.
 /// </summary>
-public class RuntimeCommandException : Exception
+public class RuntimeCommandException : System.Exception
 {
     public RuntimeCommandException() { }
     public RuntimeCommandException(string message) : base(message) { }

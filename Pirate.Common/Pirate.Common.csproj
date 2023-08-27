@@ -12,6 +12,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pirate.Common.Exception\Pirate.Common.Exception.csproj" />
     <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
     <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
   </ItemGroup>

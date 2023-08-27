@@ -47,7 +47,7 @@ public class ObjectSerializer : IObjectSerializer
 
             Logger.Log($"Serialized and written \"{FileName}\" to \"{FileName}\".json", LogType.INFO);
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
             Logger.Log($"Failed to Serialize {FileName}.json. \"{ex.ToString()}\"", LogType.ERROR);
             throw;

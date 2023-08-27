@@ -4,6 +4,7 @@ using Pirate.Common.Interfaces;
 using Pirate.Common.FileHandler.Model;
 using Pirate.Common.FileHandler.Enum;
 using Pirate.Common.FileHandler.Interfaces;
+using Pirate.Common.Exception.Models;
 
 namespace Pirate.Common;
 
@@ -38,10 +39,10 @@ public class EnvironmentVariables : IEnvironmentVariables
         {
             return Configuration[variablename];
         }
-        catch (Exception)
+        catch (System.Exception ex)
         {
             Console.WriteLine($"Failed to get variable \"{variablename}\" from variables.json");
-            throw new FileException($"{variablename} was not found in variables.json");
+            throw new FileException(new ExceptionCode("COMMON", "001"), new List<string> { variablename }, ex);
         }
     }
 
