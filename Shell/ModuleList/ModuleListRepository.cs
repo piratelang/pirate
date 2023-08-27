@@ -1,4 +1,7 @@
 using Newtonsoft.Json;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Common.Interfaces;
 
 namespace Shell.ModuleList;
 

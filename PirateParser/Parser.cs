@@ -1,7 +1,11 @@
-using PirateParser.Parsers;
-using PirateParser.Parsers.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Parsers.Interfaces;
+using Pirate.Parser.Parsers;
 
-namespace PirateParser;
+namespace Pirate.Parser;
 
 /// <summary>
 /// A starting point for parsing.

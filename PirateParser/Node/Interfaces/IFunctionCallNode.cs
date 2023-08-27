@@ -1,4 +1,4 @@
-namespace PirateParser.Node.Interfaces;
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="FunctionCallNode"/>
 public interface IFunctionCallNode : INode
@@ -6,6 +6,6 @@ public interface IFunctionCallNode : INode
     IValueNode Identifier { get; set; }
     List<INode> Parameters { get; set; }
 
-    bool IsValid();
+    new bool IsValid();
 }
 

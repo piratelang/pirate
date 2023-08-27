@@ -1,13 +1,16 @@
-using PirateInterpreter.Values.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 
-namespace PirateInterpreter.Values;
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// A float value.
 /// </summary>
 public class FloatValue : BaseValue, IValue
 {
-    public FloatValue(object value, ILogger logger) :base(value, logger) {}
+    public FloatValue(object value, ILogger logger) : base(value, logger) { }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
@@ -16,22 +19,22 @@ public class FloatValue : BaseValue, IValue
             case TokenType.PLUS:
                 var value = ConvertValueToDoubleOrInt(Value);
                 var otherValue = ConvertValueToDoubleOrInt(other.Value);
-                
+
                 return new FloatValue(value + otherValue, Logger);
             case TokenType.MINUS:
                 value = ConvertValueToDoubleOrInt(Value);
                 otherValue = ConvertValueToDoubleOrInt(other.Value);
-                
+
                 return new FloatValue(value - otherValue, Logger);
             case TokenType.MULTIPLY:
                 value = ConvertValueToDoubleOrInt(Value);
                 otherValue = ConvertValueToDoubleOrInt(other.Value);
-                
+
                 return new FloatValue(value * otherValue, Logger);
             case TokenType.DIVIDE:
                 value = ConvertValueToDoubleOrInt(Value);
                 otherValue = ConvertValueToDoubleOrInt(other.Value);
-                
+
                 return new FloatValue(value / otherValue, Logger);
             case TokenType.POWER:
                 value = ConvertValueToDoubleOrInt(Value);
@@ -46,10 +49,10 @@ public class FloatValue : BaseValue, IValue
     }
     private double ConvertValueToDoubleOrInt(object value)
     {
-        if (value is not double && value is not Int64)
+        if (value is not double && value is not long)
         {
             throw new TypeConversionException(typeof(double));
         }
-        return value is double ? (double)value : (Int64)value;
+        return value is double ? (double)value : (long)value;
     }
 }

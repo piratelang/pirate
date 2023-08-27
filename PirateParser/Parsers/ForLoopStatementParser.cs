@@ -1,7 +1,11 @@
-using PirateParser.Node;
-using PirateParser.Node.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
+using Pirate.Parser.Node;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A parser looking for a for loop statement.
@@ -20,7 +24,7 @@ public class ForLoopStatementParser : BaseParser
     {
         INode node;
         BaseParser? parser;
-        
+
         ParseResult? result;
         VariableDeclarationNode VariableAssign;
         ValueNode Value;

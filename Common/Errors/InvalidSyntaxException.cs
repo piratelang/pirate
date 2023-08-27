@@ -1,9 +1,9 @@
-namespace Common.Errors;
+namespace Pirate.Common.Errors;
 
 /// <summary>
 /// This is a custom exception for invalid syntax errors.
 /// </summary>
-public class InvalidSyntaxException : System.Exception
+public class InvalidSyntaxException : Exception
 {
     public InvalidSyntaxException() { }
     public InvalidSyntaxException(string message) : base(message) { }

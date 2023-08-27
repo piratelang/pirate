@@ -1,6 +1,6 @@
-using PirateLexer.Enums;
+using Pirate.Lexer.Enums;
 
-namespace PirateLexer.Tokens;
+namespace Pirate.Lexer.Tokens;
 
 /// <summary>
 /// A model for all the tokens.
@@ -18,13 +18,13 @@ public class Token
         Value = value;
     }
 
-    public bool Matches(object tokenType, object value=null)
+    public bool Matches(object tokenType, object value = null)
     {
         if (value == null || Value == null)
         {
             return TokenType.Equals(tokenType);
         }
-        return TokenType.Equals(tokenType) && Value.Equals(value);;
+        return TokenType.Equals(tokenType) && Value.Equals(value); ;
     }
 
     public override string ToString()

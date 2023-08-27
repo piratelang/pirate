@@ -1,7 +1,11 @@
-using PirateInterpreter.Values.Interfaces;
-using PirateInterpreter.Interpreters;
+using Pirate.Common.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Interpreter.Values.Interfaces;
+using Pirate.Interpreter.Interpreters;
+using Pirate.Interpreter.Values;
+using Pirate.Lexer.Tokens;
 
-namespace PirateInterpreter.Values;
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// A variable value.
@@ -9,7 +13,7 @@ namespace PirateInterpreter.Values;
 public class VariableValue : BaseValue, IValue
 {
     public InterpreterFactory InterpreterFactory { get; set; }
-    public VariableValue(string value, ILogger logger, InterpreterFactory interpreterFactory): base(value, logger)
+    public VariableValue(string value, ILogger logger, InterpreterFactory interpreterFactory) : base(value, logger)
     {
         InterpreterFactory = interpreterFactory;
         Value = SymbolTable.Instance(Logger).GetBaseValue(value).Value;
@@ -20,9 +24,9 @@ public class VariableValue : BaseValue, IValue
         Logger.Log($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}", LogType.INFO);
         switch (Value.GetType())
         {
-            case Type when Value.GetType()== typeof(int):
-            case Type when Value.GetType()== typeof(Int64):
-            case Type when Value.GetType()== typeof(Int32):
+            case Type when Value.GetType() == typeof(int):
+            case Type when Value.GetType() == typeof(long):
+            case Type when Value.GetType() == typeof(int):
                 return new IntegerValue(Value, Logger).OperatedBy(_operator, other);
             case Type stringType when Value.GetType() == typeof(string):
                 return new StringValue(Value, Logger).OperatedBy(_operator, other);

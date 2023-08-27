@@ -1,6 +1,9 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// Executes the while loop statements while the condition is true.
@@ -14,11 +17,11 @@ public class WhileLoopStatementInterpreter : BaseInterpreter
         if (node is not IWhileLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         whileLoopStatementNode = (IWhileLoopStatementNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Created {GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", LogType.INFO);
     }
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Visiting {GetType().Name} : \"{whileLoopStatementNode.ToString()}\"", LogType.INFO);
         bool condition = GetCondition();
         List<BaseValue> bodyValues = InterpretBodyNodes(ref condition);
 
@@ -50,7 +53,7 @@ public class WhileLoopStatementInterpreter : BaseInterpreter
         var interpreter = InterpreterFactory.GetInterpreter(whileLoopStatementNode.ConditionNode);
         var conditionValue = interpreter.VisitSingleNode();
 
-        if (conditionValue is not Values.BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(Values.BooleanValue));
+        if (conditionValue is not BooleanValue) throw new TypeConversionException(conditionValue.GetType(), typeof(BooleanValue));
         var conditionBoolean = (int)conditionValue.Value != 0;
         return conditionBoolean;
     }

@@ -1,7 +1,10 @@
-using PirateParser;
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
-using PirateLexer.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Parser;
+using Pirate.Lexer.Interfaces;
 
 namespace Shell.Commands;
 

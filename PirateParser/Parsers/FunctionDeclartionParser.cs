@@ -1,7 +1,13 @@
-using PirateParser.Node;
-using PirateParser.Node.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
+using Pirate.Parser.Node;
+using Pirate.Parser.Parsers;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A parser looking for a function declaration.
@@ -10,7 +16,7 @@ namespace PirateParser.Parsers;
 public class FunctionDeclartionParser : BaseParser
 {
     public FunctionDeclartionParser(List<Token> tokens, int index, ILogger logger) : base(tokens, index, logger) { }
-    
+
     public override ParseResult CreateNode()
     {
         INode node;

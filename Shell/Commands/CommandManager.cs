@@ -1,3 +1,5 @@
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;

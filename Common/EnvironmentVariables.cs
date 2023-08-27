@@ -1,11 +1,11 @@
-using Common.Enum;
-using Common.Errors;
-using Common.FileHandlers;
-using Common.FileHandlers.Interfaces;
-using Common.Interfaces;
+using Pirate.Common.Errors;
+using Pirate.Common.FileHandlers;
 using Microsoft.Extensions.Configuration;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Common.Interfaces;
 
-namespace Common;
+namespace Pirate.Common;
 
 /// <summary>
 /// This class is used to get the environment variables from the variables.json file.
@@ -38,7 +38,7 @@ public class EnvironmentVariables : IEnvironmentVariables
         {
             return Configuration[variablename];
         }
-        catch (System.Exception)
+        catch (Exception)
         {
             Console.WriteLine($"Failed to get variable \"{variablename}\" from variables.json");
             throw new FileException($"{variablename} was not found in variables.json");
@@ -52,7 +52,7 @@ public class EnvironmentVariables : IEnvironmentVariables
                 "variables",
                 FileExtension.JSON,
                 $"{directory}/bin/",
-                String.Join(
+                string.Join(
                     Environment.NewLine,
                     "{",
                     "     \"version\": \"1.1.0\",",

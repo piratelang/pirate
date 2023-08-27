@@ -1,6 +1,10 @@
-using PirateParser.Node;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser;
+using Pirate.Parser.Node;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A parser for comments.
@@ -17,11 +21,11 @@ public class CommentParser : BaseParser
         _index++;
 
         List<Token> comment = new();
-        while(_tokens[_index].TokenType is not TokenType.SEMICOLON)
+        while (_tokens[_index].TokenType is not TokenType.SEMICOLON)
         {
             comment.Add(_tokens[_index]);
             _index++;
         }
-        return new ParseResult(new CommentNode(comment), _index+1);
+        return new ParseResult(new CommentNode(comment), _index + 1);
     }
 }

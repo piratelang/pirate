@@ -1,6 +1,10 @@
-using PirateParser.Parsers.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Parsers.Interfaces;
+using Pirate.Parser.Parsers;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 public class ParserFactory : IParserFactory
 {

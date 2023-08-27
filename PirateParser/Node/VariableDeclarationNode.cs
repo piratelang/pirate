@@ -1,6 +1,8 @@
-using PirateParser.Node.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateParser.Node;
+namespace Pirate.Parser.Node;
 
 /// <summary>
 /// A node declaring a variable.

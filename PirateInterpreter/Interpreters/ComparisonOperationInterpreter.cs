@@ -1,6 +1,10 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Lexer.Enums;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// Returns the result of the comparison operation.
@@ -13,13 +17,13 @@ public class ComparisonOperationInterpreter : BaseInterpreter
     {
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
         operationNode = (IOperationNode)node;
-        
-        Logger.Log($"Created {this.GetType().Name} : \"{operationNode.ToString()}\"", LogType.INFO);
+
+        Logger.Log($"Created {GetType().Name} : \"{operationNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{operationNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Visiting {GetType().Name} : \"{operationNode.ToString()}\"", LogType.INFO);
         var interpreter = InterpreterFactory.GetInterpreter(operationNode.Left);
         var left = interpreter.VisitSingleNode();
 
@@ -35,19 +39,19 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 break;
             case TokenType.NOTEQUALS:
                 var result = left.Matches(right);
-                if(result == 0) { value = 1; }
+                if (result == 0) { value = 1; }
                 break;
             case TokenType.GREATERTHAN:
-                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
+                if ((left.Value is int || left.Value is long) && (right.Value is int || right.Value is long))
                 {
-                    if(Convert.ToInt64(left.Value) > Convert.ToInt64(right.Value))
+                    if (Convert.ToInt64(left.Value) > Convert.ToInt64(right.Value))
                     {
                         value = 1;
                     }
                 }
                 break;
             case TokenType.GREATERTHANEQUALS:
-                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
+                if ((left.Value is int || left.Value is long) && (right.Value is int || right.Value is long))
                 {
                     if (Convert.ToInt64(left.Value) >= Convert.ToInt64(right.Value))
                     {
@@ -57,7 +61,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 break;
 
             case TokenType.LESSTHAN:
-                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
+                if ((left.Value is int || left.Value is long) && (right.Value is int || right.Value is long))
                 {
                     if (Convert.ToInt64(left.Value) < Convert.ToInt64(right.Value))
                     {
@@ -66,7 +70,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
                 }
                 break;
             case TokenType.LESSTHANEQUALS:
-                if ((left.Value is int || left.Value is Int64) && (right.Value is int || right.Value is Int64))
+                if ((left.Value is int || left.Value is long) && (right.Value is int || right.Value is long))
                 {
                     if (Convert.ToInt64(left.Value) >= Convert.ToInt64(right.Value))
                     {

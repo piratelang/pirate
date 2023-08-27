@@ -1,6 +1,10 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Lexer.Enums;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// Converts a ValueNode into the corresponding BaseValue
@@ -16,26 +20,26 @@ public class ValueInterpreter : BaseInterpreter
         if (node is not IValueNode) throw new TypeConversionException(node.GetType(), typeof(IValueNode));
         valueNode = (IValueNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{valueNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Created {GetType().Name} : \"{valueNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{valueNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Visiting {GetType().Name} : \"{valueNode.ToString()}\"", LogType.INFO);
         if (valueNode.Value.Value == null) throw new ArgumentNullException($"{valueNode.Value.GetType().Name} does not contain a vaild value type.");
         switch (valueNode.Value.TokenType)
         {
             case TokenType.INT:
                 return new List<BaseValue> { new IntegerValue(valueNode.Value.Value, Logger) };
             case TokenType.STRING:
-                return new List<BaseValue> { new Values.StringValue(valueNode.Value.Value, Logger) };
+                return new List<BaseValue> { new StringValue(valueNode.Value.Value, Logger) };
             case TokenType.CHAR:
-                return new List<BaseValue> { new Values.CharValue(valueNode.Value.Value, Logger) };
+                return new List<BaseValue> { new CharValue(valueNode.Value.Value, Logger) };
             case TokenType.FLOAT:
                 return new List<BaseValue> { new FloatValue(valueNode.Value.Value, Logger) };
             case TokenType.IDENTIFIER:
                 return new List<BaseValue> { new VariableValue((string)valueNode.Value.Value, Logger, InterpreterFactory) };
-        } 
+        }
         throw new ArgumentNullException($"{valueNode.Value.GetType().Name} is not a recognized as a BaseValue type.");
 
     }

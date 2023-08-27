@@ -1,7 +1,11 @@
-using PirateInterpreter.StandardLibrary.Interfaces;
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Errors;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.StandardLibrary.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// This class is an interpreter for function calls.
@@ -21,12 +25,12 @@ public class FunctionCallInterpreter : BaseInterpreter
         functionCallNode = (IFunctionCallNode)node;
         StandardLibraryFactory = standardLibraryFactory;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Created {GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Visiting {GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
 
         var functionCallName = (string)functionCallNode.Identifier.Value.Value;
         var splitFunctionCallName = functionCallName.Split(".");

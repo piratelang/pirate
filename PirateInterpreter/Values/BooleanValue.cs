@@ -1,13 +1,16 @@
-using PirateInterpreter.Values.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 
-namespace PirateInterpreter.Values;
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// A boolean value.
 /// </summary>
 public class BooleanValue : BaseValue, IValue
 {
-    public BooleanValue(object value, ILogger logger) :base(value, logger) {}
+    public BooleanValue(object value, ILogger logger) : base(value, logger) { }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
@@ -41,13 +44,13 @@ public class BooleanValue : BaseValue, IValue
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
     }
 
-    private Int64 ConvertValueToInt(object value)
+    private long ConvertValueToInt(object value)
     {
-        if (value is not Int64)
+        if (value is not long)
         {
-            throw new TypeConversionException(typeof(Int64));
+            throw new TypeConversionException(typeof(long));
         }
-        return (Int64)value;
+        return (long)value;
     }
 
 }

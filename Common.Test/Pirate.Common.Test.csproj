@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PirateLexer\Lexer.csproj" />
+    <ProjectReference Include="..\Common\Pirate.Common.csproj" />
   </ItemGroup>
 
 </Project>

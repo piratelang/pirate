@@ -1,6 +1,6 @@
-using PirateParser.Node.Interfaces;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateParser;
+namespace Pirate.Parser;
 
 /// <summary>
 /// A object which is returned by the parser.

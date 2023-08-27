@@ -1,8 +1,11 @@
-using PirateParser.Parsers.Interfaces;
-using PirateParser.Node.Interfaces;
-using PirateParser.Node;
+using Pirate.Common.Interfaces;
+using Pirate.Parser.Node.Interfaces;
+using Pirate.Parser.Node;
+using Pirate.Parser.Parsers.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A parser handling variable declarations.
@@ -11,7 +14,7 @@ namespace PirateParser.Parsers;
 public class VariableDeclarationParser : BaseParser, ITokenParser
 {
     private ParserFactory _parserFactory { get; set; }
-    
+
     public VariableDeclarationParser(List<Token> tokens, int index, ILogger logger, ParserFactory parserFactory) : base(tokens, index, logger)
     {
         _parserFactory = parserFactory;
@@ -34,7 +37,7 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
         INode Value;
         GetValue(out result, out Value);
 
-        node = new VariableDeclarationNode(VariableType, (IValueNode)IdentifierNode, (INode)Value);
+        node = new VariableDeclarationNode(VariableType, (IValueNode)IdentifierNode, Value);
         return new ParseResult(node, _index);
     }
 

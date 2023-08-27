@@ -1,6 +1,8 @@
-using PirateParser.Node;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter;
+using Pirate.Parser.Node;
 
-namespace PirateInterpreter.Test
+namespace Pirate.Interpreter.Test
 {
     public class SymbolTableTest
     {

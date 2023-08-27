@@ -1,6 +1,7 @@
+using Pirate.Lexer.Enums;
+using Pirate.Lexer;
 
-
-namespace PirateLexer.Test;
+namespace Pirate.Lexer.Test;
 
 
 public class TokenRepositoryTest
@@ -46,7 +47,7 @@ public class TokenRepositoryTest
         var position = 0;
         //Act
         var result = tokenRepository.MakeIdentifier(text, position);
-        
+
         //Assert
         Assert.Equal(4, result.Position);
         Assert.Equal(TokenGroup.SYNTAX, result.Token.TokenGroup);

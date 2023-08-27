@@ -1,6 +1,8 @@
-using PirateLexer.Tokens;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer;
+using Pirate.Lexer.Tokens;
 
-namespace PirateLexer.Interfaces;
+namespace Pirate.Lexer.Interfaces;
 
 /// <inheritdoc cref="Lexer"/>
 public interface ILexer

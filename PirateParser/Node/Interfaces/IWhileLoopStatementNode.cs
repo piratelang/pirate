@@ -1,4 +1,4 @@
-namespace PirateParser.Node.Interfaces;
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="WhileLoopStatementNode"/>
 public interface IWhileLoopStatementNode : INode
@@ -6,6 +6,6 @@ public interface IWhileLoopStatementNode : INode
     IOperationNode ConditionNode { get; set; }
     List<INode> BodyNodes { get; set; }
 
-    bool IsValid();
-    string ToString();
+    new bool IsValid();
+    new string ToString();
 }

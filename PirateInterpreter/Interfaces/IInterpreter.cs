@@ -1,6 +1,7 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
 
-namespace PirateInterpreter.Interfaces;
+namespace Pirate.Interpreter.Interfaces;
 
 /// <summary>
 /// This interface contains all methods for the interpreter.

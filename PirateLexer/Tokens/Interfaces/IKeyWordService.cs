@@ -1,6 +1,7 @@
-using PirateLexer.Enums;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 
-namespace PirateLexer.Tokens.Interfaces;
+namespace Pirate.Lexer.Tokens.Interfaces;
 
 /// <inheritdoc cref="KeyWordService"/>
 public interface IKeyWordService

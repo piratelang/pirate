@@ -1,7 +1,11 @@
-using PirateInterpreter.StandardLibrary.Interfaces;
-using PirateInterpreter.Interpreters.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Interpreters;
+using Pirate.Interpreter.StandardLibrary.Interfaces;
+using Pirate.Interpreter.Interpreters.Interfaces;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 public class InterpreterFactory : IInterpreterFactory
 {

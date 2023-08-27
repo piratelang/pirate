@@ -1,7 +1,9 @@
-using PirateInterpreter.Interpreters.Interfaces;
-using PirateInterpreter.Values;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Interpreter.Interpreters.Interfaces;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// An interpreter for comments which does nothing.

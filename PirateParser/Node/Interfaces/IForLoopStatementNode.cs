@@ -1,4 +1,4 @@
-namespace PirateParser.Node.Interfaces;
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="ForLoopStatementNode"/>
 public interface IForLoopStatementNode : INode
@@ -7,6 +7,6 @@ public interface IForLoopStatementNode : INode
     IValueNode ValueNode { get; set; }
     IList<INode> BodyNodes { get; set; }
 
-    bool IsValid();
-    string ToString();
+    new bool IsValid();
+    new string ToString();
 }

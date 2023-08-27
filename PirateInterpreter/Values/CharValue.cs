@@ -1,13 +1,18 @@
-using PirateInterpreter.Values.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 
-namespace PirateInterpreter.Values;
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// A character value.
 /// </summary>
 public class CharValue : BaseValue, IValue
 {
-    public CharValue(object value, ILogger logger) :base(value, logger) {}
+    public CharValue(object value, ILogger logger) : base(value, logger) { }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
@@ -32,7 +37,7 @@ public class CharValue : BaseValue, IValue
             case TokenType.POWER:
                 Logger.Log("<char> ^ <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
-            
+
             case TokenType.MODULO:
                 Logger.Log("<char> % <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();

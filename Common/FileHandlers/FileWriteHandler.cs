@@ -1,6 +1,6 @@
-using Common.FileHandlers.Interfaces;
+using Pirate.Common.FileHandlers.Interfaces;
 
-namespace Common.FileHandlers;
+namespace Pirate.Common.FileHandlers;
 
 
 /// <summary>
@@ -12,15 +12,15 @@ public class FileWriteHandler : BaseFileHandler, IFileWriteHandler
     {
         if (fileWriteModel.Name == string.Empty || fileWriteModel.Extension == string.Empty || fileWriteModel.Extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
-        if (encryption)fileWriteModel.Text = Encrypt(fileWriteModel.Text);
-        
+        if (encryption) fileWriteModel.Text = Encrypt(fileWriteModel.Text);
+
         CreateFolder(fileWriteModel.Location);
 
         var result = Write(fileWriteModel).Result;
 
         return result;
     }
-    public bool AppendToFile(FileWriteModel fileWriteModel, Boolean encryption = false)
+    public bool AppendToFile(FileWriteModel fileWriteModel, bool encryption = false)
     {
         if (fileWriteModel.Name == string.Empty || fileWriteModel.Text == string.Empty || fileWriteModel.Extension == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 

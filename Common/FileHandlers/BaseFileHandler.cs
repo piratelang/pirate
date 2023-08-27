@@ -1,6 +1,6 @@
-using Common.Enum;
+using Pirate.Common.Enum;
 
-namespace Common.FileHandlers;
+namespace Pirate.Common.FileHandlers;
 
 /// <summary>
 /// This class is a base class for all file handlers.

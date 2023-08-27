@@ -1,4 +1,9 @@
-namespace PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node.Interfaces;
+
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// A function value.
@@ -10,7 +15,7 @@ public class FunctionValue : BaseValue
     public FunctionValue(IFunctionDeclarationNode functionDeclarationNode, ILogger logger) : base(null, logger)
     {
         FunctionDeclarationNode = functionDeclarationNode;
-        Logger.Log($"Created {this.GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
     }
 
     public override string ToString()
@@ -20,6 +25,6 @@ public class FunctionValue : BaseValue
 
     public override BaseValue OperatedBy(Token Operator, BaseValue Value)
     {
-        throw new InvalidOperationException($"Cannot operate {this.GetType().Name} by {Operator.ToString()}");
+        throw new InvalidOperationException($"Cannot operate {GetType().Name} by {Operator}");
     }
 }

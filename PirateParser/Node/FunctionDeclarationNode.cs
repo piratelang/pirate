@@ -1,6 +1,7 @@
-using PirateParser.Node.Interfaces;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateParser.Node;
+namespace Pirate.Parser.Node;
 
 /// <summary>
 /// A node declaring a function.
@@ -27,7 +28,7 @@ public class FunctionDeclarationNode : IFunctionDeclarationNode
         Statements = statements;
         ReturnNode = returnNode;
     }
-    
+
     public override string ToString()
     {
         var resultString = string.Empty;

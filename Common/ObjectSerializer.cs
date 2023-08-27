@@ -1,11 +1,11 @@
 using System.Runtime.Serialization;
-using Common.Enum;
-using Common.FileHandlers;
-using Common.FileHandlers.Interfaces;
-using Common.Interfaces;
+using Pirate.Common.FileHandlers;
 using Newtonsoft.Json;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Common.Interfaces;
 
-namespace Common;
+namespace Pirate.Common;
 
 /// <summary>
 /// This class is used to serialize and deserialize objects to and from JSON.
@@ -24,9 +24,9 @@ public class ObjectSerializer : IObjectSerializer
         _fileWriteHandler = fileWriteHandler;
 
         Location = environmentVariables.GetVariable("location") + "/cache";
-        bool exists = System.IO.Directory.Exists(Location);
+        bool exists = Directory.Exists(Location);
         if (!exists)
-            System.IO.Directory.CreateDirectory(Location);
+            Directory.CreateDirectory(Location);
         Logger = logger;
     }
 
@@ -35,14 +35,14 @@ public class ObjectSerializer : IObjectSerializer
         try
         {
             var settings = new JsonSerializerSettings
-            { 
+            {
                 TypeNameHandling = TypeNameHandling.Objects,
                 // TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple, 
-                Formatting = Formatting.Indented 
+                Formatting = Formatting.Indented
             };
             string json = JsonConvert.SerializeObject(ObjectToSerialize, settings);
             _fileWriteHandler.WriteToFile(new FileWriteModel(FileName, FileExtension.JSON, Location, json));
-            
+
             Logger.Log($"Serialized and written \"{FileName}\" to \"{FileName}\".json", LogType.INFO);
         }
         catch (Exception ex)
@@ -57,24 +57,24 @@ public class ObjectSerializer : IObjectSerializer
         try
         {
             var settings = new JsonSerializerSettings
-            { 
+            {
                 TypeNameHandling = TypeNameHandling.Objects,
                 // TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple, 
-                Formatting = Formatting.Indented 
-                
+                Formatting = Formatting.Indented
+
             };
             string json = _fileReadHandler.ReadAllTextFromFile(FileName, FileExtension.JSON, Location).Result;
             T deserializedObject = JsonConvert.DeserializeObject<T>(json, settings);
 
             if (deserializedObject == null) throw new SerializationException("Deserialized object is null");
             Logger.Log($"Deserialized and converted {FileName} to {FileName}.json", LogType.INFO);
-            
+
             return deserializedObject;
         }
         catch (SerializationException ex)
         {
-            Logger.Log($"Failed to Deserialize {FileName}.json. \"{((object)ex).ToString() + "\n" + ex.Source}\"", LogType.ERROR);
-            throw new SerializationException(((object)ex).ToString() + "\n" + ex.Source);
+            Logger.Log($"Failed to Deserialize {FileName}.json. \"{ex.ToString() + "\n" + ex.Source}\"", LogType.ERROR);
+            throw new SerializationException(ex.ToString() + "\n" + ex.Source);
         }
     }
 }

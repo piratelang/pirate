@@ -1,10 +1,10 @@
 using System.Globalization;
-using PirateLexer.Tokens;
-using PirateLexer.Enums;
-using PirateLexer.Interfaces;
-using PirateLexer.Tokens.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Lexer.Interfaces;
+using Pirate.Lexer.Tokens.Interfaces;
 
-namespace PirateLexer;
+namespace Pirate.Lexer;
 
 /// <summary>
 /// A class which handles the complex logic of the lexer.
@@ -24,7 +24,7 @@ public class TokenRepository : ITokenRepository
         var numberString = string.Empty;
         Token token;
 
-        while (Char.IsDigit(text[position]) || text[position] == '.')
+        while (char.IsDigit(text[position]) || text[position] == '.')
         {
             if (text[position] == '.')
             {
@@ -66,7 +66,7 @@ public class TokenRepository : ITokenRepository
     {
         var idString = string.Empty;
 
-        while (Char.IsLetter(text[position]) || !Char.IsNumber(text[position]) || !Char.IsWhiteSpace(text[position]) || !Char.IsSeparator(text[position]))
+        while (char.IsLetter(text[position]) || !char.IsNumber(text[position]) || !char.IsWhiteSpace(text[position]) || !char.IsSeparator(text[position]))
         {
             idString += text[position];
             position += 1;
@@ -76,7 +76,7 @@ public class TokenRepository : ITokenRepository
                 idString += text[position];
                 position += 1;
             }
-            if (Char.IsNumber(text[position]) || Char.IsPunctuation(text[position]) || Char.IsWhiteSpace(text[position]) || Char.IsSeparator(text[position])) break;
+            if (char.IsNumber(text[position]) || char.IsPunctuation(text[position]) || char.IsWhiteSpace(text[position]) || char.IsSeparator(text[position])) break;
         }
 
         var TokenTypeType = _KeyWordService.GetTypeKeyword(idString);

@@ -1,6 +1,6 @@
-﻿using Common;
-using PirateLexer;
-using PirateLexer.Tokens;
+﻿using Pirate.Common;
+using Pirate.Lexer;
+using Pirate.Lexer.Tokens;
 
 Console.WriteLine("Hello, World!");
 

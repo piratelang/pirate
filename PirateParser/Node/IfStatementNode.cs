@@ -1,6 +1,6 @@
-using PirateParser.Node.Interfaces;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateParser.Node;
+namespace Pirate.Parser.Node;
 
 /// <summary>
 /// A node representing a if statement.<br/>
@@ -28,7 +28,7 @@ public class IfStatementNode : IIfStatementNode
         BodyNodes = bodyNodes;
         ElseNode = elseNode;
     }
-    
+
     public bool IsValid()
     {
         if (ConditionNode is not IOperationNode)

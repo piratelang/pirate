@@ -1,7 +1,7 @@
-using PirateLexer.Enums;
-using PirateLexer.Tokens.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens.Interfaces;
 
-namespace PirateLexer.Tokens;
+namespace Pirate.Lexer.Tokens;
 
 /// <summary>
 /// A class which checks for keywords.

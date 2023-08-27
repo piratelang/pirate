@@ -1,6 +1,6 @@
-using PirateParser.Node.Interfaces;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateParser.Node;
+namespace Pirate.Parser.Node;
 
 /// <summary>
 /// A node representing a for loop.
@@ -17,7 +17,7 @@ public class ForLoopStatementNode : IForLoopStatementNode
     public IValueNode ValueNode { get; set; }
     public IList<INode> BodyNodes { get; set; }
 
-    public ForLoopStatementNode(IVariableDeclarationNode variableNode,IValueNode valueNode, IList<INode> bodyNodes)
+    public ForLoopStatementNode(IVariableDeclarationNode variableNode, IValueNode valueNode, IList<INode> bodyNodes)
     {
         VariableNode = variableNode;
         ValueNode = valueNode;

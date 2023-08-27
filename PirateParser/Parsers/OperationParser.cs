@@ -1,8 +1,14 @@
-using PirateParser.Node;
-using PirateParser.Parsers.Interfaces;
-using PirateParser.Node.Interfaces;
+using Pirate.Parser.Node;
+using Pirate.Common.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Parser.Node.Interfaces;
+using Pirate.Parser;
+using Pirate.Parser.Parsers.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A parser looking for either a Binary operation or a Comparison operation.

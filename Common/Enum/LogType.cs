@@ -1,11 +1,11 @@
-namespace Common.Enum;
+namespace Pirate.Common.Enum;
 
 /// <summary>
 /// This enum contains all log types.
 /// </summary>
 public enum LogType
 {
-    ERROR  ,
+    ERROR,
     WARNING,
-    INFO   
+    INFO
 }

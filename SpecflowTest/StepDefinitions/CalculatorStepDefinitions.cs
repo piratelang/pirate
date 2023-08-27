@@ -1,4 +1,4 @@
-namespace SpecflowTest.StepDefinitions
+namespace Pirate.Spec.Test.StepDefinitions
 {
     [Binding]
     public sealed class CalculatorStepDefinitions

@@ -1,6 +1,8 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
 
-namespace PirateInterpreter.StandardLibrary;
+namespace Pirate.Interpreter.StandardLibrary;
 
 /// <summary>
 /// Contains the standard library functions for the console.
@@ -19,7 +21,7 @@ public class IOLibrary
         Logger.Log($"Print called with {parameters.Count} parameters", LogType.INFO);
         foreach (var parameter in parameters)
         {
-            System.Console.WriteLine(parameter.Value.ToString());
+            Console.WriteLine(parameter.Value.ToString());
         }
         return null;
     }
@@ -27,7 +29,7 @@ public class IOLibrary
     public StringValue Read(IList<BaseValue> parameters)
     {
         Logger.Log($"Read called with {parameters.Count} parameters", LogType.INFO);
-        if (parameters[0] is not null) System.Console.Write(parameters[0].Value.ToString());
-        return new StringValue(System.Console.ReadLine(), Logger);
+        if (parameters[0] is not null) Console.Write(parameters[0].Value.ToString());
+        return new StringValue(Console.ReadLine(), Logger);
     }
 }

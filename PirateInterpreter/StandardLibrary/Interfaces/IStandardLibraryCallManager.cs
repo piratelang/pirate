@@ -1,6 +1,6 @@
-using PirateInterpreter.Values;
+using Pirate.Interpreter.Values;
 
-namespace PirateInterpreter.StandardLibrary.Interfaces;
+namespace Pirate.Interpreter.StandardLibrary.Interfaces;
 
 /// <inheritdoc cref="StandardLibraryCallManager"/>
 public interface IStandardLibraryCallManager

@@ -1,4 +1,4 @@
-namespace Common.Interfaces;
+namespace Pirate.Common.Interfaces;
 
 /// <inheritdoc cref="ObjectSerializer"/>
 public interface IObjectSerializer

@@ -1,9 +1,11 @@
-using PirateInterpreter.Values;
-using PirateInterpreter.Interfaces;
-using PirateParser;
-using PirateInterpreter.Interpreters.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Interpreter.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Interpreter.Interpreters.Interfaces;
+using Pirate.Parser;
 
-namespace PirateInterpreter;
+namespace Pirate.Interpreter;
 
 /// <summary>
 /// The starting point for the interpreter.

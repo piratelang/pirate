@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Common.Errors;
+namespace Pirate.Common.Errors;
 
 /// <summary>
 /// This is a custom exception for runtime command errors.

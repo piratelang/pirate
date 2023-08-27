@@ -1,6 +1,10 @@
-using PirateInterpreter.Values.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 
-namespace PirateInterpreter.Values;
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// A string value.

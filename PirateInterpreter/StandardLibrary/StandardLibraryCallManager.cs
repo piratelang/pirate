@@ -1,7 +1,8 @@
-using PirateInterpreter.Values;
-using PirateInterpreter.StandardLibrary.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.StandardLibrary.Interfaces;
+using Pirate.Interpreter.Values;
 
-namespace PirateInterpreter.StandardLibrary;
+namespace Pirate.Interpreter.StandardLibrary;
 
 /// <summary>
 /// Calls the right function from the standard library.

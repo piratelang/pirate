@@ -1,4 +1,6 @@
-namespace PirateParser.Node.Interfaces;
+using Pirate.Lexer.Tokens;
+
+namespace Pirate.Parser.Node.Interfaces;
 
 
 /// <summary>

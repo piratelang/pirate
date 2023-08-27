@@ -1,6 +1,9 @@
-﻿using Common;
-using PirateLexer;
-using PirateParser;
+﻿using Pirate.Common;
+using Pirate.Common;
+using Pirate.Common.FileHandlers;
+using Pirate.Lexer;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser;
 
 Console.WriteLine("Hello, World!");
 var Logger = new Logger(new FileWriteHandler(), new EnvironmentVariables(new FileReadHandler(), new FileWriteHandler()),  "Test");

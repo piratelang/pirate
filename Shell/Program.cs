@@ -1,20 +1,23 @@
-﻿using Common;
-using PirateInterpreter;
-using PirateLexer;
-using Microsoft.Extensions.DependencyInjection;
-using PirateParser;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Shell;
 using Shell.Commands;
 using Shell.Commands.Interfaces;
 using Shell.ModuleList;
-using PirateLexer.Interfaces;
-using PirateLexer.Tokens;
-using PirateInterpreter.Interfaces;
-using PirateInterpreter.Interpreters.Interfaces;
-using PirateInterpreter.StandardLibrary.Interfaces;
-using PirateInterpreter.Interpreters;
-using PirateInterpreter.StandardLibrary;
-using PirateLexer.Tokens.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Common.FileHandlers;
+using Pirate.Common;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Interpreter.Interfaces;
+using Pirate.Interpreter.Interpreters;
+using Pirate.Interpreter.StandardLibrary.Interfaces;
+using Pirate.Interpreter;
+using Pirate.Interpreter.StandardLibrary;
+using Pirate.Interpreter.Interpreters.Interfaces;
+using Pirate.Parser;
+using Pirate.Lexer.Tokens;
+using Pirate.Lexer;
+using Pirate.Lexer.Interfaces;
+using Pirate.Lexer.Tokens.Interfaces;
 
 var version = "1.0.0";
 

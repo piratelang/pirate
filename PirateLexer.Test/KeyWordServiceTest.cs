@@ -1,10 +1,12 @@
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PirateLexer.Test
+namespace Pirate.Lexer.Test
 {
     public class KeyWordServiceTest
     {

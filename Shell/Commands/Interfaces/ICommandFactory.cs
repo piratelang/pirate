@@ -1,3 +1,5 @@
+using Pirate.Common.Interfaces;
+
 namespace Shell.Commands.Interfaces;
 
 public interface ICommandFactory

@@ -1,6 +1,6 @@
-using PirateParser.Node.Interfaces;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateParser.Node;
+namespace Pirate.Parser.Node;
 
 /// <summary>
 /// A node representing a function call.

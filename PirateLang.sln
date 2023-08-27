@@ -5,21 +5,21 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell", "Shell\Shell.csproj", "{12B19978-5BBE-43F9-B73F-941AE86CDE6A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Common", "Common\Pirate.Common.csproj", "{6208037C-0600-4E2E-8E3F-AEF8B456BCA9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Test", "Common.Test\Common.Test.csproj", "{F07A2F50-E7E9-440D-8077-E3C2F425E129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Common.Test", "Common.Test\Pirate.Common.Test.csproj", "{F07A2F50-E7E9-440D-8077-E3C2F425E129}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer", "PirateLexer\Lexer.csproj", "{8D39609C-C369-405C-A762-6FC9DFB8FE5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Lexer", "PirateLexer\Pirate.Lexer.csproj", "{8D39609C-C369-405C-A762-6FC9DFB8FE5D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser", "PirateParser\Parser.csproj", "{86E58DCE-0009-4F02-AA90-928DE16188DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Parser", "PirateParser\Pirate.Parser.csproj", "{86E58DCE-0009-4F02-AA90-928DE16188DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interpreter", "PirateInterpreter\Interpreter.csproj", "{27D6C87E-8763-4108-B57D-ED6702377A74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Interpreter", "PirateInterpreter\Pirate.Interpreter.csproj", "{27D6C87E-8763-4108-B57D-ED6702377A74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interpreter.Test", "PirateInterpreter.Test\Interpreter.Test.csproj", "{5B9BAF88-8564-4596-A976-020DF568C991}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Interpreter.Test", "PirateInterpreter.Test\Pirate.Interpreter.Test.csproj", "{5B9BAF88-8564-4596-A976-020DF568C991}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lexer.Test", "PirateLexer.Test\Lexer.Test.csproj", "{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Lexer.Test", "PirateLexer.Test\Pirate.Lexer.Test.csproj", "{25766A75-6C1C-4FB9-9C4D-57691DDF65AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser.Test", "PirateParser.Test\Parser.Test.csproj", "{100016EC-FF10-4763-864C-265ABC3291FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Parser.Test", "PirateParser.Test\Pirate.Parser.Test.csproj", "{100016EC-FF10-4763-864C-265ABC3291FC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Shell", "01. Shell", "{5C3B936F-2BD9-4B5F-9108-CEA85BCB64E1}"
 EndProject
@@ -33,7 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "09. Common", "09. Common", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10. Tests", "10. Tests", "{60F943D9-5F8E-4F2E-8CE6-43136FD01893}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecflowTest", "SpecflowTest\SpecflowTest.csproj", "{589C1500-A1DE-4179-A582-16D2D692621E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Spec.Test", "SpecflowTest\Pirate.Spec.Test.csproj", "{589C1500-A1DE-4179-A582-16D2D692621E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pirate.Common.Logger", "Pirate.Common.Logger\Pirate.Common.Logger.csproj", "{9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{589C1500-A1DE-4179-A582-16D2D692621E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{589C1500-A1DE-4179-A582-16D2D692621E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{589C1500-A1DE-4179-A582-16D2D692621E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +102,7 @@ Global
 		{25766A75-6C1C-4FB9-9C4D-57691DDF65AB} = {962D2974-A4A9-41A4-9C80-A5A771FDF8FB}
 		{100016EC-FF10-4763-864C-265ABC3291FC} = {3362B8FC-1514-450E-AE7D-55CA6EE7B25E}
 		{589C1500-A1DE-4179-A582-16D2D692621E} = {60F943D9-5F8E-4F2E-8CE6-43136FD01893}
+		{9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306} = {442F09BF-403A-4D42-9AA8-1258F42C47EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {279A73C5-70E8-4B6D-B235-3467F0CC98A9}

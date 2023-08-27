@@ -1,6 +1,6 @@
-using Common.Enum;
+using Pirate.Common.Enum;
 
-namespace Common.Interfaces;
+namespace Pirate.Common.Interfaces;
 
 /// <inheritdoc cref="Logger"/>
 public interface ILogger

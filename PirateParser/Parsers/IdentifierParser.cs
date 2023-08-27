@@ -1,7 +1,11 @@
-using PirateParser.Node;
-using PirateParser.Node.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
+using Pirate.Parser.Node;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A parser which handles all identifiers
@@ -16,7 +20,7 @@ public class IdentifierParser : BaseParser
         _startindex = index;
         _parserFactory = parserFactory;
     }
-    
+
     public override ParseResult CreateNode()
     {
         INode node;
@@ -78,7 +82,7 @@ public class IdentifierParser : BaseParser
             _index = result.Index;
             parameterNodes.Add(result.Node);
 
-            if (_tokens[_index+=1].Matches(TokenType.COMMA)) continue;
+            if (_tokens[_index += 1].Matches(TokenType.COMMA)) continue;
             if (_tokens[_index].Matches(TokenType.RIGHTPARENTHESES)) break;
         }
         return new ParseResult(new FunctionCallNode(identifierValueNode, parameterNodes), _index);

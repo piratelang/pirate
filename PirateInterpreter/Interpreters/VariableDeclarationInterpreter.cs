@@ -1,6 +1,10 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// Converts the variable declaration node to a variable value.
@@ -12,15 +16,15 @@ public class VariableDeclarationInterpreter : BaseInterpreter
 
     public VariableDeclarationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
     {
-        if (node is not VariableDeclarationNode)throw new TypeConversionException(node.GetType(), typeof(VariableDeclarationNode));
+        if (node is not VariableDeclarationNode) throw new TypeConversionException(node.GetType(), typeof(VariableDeclarationNode));
         variableDeclarationNode = (VariableDeclarationNode)node;
 
-        Logger.Log($"Created {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Created {GetType().Name} : \"{variableDeclarationNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{variableDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Visiting {GetType().Name} : \"{variableDeclarationNode.ToString()}\"", LogType.INFO);
         if (variableDeclarationNode.Identifier.Value.Value is not string) throw new TypeConversionException(typeof(string));
 
         var Identifier = (string)variableDeclarationNode.Identifier.Value.Value;

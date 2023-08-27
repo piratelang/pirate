@@ -1,4 +1,6 @@
-namespace Common.FileHandlers.Interfaces;
+using Pirate.Common.FileHandlers;
+
+namespace Pirate.Common.FileHandlers.Interfaces;
 
 /// <inheritdoc cref="FileWriteHandler"/>
 public interface IFileWriteHandler

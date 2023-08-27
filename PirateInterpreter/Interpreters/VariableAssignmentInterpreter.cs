@@ -1,6 +1,10 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// Converts the variable assignment node to a variable value.
@@ -18,7 +22,7 @@ public class VariableAssignmentInterpreter : BaseInterpreter
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {this.GetType().Name} : \"{variableAssignmentNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Visiting {GetType().Name} : \"{variableAssignmentNode.ToString()}\"", LogType.INFO);
         if (variableAssignmentNode.Identifier.Value.Value is not string) throw new TypeConversionException(typeof(string));
         var identifier = (string)variableAssignmentNode.Identifier.Value.Value;
 

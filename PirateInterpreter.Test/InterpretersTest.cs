@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
-using PirateInterpreter.Interpreters;
-using PirateInterpreter.StandardLibrary;
-using PirateInterpreter.StandardLibrary.Interfaces;
-using PirateInterpreter.Values;
-using PirateParser.Node;
-using PirateParser.Node.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter;
+using Pirate.Interpreter.StandardLibrary.Interfaces;
+using Pirate.Interpreter.Values;
+using Pirate.Interpreter.Interpreters;
+using Pirate.Interpreter.StandardLibrary;
+using Pirate.Interpreter.Values;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
+using Pirate.Lexer.Enums;
 
-namespace PirateInterpreter.Test;
+namespace Pirate.Interpreter.Test;
 
 public class InterpretersTest
 {
@@ -16,9 +20,9 @@ public class InterpretersTest
     {
         // Arrange
         var binaryOperationNode = new BinaryOperationNode(
-            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1)),
+            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (long)1)),
             new Token(TokenGroup.OPERATORS, TokenType.PLUS),
-            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1))
+            new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (long)1))
         );
 
         // Act
@@ -29,8 +33,8 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.IntegerValue>(result[0]);
-        Assert.Equal((Int64)2, result[0].Value);
+        Assert.IsType<IntegerValue>(result[0]);
+        Assert.Equal((long)2, result[0].Value);
     }
 
     [Fact]
@@ -51,7 +55,7 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.BooleanValue>(result[0]);
+        Assert.IsType<BooleanValue>(result[0]);
         Assert.Equal(1, result[0].Value);
     }
 
@@ -69,7 +73,7 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.IntegerValue>(result[0]);
+        Assert.IsType<IntegerValue>(result[0]);
         Assert.Equal(1, result[0].Value);
     }
 
@@ -91,7 +95,7 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.VariableValue>(result[0]);
+        Assert.IsType<VariableValue>(result[0]);
         Assert.Equal(1, result[0].Value);
     }
 
@@ -103,9 +107,9 @@ public class InterpretersTest
             new Token(TokenGroup.TYPEKEYWORD, TokenType.INT),
             new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
             new BinaryOperationNode(
-                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1)),
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (long)1)),
                 new Token(TokenGroup.OPERATORS, TokenType.PLUS),
-                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (Int64)1))
+                new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, (long)1))
             )
         );
 
@@ -117,8 +121,8 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.VariableValue>(result[0]);
-        Assert.Equal((Int64)2, result[0].Value);
+        Assert.IsType<VariableValue>(result[0]);
+        Assert.Equal((long)2, result[0].Value);
     }
 
     [Fact]
@@ -143,7 +147,7 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.VariableValue>(result[0]);
+        Assert.IsType<VariableValue>(result[0]);
         Assert.Equal(1, result[0].Value);
     }
 
@@ -174,7 +178,7 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.VariableValue>(result[0]);
+        Assert.IsType<VariableValue>(result[0]);
         Assert.Equal(1, result[0].Value);
     }
 
@@ -212,7 +216,7 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.VariableValue>(result[0]);
+        Assert.IsType<VariableValue>(result[0]);
         Assert.Equal(2, result[0].Value);
     }
 
@@ -272,7 +276,7 @@ public class InterpretersTest
 
         // Assert
         Assert.IsType<List<BaseValue>>(result);
-        Assert.IsType<Values.VariableValue>(result[0]);
+        Assert.IsType<VariableValue>(result[0]);
         Assert.Equal(1, result[0].Value);
     }
 
@@ -308,7 +312,7 @@ public class InterpretersTest
         // Assert
         Assert.IsType<List<BaseValue>>(result);
         Assert.True(result.Count == 0);
-        
+
     }
 
     [Fact]

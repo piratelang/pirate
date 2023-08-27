@@ -1,4 +1,4 @@
-namespace PirateParser.Node.Interfaces;
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <summary>
 /// Interface for all nodes.

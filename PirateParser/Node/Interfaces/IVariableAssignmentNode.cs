@@ -1,4 +1,4 @@
-namespace PirateParser.Node.Interfaces;
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="VariableAssignmentNode"/>
 public interface IVariableAssignmentNode : INode
@@ -6,6 +6,6 @@ public interface IVariableAssignmentNode : INode
     IValueNode Identifier { get; set; }
     INode Value { get; set; }
 
-    bool IsValid();
-    string ToString();
+    new bool IsValid();
+    new string ToString();
 }

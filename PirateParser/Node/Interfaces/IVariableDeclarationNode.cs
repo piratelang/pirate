@@ -1,4 +1,7 @@
-namespace PirateParser.Node.Interfaces;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node;
+
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="VariableDeclarationNode"/>
 public interface IVariableDeclarationNode : INode
@@ -7,6 +10,6 @@ public interface IVariableDeclarationNode : INode
     IValueNode Identifier { get; set; }
     INode Value { get; set; }
 
-    bool IsValid();
-    string ToString();
+    new bool IsValid();
+    new string ToString();
 }

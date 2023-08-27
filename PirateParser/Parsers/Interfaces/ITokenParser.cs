@@ -1,4 +1,6 @@
-namespace PirateParser.Parsers.Interfaces;
+using Pirate.Parser;
+
+namespace Pirate.Parser.Parsers.Interfaces;
 
 /// <summary>
 /// Interface for all token parsers.

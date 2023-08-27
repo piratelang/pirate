@@ -1,8 +1,10 @@
-using PirateLexer.Tokens;
-using PirateLexer.Enums;
-using PirateLexer.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Lexer.Interfaces;
 
-namespace PirateLexer;
+namespace Pirate.Lexer;
 
 /// <summary>
 /// A starting point for the lexer.
@@ -49,7 +51,7 @@ public class Lexer : ILexer
                 position += 1;
                 continue;
             }
-            if (Char.IsDigit(text[position]))
+            if (char.IsDigit(text[position]))
             {
                 var tokenResult = _tokenRepository.MakeNumber(text, position);
                 tokens.Add(tokenResult.Token);
@@ -57,7 +59,7 @@ public class Lexer : ILexer
                 Logger.Log($"Creating Token \"{tokenResult.Token.ToString()}\"", LogType.INFO);
                 continue;
             }
-            if (Char.IsLetter(text[position]))
+            if (char.IsLetter(text[position]))
             {
                 var tokenResult = _tokenRepository.MakeIdentifier(text, position);
                 tokens.Add(tokenResult.Token);

@@ -1,7 +1,14 @@
 
-namespace PirateLexer.Test;
+using Pirate.Common;
+using Pirate.Common.FileHandlers;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
 
-    public class LexerTest
+namespace Pirate.Lexer.Test;
+
+public class LexerTest
 {
     [Fact]
     public void ShouldMakeNumber()

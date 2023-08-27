@@ -1,6 +1,11 @@
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node;
+using Pirate.Parser.Node.Interfaces;
 using System.Collections.Generic;
 
-namespace PirateParser.Test;
+namespace Pirate.Parser.Test;
 
 public class NodeTest
 {

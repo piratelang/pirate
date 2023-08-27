@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
-using Common.Enum;
-using Common.FileHandlers;
-using Common.FileHandlers.Interfaces;
-using Common.Interfaces;
+using Pirate.Common.FileHandlers;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Common.Interfaces;
 
-namespace Common;
+namespace Pirate.Common;
 
 /// <summary>
 /// Writes a log message to the log file.
@@ -34,7 +34,7 @@ public class Logger : ILogger
     {
         var time = DateTime.Now.ToString();
         var formattedMessage = FormatMessage(message);
-        var text = ($"{time.Replace(" uur", "")}: {logType.ToString()}: {GetCallingClassName()}.cs: {formattedMessage}\n");
+        var text = $"{time.Replace(" uur", "")}: {logType.ToString()}: {GetCallingClassName()}.cs: {formattedMessage}\n";
 
         _fileWriteHandler.AppendToFile(new FileWriteModel(logFileName, FileExtension.LOG, location, text));
 
@@ -45,7 +45,7 @@ public class Logger : ILogger
     {
         if (message.Contains('\n')) message = message.Replace('\n', ' ');
         if (message.Contains('\r')) message = message.Replace('\r', ' ');
-        
+
         return message;
     }
 

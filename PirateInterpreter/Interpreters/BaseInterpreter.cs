@@ -1,6 +1,7 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
 
-namespace PirateInterpreter.Interpreters;
+namespace Pirate.Interpreter.Interpreters;
 
 /// <summary>
 /// This class is a base class for all interpreters.
@@ -9,13 +10,13 @@ public abstract class BaseInterpreter
 {
     protected readonly ILogger Logger;
     protected InterpreterFactory InterpreterFactory { get; private set; }
-    
+
     public BaseInterpreter(ILogger logger, InterpreterFactory interpreterFactory)
     {
         Logger = logger;
         InterpreterFactory = interpreterFactory;
     }
-    
+
     public abstract List<BaseValue> VisitNode();
 
     public BaseValue VisitSingleNode()

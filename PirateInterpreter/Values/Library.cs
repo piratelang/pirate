@@ -1,4 +1,8 @@
-namespace PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Tokens;
+
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// A placeholder value for a standard library function.
@@ -11,7 +15,7 @@ public class Library : BaseValue
     {
         Name = name;
         Callables = callables;
-        Logger.Log($"Created {this.GetType().Name}", LogType.INFO);
+        Logger.Log($"Created {GetType().Name}", LogType.INFO);
     }
 
     public override string ToString()
@@ -21,6 +25,6 @@ public class Library : BaseValue
 
     public override BaseValue OperatedBy(Token Operator, BaseValue Value)
     {
-        throw new InvalidOperationException($"Cannot operate {this.GetType().Name} by {Operator.ToString()}");
+        throw new InvalidOperationException($"Cannot operate {GetType().Name} by {Operator.ToString()}");
     }
 }

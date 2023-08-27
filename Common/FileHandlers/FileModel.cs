@@ -1,6 +1,6 @@
-using Common.Enum;
+using Pirate.Common.Enum;
 
-namespace Common.FileHandlers;
+namespace Pirate.Common.FileHandlers;
 
 /// <summary>
 /// This is a model for the file handlers.

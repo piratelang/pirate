@@ -1,4 +1,4 @@
-namespace PirateLexer.Enums;
+namespace Pirate.Lexer.Enums;
 
 /// <summary>
 /// A enum for token types.

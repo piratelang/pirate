@@ -1,6 +1,10 @@
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node;
 using System.Collections.Generic;
 
-namespace PirateParser.Test;
+namespace Pirate.Parser.Test;
 
 public class ParserTest
 {
@@ -9,12 +13,12 @@ public class ParserTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        
+
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         tokens.Add(new Token(TokenGroup.OPERATORS, TokenType.PLUS, "+"));
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
-        
+
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
 
@@ -30,12 +34,12 @@ public class ParserTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        
+
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         tokens.Add(new Token(TokenGroup.COMPARISONOPERATORS, TokenType.DOUBLEEQUALS, "=="));
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
-        
+
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
 
@@ -51,10 +55,10 @@ public class ParserTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        
+
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
-        
+
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
 
@@ -70,7 +74,7 @@ public class ParserTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        
+
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.TYPEKEYWORD, TokenType.VAR));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a"));
@@ -91,7 +95,7 @@ public class ParserTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        
+
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.IF));
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
@@ -99,7 +103,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
-        
+
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
 
@@ -113,9 +117,9 @@ public class ParserTest
     [Fact]
     public void ShouldReturnIfStatementNodeWithElseNodes()
     {
-                // Arrange
+        // Arrange
         var logger = A.Fake<ILogger>();
-        
+
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.IF));
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
@@ -126,7 +130,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.ELSE));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
-        
+
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
 
@@ -143,7 +147,7 @@ public class ParserTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        
+
         var tokens = new List<Token>();
         tokens.Add(new Token(TokenGroup.CONTROLKEYWORD, TokenType.WHILE));
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
@@ -151,7 +155,7 @@ public class ParserTest
         tokens.Add(new Token(TokenGroup.VALUE, TokenType.INT, "1"));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.LEFTCURLYBRACE));
         tokens.Add(new Token(TokenGroup.SYNTAX, TokenType.RIGHTCURLYBRACE));
-        
+
         var parserFactory = new ParserFactory();
         var parser = parserFactory.GetParser(0, tokens, logger);
 

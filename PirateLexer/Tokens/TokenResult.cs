@@ -1,4 +1,4 @@
-namespace PirateLexer.Tokens;
+namespace Pirate.Lexer.Tokens;
 
 /// <summary>
 /// A result from the TokenRepository class.

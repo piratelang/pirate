@@ -1,7 +1,9 @@
-using Common;
-using PirateInterpreter.Interfaces;
-using PirateLexer.Interfaces;
-using PirateParser;
+using Pirate.Common;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Interfaces;
+using Pirate.Lexer.Interfaces;
+using Pirate.Parser;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;

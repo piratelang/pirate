@@ -1,6 +1,8 @@
-using PirateInterpreter.Values;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values;
 
-namespace PirateInterpreter;
+namespace Pirate.Interpreter;
 
 /// <summary>
 /// A collection of variables values and functions.
@@ -8,7 +10,7 @@ namespace PirateInterpreter;
 public sealed class SymbolTable
 {
     private static SymbolTable? symbolTable = default!;
-    public Dictionary<string, BaseValue> SymbolList { get; set; } = new ();
+    public Dictionary<string, BaseValue> SymbolList { get; set; } = new();
     public ILogger Logger { get; set; }
 
     private SymbolTable(ILogger logger)
@@ -30,7 +32,7 @@ public sealed class SymbolTable
     {
         var value = SymbolList.GetValueOrDefault(name);
         if (value == null) throw new NullReferenceException("Requested element from the Symbol Table does not exist.");
-        
+
         Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", LogType.INFO);
         return value;
     }
@@ -53,7 +55,7 @@ public sealed class SymbolTable
     private void FillSymbolTable()
     {
         symbolTable?.SetBaseValue("IO", new Library(
-            "IO", 
+            "IO",
             new List<string> { "read", "print" },
             Logger)
         );

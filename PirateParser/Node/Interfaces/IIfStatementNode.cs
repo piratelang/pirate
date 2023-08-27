@@ -1,4 +1,4 @@
-namespace PirateParser.Node.Interfaces;
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="IfStatementNode"/>
 public interface IIfStatementNode : INode

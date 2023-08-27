@@ -1,4 +1,6 @@
-namespace PirateParser.Node.Interfaces;
+using Pirate.Lexer.Tokens;
+
+namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="FunctionDeclarationNode"/>
 public interface IFunctionDeclarationNode : INode
@@ -9,5 +11,5 @@ public interface IFunctionDeclarationNode : INode
     List<INode> Statements { get; set; }
     INode ReturnNode { get; set; }
 
-    bool IsValid();
+    new bool IsValid();
 }

@@ -1,8 +1,7 @@
-using Common.Enum;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers.Interfaces;
 
-using Common.FileHandlers.Interfaces;
-
-namespace Common.FileHandlers;
+namespace Pirate.Common.FileHandlers;
 
 /// <summary>
 /// This class handles reading files.
@@ -39,7 +38,7 @@ public class FileReadHandler : BaseFileHandler, IFileReadHandler
     }
     public bool DirectoryExists(string location)
     {
-        if (location == string.Empty ) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
+        if (location == string.Empty) { throw new ArgumentNullException("Name, Text or Extension provided is empty"); }
 
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
 

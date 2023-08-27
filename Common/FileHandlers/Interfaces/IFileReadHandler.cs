@@ -1,6 +1,7 @@
-using Common.Enum;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers;
 
-namespace Common.FileHandlers.Interfaces;
+namespace Pirate.Common.FileHandlers.Interfaces;
 
 /// <inheritdoc cref="FileReadHandler"/>
 public interface IFileReadHandler

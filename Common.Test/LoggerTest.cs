@@ -1,11 +1,11 @@
-using Common.Enum;
-using Common.FileHandlers;
-using Common.FileHandlers.Interfaces;
-using Common.Interfaces;
 using FakeItEasy;
+using Pirate.Common.Enum;
+using Pirate.Common.FileHandlers;
+using Pirate.Common.FileHandlers.Interfaces;
+using Pirate.Common.Interfaces;
 using Xunit;
 
-namespace Common.Test;
+namespace Pirate.Common.Test;
 
 public class LoggerTest
 {
@@ -28,5 +28,5 @@ public class LoggerTest
         // Assert
         Assert.True(result);
     }
-        
+
 }

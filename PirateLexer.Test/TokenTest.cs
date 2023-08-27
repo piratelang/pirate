@@ -1,4 +1,6 @@
-namespace PirateLexer.Test;
+using Pirate.Lexer.Enums;
+
+namespace Pirate.Lexer.Test;
 
 public class TokenTest
 {

@@ -1,4 +1,7 @@
-namespace PirateParser.Parsers;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Tokens;
+
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A base class for all parsers.

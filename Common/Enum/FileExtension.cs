@@ -1,4 +1,4 @@
-namespace Common.Enum;
+namespace Pirate.Common.Enum;
 
 /// <summary>
 /// This enum contains all useable file extensions.

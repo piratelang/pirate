@@ -1,7 +1,10 @@
-using PirateParser.Node;
-using PirateParser.Node.Interfaces;
+using Pirate.Common.Interfaces;
+using Pirate.Lexer.Enums;
+using Pirate.Lexer.Tokens;
+using Pirate.Parser.Node.Interfaces;
+using Pirate.Parser.Node;
 
-namespace PirateParser.Parsers;
+namespace Pirate.Parser.Parsers;
 
 /// <summary>
 /// A parser looking for a if statement.
@@ -35,7 +38,7 @@ public class IfStatementParser : BaseParser
         if (_index + 1 == _tokens.Count) return new ParseResult(new IfStatementNode(Operation, Nodes), _index);
         if (!_tokens[_index + 1].Matches(TokenType.ELSE)) return new ParseResult(new IfStatementNode(Operation, Nodes), _index);
         if (!_tokens[_index += 2].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
-        
+
         List<INode> ElseNodes = GetElseBodyNodes(ref parser, ref result);
         node = new IfStatementNode(Operation, Nodes, ElseNodes);
         return new ParseResult(node, _index);

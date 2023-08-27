@@ -1,16 +1,19 @@
-using PirateInterpreter.Values.Interfaces;
+using Pirate.Common.Enum;
+using Pirate.Common.Interfaces;
+using Pirate.Interpreter.Values.Interfaces;
+using Pirate.Lexer.Tokens;
 
-namespace PirateInterpreter.Values;
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// Represents a value resulting from a interpreted node.
 /// </summary>
 public abstract class BaseValue : IValue
 {
-    public object Value {get; set;}
+    public object? Value { get; set; }
     public ILogger Logger { get; set; }
-    
-    public BaseValue(object value, ILogger logger)
+
+    public BaseValue(object? value, ILogger logger)
     {
         Logger = logger;
         Value = value;
