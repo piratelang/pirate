@@ -20,7 +20,7 @@ public class VariableValue : BaseValue, IValue
         Logger.Log($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}", LogType.INFO);
         switch (Value.GetType())
         {
-            case Type intType when Value.GetType()== typeof(int):
+            case Type when Value.GetType()== typeof(int):
             case Type when Value.GetType()== typeof(Int64):
             case Type when Value.GetType()== typeof(Int32):
                 return new IntegerValue(Value, Logger).OperatedBy(_operator, other);

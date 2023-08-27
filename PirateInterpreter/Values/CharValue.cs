@@ -11,17 +11,11 @@ public class CharValue : BaseValue, IValue
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        if (Value is not char && Value is not string)
-        {
-            throw new TypeConversionException(typeof(char));
-        }
-        var value = (char)Value;
-
         switch (_operator.TokenType)
         {
             case TokenType.PLUS:
-                Logger.Log("<char> + <char> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                var value = ConvertValueToChar(Value);
+                return new StringValue(value + other.Value.ToString(), Logger);
 
             case TokenType.MINUS:
                 Logger.Log("<char> - <char> is not supported", LogType.ERROR);
@@ -38,8 +32,21 @@ public class CharValue : BaseValue, IValue
             case TokenType.POWER:
                 Logger.Log("<char> ^ <char> is not supported", LogType.ERROR);
                 throw new NotImplementedException();
+            
+            case TokenType.MODULO:
+                Logger.Log("<char> % <char> is not supported", LogType.ERROR);
+                throw new NotImplementedException();
 
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
+    }
+
+    private char ConvertValueToChar(object value)
+    {
+        if (value is not char)
+        {
+            throw new TypeConversionException(typeof(char));
+        }
+        return (char)value;
     }
 }

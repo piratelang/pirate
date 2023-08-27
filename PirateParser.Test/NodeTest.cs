@@ -406,4 +406,20 @@ public class NodeTest
         // Assert
         Assert.False(result);
     }
+
+    [Fact]
+    public void CommentNodeIsValid()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var tokenList = A.Fake<List<Token>>();
+
+        var node = new CommentNode(tokenList);
+
+        // Act
+        var result = node.IsValid();
+
+        // Assert
+        Assert.True(result);
+    }
 }

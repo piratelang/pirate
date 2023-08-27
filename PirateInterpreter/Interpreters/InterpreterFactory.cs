@@ -38,6 +38,8 @@ public class InterpreterFactory : IInterpreterFactory
                 return new ComparisonOperationInterpreter(node, this, Logger);
             case ValueNode:
                 return new ValueInterpreter(node, this, Logger);
+            case CommentNode:
+                return new CommentInterpreter(node, this, Logger);
         }
         throw new ArgumentNullException("node", $"Factory cannot find interpreter for {node.GetType().Name}");
     }
