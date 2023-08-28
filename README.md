@@ -14,6 +14,9 @@
     <a href="https://github.com/piratelang/PirateLang/releases">
         <img src="https://img.shields.io/github/v/release/joerivanarkel/piratelang" alt="HTML tutorial">
     </a>
+    <a href="https://wakatime.com/badge/user/261ee501-1b33-464c-8873-6be422308f2f/project/addb9833-5df4-46f5-98b2-36bfb78b5994">
+        <img src="https://wakatime.com/badge/user/261ee501-1b33-464c-8873-6be422308f2f/project/addb9833-5df4-46f5-98b2-36bfb78b5994.svg" alt="wakatime">
+    </a>
 </p>
 
 # Pirate Programming Language
