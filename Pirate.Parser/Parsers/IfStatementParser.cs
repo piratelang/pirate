@@ -78,9 +78,14 @@ public class IfStatementParser : BaseParser
             result = parser.CreateNode();
             Nodes.Add(result.Node);
             _index = result.Index;
+            if (_index + 1 == _tokens.Count) throw new ParserException("No Right Curly Braces was found");
             if (_tokens[_index++].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;
+            }
+            if (_tokens[_index].TokenType.Equals(TokenType.RIGHTCURLYBRACE))
+            {
+                break;
             }
         }
 

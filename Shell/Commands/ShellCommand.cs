@@ -23,7 +23,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
         EnvironmentVariables = environmentVariables;
     }
 
-    public override void Run(string[] arguments)
+    public override object Run(string[] arguments)
     {
         Console.WriteLine($"PirateLang version {EnvironmentVariables.GetVariable("version")}");
         Logger.Log("Starting Shell Command", LogType.INFO);
@@ -72,6 +72,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
                 Error(ex.ToString());
             }
         }
+        return true;
     }
 
     public override void Help()

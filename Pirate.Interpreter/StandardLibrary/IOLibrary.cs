@@ -17,11 +17,13 @@ public class IOLibrary
     public BaseValue Print(IList<BaseValue> parameters)
     {
         Logger.Log($"Print called with {parameters.Count} parameters", LogType.INFO);
+        var result = "";
         foreach (var parameter in parameters)
         {
             Console.WriteLine(parameter.Value.ToString());
+            result += parameter.Value.ToString();
         }
-        return null;
+        return new StringValue(result, Logger);
     }
 
     public StringValue Read(IList<BaseValue> parameters)

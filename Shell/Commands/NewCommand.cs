@@ -14,7 +14,7 @@ public class NewCommand : Command, ICommand, INewCommand
         _fileWriteHandler = FileWriteHandler;
         _fileReadHandler = FileReadHandler;
     }
-    public override void Run(string[] arguments)
+    public override object Run(string[] arguments)
     {
         Logger.Log("Starting New Command", LogType.INFO);
         var typeArgument = string.Empty;
@@ -31,7 +31,7 @@ public class NewCommand : Command, ICommand, INewCommand
                 " - gitattributes",
                 " - pirate"
             ));
-            return;
+            return true;
         }
 
         var typeOptions = new string[]{
@@ -43,7 +43,7 @@ public class NewCommand : Command, ICommand, INewCommand
         {
             Logger.Log($"Specified file \"{typeArgument}\" not able to be created", LogType.ERROR);
             Error($"Specified file \"{typeArgument}\" not able to be created");
-            return;
+            return true;
         }
 
         Logger.Log($"Creating {typeArgument} file", LogType.INFO);
@@ -51,10 +51,10 @@ public class NewCommand : Command, ICommand, INewCommand
         {
             case "gitignore":
                 _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitignore,  "", "[Bb]in/"));
-                return;
+                return true;
             case "gitattributes":
                 _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitattributes, "", "*.pirate linguist-language=Squirrel" ));
-                return;
+                return true;
             case "pirate":
                 var filename = "main";
                 try
@@ -66,12 +66,13 @@ public class NewCommand : Command, ICommand, INewCommand
                 if (_fileReadHandler.FileExists(filename, FileExtension.PIRATE, " "))
                 {
                     Error($"Specified filename \"{filename}\" already exists");
-                    return;
+                    return true;
                 }
                 _fileWriteHandler.WriteToFile(new FileWriteModel(filename, FileExtension.PIRATE, " ", ""));
                 Console.WriteLine($"\nCreated new .{typeArgument} file");
-                return;
+                return true;
         }
+        return true;
     }
 
     public override void Help()

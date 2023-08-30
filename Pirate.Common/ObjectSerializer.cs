@@ -65,6 +65,7 @@ public class ObjectSerializer : IObjectSerializer
                 Formatting = Formatting.Indented
 
             };
+            if (!_fileReadHandler.FileExists(FileName, FileExtension.JSON, Location)) _fileWriteHandler.WriteToFile(new FileWriteModel(FileName, FileExtension.JSON, Location, "{}"));
             string json = _fileReadHandler.ReadAllTextFromFile(FileName, FileExtension.JSON, Location).Result;
             T deserializedObject = JsonConvert.DeserializeObject<T>(json, settings);
 

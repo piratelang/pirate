@@ -28,7 +28,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
         Location = environmentVariables.GetVariable("location");
     }
     
-    public override void Run(string[] arguments)
+    public override object Run(string[] arguments)
     {
         Logger.Log("Starting Build Command", LogType.INFO);
 
@@ -63,6 +63,8 @@ public class BuildCommand : Command, ICommand, IBuildCommand
         }
         Logger.Log($"Updating ModuleList\n", LogType.INFO);
         _moduleListRepository.SetList(foundFiles, Location);
+
+        return true;
     }
     
     public override void Help()
