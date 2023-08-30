@@ -1,6 +1,4 @@
-﻿using Pirate.Common.Exception.Models;
-
-namespace Pirate.Common.Exception.Interfaces;
+﻿namespace Pirate.Common.Exception.Interfaces;
 
 public interface IPirateException
 {

@@ -1,7 +1,7 @@
 ﻿using System.Resources;
 using Pirate.Common.Exception.Interfaces;
 
-namespace Pirate.Common.Exception.Models;
+namespace Pirate.Common.Exception;
 
 public abstract class PirateException : System.Exception, IPirateException
 {
@@ -11,7 +11,7 @@ public abstract class PirateException : System.Exception, IPirateException
     {
         Code = code;
     }
-    
+
     public PirateException(ExceptionCode code, System.Exception innerException) : base(GetFullMessage(code), innerException)
     {
         Code = code;
@@ -27,7 +27,7 @@ public abstract class PirateException : System.Exception, IPirateException
         Code = code;
     }
 
-    
+
     private static string GetFullMessage(ExceptionCode code, List<string>? parameters = null)
     {
         ResourceManager resourceManager = new("Pirate.Common.Exception.ExceptionMessages", typeof(PirateException).Assembly);

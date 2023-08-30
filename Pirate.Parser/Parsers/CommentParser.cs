@@ -1,3 +1,4 @@
+using Pirate.Common.Exception;
 using Pirate.Common.Interfaces;
 using Pirate.Lexer.Enums;
 using Pirate.Lexer.Tokens;
@@ -16,7 +17,7 @@ public class CommentParser : BaseParser
     }
 
     public override ParseResult CreateNode()
-    {
+    { 
         if (!_tokens[_index].Matches(TokenType.DOUBLEDIVIDE)) throw new ParserException("No Comment was found");
         _index++;
 

@@ -22,7 +22,7 @@ public class FileReadHandler : BaseFileHandler, IFileReadHandler
     public async Task<string> ReadAllTextFromFile(string name, FileExtension extension, string location)
     {
         if (name == string.Empty) throw new FileHandlerException($"Name, ${name} is empty");
-        if (location == string.Empty) throw new FileHandlerException($"Location, ${location} is empty");
+        //if (location == string.Empty) throw new FileHandlerException($"Location, ${location} is empty");
 
         var nameAndExtension = name + GetFileExtension(extension);
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);
@@ -45,7 +45,7 @@ public class FileReadHandler : BaseFileHandler, IFileReadHandler
     public bool FileExists(string name, FileExtension extension, string location)
     {
         if (name == string.Empty) throw new FileHandlerException($"Name, ${name} is empty");
-        if (location == string.Empty) throw new FileHandlerException($"Location, ${location} is empty");
+        // if (location == string.Empty) throw new FileHandlerException($"Location, ${location} is empty");
 
         name += GetFileExtension(extension);
         var targetFolder = Path.Combine(Environment.CurrentDirectory, location);

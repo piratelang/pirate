@@ -1,6 +1,4 @@
-using Pirate.Common.Exception;
-
-namespace Pirate.Common.Errors;
+namespace Pirate.Common.Exception.Exceptions;
 
 /// <summary>
 /// This is a custom exception for invalid syntax errors.

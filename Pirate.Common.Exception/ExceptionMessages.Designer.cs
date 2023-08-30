@@ -68,5 +68,23 @@ namespace Pirate.Common.Exception {
                 return ResourceManager.GetString("COMMON-001", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No comment was found.
+        /// </summary>
+        public static string PARSER_001 {
+            get {
+                return ResourceManager.GetString("PARSER-001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No For Statement was found.
+        /// </summary>
+        public static string PARSER_002 {
+            get {
+                return ResourceManager.GetString("PARSER-002", resourceCulture);
+            }
+        }
     }
 }

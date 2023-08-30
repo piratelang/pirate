@@ -1,4 +1,4 @@
-﻿namespace Pirate.Common.Exception.Models;
+﻿namespace Pirate.Common.Exception;
 
 public enum ExceptionPrefix
 {

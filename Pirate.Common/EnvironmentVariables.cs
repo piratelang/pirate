@@ -4,7 +4,7 @@ using Pirate.Common.Interfaces;
 using Pirate.Common.FileHandler.Model;
 using Pirate.Common.FileHandler.Enum;
 using Pirate.Common.FileHandler.Interfaces;
-using Pirate.Common.Exception.Models;
+using Pirate.Common.Exception;
 
 namespace Pirate.Common;
 

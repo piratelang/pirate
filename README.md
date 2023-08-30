@@ -2,17 +2,20 @@
     <img height="88" src=".github/owllogowhite.png" alt="Material Bread logo" style="margin-right:12px;"><br>
     <img width="500" src=".github/logo.png" alt="Material Bread logo">
     <br>
+    <a href="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml">
+        <img src="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml/badge.svg" alt=".NET">
+    </a>
+    <a href="https://github.com/piratelang/pirate/actions/workflows/github-code-scanning/codeql">
+        <img src="https://github.com/piratelang/pirate/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL">
+    </a>
     <a href="https://www.nuget.org/packages/PirateLang.CLI">
         <img src="https://img.shields.io/nuget/v/PirateLang.CLI.svg" alt="HTML tutorial">
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=joerivanarkel.piratelang">
         <img src="https://img.shields.io/visual-studio-marketplace/v/joerivanarkel.piratelang?label=VSCode%20Extension" alt="HTML tutorial">
     </a>
-    <a href="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml">
-        <img src="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml/badge.svg" alt="HTML tutorial">
-    </a>
     <a href="https://github.com/piratelang/PirateLang/releases">
-        <img src="https://img.shields.io/github/v/release/joerivanarkel/piratelang" alt="HTML tutorial">
+        <img src="https://img.shields.io/github/v/release/joerivanarkel/piratelang" alt="Release">
     </a>
     <a href="https://wakatime.com/badge/user/261ee501-1b33-464c-8873-6be422308f2f/project/addb9833-5df4-46f5-98b2-36bfb78b5994">
         <img src="https://wakatime.com/badge/user/261ee501-1b33-464c-8873-6be422308f2f/project/addb9833-5df4-46f5-98b2-36bfb78b5994.svg" alt="wakatime">

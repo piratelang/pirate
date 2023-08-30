@@ -1,7 +1,6 @@
-using Pirate.Common.Exception;
 using System.Runtime.Serialization;
 
-namespace Pirate.Common.Errors;
+namespace Pirate.Common.Exception.Exceptions;
 
 /// <summary>
 /// This is a custom exception for file errors.

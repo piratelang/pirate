@@ -119,5 +119,12 @@
   </resheader>
   <data name="COMMON-001" xml:space="preserve">
     <value>{0} was not found in variables.json</value>
+    <comment>Expects a variable name</comment>
+  </data>
+  <data name="PARSER-001" xml:space="preserve">
+    <value>No comment was found</value>
+  </data>
+  <data name="PARSER-002" xml:space="preserve">
+    <value>No For Statement was found</value>
   </data>
 </root>
