@@ -1,4 +1,4 @@
-﻿
+﻿ 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
@@ -72,7 +72,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "09. Common", "09. Common", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10. Tests", "10. Tests", "{60F943D9-5F8E-4F2E-8CE6-43136FD01893}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Spec.Test", "SpecflowTest\Pirate.Spec.Test.csproj", "{589C1500-A1DE-4179-A582-16D2D692621E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Spec.Test", "Pirate.Spec.Test\Pirate.Spec.Test.csproj", "{589C1500-A1DE-4179-A582-16D2D692621E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{12B19978-5BBE-43F9-B73F-941AE86CDE6A} = {12B19978-5BBE-43F9-B73F-941AE86CDE6A}
 		{27D6C87E-8763-4108-B57D-ED6702377A74} = {27D6C87E-8763-4108-B57D-ED6702377A74}
