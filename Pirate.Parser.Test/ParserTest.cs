@@ -1,7 +1,3 @@
-using Pirate.Common.Interfaces;
-using Pirate.Lexer.Enums;
-using Pirate.Lexer.Tokens;
-using Pirate.Parser.Node;
 using System.Collections.Generic;
 
 namespace Pirate.Parser.Test;

@@ -1,5 +1,4 @@
 using Pirate.Lexer.Enums;
-using Pirate.Lexer;
 using Pirate.Lexer.Tokens;
 
 namespace Pirate.Lexer.Test;

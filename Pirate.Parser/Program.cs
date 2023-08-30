@@ -1,8 +1,4 @@
-﻿using Pirate.Common;
-using Pirate.Common.Logger;
-using Pirate.Common.FileHandler;
-using Pirate.Lexer;
-using Pirate.Lexer.Tokens;
+﻿using Pirate.Lexer;
 using Pirate.Parser;
 
 Console.WriteLine("Hello, World!");

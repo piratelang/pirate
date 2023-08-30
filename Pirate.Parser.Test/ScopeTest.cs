@@ -1,8 +1,3 @@
-
-
-using Pirate.Common.Interfaces;
-using Pirate.Parser.Node.Interfaces;
-
 namespace Pirate.Parser.Test;
 
 public class ScopeTest

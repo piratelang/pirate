@@ -1,12 +1,6 @@
 using Pirate.Parser.Node;
-using Pirate.Common.Interfaces;
-
 using Pirate.Parser.Node.Interfaces;
-using Pirate.Parser;
 using Pirate.Parser.Parsers.Interfaces;
-using Pirate.Lexer.Enums;
-using Pirate.Lexer.Tokens;
-using Pirate.Parser.Node;
 
 namespace Pirate.Parser.Parsers;
 

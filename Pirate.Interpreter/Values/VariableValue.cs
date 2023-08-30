@@ -1,9 +1,5 @@
-using Pirate.Common.Interfaces;
-
 using Pirate.Interpreter.Values.Interfaces;
 using Pirate.Interpreter.Interpreters;
-using Pirate.Interpreter.Values;
-using Pirate.Lexer.Tokens;
 
 namespace Pirate.Interpreter.Values;
 

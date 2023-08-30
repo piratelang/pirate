@@ -1,5 +1,4 @@
 using Pirate.Common.Exception;
-using System.Runtime.Serialization;
 
 namespace Pirate.Common.Errors;
 

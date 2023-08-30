@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using Pirate.Common.Interfaces;
 
 namespace Shell.ModuleList;
 

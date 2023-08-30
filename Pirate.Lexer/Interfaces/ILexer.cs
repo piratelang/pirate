@@ -1,5 +1,3 @@
-using Pirate.Common.Interfaces;
-using Pirate.Lexer;
 using Pirate.Lexer.Tokens;
 
 namespace Pirate.Lexer.Interfaces;

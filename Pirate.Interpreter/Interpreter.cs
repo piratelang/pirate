@@ -1,5 +1,3 @@
-using Pirate.Common.Interfaces;
-
 using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Values;
 using Pirate.Interpreter.Interpreters.Interfaces;

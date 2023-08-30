@@ -1,7 +1,3 @@
-using Pirate.Common;
-
-using Pirate.Common.Interfaces;
-using Pirate.Common.Logger.Enum;
 using Pirate.Interpreter.Interfaces;
 using Pirate.Lexer.Interfaces;
 using Pirate.Parser;

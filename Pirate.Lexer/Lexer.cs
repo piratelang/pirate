@@ -1,4 +1,3 @@
-using Pirate.Common.Interfaces;
 using Pirate.Lexer.Enums;
 using Pirate.Lexer.Tokens;
 using Pirate.Lexer.Interfaces;

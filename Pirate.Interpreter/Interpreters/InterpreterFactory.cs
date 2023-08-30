@@ -1,9 +1,5 @@
-using Pirate.Common.Interfaces;
-using Pirate.Interpreter.Interpreters;
 using Pirate.Interpreter.StandardLibrary.Interfaces;
 using Pirate.Interpreter.Interpreters.Interfaces;
-using Pirate.Parser.Node;
-using Pirate.Parser.Node.Interfaces;
 
 namespace Pirate.Interpreter.Interpreters;
 

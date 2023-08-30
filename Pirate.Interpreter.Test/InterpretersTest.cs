@@ -1,15 +1,10 @@
-using System;
 using System.Collections.Generic;
-using Pirate.Common.Interfaces;
-using Pirate.Interpreter;
 using Pirate.Interpreter.StandardLibrary.Interfaces;
 using Pirate.Interpreter.Values;
 using Pirate.Interpreter.Interpreters;
 using Pirate.Interpreter.StandardLibrary;
-using Pirate.Interpreter.Values;
 using Pirate.Parser.Node;
 using Pirate.Parser.Node.Interfaces;
-using Pirate.Lexer.Enums;
 
 namespace Pirate.Interpreter.Test;
 

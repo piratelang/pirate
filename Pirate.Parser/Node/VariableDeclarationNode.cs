@@ -1,5 +1,3 @@
-using Pirate.Lexer.Enums;
-using Pirate.Lexer.Tokens;
 using Pirate.Parser.Node.Interfaces;
 
 namespace Pirate.Parser.Node;

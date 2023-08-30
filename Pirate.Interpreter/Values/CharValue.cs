@@ -1,10 +1,4 @@
-using Pirate.Common.Interfaces;
 using Pirate.Interpreter.Values.Interfaces;
-using Pirate.Interpreter.Values;
-using Pirate.Lexer.Enums;
-using Pirate.Lexer.Tokens;
-using Pirate.Common.Logger.Enum;
-using Pirate.Common.Logger.Interfaces;
 
 namespace Pirate.Interpreter.Values;
 

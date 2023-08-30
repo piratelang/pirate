@@ -1,5 +1,3 @@
-
-using Pirate.Common.Interfaces;
 using Pirate.Interpreter.Values;
 
 namespace Pirate.Interpreter;

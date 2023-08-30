@@ -1,5 +1,3 @@
-using Pirate.Common;
-using Pirate.Common.Interfaces;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;

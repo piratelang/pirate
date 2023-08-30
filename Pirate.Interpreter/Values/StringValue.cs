@@ -1,8 +1,4 @@
-
-using Pirate.Common.Interfaces;
 using Pirate.Interpreter.Values.Interfaces;
-using Pirate.Lexer.Enums;
-using Pirate.Lexer.Tokens;
 
 namespace Pirate.Interpreter.Values;
 

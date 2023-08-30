@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Pirate.Common.Interfaces;
 using Pirate.Interpreter.Values;
-using Pirate.Lexer.Enums;
-using Xunit;
 
 namespace Pirate.Interpreter.Test
 {

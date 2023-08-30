@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Pirate.Common.FileHandler.Model;
+﻿using Pirate.Common.FileHandler.Model;
 using Pirate.Common.FileHandler;
 using Pirate.Common.FileHandler.Enum;
 using Pirate.Common.FileHandler.Interfaces;

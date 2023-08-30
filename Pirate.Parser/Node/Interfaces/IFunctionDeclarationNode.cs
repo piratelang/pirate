@@ -1,5 +1,3 @@
-using Pirate.Lexer.Tokens;
-
 namespace Pirate.Parser.Node.Interfaces;
 
 /// <inheritdoc cref="FunctionDeclarationNode"/>

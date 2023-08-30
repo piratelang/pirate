@@ -3,7 +3,6 @@ using Pirate.Common.FileHandler.Interfaces;
 using Pirate.Common.FileHandler.Model;
 using Pirate.Common.Interfaces;
 using Pirate.Common.Logger.Enum;
-using Pirate.Common.Logger;
 using Xunit;
 
 namespace Pirate.Common.Test;

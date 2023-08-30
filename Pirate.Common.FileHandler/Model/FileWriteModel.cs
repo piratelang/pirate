@@ -32,7 +32,7 @@ public class FileWriteModel
     {
         if (string.IsNullOrEmpty(Name)) throw new ValidationException($"Name, ${Name} is empty");
         if (string.IsNullOrEmpty(Extension)) throw new ValidationException($"Extension, ${Extension} is empty");
-        if (string.IsNullOrEmpty(Location)) throw new ValidationException($"Location, ${Location} is empty");
+        // if (string.IsNullOrEmpty(Location)) throw new ValidationException($"Location, ${Location} is empty");
         if (string.IsNullOrEmpty(Text)) throw new ValidationException($"Text, ${Text} is empty");
 
         return true;
