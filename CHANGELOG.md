@@ -2,6 +2,16 @@
 
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
+# 2.0.0
+
+- ([PIRATE-22](https://vanarkel.atlassian.net/browse/PIRATE-22)) Add Solution Folder hierarchy
+- ([PIRATE-23](https://vanarkel.atlassian.net/browse/PIRATE-23)) Add Specflow Test project
+- ([PIRATE-24](https://vanarkel.atlassian.net/browse/PIRATE-24)) Add Pirate prefix to Namespaces and Projects
+- ([PIRATE-25](https://vanarkel.atlassian.net/browse/PIRATE-25)) Move Logger and FileHandler to seperate projects
+- ([PIRATE-29](https://vanarkel.atlassian.net/browse/PIRATE-29)) Create a Exception project
+- ([PIRATE-2](https://vanarkel.atlassian.net/browse/PIRATE-2)) Flowchart diagram
+- ([PIRATE-33](https://vanarkel.atlassian.net/browse/PIRATE-33)) Location not found in variables.json
+
 # 1.1.0
 
 ### ([#71](https://github.com/joerivanarkel/PirateLang/pull/71)) XML docs for filehandler usage
