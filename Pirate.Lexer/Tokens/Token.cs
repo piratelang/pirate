@@ -29,6 +29,6 @@ public class Token
 
     public override string ToString()
     {
-        return $"{TokenGroup.ToString()}:{TokenType.ToString()}:{(Value != null ? Value.ToString() : "None")}";
+        return $"{TokenGroup.ToString()}:{TokenType.ToString()}:{this.Value?.ToString()}";
     }
 }

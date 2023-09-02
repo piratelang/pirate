@@ -12,7 +12,6 @@ public class KeyWordService : IKeyWordService
 
     private string[] controlKeywords = new string[] { "if", "else", "for", "to", "foreach", "in", "while", "func", "class", "new", "return" };
 
-
     public TokenType GetTypeKeyword(string idString)
     {
         if (typeKeywords.Contains(idString))
@@ -45,34 +44,24 @@ public class KeyWordService : IKeyWordService
             {
                 case "if":
                     return TokenType.IF;
-
                 case "else":
                     return TokenType.ELSE;
-
                 case "for":
                     return TokenType.FOR;
-
                 case "to":
                     return TokenType.TO;
-
                 case "foreach":
                     return TokenType.FOREACH;
-
                 case "in":
                     return TokenType.IN;
-
                 case "while":
                     return TokenType.WHILE;
-
                 case "func":
                     return TokenType.FUNC;
-
                 case "class":
                     return TokenType.CLASS;
-
                 case "new":
                     return TokenType.NEW;
-
                 case "return":
                     return TokenType.RETURN;
             }
