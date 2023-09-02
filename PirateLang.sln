@@ -91,6 +91,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Common.Exception", "
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pirate.Lexer.F", "Pirate.Lexer.F\Pirate.Lexer.F.fsproj", "{A4A4D3AC-7144-4B38-9B2F-A9A5F15C56EC}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pirate.Lexer.F.Test", "Pirate.Lexer.F.Test\Pirate.Lexer.F.Test.fsproj", "{1139E8DF-3504-47AC-803A-43EC68430E37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{A4A4D3AC-7144-4B38-9B2F-A9A5F15C56EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4A4D3AC-7144-4B38-9B2F-A9A5F15C56EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4A4D3AC-7144-4B38-9B2F-A9A5F15C56EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1139E8DF-3504-47AC-803A-43EC68430E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1139E8DF-3504-47AC-803A-43EC68430E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1139E8DF-3504-47AC-803A-43EC68430E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1139E8DF-3504-47AC-803A-43EC68430E37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +178,7 @@ Global
 		{994A0905-9118-40F0-ABEE-7E8863AB885F} = {442F09BF-403A-4D42-9AA8-1258F42C47EA}
 		{DDBCE537-3F2B-4B61-9155-727D0228C1F8} = {442F09BF-403A-4D42-9AA8-1258F42C47EA}
 		{A4A4D3AC-7144-4B38-9B2F-A9A5F15C56EC} = {962D2974-A4A9-41A4-9C80-A5A771FDF8FB}
+		{1139E8DF-3504-47AC-803A-43EC68430E37} = {962D2974-A4A9-41A4-9C80-A5A771FDF8FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {279A73C5-70E8-4B6D-B235-3467F0CC98A9}

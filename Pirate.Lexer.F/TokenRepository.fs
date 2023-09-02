@@ -17,20 +17,19 @@ type TokenRepository(keyWordService:KeyWordService) =
         let mutable token = Token(TokenGroup.VALUE, TokenType.Empty, 0)
 
         let mutable Break = false
-        while not Break do
-            while Char.IsDigit(text.[position]) || text.[position] = '.' do
-                if text.[position] = '.' then
-                    if dotCount = 1 then
-                        Break <- true
-                    else
-                        dotCount <- dotCount + 1
-                        numberString <- numberString + "."
-                else
-                    numberString <- numberString + text.[position].ToString()
-
-                position <- position + 1
-                if position = text.Length then
+        while not Break && (Char.IsDigit(text.[position]) || text.[position] = '.') do
+            if text.[position] = '.' then
+                if dotCount = 1 then
                     Break <- true
+                else
+                    dotCount <- dotCount + 1
+                    numberString <- numberString + "."
+            else
+                numberString <- numberString + text.[position].ToString()
+
+            position <- position + 1
+            if position = text.Length then
+                Break <- true
 
         if dotCount = 0 then
             token <- Token(TokenGroup.VALUE, TokenType.INT, int numberString)
@@ -39,7 +38,7 @@ type TokenRepository(keyWordService:KeyWordService) =
             cultureInfo.NumberFormat.CurrencyDecimalSeparator <- "."
             cultureInfo.NumberFormat.NumberDecimalSeparator <- "."
             
-            match Decimal.TryParse(numberString, NumberStyles.Number, CultureInfo.InvariantCulture) with
+            match Double.TryParse(numberString, NumberStyles.Number, CultureInfo.InvariantCulture) with
             | (true, result) -> token <- Token(TokenGroup.VALUE, TokenType.FLOAT, result)
             | (false, result) -> raise (System.Exception("Invalid number format"))
 
@@ -51,17 +50,13 @@ type TokenRepository(keyWordService:KeyWordService) =
         let mutable idString = "";
 
         let mutable Break = false
-        while not Break do
-            while Char.IsLetter(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position]) do
-                idString <- idString + text.[position].ToString()
-                position <- position + 1
-                if position = text.Length then
-                    Break <- true
-                if (text.[position] = ' ') then
-                    idString <- idString + text.[position].ToString()
-                    position <- position + 1
-                if  Char.IsLetter(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position]) then
-                    Break <- true
+        while not Break && (Char.IsLetter(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position])) do
+            idString <- idString + text.[position].ToString()
+            position <- position + 1
+            if position = text.Length then
+                Break <- true
+            else if Char.IsNumber(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position]) then
+                Break <- true
 
         let mutable TokenTypeType = _keyWordService.GetTypeKeyowrd(idString)
         if TokenTypeType <> TokenType.Empty then
