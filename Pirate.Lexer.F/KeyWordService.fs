@@ -6,7 +6,7 @@ type KeyWordService() =
     member _.typeKeyWords = ["var"; "int"; "float"; "string"; "char"; "void"]
     member _.controlKeyWords = [ "if"; "else"; "for"; "to"; "foreach"; "in"; "while"; "func"; "class"; "new"; "return" ]
 
-    member this.GetTypeKeyowrd (idString:string) : TokenType =
+    member this.GetTypeKeyword (idString:string) : TokenType =
         if this.typeKeyWords |> List.contains idString then
             match idString with
             | "var" -> TokenType.VAR;

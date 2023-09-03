@@ -58,24 +58,23 @@ type TokenRepository(keyWordService:KeyWordService) =
             else if Char.IsNumber(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position]) then
                 Break <- true
 
-        let mutable TokenTypeType = _keyWordService.GetTypeKeyowrd(idString)
+        let mutable TokenTypeType = _keyWordService.GetTypeKeyword(idString)
+        let mutable TokenTypeControl = _keyWordService.GetTokenControlKeyword(idString)
         if TokenTypeType <> TokenType.Empty then
             TokenResult(
                 Token(TokenGroup.TYPEKEYWORD, TokenTypeType, idString), 
                 position
-            ) |> ignore
-
-        TokenTypeType <- _keyWordService.GetTokenControlKeyword(idString)
-        if TokenTypeType <> TokenType.Empty then
+            )
+        else if TokenTypeControl <> TokenType.Empty then
             TokenResult(
-                Token(TokenGroup.CONTROLKEYWORD, TokenTypeType, idString), 
+                Token(TokenGroup.CONTROLKEYWORD, TokenTypeControl, idString), 
                 position
-            ) |> ignore
-
-        TokenResult(
-            Token(TokenGroup.VALUE, TokenType.IDENTIFIER, idString), 
-            position
-        )
+            )
+        else 
+            TokenResult(
+                Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, idString), 
+                position
+            )
 
     member _.MakeString(text:string, position:int) : TokenResult =
         let mutable position = position + 1
@@ -88,19 +87,18 @@ type TokenRepository(keyWordService:KeyWordService) =
         escapeCharacters.Add("t", "\t");
 
         let mutable Break = false
-        while not Break do
-            while text.[position] <> '"' do
-                if escapeCharacter then
-                    resultString <- resultString + escapeCharacters.[text.[position].ToString()]
+        while not Break && text.[position] <> '"' do
+            if escapeCharacter then
+                resultString <- resultString + escapeCharacters.[text.[position].ToString()]
+            else
+                if text.[position] = '\\' then
+                    escapeCharacter <- true
                 else
-                    if text.[position] = '\\' then
-                        escapeCharacter <- true
-                    else
-                        resultString <- resultString + text.[position].ToString()
-                position <- position + 1
-                escapeCharacter <- false
-                if position = text.Length then
-                    Break <- true
+                    resultString <- resultString + text.[position].ToString()
+            position <- position + 1
+            escapeCharacter <- false
+            if position = text.Length then
+                Break <- true
 
         position <- position + 1
 
@@ -138,74 +136,123 @@ type TokenRepository(keyWordService:KeyWordService) =
     member _.MakeGreaterThan(text:string, position:int) : TokenResult =
         let mutable position = position + 1
 
-        if text.[position] = '=' then
-            position <- position + 1
-            TokenResult(
-                Token(TokenGroup.COMPARISONOPERATORS, TokenType.GREATERTHANEQUALS, ">="),
-                position
-            )
-        else
+        try
+            if text.[position] = '=' then
+                position <- position + 1
+                TokenResult(
+                    Token(TokenGroup.COMPARISONOPERATORS, TokenType.GREATERTHANEQUALS, ">="),
+                    position
+                )
+            else
+                TokenResult(
+                    Token(TokenGroup.COMPARISONOPERATORS, TokenType.GREATERTHAN, ">"),
+                    position
+                )
+        with
+        | :? System.IndexOutOfRangeException ->
             TokenResult(
                 Token(TokenGroup.COMPARISONOPERATORS, TokenType.GREATERTHAN, ">"),
                 position
             )
+        | _ -> raise (System.Exception("Invalid greater than format"))
 
     member _.MakeLessThan(text:string, position:int) : TokenResult =
         let mutable position = position + 1
-
-        if text.[position] = '=' then
-            position <- position + 1
-            TokenResult(
-                Token(TokenGroup.COMPARISONOPERATORS, TokenType.LESSTHANEQUALS, "<="),
-                position
-            )
-        else
+        try
+            if text.[position] = '=' then
+                position <- position + 1
+                TokenResult(
+                    Token(TokenGroup.COMPARISONOPERATORS, TokenType.LESSTHANEQUALS, "<="),
+                    position
+                )
+            else
+                TokenResult(
+                    Token(TokenGroup.COMPARISONOPERATORS, TokenType.LESSTHAN, "<"),
+                    position
+                )
+        with
+        | :? System.IndexOutOfRangeException ->
             TokenResult(
                 Token(TokenGroup.COMPARISONOPERATORS, TokenType.LESSTHAN, "<"),
                 position
             )
+        | _ -> raise (System.Exception("Invalid less than format"))
 
     member _.MakeEquals(text:string, position:int) =
         let mutable position = position + 1
-
-        if text.[position] = '=' then
-            position <- position + 1
-            TokenResult(
-                Token(TokenGroup.COMPARISONOPERATORS, TokenType.EQUALS, "=="),
-                position
-            )
-        else
+        try
+            if text.[position] = '=' then
+                position <- position + 1
+                TokenResult(
+                    Token(TokenGroup.COMPARISONOPERATORS, TokenType.EQUALS, "=="),
+                    position
+                )
+            else
+                TokenResult(
+                    Token(TokenGroup.SYNTAX, TokenType.EQUALS, "="),
+                    position
+                )
+        with
+        | :? System.IndexOutOfRangeException ->
             TokenResult(
                 Token(TokenGroup.SYNTAX, TokenType.EQUALS, "="),
                 position
             )
+        | _ -> raise (System.Exception("Invalid equals format"))
 
     member _.MakePlus(text:string, position:int) =
         let mutable position = position + 1
-
-        if text.[position] = '=' then
-            position <- position + 1
-            TokenResult(
-                Token(TokenGroup.SYNTAX, TokenType.PLUSEQUALS, "+="),
-                position
-            )
-        else
+        try
+            if text.[position] = '=' then
+                position <- position + 1
+                TokenResult(
+                    Token(TokenGroup.SYNTAX, TokenType.PLUSEQUALS, "+="),
+                    position
+                )
+            else
+                TokenResult(
+                    Token(TokenGroup.OPERATORS, TokenType.PLUS, "+"),
+                    position
+                )
+        with
+        | :? System.IndexOutOfRangeException ->
             TokenResult(
                 Token(TokenGroup.OPERATORS, TokenType.PLUS, "+"),
                 position
             )
+        | _ -> raise (System.Exception("Invalid plus format"))
 
     member _.MakeDivide(text:string, position:int) =
         let mutable position = position + 1
 
-        if text.[position] = '/' then
-            position <- position + 1
-            TokenResult(
-                Token(TokenGroup.SYNTAX, TokenType.DOUBLEDIVIDE, "//"),
-                position
-            )
-        else
-            TokenResult(
-                Token(TokenGroup.OPERATORS, TokenType.DIVIDE, "/"),
-                position
-            )
+        try 
+            if text.[position] = '/' then
+                position <- position + 1
+                TokenResult(
+                    Token(TokenGroup.SYNTAX, TokenType.DOUBLEDIVIDE, "//"),
+                    position
+                )
+            else
+                TokenResult(
+                    Token(TokenGroup.OPERATORS, TokenType.DIVIDE, "/"),
+                    position
+                )
+        with
+            | :? System.IndexOutOfRangeException ->
+                TokenResult(
+                    Token(TokenGroup.OPERATORS, TokenType.DIVIDE, "/"),
+                    position
+                )
+            | _ -> raise (System.Exception("Invalid divide format"))
+
+        //if text.[position] = '/' then
+        //    position <- position + 1
+        //    TokenResult(
+        //        Token(TokenGroup.SYNTAX, TokenType.DOUBLEDIVIDE, "//"),
+        //        position
+        //    )
+        //else
+        //    TokenResult(
+        //        Token(TokenGroup.OPERATORS, TokenType.DIVIDE, "/"),
+        //        position
+        //    )
