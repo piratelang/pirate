@@ -10,10 +10,7 @@ using Pirate.Interpreter;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Parser;
-using Pirate.Lexer.Tokens;
-using Pirate.Lexer;
-using Pirate.Lexer.Interfaces;
-using Pirate.Lexer.Tokens.Interfaces;
+using Pirate.Lexer.F;
 
 var version = "1.0.0";
 
@@ -38,7 +35,7 @@ builder.AddTransient<IShellCommand, ShellCommand>();
 builder.AddTransient<ICommandFactory, CommandFactory>();
 
 //Lexer
-builder.AddTransient<ILexer, Lexer>();
+builder.AddTransient<Pirate.Lexer.F.ILexer, Pirate.Lexer.F.Lexer>();
 builder.AddSingleton<IKeyWordService, KeyWordService>();
 builder.AddTransient<ITokenRepository, TokenRepository>();
 
