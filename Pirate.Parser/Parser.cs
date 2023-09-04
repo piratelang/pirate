@@ -17,7 +17,7 @@ public class Parser : IParser
     {
         Logger = logger;
         ObjectSerializer = objectSerializer;
-        logger.Log("Created Parser", LogType.INFO);
+        logger.Info("Created Parser");
     }
     public Scope StartParse(List<Token> tokens, string fileName)
     {
@@ -27,7 +27,7 @@ public class Parser : IParser
         {
             if (tokens == null)
             {
-                Logger.Log("No Tokens Found", LogType.ERROR);
+                Logger.Info("No Tokens Found");
                 throw new ArgumentNullException(nameof(tokens));
             }
             var tokenParser = parserFactory.GetParser(index, tokens, Logger);
@@ -35,7 +35,7 @@ public class Parser : IParser
 
             if (parseResult != null)
             {
-                Logger.Log($"Created {parseResult.Node.GetType().Name} | \"{parseResult.Node.ToString()}\"", LogType.INFO);
+                Logger.Info($"Created {parseResult.Node.GetType().Name} | \"{parseResult.Node.ToString()}\"");
                 scope.AddNode(parseResult.Node);
                 index = parseResult.Index;
             }
@@ -49,7 +49,7 @@ public class Parser : IParser
             }
         }
 
-        Logger.Log("Finished Parsing", LogType.INFO);
+        Logger.Info("Finished Parsing");
 
         ObjectSerializer.SerializeObject(scope, $"{fileName}.pirate");
 

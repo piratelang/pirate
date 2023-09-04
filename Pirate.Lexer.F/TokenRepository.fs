@@ -6,6 +6,8 @@ open System
 open System.Globalization
 open System.Collections.Generic
 
+exception TokenRepositoryException of string
+
 type TokenRepository(keyWordService:KeyWordService) =
     let mutable _keyWordService = keyWordService
 
@@ -50,13 +52,21 @@ type TokenRepository(keyWordService:KeyWordService) =
         let mutable idString = "";
 
         let mutable Break = false
-        while not Break && (Char.IsLetter(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position])) do
-            idString <- idString + text.[position].ToString()
-            position <- position + 1
-            if position = text.Length then
-                Break <- true
-            else if Char.IsNumber(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position]) then
-                Break <- true
+        try
+            while not Break && (Char.IsLetter(text.[position]) && Char.IsDigit(text.[position]) = false && Char.IsWhiteSpace(text.[position]) = false && Char.IsSeparator(text.[position]) = false ) do
+                idString <- idString + text.[position].ToString()
+                position <- position + 1
+                if text.[position] = '.' then
+                    idString <- idString + text.[position].ToString()
+                    position <- position + 1
+
+                if position = text.Length then
+                    Break <- true
+                else if Char.IsNumber(text.[position]) || Char.IsDigit(text.[position]) || Char.IsWhiteSpace(text.[position]) || Char.IsSeparator(text.[position]) then
+                    Break <- true
+        with
+        | :? IndexOutOfRangeException -> ()
+        | _ -> raise (TokenRepositoryException("Invalid identifier format"))
 
         let mutable TokenTypeType = _keyWordService.GetTypeKeyword(idString)
         let mutable TokenTypeControl = _keyWordService.GetTokenControlKeyword(idString)

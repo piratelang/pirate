@@ -30,7 +30,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
     
     public override object Run(string[] arguments)
     {
-        Logger.Log("Starting Build Command", LogType.INFO);
+        Logger.Info("Starting Build Command");
 
         // Check for files
         var foundFiles = Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories);
@@ -44,7 +44,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 
             // Starting build
             Console.WriteLine($"Building {file}\n");
-            Logger.Log($"Building {file}", LogType.INFO);
+            Logger.Info($"Building {file}");
 
             var fileName = file.Replace(".pirate", "").Replace("./", "");
             
@@ -52,16 +52,16 @@ public class BuildCommand : Command, ICommand, IBuildCommand
             if (text == null) Error($"{fileName} contains no text");
 
             // Running Lexer
-            Logger.Log($"Lexing {file}\n", LogType.INFO);
+            Logger.Info($"Lexing {file}\n");
             var tokens = _lexer.MakeTokens(text, "test").ToList();
             if (tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file {fileName}.");
 
             // Running Parser
-            Logger.Log($"Parsing {file}\n", LogType.INFO);
+            Logger.Info($"Parsing {file}\n");
             var parseResult = _parser.StartParse(tokens, fileName);
             if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
         }
-        Logger.Log($"Updating ModuleList\n", LogType.INFO);
+        Logger.Info($"Updating ModuleList\n");
         _moduleListRepository.SetList(foundFiles, Location);
 
         return true;
@@ -92,7 +92,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
                 foundModule.lastModifiedDate == File.GetLastWriteTimeUtc(file)
             )
             {
-                Logger.Log($"{foundModule.moduleName} was not modified since last build", LogType.INFO);
+                Logger.Info($"{foundModule.moduleName} was not modified since last build");
                 return true;
             }
         }

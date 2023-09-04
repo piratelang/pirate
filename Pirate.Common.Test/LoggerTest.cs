@@ -23,7 +23,7 @@ public class LoggerTest
         var type = LogType.INFO;
 
         // Act
-        var result = logger.Log(message, type);
+        var result = logger.Info(message);
 
         // Assert
         Assert.True(result);

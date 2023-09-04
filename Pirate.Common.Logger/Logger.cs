@@ -5,12 +5,12 @@ using Pirate.Common.FileHandler.Interfaces;
 using Pirate.Common.Logger.Enum;
 using Pirate.Common.Logger.Interfaces;
 using Pirate.Common.Logger.Exception;
+using System.Diagnostics;
 
 namespace Pirate.Common.Logger;
 
 public class Logger : ILogger
 {
-
     /// <summary>
     /// The configuration options for the logger.
     /// </summary>
@@ -41,6 +41,7 @@ public class Logger : ILogger
     /// <param name="logType">INFO, WARNING or ERROR</param>
     /// <returns>True if the message was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
+    [Obsolete]
     public bool Log(string message, LogType logType)
     {
         if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");
@@ -55,18 +56,18 @@ public class Logger : ILogger
         return WriteToTarget(text);
     }
 
-    /// <summary>
-    /// Logs an exception
-    /// </summary>
-    /// <param name="exception">The exception to log</param>
-    /// <returns>True if the exception was logged successfully</returns>
-    /// <exception cref="LoggerException">Thrown when the exception is null or empty</exception>
-    public bool Error(System.Exception exception)
+    private bool PirateLog(string message, LogType logType)
     {
-        var result = Log(exception.Message, LogType.ERROR);
-        if (exception.InnerException != null) result = Log(exception.InnerException.Message, LogType.ERROR);
+        if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");
 
-        return result;
+        var time = DateTime.Now.ToString();
+        var formattedMessage = MessageFormatter.FormatMessage(message);
+
+        if (string.IsNullOrEmpty(formattedMessage)) throw new LoggerException("Message cannot be null or empty");
+
+        var text = $"{time.Replace(" uur", "")}: {logType}: {MessageFormatter.GetCallingClassName()}.cs: {formattedMessage}";
+
+        return WriteToTarget(text);
     }
 
     /// <summary>
@@ -77,10 +78,58 @@ public class Logger : ILogger
     /// <exception cref="LoggerException">Thrown when the exception is null or empty</exception>
     public bool Fatal(System.Exception exception)
     {
-        var result = Log(exception.Message, LogType.FATAL);
-        if (exception.InnerException != null) result = Log(exception.InnerException.Message, LogType.FATAL);
+        var result = exception.Message.Split(Environment.NewLine).All(line => PirateLog(line, LogType.FATAL));
+        if (exception.InnerException != null) result = PirateLog(exception.InnerException.Message, LogType.INNEREXCEPTION);
 
         return result;
+    }
+
+    /// <summary>
+    /// Logs an exception
+    /// </summary>
+    /// <param name="exception">The exception to log</param>
+    /// <returns>True if the exception was logged successfully</returns>
+    /// <exception cref="LoggerException">Thrown when the exception is null or empty</exception>
+    public bool Error(System.Exception exception)
+    {
+        var result = exception.Message.Split(Environment.NewLine).All(line => PirateLog(line, LogType.ERROR));
+        if (exception.InnerException != null) result = PirateLog(exception.InnerException.Message, LogType.INNEREXCEPTION);
+        if (exception.StackTrace != null) result = exception.StackTrace.Split(Environment.NewLine).All(line => PirateLog(line, LogType.STACKTRACE));
+
+        return result;
+    }
+
+    /// <summary>
+    /// Logs a warning
+    /// </summary>
+    /// <param name="message">The message to log</param>
+    /// <returns>True if the message was logged successfully</returns>
+    /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
+    public bool Warning(string message)
+    {
+        return PirateLog(message, LogType.WARNING);
+    }
+
+    /// <summary>
+    /// Logs an info message
+    /// </summary>
+    /// <param name="message">The message to log</param>
+    /// <returns>True if the message was logged successfully</returns>
+    /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
+    public bool Info(string message)
+    {
+        return PirateLog(message, LogType.INFO);
+    }
+
+    /// <summary>
+    /// Logs a debug message
+    /// </summary>
+    /// <param name="message">The message to log</param>
+    /// <returns>True if the message was logged successfully</returns>
+    /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
+    public bool Debug(string message)
+    {
+        return PirateLog(message, LogType.DEBUG);
     }
 
     private bool WriteToTarget(string text)

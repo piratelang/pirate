@@ -26,7 +26,7 @@ public class OperationParser : BaseParser, ITokenParser
 
         if (_tokens.Count == _index + 1)
         {
-            Logger.Log("Returning Binary Operation Node", LogType.INFO);
+            Logger.Info("Returning Binary Operation Node");
             return new ParseResult(node, _index);
         }
 
@@ -36,7 +36,7 @@ public class OperationParser : BaseParser, ITokenParser
             CreateComparisonOperation(out node, LeftNode, out OperatorToken);
         }
 
-        Logger.Log("Returning Comparison or Binary Operation Node", LogType.INFO);
+        Logger.Info("Returning Comparison or Binary Operation Node");
         return new ParseResult(node, _index);
     }
 
@@ -90,7 +90,7 @@ public class OperationParser : BaseParser, ITokenParser
 
     private ParseResult ReturnValueNode(INode LeftNode)
     {
-        Logger.Log("Returning Single ValueNode", LogType.INFO);
+        Logger.Info("Returning Single ValueNode");
         return new ParseResult(LeftNode, _index);
     }
 

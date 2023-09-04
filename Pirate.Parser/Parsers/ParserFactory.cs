@@ -6,6 +6,7 @@ public class ParserFactory : IParserFactory
 {
     public BaseParser GetParser(int index, List<Token> tokens, ILogger logger)
     {
+        logger.Debug($"Factory is creating parser for {tokens[index].TokenType}");
         switch (tokens[index].TokenType)
         {
             case TokenType.FUNC:
@@ -32,6 +33,6 @@ public class ParserFactory : IParserFactory
             case TokenType.DOUBLEDIVIDE:
                 return new CommentParser(tokens, index, logger);
         }
-        throw new ArgumentNullException("node", $"Factory cannot find parser for {tokens[index].GetType().Name}");
+        throw new ArgumentNullException("node", $"Factory cannot find parser for {tokens[index].GetType().Name} {tokens[index].TokenType.GetType().Name}");
     }
 }

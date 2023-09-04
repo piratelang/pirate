@@ -5,8 +5,11 @@
 /// </summary>
 public enum LogType
 {
+    FATAL,
     ERROR,
+    INNEREXCEPTION,
+    STACKTRACE,
     WARNING,
     INFO,
-    FATAL
+    DEBUG
 }

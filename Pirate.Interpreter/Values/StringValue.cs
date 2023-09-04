@@ -18,20 +18,20 @@ public class StringValue : BaseValue, IValue
                 var otherValue = ConvertValueToString(other.Value);
                 return new StringValue(value + otherValue, Logger);
             case TokenType.MINUS:
-                Logger.Log("<string> - <string> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<string> - <string> is not supported"));
+                throw new NotImplementedException("<string> - <string> is not supported");
             case TokenType.MULTIPLY:
                 value = ConvertValueToString(Value);
                 return new StringValue(string.Concat(Enumerable.Repeat(value, ConvertValueToInt(other.Value))), Logger);
             case TokenType.DIVIDE:
-                Logger.Log("<string> / <string> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<string> / <string> is not supported"));
+                throw new NotImplementedException("<string> / <string> is not supported");
             case TokenType.POWER:
-                Logger.Log("<string> ^ <string> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<string> ^ <string> is not supported"));
+                throw new NotImplementedException("<string> ^ <string> is not supported");
             case TokenType.MODULO:
-                Logger.Log("<string> % <string> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<string> % <string> is not supported"));
+                throw new NotImplementedException("<string> % <string> is not supported");
 
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");

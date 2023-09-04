@@ -9,12 +9,12 @@ type KeyWordService() =
     member this.GetTypeKeyword (idString:string) : TokenType =
         if this.typeKeyWords |> List.contains idString then
             match idString with
-            | "var" -> TokenType.VAR;
-            | "int" -> TokenType.INT;
-            | "float" -> TokenType.FLOAT;
-            | "string" -> TokenType.STRING;
-            | "char" -> TokenType.CHAR;
-            | "void" -> TokenType.VOID;
+            | "var" -> VAR;
+            | "int" -> INT;
+            | "float" -> FLOAT;
+            | "string" -> STRING;
+            | "char" -> CHAR;
+            | "void" -> VOID;
             | _ -> raise (System.NotImplementedException($"Type keyword, {idString} has not been implemented"));
         else
             TokenType.Empty;
@@ -22,17 +22,17 @@ type KeyWordService() =
     member this.GetTokenControlKeyword (idString:string) : TokenType =
         if this.controlKeyWords |> List.contains idString then
             match idString with
-            | "if" -> TokenType.IF;
-            | "else" -> TokenType.ELSE;
-            | "for" -> TokenType.FOR;
-            | "to" -> TokenType.TO;
-            | "foreach" -> TokenType.FOREACH;
-            | "in" -> TokenType.IN;
-            | "while" -> TokenType.WHILE;
-            | "func" -> TokenType.FUNC;
-            | "class" -> TokenType.CLASS;
-            | "new" -> TokenType.NEW;
-            | "return" -> TokenType.RETURN;
+            | "if" -> IF;
+            | "else" -> ELSE;
+            | "for" -> FOR;
+            | "to" -> TO;
+            | "foreach" -> FOREACH;
+            | "in" -> IN;
+            | "while" -> WHILE;
+            | "func" -> FUNC;
+            | "class" -> CLASS;
+            | "new" -> NEW;
+            | "return" -> RETURN;
             | _ -> raise (System.NotImplementedException($"Control keyword, {idString} has not been implemented"));
         else
             TokenType.Empty;
