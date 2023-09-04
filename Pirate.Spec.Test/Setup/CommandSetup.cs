@@ -46,4 +46,9 @@ public class CommandSetup
         return new RunCommand(_logger, _objectSerializer, buildCommand, interpreter, _fileReadHandler,
             _environmentVariables);
     }
+
+    public ILogger GetLogger()
+    {
+        return _logger;
+    }
 }

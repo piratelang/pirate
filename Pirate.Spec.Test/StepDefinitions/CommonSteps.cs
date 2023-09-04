@@ -20,6 +20,7 @@ public sealed class CommonSteps
     
     private readonly FileWriteHandler _fileWriteHandler;
     private readonly FileReadHandler _fileReadHandler;
+    private readonly ILogger _logger;
     
     private readonly CommandSetup _commandSetup;
     
@@ -30,6 +31,7 @@ public sealed class CommonSteps
         _fileReadHandler = fileReadHandler;
         
         _commandSetup = commandSetup;
+        _logger = _commandSetup.GetLogger();
     }
     
     [Given(@"the following pirate code:")]
@@ -56,6 +58,17 @@ public sealed class CommonSteps
         result.Should().BeOfType(typeof(List<BaseValue>));
         _scenarioContext.Set(result, "CodeResult");
     }
+
+    [Then(@"the result should be ""(.*)""")]
+    public void ThenTheResultShouldBe(string expectedResult)
+    {
+        var result = _scenarioContext.Get<List<BaseValue>>("CodeResult");
+        foreach (var item in result)
+        {
+            Console.WriteLine(item.ToString());
+        }
+    }
+
 
     [AfterScenario]
     public void AfterScenario()

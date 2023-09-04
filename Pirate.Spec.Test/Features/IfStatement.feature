@@ -10,4 +10,4 @@ Scenario: If statement with a single condition
         """
     
     When the code is executed
-    
+    Then the result should be "Ahoy!"
