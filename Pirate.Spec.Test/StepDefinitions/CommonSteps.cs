@@ -4,7 +4,6 @@ using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Interpreter.Values;
 using Pirate.Lexer;
-using Pirate.Lexer.Interfaces;
 using Pirate.Lexer.Tokens;
 using Pirate.Parser;
 using Pirate.Spec.Test.Setup;

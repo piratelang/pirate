@@ -14,8 +14,8 @@ global using Pirate.Common.FileHandler.Enum;
 global using Pirate.Common.FileHandler.Model;
 global using Pirate.Common.FileHandler.Interfaces;
 
-global using Pirate.Lexer.Enums;
 global using Pirate.Lexer.Tokens;
+global using Pirate.Lexer.TokenType.Enums;
 
 global using Pirate.Parser.Node.Interfaces;
 global using Pirate.Parser.Node;

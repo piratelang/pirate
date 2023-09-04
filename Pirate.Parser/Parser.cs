@@ -1,5 +1,6 @@
 using Pirate.Parser.Parsers.Interfaces;
 using Pirate.Parser.Parsers;
+using Pirate.Lexer.TokenType.Enums;
 
 namespace Pirate.Parser;
 

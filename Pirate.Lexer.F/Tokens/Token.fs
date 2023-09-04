@@ -1,11 +1,20 @@
-﻿namespace Pirate.Lexer.F.Tokens
+﻿namespace Pirate.Lexer.Tokens
 
-open Pirate.Lexer.F.Tokens.Enums
+open Pirate.Lexer.TokenType.Enums
+open Pirate.Lexer.Enums
+open Pirate.Lexer.TokenType
+open Newtonsoft.Json
 
-type Token(tokenGroup:TokenGroup, tokenType:TokenType, value:obj) =
-    member _.TokenGroup = tokenGroup
-    member _.TokenType = tokenType
-    member _.Value = value
+type Token (tokenGroup:Pirate.Lexer.TokenType.Enums.TokenGroup, tokenType:Pirate.Lexer.TokenType.Enums.TokenType, value:obj) =
+    [<JsonConstructor>]
+    new(tokenGroup:Pirate.Lexer.TokenType.Enums.TokenGroup, tokenType:Pirate.Lexer.TokenType.Enums.TokenType) = Token(tokenGroup, tokenType, null)
+
+    new(tokenGroup:Pirate.Lexer.Enums.TokenGroup, tokenType:Pirate.Lexer.Enums.TokenType, value:obj) = Token(TokenTypeMapper.ConvertTokenGroup(tokenGroup), TokenTypeMapper.ConvertTokenType(tokenType), value)
+    new(tokenGroup:Pirate.Lexer.Enums.TokenGroup, tokenType:Pirate.Lexer.Enums.TokenType) = Token(TokenTypeMapper.ConvertTokenGroup(tokenGroup), TokenTypeMapper.ConvertTokenType(tokenType), null)
+
+    member val TokenGroup = tokenGroup with get, set
+    member val TokenType = tokenType with get, set
+    member val Value = value with get, set
 
     member this.Matches (tokenType: obj, value: obj) : bool =
         if value = null || this.Value = null then
@@ -14,6 +23,10 @@ type Token(tokenGroup:TokenGroup, tokenType:TokenType, value:obj) =
         else
             if (this.TokenType.Equals(tokenType) && this.Value.Equals(value)) then true
             else false
+
+    member this.Matches (tokenType: obj) : bool =
+        if this.TokenType.Equals(tokenType) then true
+        else false
 
     override this.ToString() = $"%s{string this.TokenGroup}:%s{string this.TokenType}:%A{this.Value}"
 

@@ -1,3 +1,4 @@
+using Pirate.Lexer.TokenType.Enums;
 using Pirate.Parser.Node;
 using Pirate.Parser.Node.Interfaces;
 using Pirate.Parser.Parsers.Interfaces;

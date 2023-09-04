@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Tokens\Enums\TokenType.fs" />
-    <Compile Include="Tokens\Enums\TokenGroup.fs" />
     <Compile Include="Tokens\Token.fs" />
     <Compile Include="KeyWordService.fs" />
     <Compile Include="TokenRepository.fs" />
@@ -27,8 +25,8 @@
     <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
     <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
     <ProjectReference Include="..\Pirate.Common\Pirate.Common.csproj" />
+    <ProjectReference Include="..\Pirate.Lexer.Enums\Pirate.Lexer.Enums.fsproj" />
+    <ProjectReference Include="..\Pirate.Lexer.TokenType\Pirate.Lexer.TokenType.csproj" />
   </ItemGroup>
-
-  <ItemGroup />
 
 </Project>

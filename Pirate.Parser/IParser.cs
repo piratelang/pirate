@@ -1,3 +1,5 @@
+using Pirate.Lexer.Tokens;
+
 namespace Pirate.Parser;
 
 public interface IParser

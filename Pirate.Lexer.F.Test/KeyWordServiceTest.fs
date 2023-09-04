@@ -1,8 +1,8 @@
-﻿module Pirate.Lexer.F.Test.KeyWordServiceTest
+﻿module Pirate.Lexer.Test.KeyWordServiceTest
 
 open Xunit
-open Pirate.Lexer.F
-open Pirate.Lexer.F.Tokens.Enums
+open Pirate.Lexer
+open Pirate.Lexer.Enums
 
 
 [<Fact>]

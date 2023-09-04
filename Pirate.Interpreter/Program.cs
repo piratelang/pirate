@@ -11,7 +11,7 @@ while (true)
 {
     var input = Console.ReadLine();
     var lexer = new Lexer(logger, new TokenRepository(new KeyWordService()));
-    var tokens = lexer.MakeTokens(input, "test");
+    var tokens = lexer.MakeTokens(input, "test").ToList();
 
     var fileReadHandler = new FileReadHandler();
     var fileWriteHandler = new FileWriteHandler();

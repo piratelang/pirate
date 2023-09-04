@@ -1,7 +1,7 @@
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
 using Pirate.Parser;
-using Pirate.Lexer.Interfaces;
+using Pirate.Lexer;
 
 namespace Shell.Commands;
 
@@ -12,12 +12,12 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 {
     private IObjectSerializer _objectSerializer;
     private IParser _parser;
-    private ILexer _lexer;
+    private Lexer _lexer;
     private IModuleListRepository _moduleListRepository;
     private IFileReadHandler _fileReadHandler;
     private string Location;
 
-    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, ILexer lexer, IModuleListRepository moduleListRepository, IFileReadHandler fileReadHandler, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
+    public BuildCommand(ILogger logger, IObjectSerializer objectSerializer, IParser parser, Lexer lexer, IModuleListRepository moduleListRepository, IFileReadHandler fileReadHandler, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
     {
         _objectSerializer = objectSerializer;
         _parser = parser;
@@ -53,7 +53,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 
             // Running Lexer
             Logger.Log($"Lexing {file}\n", LogType.INFO);
-            var tokens = _lexer.MakeTokens(text, "test");
+            var tokens = _lexer.MakeTokens(text, "test").ToList();
             if (tokens.Count() == 0) Error($"Error occured while lexing tokens, in the file {fileName}.");
 
             // Running Parser

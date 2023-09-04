@@ -1,8 +1,9 @@
-﻿module Pirate.Lexer.F.Test.TokenTest
+﻿module Pirate.Lexer.Test.TokenTest
 
 open Xunit
-open Pirate.Lexer.F.Tokens
-open Pirate.Lexer.F.Tokens.Enums
+open Pirate.Lexer.Tokens
+open Pirate.Lexer.Enums
+open Pirate.Lexer.TokenType.Enums
 
 [<Fact>]
 let ShouldMatchToken () =

@@ -1,5 +1,5 @@
 using Pirate.Interpreter.Interfaces;
-using Pirate.Lexer.Interfaces;
+using Pirate.Lexer;
 using Pirate.Parser;
 using Shell.Commands.Interfaces;
 
@@ -11,11 +11,11 @@ namespace Shell.Commands;
 public class ShellCommand : Command, ICommand, IShellCommand
 {
     private IParser Parser;
-    private ILexer Lexer;
+    private Lexer Lexer;
     private IInterpreter Interpreter;
     private IEnvironmentVariables EnvironmentVariables;
 
-    public ShellCommand(ILogger logger, IParser parser, ILexer lexer, IInterpreter interpreter, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
+    public ShellCommand(ILogger logger, IParser parser, Lexer lexer, IInterpreter interpreter, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
     {
         Parser = parser;
         Lexer = lexer;
@@ -43,7 +43,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
                     break;
                 }
 
-                var tokens = Lexer.MakeTokens(input, "test");
+                var tokens = Lexer.MakeTokens(input, "test").ToList();
                 if (tokens.Count() == 0) Error($"Error occured while lexing tokens.");
 
                 var parseResult = Parser.StartParse(tokens, "repl");

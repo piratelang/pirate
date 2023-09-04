@@ -1,4 +1,4 @@
-﻿module Pirate.Lexer.F.Test.LexerTest
+﻿module Pirate.Lexer.Test.LexerTest
 
 open Xunit
 open AutoFixture
@@ -8,8 +8,8 @@ open Pirate.Common.FileHandler.Interfaces
 open Pirate.Common.Interfaces
 open FakeItEasy
 open Pirate.Common.Logger
-open Pirate.Lexer.F
-open Pirate.Lexer.F.Tokens.Enums
+open Pirate.Lexer
+open Pirate.Lexer.TokenType.Enums
 
 [<Fact>]
 let ShouldMakeNumber () =
@@ -22,8 +22,8 @@ let ShouldMakeNumber () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(VALUE, result.[0].TokenGroup)
-    Assert.Equal(INT, result.[0].TokenType)
+    Assert.Equal(TokenGroup.VALUE, result.[0].TokenGroup)
+    Assert.Equal(TokenType.INT, result.[0].TokenType)
     Assert.Equal(123, result.[0].Value |> unbox<int>)
 
 [<Fact>]
@@ -37,8 +37,8 @@ let ShouldMakeFloat () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(VALUE, result.[0].TokenGroup)
-    Assert.Equal(FLOAT, result.[0].TokenType)
+    Assert.Equal(TokenGroup.VALUE, result.[0].TokenGroup)
+    Assert.Equal(TokenType.FLOAT, result.[0].TokenType)
     Assert.Equal(123.123, result.[0].Value |> unbox<float>)
 
 [<Fact>]
@@ -52,7 +52,8 @@ let ShouldMakeIdentifier () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(IDENTIFIER, result.[0].TokenType)
+    Assert.Equal(TokenGroup.VALUE, result.[0].TokenGroup)
+    Assert.Equal(TokenType.IDENTIFIER, result.[0].TokenType)
     Assert.Equal("appel", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -66,8 +67,8 @@ let ShouldMakeString () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(VALUE, result.[0].TokenGroup)
-    Assert.Equal(STRING, result.[0].TokenType)
+    Assert.Equal(TokenGroup.VALUE, result.[0].TokenGroup)
+    Assert.Equal(TokenType.STRING, result.[0].TokenType)
     Assert.Equal("test", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -81,8 +82,8 @@ let ShouldMakeChar () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(VALUE, result.[0].TokenGroup)
-    Assert.Equal(CHAR, result.[0].TokenType)
+    Assert.Equal(TokenGroup.VALUE, result.[0].TokenGroup)
+    Assert.Equal(TokenType.CHAR, result.[0].TokenType)
     Assert.Equal("t", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -96,8 +97,8 @@ let ShouldMakePlus () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(OPERATORS, result.[0].TokenGroup)
-    Assert.Equal(PLUS, result.[0].TokenType)
+    Assert.Equal(TokenGroup.OPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.PLUS, result.[0].TokenType)
     Assert.Equal("+", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -111,8 +112,8 @@ let ShouldMakeMinus () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(OPERATORS, result.[0].TokenGroup)
-    Assert.Equal(MINUS, result.[0].TokenType)
+    Assert.Equal(TokenGroup.OPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.MINUS, result.[0].TokenType)
     Assert.Equal("-", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -126,8 +127,8 @@ let ShouldMakeMultiply () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(OPERATORS, result.[0].TokenGroup)
-    Assert.Equal(MULTIPLY, result.[0].TokenType)
+    Assert.Equal(TokenGroup.OPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.MULTIPLY, result.[0].TokenType)
     Assert.Equal("*", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -141,8 +142,8 @@ let ShouldMakeDivide () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(OPERATORS, result.[0].TokenGroup)
-    Assert.Equal(DIVIDE, result.[0].TokenType)
+    Assert.Equal(TokenGroup.OPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.DIVIDE, result.[0].TokenType)
     Assert.Equal("/", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -156,8 +157,8 @@ let ShouldMakePower () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(OPERATORS, result.[0].TokenGroup)
-    Assert.Equal(POWER, result.[0].TokenType)
+    Assert.Equal(TokenGroup.OPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.POWER, result.[0].TokenType)
     Assert.Equal("^", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -171,8 +172,8 @@ let ShouldMakeLeftParentheses () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(LEFTPARENTHESES, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.LEFTPARENTHESES, result.[0].TokenType)
     Assert.Equal("(", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -186,8 +187,8 @@ let ShouldMakeRightParentheses () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(RIGHTPARENTHESES, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.RIGHTPARENTHESES, result.[0].TokenType)
     Assert.Equal(")", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -201,8 +202,8 @@ let ShouldMakeLeftCurlyBrace () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(LEFTCURLYBRACE, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.LEFTCURLYBRACE, result.[0].TokenType)
     Assert.Equal("{", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -216,8 +217,8 @@ let ShouldMakeRightCurlyBrace () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(RIGHTCURLYBRACE, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.RIGHTCURLYBRACE, result.[0].TokenType)
     Assert.Equal("}", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -231,8 +232,8 @@ let ShouldMakeComma () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(COMMA, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.COMMA, result.[0].TokenType)
     Assert.Equal(",", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -246,8 +247,8 @@ let ShouldMakeColon () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(COLON, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.COLON, result.[0].TokenType)
     Assert.Equal(":", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -261,8 +262,8 @@ let ShouldMakeSemicolon () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(SEMICOLON, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.SEMICOLON, result.[0].TokenType)
     Assert.Equal(";", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -276,8 +277,8 @@ let ShouldMakeDot () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(DOT, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.DOT, result.[0].TokenType)
     Assert.Equal(".", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -291,8 +292,8 @@ let ShouldMakeLeftBracket () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(LEFTBRACKET, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.LEFTBRACKET, result.[0].TokenType)
     Assert.Equal("[", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -306,8 +307,8 @@ let ShouldMakeRightBracket () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(RIGHTBRACKET, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.RIGHTBRACKET, result.[0].TokenType)
     Assert.Equal("]", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -321,8 +322,8 @@ let ShouldMakeEquals () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(SYNTAX, result.[0].TokenGroup)
-    Assert.Equal(EQUALS, result.[0].TokenType)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
+    Assert.Equal(TokenType.EQUALS, result.[0].TokenType)
     Assert.Equal("=", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -336,8 +337,8 @@ let ShouldMakeLessThan () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(COMPARISONOPERATORS, result.[0].TokenGroup)
-    Assert.Equal(LESSTHAN, result.[0].TokenType)
+    Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.LESSTHAN, result.[0].TokenType)
     Assert.Equal("<", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -351,8 +352,8 @@ let ShouldMakeGreaterThan () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(COMPARISONOPERATORS, result.[0].TokenGroup)
-    Assert.Equal(GREATERTHAN, result.[0].TokenType)
+    Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.GREATERTHAN, result.[0].TokenType)
     Assert.Equal(">", result.[0].Value |> unbox<string>)
 
 [<Fact>]
@@ -366,6 +367,6 @@ let ShouldMakeNotEquals () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(COMPARISONOPERATORS, result.[0].TokenGroup)
-    Assert.Equal(NOTEQUALS, result.[0].TokenType)
+    Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.[0].TokenGroup)
+    Assert.Equal(TokenType.NOTEQUALS, result.[0].TokenType)
     Assert.Equal("!=", result.[0].Value |> unbox<string>)

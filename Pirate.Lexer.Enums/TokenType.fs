@@ -1,4 +1,4 @@
-﻿namespace Pirate.Lexer.F.Tokens.Enums
+﻿namespace Pirate.Lexer.Enums
 
 open Newtonsoft.Json
 open Newtonsoft.Json.Converters

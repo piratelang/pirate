@@ -25,8 +25,7 @@
     <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
     <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
     <ProjectReference Include="..\Pirate.Interpreter\Pirate.Interpreter.csproj" />
-    <ProjectReference Include="..\Pirate.Lexer.F\Pirate.Lexer.F.fsproj" />
-    <ProjectReference Include="..\Pirate.Lexer\Pirate.Lexer.csproj" />
+    <ProjectReference Include="..\Pirate.Lexer.F\Pirate.Lexer.fsproj" />
     <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.csproj" />
     <ProjectReference Include="..\Pirate.Common\Pirate.Common.csproj" />
   </ItemGroup>
