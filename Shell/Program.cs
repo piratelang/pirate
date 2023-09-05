@@ -1,20 +1,16 @@
-﻿using Common;
-using PirateInterpreter;
-using PirateLexer;
-using Microsoft.Extensions.DependencyInjection;
-using PirateParser;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Shell;
 using Shell.Commands;
 using Shell.Commands.Interfaces;
 using Shell.ModuleList;
-using PirateLexer.Interfaces;
-using PirateLexer.Tokens;
-using PirateInterpreter.Interfaces;
-using PirateInterpreter.Interpreters.Interfaces;
-using PirateInterpreter.StandardLibrary.Interfaces;
-using PirateInterpreter.Interpreters;
-using PirateInterpreter.StandardLibrary;
-using PirateLexer.Tokens.Interfaces;
+using Pirate.Interpreter.Interfaces;
+using Pirate.Interpreter.Interpreters;
+using Pirate.Interpreter.StandardLibrary.Interfaces;
+using Pirate.Interpreter;
+using Pirate.Interpreter.StandardLibrary;
+using Pirate.Interpreter.Interpreters.Interfaces;
+using Pirate.Parser;
+using Pirate.Lexer;
 
 var version = "1.0.0";
 
@@ -39,9 +35,9 @@ builder.AddTransient<IShellCommand, ShellCommand>();
 builder.AddTransient<ICommandFactory, CommandFactory>();
 
 //Lexer
-builder.AddTransient<ILexer, Lexer>();
-builder.AddSingleton<IKeyWordService, KeyWordService>();
-builder.AddTransient<ITokenRepository, TokenRepository>();
+builder.AddTransient<Pirate.Lexer.Lexer, Lexer>();
+builder.AddSingleton<KeyWordService, KeyWordService>();
+builder.AddTransient<TokenRepository, TokenRepository>();
 
 //Parser
 builder.AddTransient<IParser, Parser>();

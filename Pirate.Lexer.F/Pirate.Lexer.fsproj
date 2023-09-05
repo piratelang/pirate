@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Tokens\Token.fs" />
+    <Compile Include="KeyWordService.fs" />
+    <Compile Include="TokenRepository.fs" />
+    <Compile Include="Lexer.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Common.Exception\Pirate.Common.Exception.csproj" />
+    <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
+    <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
+    <ProjectReference Include="..\Pirate.Common\Pirate.Common.csproj" />
+    <ProjectReference Include="..\Pirate.Lexer.Enums\Pirate.Lexer.Enums.fsproj" />
+    <ProjectReference Include="..\Pirate.Lexer.TokenType\Pirate.Lexer.TokenType.csproj" />
+  </ItemGroup>
+
+</Project>

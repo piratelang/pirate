@@ -4,5 +4,5 @@ public interface ICommand
 {
     void Error(string message);
     void Help();
-    void Run(string[] arguments);
+    object Run(string[] arguments);
 }

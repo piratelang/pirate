@@ -1,7 +1,6 @@
-using Common;
-using PirateInterpreter.Interfaces;
-using PirateLexer.Interfaces;
-using PirateParser;
+using Pirate.Interpreter.Interfaces;
+using Pirate.Lexer;
+using Pirate.Parser;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
@@ -12,11 +11,11 @@ namespace Shell.Commands;
 public class ShellCommand : Command, ICommand, IShellCommand
 {
     private IParser Parser;
-    private ILexer Lexer;
+    private Lexer Lexer;
     private IInterpreter Interpreter;
     private IEnvironmentVariables EnvironmentVariables;
 
-    public ShellCommand(ILogger logger, IParser parser, ILexer lexer, IInterpreter interpreter, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
+    public ShellCommand(ILogger logger, IParser parser, Lexer lexer, IInterpreter interpreter, IEnvironmentVariables environmentVariables) : base(logger, environmentVariables)
     {
         Parser = parser;
         Lexer = lexer;
@@ -24,10 +23,10 @@ public class ShellCommand : Command, ICommand, IShellCommand
         EnvironmentVariables = environmentVariables;
     }
 
-    public override void Run(string[] arguments)
+    public override object Run(string[] arguments)
     {
         Console.WriteLine($"PirateLang version {EnvironmentVariables.GetVariable("version")}");
-        Logger.Log("Starting Shell Command", LogType.INFO);
+        Logger.Info("Starting Shell Command");
         while (true)
         {
             try
@@ -44,7 +43,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
                     break;
                 }
 
-                var tokens = Lexer.MakeTokens(input, "test");
+                var tokens = Lexer.MakeTokens(input, "test").ToList();
                 if (tokens.Count() == 0) Error($"Error occured while lexing tokens.");
 
                 var parseResult = Parser.StartParse(tokens, "repl");
@@ -55,7 +54,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
                 {
                     if (item == null)
                     {
-                        Logger.Log("Interpreter returned null", LogType.ERROR);
+                        Logger.Warning("Interpreter returned null");
                         continue;
                     }
                     if (item.Value is not null)
@@ -73,6 +72,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
                 Error(ex.ToString());
             }
         }
+        return true;
     }
 
     public override void Help()

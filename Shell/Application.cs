@@ -28,7 +28,7 @@ public class Application
 
     public void Help(string version)
     {
-        Console.WriteLine(String.Join(
+        Console.WriteLine(string.Join(
             Environment.NewLine,
             $"\nPirateLang version {version}\n",
             "Commands:",

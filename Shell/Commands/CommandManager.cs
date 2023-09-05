@@ -18,13 +18,13 @@ public class CommandManager : ICommandManager
 
     public void RunCommand(string[] args)
     {
-        _logger.Log("Starting Command Factory", LogType.INFO);
+        _logger.Info("Starting Command Factory");
         var command = _commandFactory.GetCommand(args[0]);
         if (command == null) { return; }
 
         if (args.Contains("-h") || args.Contains("--help"))
         {
-            _logger.Log("Running Help Command",  LogType.INFO);
+            _logger.Info("Running Help Command");
             command.Help();
         }
         else
@@ -32,16 +32,16 @@ public class CommandManager : ICommandManager
             try
             {
                 command.Run(args);
-                _logger.Log("Command completed succesfully",  LogType.INFO);
+                _logger.Info("Command completed succesfully");
             }
             catch (Exception exception)
             {
-                _logger.Log(exception.ToString(),  LogType.ERROR);
+                _logger.Error(exception);
 
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"\n{exception}");
                 Console.ForegroundColor = ConsoleColor.White;
-                throw exception;
+                throw;
             }
         }
     }

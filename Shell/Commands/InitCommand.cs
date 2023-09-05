@@ -13,7 +13,7 @@ public class InitCommand : Command, ICommand, IInitCommand
         _fileWriteHandler = FileWriteHandler;
     }
 
-    public override void Run(string[] arguments)
+    public override object Run(string[] arguments)
     {
         Logger.Log("Starting Init Command", LogType.INFO);
         var nameArgument = "main";
@@ -33,6 +33,8 @@ public class InitCommand : Command, ICommand, IInitCommand
 
         Logger.Log($"Created {nameArgument} file", LogType.INFO);
         Console.WriteLine($"\nCreated {fileName}.pirate");
+
+        return true;
     }
 
     public override void Help()

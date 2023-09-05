@@ -1,4 +1,3 @@
-using Common;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
@@ -17,7 +16,7 @@ public abstract class Command : ICommand
     }
 
     public abstract void Help();
-    public abstract void Run(string[] arguments);
+    public abstract object Run(string[] arguments);
     public virtual void Error(string message)
     {
         Console.ForegroundColor = ConsoleColor.Red;

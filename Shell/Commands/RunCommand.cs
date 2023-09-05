@@ -1,5 +1,4 @@
-using Common;
-using PirateInterpreter.Interfaces;
+using Pirate.Interpreter.Interfaces;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
@@ -22,7 +21,7 @@ public class RunCommand : Command, ICommand, IRunCommand
         _fileReadHandler = FileReadHandler;
         Location = EnvironmentVariables.GetVariable("location");
     }
-    public override void Run(string[] arguments)
+    public override object Run(string[] arguments)
     {
         Logger.Log("Starting Run Command", LogType.INFO);
         var fileArgument = "main";
@@ -37,7 +36,7 @@ public class RunCommand : Command, ICommand, IRunCommand
 
         Logger.Log($"Executing {fileName}.pirate\n", LogType.INFO);
 
-        var interpreterResult = Interpreter.StartInterpreter(fileName);
+        return Interpreter.StartInterpreter(fileName);
     }
 
     public override void Help()
