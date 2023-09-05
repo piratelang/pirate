@@ -52,7 +52,7 @@ let ShouldMakeIdentifier () =
 
     // Assert
     Assert.Single(result) |> ignore
-    Assert.Equal(TokenGroup.VALUE, result.[0].TokenGroup)
+    Assert.Equal(TokenGroup.SYNTAX, result.[0].TokenGroup)
     Assert.Equal(TokenType.IDENTIFIER, result.[0].TokenType)
     Assert.Equal("appel", result.[0].Value |> unbox<string>)
 
