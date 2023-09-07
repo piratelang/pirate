@@ -4,10 +4,11 @@ using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Lexer;
 using Pirate.Lexer.Tokens;
-using Pirate.Parser;
+using Pirate.Parser.Interfaces;
 using Shell.Commands;
 using Shell.Commands.Interfaces;
 using Shell.ModuleList;
+using Shell.ModuleList.interfaces;
 
 namespace Pirate.Spec.Test.Setup;
 

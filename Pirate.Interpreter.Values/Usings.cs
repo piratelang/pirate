@@ -14,5 +14,13 @@ global using Pirate.Common.FileHandler.Enum;
 global using Pirate.Common.FileHandler.Model;
 global using Pirate.Common.FileHandler.Interfaces;
 
-global using Shell.ModuleList;
-global using Shell.ModuleList.interfaces;
+//Lexer
+global using Pirate.Lexer.TokenType.Enums;
+global using Pirate.Lexer.Tokens;
+
+//Parser
+global using Pirate.Parser.Node.Interfaces;
+global using Pirate.Parser.Node;
+
+global using Pirate.Interpreter.Runtime;
+global using Pirate.Interpreter.Runtime.Interfaces;

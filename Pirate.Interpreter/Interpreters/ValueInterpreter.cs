@@ -1,3 +1,4 @@
+using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.Values;
 
 namespace Pirate.Interpreter.Interpreters;
@@ -34,7 +35,7 @@ public class ValueInterpreter : BaseInterpreter
             case TokenType.FLOAT:
                 return new List<BaseValue> { new FloatValue(valueNode.Value.Value, Logger) };
             case TokenType.IDENTIFIER:
-                return new List<BaseValue> { new VariableValue((string)valueNode.Value.Value, Logger, InterpreterFactory) };
+                return new List<BaseValue> { new VariableValue((string)valueNode.Value.Value, Logger) };
         }
         throw new ArgumentNullException($"{valueNode.Value.GetType().Name} is not a recognized as a BaseValue type.");
 

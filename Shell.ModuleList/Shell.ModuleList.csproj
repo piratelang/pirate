@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Common.Exception\Pirate.Common.Exception.csproj" />
+    <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
+    <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
+    <ProjectReference Include="..\Pirate.Common\Pirate.Common.csproj" />
+  </ItemGroup>
+
+</Project>

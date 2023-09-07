@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Shell.ModuleList.interfaces;
 
 namespace Shell.ModuleList;
 

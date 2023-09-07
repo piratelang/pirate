@@ -1,7 +1,6 @@
-using Pirate.Interpreter.Runtime;
-using Pirate.Interpreter.Values;
+using Pirate.Common.Logger.Interfaces;
 
-namespace Pirate.Interpreter;
+namespace Pirate.Interpreter.Runtime;
 
 /// <summary>
 /// A collection of variables values and functions.
@@ -22,7 +21,7 @@ public sealed class SymbolTable
         if (symbolTable == null)
         {
             symbolTable = new SymbolTable(logger);
-            symbolTable.FillSymbolTable();
+            //symbolTable.FillSymbolTable();
         }
         return symbolTable;
     }
@@ -32,31 +31,31 @@ public sealed class SymbolTable
         var value = SymbolList.GetValueOrDefault(name);
         if (value == null) throw new NullReferenceException("Requested element from the Symbol Table does not exist.");
 
-        Logger.Log($"Fetched {name}: {value.ToString()} from SymbolTable", LogType.INFO);
+        Logger.Info($"Fetched {name}: {value.ToString()} from SymbolTable");
         return value;
     }
 
     public bool SetBaseValue(string name, BaseValue value)
     {
         SymbolList[name] = value;
-        Logger.Log($"Added {name}: {value.ToString()} to SymbolTable", LogType.INFO);
-        Logger.Log($"SymbolTable now contains {SymbolList[name]}", LogType.INFO);
+        Logger.Debug($"Added {name}: {value.ToString()} to SymbolTable");
+        Logger.Info($"SymbolTable now contains {SymbolList[name]}");
         return true;
     }
 
     public bool Remove(string name)
     {
         SymbolList.Remove(name);
-        Logger.Log($"Removed {name} from SymbolTable", LogType.INFO);
+        Logger.Info($"Removed {name} from SymbolTable");
         return true;
     }
 
-    private void FillSymbolTable()
-    {
-        symbolTable?.SetBaseValue("IO", new Library(
-            "IO",
-            new List<string> { "read", "print" },
-            Logger)
-        );
-    }
+    //private void FillSymbolTable()
+    //{
+    //    symbolTable?.SetBaseValue("IO", new Library(
+    //        "IO",
+    //        new List<string> { "read", "print" },
+    //        Logger)
+    //    );
+    //}
 }

@@ -79,9 +79,15 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Pirate.Lexer", "Pirate.Lexe
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Pirate.Lexer.Test", "Pirate.Lexer.F.Test\Pirate.Lexer.Test.fsproj", "{1139E8DF-3504-47AC-803A-43EC68430E37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pirate.Lexer.TokenType", "Pirate.Lexer.TokenType\Pirate.Lexer.TokenType.csproj", "{F079BF95-0F67-4C54-97D4-37014AF2EF64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Lexer.TokenType", "Pirate.Lexer.TokenType\Pirate.Lexer.TokenType.csproj", "{F079BF95-0F67-4C54-97D4-37014AF2EF64}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pirate.Lexer.Enums", "Pirate.Lexer.Enums\Pirate.Lexer.Enums.fsproj", "{84BAD635-78D4-4FFD-B8A3-644142C850FE}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Pirate.Lexer.Enums", "Pirate.Lexer.Enums\Pirate.Lexer.Enums.fsproj", "{84BAD635-78D4-4FFD-B8A3-644142C850FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pirate.Interpreter.Values", "Pirate.Interpreter.Values\Pirate.Interpreter.Values.csproj", "{90B6E340-232D-40A5-93EF-609B48F29DB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pirate.Interpreter.Runtime", "Pirate.Interpreter.Runtime\Pirate.Interpreter.Runtime.csproj", "{59992EF1-88A4-4B29-82AD-DE6C2797FF24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shell.ModuleList", "Shell.ModuleList\Shell.ModuleList.csproj", "{19591A47-6257-4E14-8FE3-9F328A46D041}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,6 +155,18 @@ Global
 		{84BAD635-78D4-4FFD-B8A3-644142C850FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84BAD635-78D4-4FFD-B8A3-644142C850FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84BAD635-78D4-4FFD-B8A3-644142C850FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90B6E340-232D-40A5-93EF-609B48F29DB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90B6E340-232D-40A5-93EF-609B48F29DB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90B6E340-232D-40A5-93EF-609B48F29DB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90B6E340-232D-40A5-93EF-609B48F29DB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59992EF1-88A4-4B29-82AD-DE6C2797FF24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59992EF1-88A4-4B29-82AD-DE6C2797FF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59992EF1-88A4-4B29-82AD-DE6C2797FF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59992EF1-88A4-4B29-82AD-DE6C2797FF24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19591A47-6257-4E14-8FE3-9F328A46D041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19591A47-6257-4E14-8FE3-9F328A46D041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19591A47-6257-4E14-8FE3-9F328A46D041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19591A47-6257-4E14-8FE3-9F328A46D041}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,6 +187,9 @@ Global
 		{1139E8DF-3504-47AC-803A-43EC68430E37} = {962D2974-A4A9-41A4-9C80-A5A771FDF8FB}
 		{F079BF95-0F67-4C54-97D4-37014AF2EF64} = {962D2974-A4A9-41A4-9C80-A5A771FDF8FB}
 		{84BAD635-78D4-4FFD-B8A3-644142C850FE} = {962D2974-A4A9-41A4-9C80-A5A771FDF8FB}
+		{90B6E340-232D-40A5-93EF-609B48F29DB1} = {91D05D3E-60C0-49D3-86CE-CA1792F3CEC3}
+		{59992EF1-88A4-4B29-82AD-DE6C2797FF24} = {91D05D3E-60C0-49D3-86CE-CA1792F3CEC3}
+		{19591A47-6257-4E14-8FE3-9F328A46D041} = {5C3B936F-2BD9-4B5F-9108-CEA85BCB64E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {279A73C5-70E8-4B6D-B235-3467F0CC98A9}

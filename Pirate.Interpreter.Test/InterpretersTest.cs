@@ -5,6 +5,7 @@ using Pirate.Interpreter.Interpreters;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Parser.Node;
 using Pirate.Parser.Node.Interfaces;
+using Pirate.Interpreter.Runtime;
 
 namespace Pirate.Interpreter.Test;
 

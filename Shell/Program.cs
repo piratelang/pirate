@@ -11,6 +11,7 @@ using Pirate.Interpreter.StandardLibrary;
 using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Parser;
 using Pirate.Lexer;
+using Pirate.Parser.Interfaces;
 
 var version = "1.0.0";
 

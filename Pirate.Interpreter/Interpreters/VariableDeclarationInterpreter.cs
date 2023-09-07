@@ -1,3 +1,4 @@
+using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.Values;
 
 namespace Pirate.Interpreter.Interpreters;
@@ -29,7 +30,7 @@ public class VariableDeclarationInterpreter : BaseInterpreter
 
         SymbolTable.Instance(Logger).SetBaseValue(Identifier, result);
 
-        var variable = new VariableValue(Identifier, Logger, InterpreterFactory);
+        var variable = new VariableValue(Identifier, Logger);
         return new List<BaseValue> { variable };
     }
 }

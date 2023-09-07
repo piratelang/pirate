@@ -1,4 +1,4 @@
-namespace Shell.ModuleList;
+namespace Shell.ModuleList.interfaces;
 
 public interface IModuleListRepository
 {

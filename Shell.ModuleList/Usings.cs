@@ -13,6 +13,3 @@ global using Pirate.Common.FileHandler;
 global using Pirate.Common.FileHandler.Enum;
 global using Pirate.Common.FileHandler.Model;
 global using Pirate.Common.FileHandler.Interfaces;
-
-global using Shell.ModuleList;
-global using Shell.ModuleList.interfaces;

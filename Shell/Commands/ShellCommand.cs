@@ -1,6 +1,6 @@
 using Pirate.Interpreter.Interfaces;
 using Pirate.Lexer;
-using Pirate.Parser;
+using Pirate.Parser.Interfaces;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;

@@ -28,6 +28,7 @@
     <ProjectReference Include="..\Pirate.Lexer.F\Pirate.Lexer.fsproj" />
     <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.csproj" />
     <ProjectReference Include="..\Pirate.Common\Pirate.Common.csproj" />
+    <ProjectReference Include="..\Shell.ModuleList\Shell.ModuleList.csproj" />
   </ItemGroup>
   
   <ItemGroup>

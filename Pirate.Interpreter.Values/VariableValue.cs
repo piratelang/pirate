@@ -1,5 +1,4 @@
-using Pirate.Interpreter.Values.Interfaces;
-using Pirate.Interpreter.Interpreters;
+
 
 namespace Pirate.Interpreter.Values;
 
@@ -8,10 +7,8 @@ namespace Pirate.Interpreter.Values;
 /// </summary>
 public class VariableValue : BaseValue, IValue
 {
-    public InterpreterFactory InterpreterFactory { get; set; }
-    public VariableValue(string value, ILogger logger, InterpreterFactory interpreterFactory) : base(value, logger)
+    public VariableValue(string value, ILogger logger) : base(value, logger)
     {
-        InterpreterFactory = interpreterFactory;
         Value = SymbolTable.Instance(Logger).GetBaseValue(value).Value;
     }
 
