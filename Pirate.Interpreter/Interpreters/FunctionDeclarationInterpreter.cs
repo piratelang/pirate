@@ -23,7 +23,7 @@ public class FunctionDeclarationInterpreter : BaseInterpreter
         Logger.Log($"Visiting {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
 
         var function = new FunctionValue(FunctionDeclarationNode, Logger);
-        SymbolTable.Instance(Logger).SetBaseValue((string)FunctionDeclarationNode.Identifier.Value.Value, function);
+        Runtime.Runtime.Instance(Logger).SetBaseValue((string)FunctionDeclarationNode.Identifier.Value.Value, function);
         return new List<BaseValue>();
     }
 }

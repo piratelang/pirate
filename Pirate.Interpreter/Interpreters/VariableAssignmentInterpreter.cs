@@ -26,7 +26,7 @@ public class VariableAssignmentInterpreter : BaseInterpreter
         var interpreter = InterpreterFactory.GetInterpreter(variableAssignmentNode.Value);
         var result = interpreter.VisitSingleNode();
 
-        SymbolTable.Instance(Logger).SetBaseValue(identifier, result);
+        Runtime.Runtime.Instance(Logger).SetBaseValue(identifier, result);
 
         var variable = new VariableValue(identifier, Logger);
         return new List<BaseValue> { variable };

@@ -53,7 +53,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
                 bodyValues.Add(bodyValue);
             }
 
-            SymbolTable.Instance(Logger).SetBaseValue((string)forLoopStatementNode.VariableNode.Identifier.Value.Value, new IntegerValue(i, Logger));
+            Runtime.Runtime.Instance(Logger).SetBaseValue((string)forLoopStatementNode.VariableNode.Identifier.Value.Value, new IntegerValue(i, Logger));
         }
 
         return bodyValues;

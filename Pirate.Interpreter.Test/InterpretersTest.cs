@@ -322,7 +322,7 @@ public class InterpretersTest
             }
         );
 
-        SymbolTable.Instance(A.Fake<ILogger>()).SetBaseValue("a", new FunctionValue(new FunctionDeclarationNode(
+        Runtime.Runtime.Instance(A.Fake<ILogger>()).SetBaseValue("a", new FunctionValue(new FunctionDeclarationNode(
             new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
             new List<IParameterDefinitionNode>() {
                 new ParameterDefinitionNode(

@@ -9,7 +9,7 @@ public class VariableValue : BaseValue, IValue
 {
     public VariableValue(string value, ILogger logger) : base(value, logger)
     {
-        Value = SymbolTable.Instance(Logger).GetBaseValue(value).Value;
+        Value = Runtime.Runtime.Instance(Logger).GetBaseValue(value).Value;
     }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)

@@ -28,7 +28,7 @@ public class VariableDeclarationInterpreter : BaseInterpreter
         var interpreter = InterpreterFactory.GetInterpreter(variableDeclarationNode.Value);
         var result = interpreter.VisitSingleNode();
 
-        SymbolTable.Instance(Logger).SetBaseValue(Identifier, result);
+        Runtime.Runtime.Instance(Logger).SetBaseValue(Identifier, result);
 
         var variable = new VariableValue(Identifier, Logger);
         return new List<BaseValue> { variable };
