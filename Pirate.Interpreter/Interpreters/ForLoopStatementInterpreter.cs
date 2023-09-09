@@ -9,11 +9,13 @@ namespace Pirate.Interpreter.Interpreters;
 public class ForLoopStatementInterpreter : BaseInterpreter
 {
     public IForLoopStatementNode forLoopStatementNode { get; set; }
+    private IRuntime _runtime { get; set; }
 
-    public ForLoopStatementInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public ForLoopStatementInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IRuntime runtime) : base(logger, InterpreterFactory)
     {
         if (node is not IForLoopStatementNode) throw new TypeConversionException(node.GetType(), typeof(IIfStatementNode));
         forLoopStatementNode = (IForLoopStatementNode)node;
+        _runtime = runtime;
 
         Logger.Log($"Created {GetType().Name} : \"{forLoopStatementNode.ToString()}\"", LogType.INFO);
     }
@@ -53,7 +55,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
                 bodyValues.Add(bodyValue);
             }
 
-            Runtime.Runtime.Instance(Logger).SetBaseValue((string)forLoopStatementNode.VariableNode.Identifier.Value.Value, new IntegerValue(i, Logger));
+           _runtime.Variables.Set((string)forLoopStatementNode.VariableNode.Identifier.Value.Value, new IntegerValue(i, Logger));
         }
 
         return bodyValues;

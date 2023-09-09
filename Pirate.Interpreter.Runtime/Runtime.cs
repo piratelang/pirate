@@ -6,7 +6,7 @@ namespace Pirate.Interpreter.Runtime;
 /// <summary>
 /// A collection of variables values and functions.
 /// </summary>
-public class Runtime
+public class Runtime : IRuntime
 {
     public ValueTable<IValue> Variables { get; set; }
     public ValueTable<IFunctionValue> Functions { get; set; }

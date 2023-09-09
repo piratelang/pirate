@@ -10,27 +10,29 @@ namespace Pirate.Interpreter.Interpreters;
 public class VariableDeclarationInterpreter : BaseInterpreter
 {
     public VariableDeclarationNode variableDeclarationNode { get; set; }
+    private IRuntime _runtime { get; set; }
 
-    public VariableDeclarationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public VariableDeclarationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IRuntime runtime) : base(logger, InterpreterFactory)
     {
         if (node is not VariableDeclarationNode) throw new TypeConversionException(node.GetType(), typeof(VariableDeclarationNode));
         variableDeclarationNode = (VariableDeclarationNode)node;
 
-        Logger.Log($"Created {GetType().Name} : \"{variableDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{variableDeclarationNode.ToString()}\"");
+        _runtime = runtime;
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{variableDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Visiting {GetType().Name} : \"{variableDeclarationNode.ToString()}\"");
         if (variableDeclarationNode.Identifier.Value.Value is not string) throw new TypeConversionException(typeof(string));
 
         var Identifier = (string)variableDeclarationNode.Identifier.Value.Value;
         var interpreter = InterpreterFactory.GetInterpreter(variableDeclarationNode.Value);
         var result = interpreter.VisitSingleNode();
 
-        Runtime.Runtime.Instance(Logger).SetBaseValue(Identifier, result);
+        _runtime.Variables.Set(Identifier, result);
 
-        var variable = new VariableValue(Identifier, Logger);
+        var variable = new VariableValue(Identifier, Logger, _runtime);
         return new List<BaseValue> { variable };
     }
 }

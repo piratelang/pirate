@@ -1,5 +1,6 @@
 ﻿using Pirate.Interpreter;
 using Pirate.Interpreter.Interpreters;
+using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Lexer;
 using Pirate.Parser;
@@ -25,7 +26,10 @@ while (true)
         Console.WriteLine("stuk");
         return;
     }
-    var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+
+    var runtime = new Runtime(logger);
+
+    var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
     var interpreter = new Interpreter(objectSerializer, logger, interpreterFactory);
     var Result = interpreter.StartInterpreter("Test");
 

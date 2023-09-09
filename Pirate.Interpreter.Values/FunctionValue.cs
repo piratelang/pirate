@@ -3,14 +3,14 @@ namespace Pirate.Interpreter.Values;
 /// <summary>
 /// A function value.
 /// </summary>
-public class FunctionValue : BaseValue
+public class FunctionValue : BaseValue, IFunctionValue
 {
     public IFunctionDeclarationNode FunctionDeclarationNode { get; set; }
 
     public FunctionValue(IFunctionDeclarationNode functionDeclarationNode, ILogger logger) : base(null, logger)
     {
         FunctionDeclarationNode = functionDeclarationNode;
-        Logger.Log($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"");
     }
 
     public override string ToString()
@@ -21,5 +21,11 @@ public class FunctionValue : BaseValue
     public override BaseValue OperatedBy(Token Operator, BaseValue Value)
     {
         throw new InvalidOperationException($"Cannot operate {GetType().Name} by {Operator}");
+    }
+
+
+    public object Execute(List<object> arguments)
+    {
+        throw new NotImplementedException();
     }
 }

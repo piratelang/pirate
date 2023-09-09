@@ -23,7 +23,8 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
         var interpreter = new BinaryOperationInterpreter(binaryOperationNode, interpreterFactory, logger);
         var result = interpreter.VisitNode();
 
@@ -45,7 +46,8 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
         var interpreter = new ComparisonOperationInterpreter(comparisonOperationNode, interpreterFactory, A.Fake<ILogger>());
         var result = interpreter.VisitNode();
 
@@ -60,11 +62,12 @@ public class InterpretersTest
     {
         // Arrange
         var valueNode = new ValueNode(new Token(TokenGroup.VALUE, TokenType.INT, 1));
+        var runtime = new IRuntime(A.Fake<ILogger>());
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new ValueInterpreter(valueNode, interpreterFactory, A.Fake<ILogger>());
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new ValueInterpreter(valueNode, interpreterFactory, A.Fake<ILogger>(), runtime);
         var result = interpreter.VisitNode();
 
         // Assert
@@ -85,8 +88,9 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>(), runtime);
         var result = interpreter.VisitNode();
 
         // Assert
@@ -111,8 +115,9 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>(), runtime);
         var result = interpreter.VisitNode();
 
         // Assert
@@ -137,8 +142,9 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>());
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new VariableDeclarationInterpreter(variableAssignNode, interpreterFactory, A.Fake<ILogger>(), runtime);
         var result = interpreter.VisitNode();
 
         // Assert
@@ -168,7 +174,8 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
         var interpreter = new IfStatementInterpreter(ifStatementNode, interpreterFactory, A.Fake<ILogger>());
         var result = interpreter.VisitNode();
 
@@ -206,7 +213,8 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
         var interpreter = new IfStatementInterpreter(ifStatementNode, interpreterFactory, A.Fake<ILogger>());
         var result = interpreter.VisitNode();
 
@@ -266,8 +274,9 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new ForLoopStatementInterpreter(forStatementNode, interpreterFactory, A.Fake<ILogger>());
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new ForLoopStatementInterpreter(forStatementNode, interpreterFactory, A.Fake<ILogger>(), runtime);
         var result = interpreter.VisitNode();
 
         // Assert
@@ -301,8 +310,9 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new FunctionDeclarationInterpreter(functionDeclarationNode, interpreterFactory, A.Fake<ILogger>());
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new FunctionDeclarationInterpreter(functionDeclarationNode, interpreterFactory, A.Fake<ILogger>(), runtime);
         var result = interpreter.VisitNode();
 
         // Assert
@@ -322,7 +332,10 @@ public class InterpretersTest
             }
         );
 
-        Runtime.Runtime.Instance(A.Fake<ILogger>()).SetBaseValue("a", new FunctionValue(new FunctionDeclarationNode(
+        var logger = A.Fake<ILogger>();
+        var runtime = new IRuntime(logger);
+
+        runtime.Variables.Set("a", new FunctionValue(new FunctionDeclarationNode(
             new ValueNode(new Token(TokenGroup.SYNTAX, TokenType.IDENTIFIER, "a")),
             new List<IParameterDefinitionNode>() {
                 new ParameterDefinitionNode(
@@ -342,9 +355,8 @@ public class InterpretersTest
         ), A.Fake<ILogger>()));
 
         // Act
-        var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new FunctionCallInterpreter(functionCallNode, interpreterFactory, A.Fake<ILogger>(), A.Fake<IStandardLibraryCallManager>());
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new FunctionCallInterpreter(functionCallNode, interpreterFactory, A.Fake<ILogger>(), A.Fake<IStandardLibraryCallManager>(), runtime);
         var result = interpreter.VisitNode();
 
         // Assert
@@ -363,8 +375,9 @@ public class InterpretersTest
 
         // Act
         var logger = A.Fake<ILogger>();
-        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger);
-        var interpreter = new VariableDeclarationInterpreter(variableDeclarationNode, interpreterFactory, A.Fake<ILogger>());
+        var runtime = new IRuntime(logger);
+        var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+        var interpreter = new VariableDeclarationInterpreter(variableDeclarationNode, interpreterFactory, A.Fake<ILogger>(), runtime);  
         var result = interpreter.VisitNode();
 
         // Assert

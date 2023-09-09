@@ -14,10 +14,10 @@ public class FunctionCallInterpreter : BaseInterpreter
     public IFunctionCallNode functionCallNode { get; set; }
 
     private IStandardLibraryCallManager _standardLibraryFactory;
-    private Runtime.Runtime _runtime;
+    private IRuntime _runtime;
     private List<string> LibraryList = new() { "IO" };
 
-    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryCallManager standardLibraryFactory, Runtime.Runtime runtime) : base(logger, InterpreterFactory)
+    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryCallManager standardLibraryFactory, IRuntime runtime) : base(logger, InterpreterFactory)
     {
         if (node is not IFunctionCallNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionCallNode));
         functionCallNode = (IFunctionCallNode)node;

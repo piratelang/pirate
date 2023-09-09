@@ -1,5 +1,3 @@
-
-
 namespace Pirate.Interpreter.Values;
 
 /// <summary>
@@ -7,14 +5,18 @@ namespace Pirate.Interpreter.Values;
 /// </summary>
 public class VariableValue : BaseValue, IValue
 {
-    public VariableValue(string value, ILogger logger, Runtime.Runtime runtime) : base(value, logger)
-    {
-        Value = runtime.Variables.Get(value);
+    private IRuntime Runtime { get; set; }
+
+    public VariableValue(object value, ILogger logger, IRuntime runtime) : base(value, logger)
+    {   
+
+        Value = runtime.Variables.Get((string)value).Value;
+        Runtime = runtime;
     }
 
     public override BaseValue OperatedBy(Token _operator, BaseValue other)
     {
-        Logger.Log($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}", LogType.INFO);
+        Logger.Info($"Variable {Value.ToString()}, {Value.GetType()} is being operated by {other.ToString()}, {other.GetType()} with {_operator.ToString()}");
         switch (Value.GetType())
         {
             case Type when Value.GetType() == typeof(int):
@@ -27,6 +29,8 @@ public class VariableValue : BaseValue, IValue
                 return new FloatValue(Value, Logger).OperatedBy(_operator, other);
             case Type charType when Value.GetType() == typeof(char):
                 return new CharValue(Value, Logger).OperatedBy(_operator, other);
+            case Type when Value.GetType() == typeof(VariableValue):
+                return new VariableValue(Value, Logger, ((VariableValue)Value).Runtime).OperatedBy(_operator, other);
         }
         throw new NotImplementedException("No TypeCode found");
     }

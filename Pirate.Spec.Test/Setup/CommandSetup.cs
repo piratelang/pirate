@@ -1,6 +1,7 @@
 ﻿using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Interpreters;
 using Pirate.Interpreter.Interpreters.Interfaces;
+using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Lexer;
 using Pirate.Lexer.Tokens;
@@ -38,7 +39,8 @@ public class CommandSetup
     {
         Lexer.Lexer lexer = new Lexer.Lexer(_logger, new TokenRepository(new KeyWordService()));
         IParser parser = new Parser.Parser(_logger, _objectSerializer);
-        IInterpreterFactory interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(_logger), _logger);
+        Runtime runtime = new Runtime(_logger);
+        IInterpreterFactory interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(_logger), _logger, runtime);
         IInterpreter interpreter = new Interpreter.Interpreter(_objectSerializer, _logger, interpreterFactory);
         IModuleListRepository moduleListRepository = new ModuleListRepository(_logger, _fileWriteHandler, _fileReadHandler);
 
