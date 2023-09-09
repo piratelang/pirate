@@ -13,14 +13,16 @@ public class FunctionCallInterpreter : BaseInterpreter
 {
     public IFunctionCallNode functionCallNode { get; set; }
 
-    private IStandardLibraryCallManager StandardLibraryFactory;
+    private IStandardLibraryCallManager _standardLibraryFactory;
+    private Runtime.Runtime _runtime;
     private List<string> LibraryList = new() { "IO" };
 
-    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryCallManager standardLibraryFactory) : base(logger, InterpreterFactory)
+    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryCallManager standardLibraryFactory, Runtime.Runtime runtime) : base(logger, InterpreterFactory)
     {
         if (node is not IFunctionCallNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionCallNode));
         functionCallNode = (IFunctionCallNode)node;
-        StandardLibraryFactory = standardLibraryFactory;
+        _standardLibraryFactory = standardLibraryFactory;
+        _runtime = runtime;
 
         Logger.Log($"Created {GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
     }
@@ -31,17 +33,17 @@ public class FunctionCallInterpreter : BaseInterpreter
 
         var functionCallName = (string)functionCallNode.Identifier.Value.Value;
         var splitFunctionCallName = functionCallName.Split(".");
-        if (LibraryList.Contains(splitFunctionCallName[0]))
-        {
-            return CallLibraryFunction(splitFunctionCallName, functionCallName);
-        }
+        // if (LibraryList.Contains(splitFunctionCallName[0]))
+        // {
+        //     return CallLibraryFunction(splitFunctionCallName, functionCallName);
+        // }
 
         return CallDeclaredFunction();
     }
 
     private List<BaseValue> CallDeclaredFunction()
     {
-        var foundFunctionValue = Runtime.Runtime.Instance(Logger).GetBaseValue((string)functionCallNode.Identifier.Value.Value);
+        var foundFunctionValue = _runtime.Functions.Get((string)functionCallNode.Identifier.Value.Value);
         if (foundFunctionValue is not FunctionValue) throw new TypeConversionException(foundFunctionValue.GetType(), typeof(FunctionValue));
         var foundFunction = (FunctionValue)foundFunctionValue;
         SetVariables(foundFunction);
@@ -74,21 +76,21 @@ public class FunctionCallInterpreter : BaseInterpreter
         {
             var parameterName = (string)parameter.Identifier.Value.Value;
             var parameterValue = InterpreterFactory.GetInterpreter(value).VisitSingleNode();
-            Runtime.Runtime.Instance(Logger).SetBaseValue(parameterName, parameterValue);
+            _runtime.Variables.Set(parameterName, parameterValue);
         }
     }
 
-    private List<BaseValue> CallLibraryFunction(string[] splitidentifier, string functionCallName)
-    {
-        var libraryValue = Runtime.Runtime.Instance(Logger).GetBaseValue(splitidentifier[0]);
-        if (splitidentifier.Count() > 2) throw new InvalidOperationException("Cannot call a function in a library in a library");
-        var library = (Library)libraryValue;
-        List<BaseValue> parameters = new();
-        foreach (var parameter in functionCallNode.Parameters)
-        {
-            var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter);
-            parameters.AddRange(parameterInterpreter.VisitNode());
-        }
-        return new List<BaseValue>() { StandardLibraryFactory.CallFunction(splitidentifier[0], splitidentifier[1], parameters) };
-    }
+    // private List<BaseValue> CallLibraryFunction(string[] splitidentifier, string functionCallName)
+    // {
+    //     var libraryValue = _runtime.Variables.Get(splitidentifier[0]);
+    //     if (splitidentifier.Count() > 2) throw new InvalidOperationException("Cannot call a function in a library in a library");
+    //     var library = (Library)libraryValue;
+    //     List<BaseValue> parameters = new();
+    //     foreach (var parameter in functionCallNode.Parameters)
+    //     {
+    //         var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter);
+    //         parameters.AddRange(parameterInterpreter.VisitNode());
+    //     }
+    //     return new List<BaseValue>() { _standardLibraryFactory.CallFunction(splitidentifier[0], splitidentifier[1], parameters) };
+    // }
 }
