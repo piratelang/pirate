@@ -3,7 +3,7 @@
 namespace Shell.Project.Models;
 
 [XmlRoot(ElementName = "Project")]
-public class Project
+public class ProjectFile
 {
 
     [XmlElement(ElementName = "PropertyGroup")]

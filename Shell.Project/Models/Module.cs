@@ -12,6 +12,4 @@ public class Module
     [XmlAttribute(AttributeName = "File")]
     public string File { get; set; }
 
-    [XmlText]
-    public bool Text { get; set; }
 }

@@ -7,4 +7,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="test.pirateproj" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
