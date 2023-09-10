@@ -7,5 +7,5 @@ public class PropertyGroup
 {
 
     [XmlElement(ElementName = "TargetFramework")]
-    public string TargetFramework { get; set; }
+    public string? TargetFramework { get; set; }
 }

@@ -7,9 +7,9 @@ public class Module
 {
 
     [XmlElement(ElementName = "EntryPoint")]
-    public bool EntryPoint { get; set; }
+    public bool? EntryPoint { get; set; }
 
     [XmlAttribute(AttributeName = "File")]
-    public string File { get; set; }
+    public string? File { get; set; }
 
 }

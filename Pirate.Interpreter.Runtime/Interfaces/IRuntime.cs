@@ -1,8 +1,7 @@
-﻿namespace Pirate.Interpreter.Runtime.Interfaces
+﻿namespace Pirate.Interpreter.Runtime.Interfaces;
+
+public interface IRuntime
 {
-    public interface IRuntime
-    {
-        ValueTable<IFunctionValue> Functions { get; set; }
-        ValueTable<IValue> Variables { get; set; }
-    }
+    ValueTable<IFunctionValue> Functions { get; set; }
+    ValueTable<IValue> Variables { get; set; }
 }

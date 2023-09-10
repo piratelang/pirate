@@ -11,14 +11,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>pirate</ToolCommandName>
-
     <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <OutputType>Exe</OutputType>
     <PublishDir>bin\publish\</PublishDir>
+    <Platforms>AnyCPU;x64</Platforms>
+    <SelfContained>true</SelfContained>
+  
   </PropertyGroup>
   
   <ItemGroup>

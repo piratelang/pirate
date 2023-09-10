@@ -7,5 +7,5 @@ public class ItemGroup
 {
 
     [XmlElement(ElementName = "Module")]
-    public List<Module> Modules { get; set; }
+    public List<Module>? Modules { get; set; }
 }

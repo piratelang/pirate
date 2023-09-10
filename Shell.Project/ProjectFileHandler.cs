@@ -1,11 +1,13 @@
 ﻿using System.Xml.Serialization;
 using Pirate.Common.FileHandler.Enum;
 using Pirate.Common.FileHandler.Interfaces;
+using Pirate.Common.FileHandler.Model;
+using Shell.Project.Interfaces;
 using Shell.Project.Models;
 
 namespace Shell.Project;
 
-public class ProjectFileHandler
+public class ProjectFileHandler : IProjectFileHandler
 {
     private readonly IFileReadHandler _fileReadHandler;
     private readonly IFileWriteHandler _fileWriteHandler;
@@ -21,21 +23,21 @@ public class ProjectFileHandler
         var projectFile = await _fileReadHandler.ReadAllTextFromFile(name, FileExtension.PIRATEPROJ, path);
 
         if (projectFile == null) throw new Exception("Project file not found");
-        
+
 
         XmlSerializer serializer = new(typeof(ProjectFile));
-        var project = (ProjectFile)serializer.Deserialize(new StringReader(projectFile));
+        var project = (ProjectFile)serializer.Deserialize(new StringReader(projectFile)) ?? throw new Exception("Exception while deserializing project file");
 
         return project;
     }
 
-    public async Task WriteProjectFile(string path, ProjectFile project)
+    public void WriteProjectFile(string path, ProjectFile project)
     {
         XmlSerializer serializer = new(typeof(ProjectFile));
         var stringWriter = new StringWriter();
         serializer.Serialize(stringWriter, project);
 
-        _fileWriteHandler.WriteToFile(new Pirate.Common.FileHandler.Model.FileWriteModel(
+        _fileWriteHandler.WriteToFile(new FileWriteModel(
             fileName: "project",
             fileExtension: FileExtension.PIRATEPROJ,
             fileLocation: path,
