@@ -52,7 +52,7 @@ public class Parser : IParser
 
         Logger.Info("Finished Parsing");
 
-        ObjectSerializer.SerializeObject(scope, $"{fileName}.pirate");
+        // ObjectSerializer.SerializeObject(scope, $"{fileName}.pirate");
 
         return scope;
     }
