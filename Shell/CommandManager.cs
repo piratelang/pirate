@@ -1,6 +1,6 @@
 using Shell.Commands.Interfaces;
 
-namespace Shell.Commands;
+namespace PirateLang;
 
 /// <summary>
 /// A class which handles the commands.

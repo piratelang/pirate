@@ -1,4 +1,5 @@
 using Pirate.Interpreter.Interfaces;
+using PirateLang.Commands.Models;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
@@ -41,14 +42,19 @@ public class RunCommand : Command, ICommand, IRunCommand
 
     public override void Help()
     {
-        Console.WriteLine(String.Join(
-            Environment.NewLine,
-            "Description",
-            "   pirate run command",
-            "\nUsage",
-            "   pirate run [filename]",
-            "\nOptions",
-            "   -h --help   Show command line help."
-        ));
+        Console.WriteLine(
+            new HelpOption(
+                description: "pirate run command",
+                usage: "pirate run [filename]",
+                options: new List<OptionDescription>()
+                {
+                    new OptionDescription(
+                        options: new List<string>() { "-h", "--help" },
+                        description: "Show command line help."
+                    )
+                }
+
+            ).ToString()
+        );
     }
 }
