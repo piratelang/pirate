@@ -1,3 +1,4 @@
+using PirateLang.Commands.Models;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
@@ -77,17 +78,31 @@ public class NewCommand : Command, ICommand, INewCommand
 
     public override void Help()
     {
-        Console.WriteLine(String.Join(
-            Environment.NewLine,
-            "Description",
-            "   pirate new command",
-            "\nUsage",
-            "   pirate new [type] [filename]",
-            "\nOptions",
-            "   pirate          Creates new pirate module",
-            "   gitignore       Creates standard pirate gitginore",
-            "   gitattributes   Creates standard pirate gitattributes\n",
-            "   -h --help   Show command line help."
-        ));
+        Console.WriteLine(
+            new HelpOption(
+                description: "pirate new command",
+                usage: "pirate new [type] [filename]",
+                options: new List<OptionDescription>()
+                {
+                    new OptionDescription(
+                        options: new List<string>() { "pirate" },
+                        description: "Creates new pirate module"
+                    ),
+                    new OptionDescription(
+                        options: new List<string>() { "gitignore" },
+                        description: "Creates standard pirate gitginore"
+                    ),
+                    new OptionDescription(
+                        options: new List<string>() { "gitattributes" },
+                        description: "Creates standard pirate gitattributes"
+                    ),
+                    new OptionDescription(
+                        options: new List<string>() { "-h", "--help" },
+                        description: "Show command line help."
+                    )
+                }
+            ).ToString()
+        );
+
     }
 }
