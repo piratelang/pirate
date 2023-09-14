@@ -1,4 +1,4 @@
-namespace Pirate.Interpreter.Values;
+namespace Pirate.Interpreter.Values.Function;
 
 /// <summary>
 /// A function value.
@@ -24,8 +24,8 @@ public class FunctionValue : BaseValue, IFunctionValue
     }
 
 
-    public object Execute(List<object> arguments)
-    {
-        throw new NotImplementedException();
-    }
+    //public object Execute(List<object> arguments)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

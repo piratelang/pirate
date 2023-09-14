@@ -1,6 +1,6 @@
 using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.StandardLibrary.Interfaces;
-using Pirate.Interpreter.Values;
+using Pirate.Interpreter.Values.Function;
 
 namespace Pirate.Interpreter.Interpreters;
 
@@ -32,11 +32,6 @@ public class FunctionCallInterpreter : BaseInterpreter
         Logger.Log($"Visiting {GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
 
         var functionCallName = (string)functionCallNode.Identifier.Value.Value;
-        var splitFunctionCallName = functionCallName.Split(".");
-        // if (LibraryList.Contains(splitFunctionCallName[0]))
-        // {
-        //     return CallLibraryFunction(splitFunctionCallName, functionCallName);
-        // }
 
         return CallDeclaredFunction();
     }

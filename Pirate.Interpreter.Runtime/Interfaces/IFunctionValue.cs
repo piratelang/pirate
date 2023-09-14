@@ -2,5 +2,5 @@
 
 public interface IFunctionValue : IValueTableItem
 {
-    object Execute(List<object> arguments);
+    //object Execute(List<object> arguments);
 }
