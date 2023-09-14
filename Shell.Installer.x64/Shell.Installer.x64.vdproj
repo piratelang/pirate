@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_DE28046B09CF497D87A484BC414F01BE"
+        "MsmKey" = "8:_EDD3729EB7D348C6876B57C92ADB8340"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -141,7 +141,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Shell.Installer.x64"
         "ProductCode" = "8:{EAF6A25B-B052-4703-8222-24277B2D9035}"
-        "PackageCode" = "8:{2BF4E504-97A2-46C5-9EE4-0BBA61B119F8}"
+        "PackageCode" = "8:{5EA3DEB7-E5C7-4D77-AB56-038F2F2C3C2F}"
         "UpgradeCode" = "8:{B5EC333C-C9B2-47C9-9C0B-2AB75D1455CF}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -184,7 +184,7 @@
                         {
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_10FC85A425A7414B85D70F7500CB2CF5"
                             {
-                            "Name" = "8:[Manufacturer]"
+                            "Name" = "8:Piretalang/x64"
                             "Condition" = "8:"
                             "AlwaysCreate" = "11:FALSE"
                             "DeleteAtUninstall" = "11:FALSE"
@@ -218,7 +218,7 @@
                         {
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_B5DAD6F85453450A9CE199AF4886A590"
                             {
-                            "Name" = "8:[Manufacturer]"
+                            "Name" = "8:Piretalang/x64"
                             "Condition" = "8:"
                             "AlwaysCreate" = "11:FALSE"
                             "DeleteAtUninstall" = "11:FALSE"
@@ -660,7 +660,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DE28046B09CF497D87A484BC414F01BE"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_EDD3729EB7D348C6876B57C92ADB8340"
             {
             "SourcePath" = "8:..\\Shell\\bin\\publish\\PirateLang.exe"
             "TargetName" = "8:"
@@ -681,7 +681,7 @@
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:PublishItems"
+            "OutputGroupCanonicalName" = "8:PublishItemsOutputGroup"
             "OutputProjectGuid" = "8:{12B19978-5BBE-43F9-B73F-941AE86CDE6A}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"

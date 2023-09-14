@@ -14,7 +14,7 @@
     <PublishSingleFile>true</PublishSingleFile>
     <OutputType>Exe</OutputType>
     <PublishDir>bin\publish\</PublishDir>
-    <Platforms>AnyCPU;x64;x86</Platforms>
+    <Platforms>AnyCPU</Platforms>
     <SelfContained>true</SelfContained>
   
   </PropertyGroup>
