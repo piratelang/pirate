@@ -15,12 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_B82CD852240D410491BEAD6B1938C6E6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D5D66FB868954EC0BBCA8882929BFA4A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -97,20 +91,6 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_8A5B5938E99A47D99016E630F5B3B15D"
-            {
-            "Name" = "8:PublishItemsOutputGroup from Shell.Installer.PostInstallAction (Active)"
-            "Condition" = "8:[ProgramFilesFolder][ProductName]/bin"
-            "Object" = "8:_B82CD852240D410491BEAD6B1938C6E6"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_54F27F5C_7363_44B5_8FBB_105C51DC1F09"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
         }
         "DefaultFeature"
         {
@@ -706,34 +686,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B82CD852240D410491BEAD6B1938C6E6"
-            {
-            "SourcePath" = "8:..\\Shell.Installer.PostInstallAction\\obj\\Release\\net6.0\\apphost.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_0505CCFFD1F6433EB355AF66F6C6C2BD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:PublishItemsOutputGroup"
-            "OutputProjectGuid" = "8:{D6430960-927E-44FD-850F-B02DDEA8529C}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D5D66FB868954EC0BBCA8882929BFA4A"
             {
             "SourcePath" = "8:..\\Shell\\bin\\publish\\PirateLang.exe"
