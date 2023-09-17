@@ -15,3 +15,7 @@ PrintLine(
     "The index of the first occurence of the character 'o' in the string 'Hello World' is: ",
     IndexOf("Hello World", "o")
 );
+
+PrintLine(
+    Read("Enter a string: ")
+);
