@@ -1,5 +1,6 @@
 ﻿using Pirate.Common.Logger.Interfaces;
-using Pirate.Interpreter.Runtime.Interfaces;
+using Pirate.Interpreter.Interfaces;
+using Pirate.Interpreter.Values.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Xml.Linq;
 
 namespace Pirate.Interpreter.Runtime;
 
-public class ValueTable<T> where T : IValueTableItem
+public class ValueTable<T> : IValueTable<T> where T : IValueTableItem
 {
     private Dictionary<string, T> _values = new();
     private readonly ILogger _logger;

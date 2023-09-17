@@ -1,7 +1,5 @@
 ﻿using Pirate.Interpreter;
 using Pirate.Interpreter.Interpreters;
-using Pirate.Interpreter.Runtime;
-using Pirate.Interpreter.StandardLibrary;
 using Pirate.Lexer;
 using Pirate.Parser;
 
@@ -27,19 +25,19 @@ while (true)
         return;
     }
 
-    var runtime = new Runtime(logger);
+    //var runtime = new Runtime(logger);
 
-    var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
-    var interpreter = new Interpreter(objectSerializer, logger, interpreterFactory);
-    var Result = interpreter.StartInterpreter("Test");
+    //var interpreterFactory = new InterpreterFactory(new StandardLibraryCallManager(logger), logger, runtime);
+    //var interpreter = new Interpreter(objectSerializer, logger, interpreterFactory);
+    //var Result = interpreter.StartInterpreter("Test");
 
-    if (Result == null)
-    {
-        Console.WriteLine("Why is this null?");
-        return;
-    }
-    foreach (var item in Result)
-    {
-        Console.WriteLine(item.Value);
-    }
+    //if (Result == null)
+    //{
+    //    Console.WriteLine("Why is this null?");
+    //    return;
+    //}
+    //foreach (var item in Result)
+    //{
+    //    Console.WriteLine(item.Value);
+    //}
 }

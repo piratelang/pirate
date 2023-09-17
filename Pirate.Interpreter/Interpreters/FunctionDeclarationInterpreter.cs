@@ -1,5 +1,6 @@
-using Pirate.Interpreter.Runtime;
+using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Values;
+using Pirate.Interpreter.Values.Function;
 
 namespace Pirate.Interpreter.Interpreters;
 

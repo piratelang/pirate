@@ -1,4 +1,5 @@
 ﻿using Microsoft.FSharp.Core;
+using Pirate.Interpreter.Values.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,9 @@ namespace Pirate.Interpreter.Values.Function;
 
 public abstract class CSharpFunction : BaseValue, IFunctionValue
 {
-    public CSharpFunction(object? value, ILogger logger) : base(value, logger)
+    public abstract string Name { get; }
+
+    public CSharpFunction(object? value, ILogger logger) : base(null, logger)
     {
     }
 
@@ -18,5 +21,5 @@ public abstract class CSharpFunction : BaseValue, IFunctionValue
         throw new InvalidOperationException($"Cannot operate {GetType().Name} by {_operator}");
     }
 
-    public abstract object Execute(List<object> arguments);
+    public abstract List<BaseValue> Execute(List<object> arguments);
 }

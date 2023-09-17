@@ -1,6 +1,7 @@
-using Pirate.Interpreter.Runtime;
-using Pirate.Interpreter.StandardLibrary.Interfaces;
+using Pirate.Interpreter.Interfaces;
+using Pirate.Interpreter.Values;
 using Pirate.Interpreter.Values.Function;
+using Pirate.Interpreter.Values.Interfaces;
 
 namespace Pirate.Interpreter.Interpreters;
 
@@ -13,11 +14,10 @@ public class FunctionCallInterpreter : BaseInterpreter
 {
     public IFunctionCallNode functionCallNode { get; set; }
 
-    private IStandardLibraryCallManager _standardLibraryFactory;
+    private IStandardLibraryProvider _standardLibraryFactory;
     private IRuntime _runtime;
-    private List<string> LibraryList = new() { "IO" };
 
-    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryCallManager standardLibraryFactory, IRuntime runtime) : base(logger, InterpreterFactory)
+    public FunctionCallInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IStandardLibraryProvider standardLibraryFactory, IRuntime runtime) : base(logger, InterpreterFactory)
     {
         if (node is not IFunctionCallNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionCallNode));
         functionCallNode = (IFunctionCallNode)node;
@@ -39,18 +39,34 @@ public class FunctionCallInterpreter : BaseInterpreter
     private List<BaseValue> CallDeclaredFunction()
     {
         var foundFunctionValue = _runtime.Functions.Get((string)functionCallNode.Identifier.Value.Value);
-        if (foundFunctionValue is not FunctionValue) throw new TypeConversionException(foundFunctionValue.GetType(), typeof(FunctionValue));
-        var foundFunction = (FunctionValue)foundFunctionValue;
-        SetVariables(foundFunction);
+        if (foundFunctionValue is not IFunctionValue) throw new TypeConversionException(foundFunctionValue.GetType(), typeof(IFunctionValue));
 
-        foreach (var node in foundFunction.FunctionDeclarationNode.Statements)
+        if (foundFunctionValue is FunctionValue)
         {
-            var interpreter = InterpreterFactory.GetInterpreter(node);
-            interpreter.VisitNode();
+            var foundFunction = (FunctionValue)foundFunctionValue;
+            SetVariables(foundFunction);
+
+            foreach (var node in foundFunction.FunctionDeclarationNode.Statements)
+            {
+                var interpreter = InterpreterFactory.GetInterpreter(node);
+                interpreter.VisitNode();
+            }
+
+            List<BaseValue> resultList = InterpretResultNode(foundFunction);
+            return resultList;
+        }
+        else if (foundFunctionValue is CSharpFunction)
+        {
+            var foundFunction = (CSharpFunction)foundFunctionValue;
+            var parameters = functionCallNode.Parameters.Select(x => InterpreterFactory.GetInterpreter(x).VisitSingleNode().Value).ToList();
+            var result = foundFunction.Execute(parameters);
+            return result;
+        }
+        else
+        {
+            throw new TypeConversionException(foundFunctionValue.GetType(), typeof(IFunctionValue));
         }
 
-        List<BaseValue> resultList = InterpretResultNode(foundFunction);
-        return resultList;
     }
 
     private List<BaseValue> InterpretResultNode(FunctionValue foundFunction)
@@ -74,18 +90,4 @@ public class FunctionCallInterpreter : BaseInterpreter
             _runtime.Variables.Set(parameterName, parameterValue);
         }
     }
-
-    // private List<BaseValue> CallLibraryFunction(string[] splitidentifier, string functionCallName)
-    // {
-    //     var libraryValue = _runtime.Variables.Get(splitidentifier[0]);
-    //     if (splitidentifier.Count() > 2) throw new InvalidOperationException("Cannot call a function in a library in a library");
-    //     var library = (Library)libraryValue;
-    //     List<BaseValue> parameters = new();
-    //     foreach (var parameter in functionCallNode.Parameters)
-    //     {
-    //         var parameterInterpreter = InterpreterFactory.GetInterpreter(parameter);
-    //         parameters.AddRange(parameterInterpreter.VisitNode());
-    //     }
-    //     return new List<BaseValue>() { _standardLibraryFactory.CallFunction(splitidentifier[0], splitidentifier[1], parameters) };
-    // }
 }

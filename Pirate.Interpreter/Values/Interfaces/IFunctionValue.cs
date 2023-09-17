@@ -1,4 +1,4 @@
-﻿namespace Pirate.Interpreter.Runtime.Interfaces;
+﻿namespace Pirate.Interpreter.Values.Interfaces;
 
 public interface IFunctionValue : IValueTableItem
 {

@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
     <ProjectReference Include="..\Pirate.Interpreter\Pirate.Interpreter.csproj" />
   </ItemGroup>
-
 </Project>

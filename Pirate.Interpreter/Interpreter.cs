@@ -2,7 +2,6 @@ using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Values;
 using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Parser;
-using Pirate.Interpreter.Runtime;
 
 namespace Pirate.Interpreter;
 

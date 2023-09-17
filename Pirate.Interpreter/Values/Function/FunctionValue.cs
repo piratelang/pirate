@@ -1,3 +1,5 @@
+using Pirate.Interpreter.Values.Interfaces;
+
 namespace Pirate.Interpreter.Values.Function;
 
 /// <summary>
@@ -22,10 +24,4 @@ public class FunctionValue : BaseValue, IFunctionValue
     {
         throw new InvalidOperationException($"Cannot operate {GetType().Name} by {Operator}");
     }
-
-
-    //public object Execute(List<object> arguments)
-    //{
-    //    throw new NotImplementedException();
-    //}
 }

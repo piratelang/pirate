@@ -1,8 +1,8 @@
 using Pirate.Common.Logger.Interfaces;
-using Pirate.Interpreter.Runtime.Interfaces;
+using Pirate.Interpreter.Values.Interfaces;
 using Pirate.Lexer.Tokens;
 
-namespace Pirate.Interpreter.Runtime;
+namespace Pirate.Interpreter.Values;
 
 /// <summary>
 /// Represents a value resulting from a interpreted node.
