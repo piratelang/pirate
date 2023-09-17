@@ -47,7 +47,9 @@ TBD
 A simple Hello World in pirate looks like this:
 
 ```nim
-IO.print("Hello World");
+extern Standard.Terminal.Print;
+
+Print("Hello World");
 ```
 
 More syntax is defined in the [Syntax.md](syntax.md) file.
