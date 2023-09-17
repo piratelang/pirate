@@ -1,7 +1,8 @@
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
-using Pirate.Parser;
 using Pirate.Lexer;
+using Pirate.Parser.Interfaces;
+using PirateLang.Commands.Models;
 
 namespace Shell.Commands;
 
@@ -69,15 +70,20 @@ public class BuildCommand : Command, ICommand, IBuildCommand
     
     public override void Help()
     {
-        Console.WriteLine(String.Join(
-            Environment.NewLine,
-            "Description",
-            "   pirate project building command",
-            "\nUsage",
-            "   pirate build",
-            "\nOptions",
-            "   -h --help       Show command line help."
-        ));
+        Console.WriteLine(
+            new HelpOption(
+                description: "pirate build command",
+                usage: "pirate build",
+                options: new List<OptionDescription>()
+                {
+                    new OptionDescription(
+                        options: new List<string>() { "-h", "--help" },
+                        description: "Show command line help."
+                    )
+                }
+
+            ).ToString()
+        );
     }
 
     public bool CheckModuleList(List<Module> moduleList, string file)

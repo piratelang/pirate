@@ -90,7 +90,7 @@ public class OperationParser : BaseParser, ITokenParser
 
     private ParseResult ReturnValueNode(INode LeftNode)
     {
-        Logger.Info("Returning Single ValueNode");
+        Logger.Info($"Returning Single ValueNode: {LeftNode.ToString()}");
         return new ParseResult(LeftNode, _index);
     }
 

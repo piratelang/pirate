@@ -1,6 +1,6 @@
 namespace Pirate.Interpreter.Values.Interfaces;
 
-/// <inheritdoc cref="BaseValue"/>
-public interface IValue
+public interface IValue : IValueTableItem
 {
+    object? Value { get; }
 }

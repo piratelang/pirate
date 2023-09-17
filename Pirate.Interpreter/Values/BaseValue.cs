@@ -1,4 +1,6 @@
+using Pirate.Common.Logger.Interfaces;
 using Pirate.Interpreter.Values.Interfaces;
+using Pirate.Lexer.Tokens;
 
 namespace Pirate.Interpreter.Values;
 
@@ -22,12 +24,12 @@ public abstract class BaseValue : IValue
     {
         if (Value.GetType() != other.Value.GetType())
         {
-            Logger.Log($"Types dont match. {Value.GetType()} : {Value} | {other.Value.GetType()} : {other.Value}", LogType.INFO);
+            Logger.Info($"Types dont match. {Value.GetType()} : {Value} | {other.Value.GetType()} : {other.Value}");
             return 0;
         }
         if (!Value.Equals(other.Value))
         {
-            Logger.Log($"Values don't match. {Value} | {other.Value}", LogType.INFO);
+            Logger.Info($"Values don't match. {Value} | {other.Value}");
             return 0;
         }
         return 1;

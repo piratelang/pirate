@@ -31,6 +31,7 @@ public enum TokenType
     CLASS,
     NEW,
     RETURN,
+    EXTERN,
 
     // Operators
     PLUS,

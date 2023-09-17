@@ -1,16 +1,18 @@
-namespace Pirate.Interpreter.Values;
+using Pirate.Interpreter.Values.Interfaces;
+
+namespace Pirate.Interpreter.Values.Function;
 
 /// <summary>
 /// A function value.
 /// </summary>
-public class FunctionValue : BaseValue
+public class FunctionValue : BaseValue, IFunctionValue
 {
     public IFunctionDeclarationNode FunctionDeclarationNode { get; set; }
 
     public FunctionValue(IFunctionDeclarationNode functionDeclarationNode, ILogger logger) : base(null, logger)
     {
         FunctionDeclarationNode = functionDeclarationNode;
-        Logger.Log($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"");
     }
 
     public override string ToString()

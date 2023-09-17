@@ -5,12 +5,15 @@ using Shell.Commands.Interfaces;
 using Shell.ModuleList;
 using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Interpreters;
-using Pirate.Interpreter.StandardLibrary.Interfaces;
 using Pirate.Interpreter;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Parser;
 using Pirate.Lexer;
+using Pirate.Parser.Interfaces;
+using Pirate.Interpreter.Runtime;
+using PirateLang;
+using Pirate.Interpreter.StandarLibrary;
 
 var version = "1.0.0";
 
@@ -45,7 +48,13 @@ builder.AddTransient<IParser, Parser>();
 //Interpreter
 builder.AddTransient<IInterpreter, Interpreter>();
 builder.AddTransient<IInterpreterFactory, InterpreterFactory>();
-builder.AddTransient<IStandardLibraryCallManager, StandardLibraryCallManager>();
+
+// Interpreter.Runtime
+builder.AddSingleton<IRuntime, Runtime>();
+
+// Interpreter.StandardLibrary
+builder.AddTransient<IStandardLibraryProvider, StandardLibraryProvider>();
+
 
 var provider = builder.BuildServiceProvider();
 var app = provider.GetRequiredService<Application>();

@@ -1,1 +1,17 @@
-IO.print("true");
+extern Standard;
+
+PrintLine(
+    "The length of the string 'Hello World' is: ",
+    Length("Hello World")    
+);
+
+PrintLine(
+    "The character at index 6 of the string 'Hello World' is: ",
+    CharAt("Hello World", 6)
+);
+
+
+PrintLine(
+    "The index of the first occurence of the character 'o' in the string 'Hello World' is: ",
+    IndexOf("Hello World", "o")
+);

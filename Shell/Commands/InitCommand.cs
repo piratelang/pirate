@@ -1,3 +1,4 @@
+using PirateLang.Commands.Models;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
@@ -39,14 +40,19 @@ public class InitCommand : Command, ICommand, IInitCommand
 
     public override void Help()
     {
-        Console.WriteLine(String.Join(
-            Environment.NewLine,
-            "Description",
-            "   pirate initalize command",
-            "\nUsage",
-            "   pirate init [filename]",
-            "\nOptions",
-            "   -h --help       Show command line help."
-        ));
+        Console.WriteLine(
+            new HelpOption(
+                description: "pirate init command",
+                usage: "pirate init [filename]",
+                options: new List<OptionDescription>()
+                {
+                    new OptionDescription(
+                        options: new List<string>() { "-h", "--help" },
+                        description: "Show command line help."
+                    )
+                }
+
+            ).ToString()
+        );
     }
 }

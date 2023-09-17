@@ -27,6 +27,7 @@ type TokenType =
     | CLASS
     | NEW
     | RETURN
+    | EXTERN
 
     // Operators
     | PLUS

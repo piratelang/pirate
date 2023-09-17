@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
+    <ProjectReference Include="..\Pirate.Interpreter\Pirate.Interpreter.csproj" />
+  </ItemGroup>
+
+</Project>

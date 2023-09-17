@@ -1,4 +1,6 @@
+using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Values;
+using Pirate.Interpreter.Values.Function;
 
 namespace Pirate.Interpreter.Interpreters;
 
@@ -8,13 +10,15 @@ namespace Pirate.Interpreter.Interpreters;
 public class FunctionDeclarationInterpreter : BaseInterpreter
 {
     public IFunctionDeclarationNode FunctionDeclarationNode { get; set; }
+    public IRuntime _runtime { get; set; }
 
-    public FunctionDeclarationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public FunctionDeclarationInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IRuntime runtime) : base(logger, InterpreterFactory)
     {
         if (node is not IFunctionDeclarationNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionDeclarationNode));
         FunctionDeclarationNode = (IFunctionDeclarationNode)node;
 
         Logger.Log($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
+        _runtime = runtime;
     }
 
     public override List<BaseValue> VisitNode()
@@ -22,7 +26,7 @@ public class FunctionDeclarationInterpreter : BaseInterpreter
         Logger.Log($"Visiting {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
 
         var function = new FunctionValue(FunctionDeclarationNode, Logger);
-        SymbolTable.Instance(Logger).SetBaseValue((string)FunctionDeclarationNode.Identifier.Value.Value, function);
+        _runtime.Functions.Set((string)FunctionDeclarationNode.Identifier.Value.Value, function);
         return new List<BaseValue>();
     }
 }

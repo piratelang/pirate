@@ -32,6 +32,8 @@ public class ParserFactory : IParserFactory
                 return new OperationParser(tokens, index, logger);
             case TokenType.DOUBLEDIVIDE:
                 return new CommentParser(tokens, index, logger);
+            case TokenType.EXTERN:
+                return new ExternParser(tokens, index, logger, this);
         }
         throw new ArgumentNullException("node", $"Factory cannot find parser for {tokens[index].GetType().Name} {tokens[index].TokenType.GetType().Name}");
     }

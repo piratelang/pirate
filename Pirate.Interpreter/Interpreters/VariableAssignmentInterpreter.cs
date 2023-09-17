@@ -1,3 +1,4 @@
+using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Values;
 
 namespace Pirate.Interpreter.Interpreters;
@@ -10,10 +11,13 @@ public class VariableAssignmentInterpreter : BaseInterpreter
 {
     public VariableAssignmentNode variableAssignmentNode { get; private set; }
 
-    public VariableAssignmentInterpreter(INode node, ILogger Logger, InterpreterFactory InterpreterFactory) : base(Logger, InterpreterFactory)
+    private IRuntime _runtime { get; set; }
+
+    public VariableAssignmentInterpreter(INode node, ILogger Logger, InterpreterFactory InterpreterFactory, IRuntime runtime) : base(Logger, InterpreterFactory)
     {
         if (node is not VariableAssignmentNode) throw new TypeConversionException(node.GetType(), typeof(VariableAssignmentNode));
         variableAssignmentNode = (VariableAssignmentNode)node;
+        _runtime = runtime;
     }
 
     public override List<BaseValue> VisitNode()
@@ -25,9 +29,9 @@ public class VariableAssignmentInterpreter : BaseInterpreter
         var interpreter = InterpreterFactory.GetInterpreter(variableAssignmentNode.Value);
         var result = interpreter.VisitSingleNode();
 
-        SymbolTable.Instance(Logger).SetBaseValue(identifier, result);
+        _runtime.Variables.Set(identifier, result);
 
-        var variable = new VariableValue(identifier, Logger, InterpreterFactory);
+        var variable = new VariableValue(identifier, Logger, _runtime);
         return new List<BaseValue> { variable };
     }
 }

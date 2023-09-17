@@ -1,3 +1,4 @@
+using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Values;
 
 namespace Pirate.Interpreter.Interpreters;
@@ -9,34 +10,36 @@ namespace Pirate.Interpreter.Interpreters;
 
 public class ValueInterpreter : BaseInterpreter
 {
-    private IValueNode valueNode { get; set; }
+    private IValueNode _valueNode { get; set; }
+    private IRuntime _runtime { get; set; }
 
-    public ValueInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger) : base(logger, InterpreterFactory)
+    public ValueInterpreter(INode node, InterpreterFactory InterpreterFactory, ILogger logger, IRuntime runtime) : base(logger, InterpreterFactory)
     {
         if (node is not IValueNode) throw new TypeConversionException(node.GetType(), typeof(IValueNode));
-        valueNode = (IValueNode)node;
+        _valueNode = (IValueNode)node;
+        _runtime = runtime;
 
-        Logger.Log($"Created {GetType().Name} : \"{valueNode.ToString()}\"", LogType.INFO);
+        Logger.Log($"Created {GetType().Name} : \"{_valueNode.ToString()}\"", LogType.INFO);
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{valueNode.ToString()}\"", LogType.INFO);
-        if (valueNode.Value.Value == null) throw new ArgumentNullException($"{valueNode.Value.GetType().Name} does not contain a vaild value type.");
-        switch (valueNode.Value.TokenType)
+        Logger.Log($"Visiting {GetType().Name} : \"{_valueNode.ToString()}\"", LogType.INFO);
+        if (_valueNode.Value.Value == null) throw new ArgumentNullException($"{_valueNode.Value.GetType().Name} does not contain a vaild value type.");
+        switch (_valueNode.Value.TokenType)
         {
             case TokenType.INT:
-                return new List<BaseValue> { new IntegerValue(valueNode.Value.Value, Logger) };
+                return new List<BaseValue> { new IntegerValue(_valueNode.Value.Value, Logger) };
             case TokenType.STRING:
-                return new List<BaseValue> { new StringValue(valueNode.Value.Value, Logger) };
+                return new List<BaseValue> { new StringValue(_valueNode.Value.Value, Logger) };
             case TokenType.CHAR:
-                return new List<BaseValue> { new CharValue(valueNode.Value.Value, Logger) };
+                return new List<BaseValue> { new CharValue(_valueNode.Value.Value, Logger) };
             case TokenType.FLOAT:
-                return new List<BaseValue> { new FloatValue(valueNode.Value.Value, Logger) };
+                return new List<BaseValue> { new FloatValue(_valueNode.Value.Value, Logger) };
             case TokenType.IDENTIFIER:
-                return new List<BaseValue> { new VariableValue((string)valueNode.Value.Value, Logger, InterpreterFactory) };
+                return new List<BaseValue> { new VariableValue((string)_valueNode.Value.Value, Logger, _runtime) };
         }
-        throw new ArgumentNullException($"{valueNode.Value.GetType().Name} is not a recognized as a BaseValue type.");
+        throw new ArgumentNullException($"{_valueNode.Value.GetType().Name} is not a recognized as a BaseValue type.");
 
     }
 }

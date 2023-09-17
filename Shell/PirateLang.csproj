@@ -11,23 +11,24 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>pirate</ToolCommandName>
-
     <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <OutputType>Exe</OutputType>
     <PublishDir>bin\publish\</PublishDir>
+    <Platforms>AnyCPU</Platforms>
+    <SelfContained>true</SelfContained>
+  
   </PropertyGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
     <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
+    <ProjectReference Include="..\Pirate.Interpreter.Runtime\Pirate.Interpreter.Runtime.csproj" />
+    <ProjectReference Include="..\Pirate.Interpreter.StandarLibrary\Pirate.Interpreter.StandardLibrary.csproj" />
     <ProjectReference Include="..\Pirate.Interpreter\Pirate.Interpreter.csproj" />
     <ProjectReference Include="..\Pirate.Lexer.F\Pirate.Lexer.fsproj" />
     <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.csproj" />
     <ProjectReference Include="..\Pirate.Common\Pirate.Common.csproj" />
+    <ProjectReference Include="..\Shell.ModuleList\Shell.ModuleList.csproj" />
   </ItemGroup>
   
   <ItemGroup>
