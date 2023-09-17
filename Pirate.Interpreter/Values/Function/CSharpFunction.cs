@@ -11,6 +11,8 @@ namespace Pirate.Interpreter.Values.Function;
 public abstract class CSharpFunction : BaseValue, IFunctionValue
 {
     public abstract string Name { get; }
+    public abstract string Description { get; }
+    public abstract string Parameters { get; }
 
     public CSharpFunction(object? value, ILogger logger) : base(null, logger)
     {

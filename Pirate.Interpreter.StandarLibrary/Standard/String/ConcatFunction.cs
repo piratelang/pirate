@@ -4,12 +4,12 @@ using Pirate.Interpreter.Values.Function;
 
 namespace Pirate.Interpreter.StandardLibrary.Standard.Terminal;
 
-public class PrintFunction : CSharpFunction
+public class ConcatFunction : CSharpFunction
 {
-    public PrintFunction(ILogger logger) : base(null, logger) { }
+    public ConcatFunction(ILogger logger) : base(null, logger) { }
 
-    public override string Name => "Standard.Terminal.Print";
-    public override string Description => "Prints the given values to the terminal";
+    public override string Name => "Standard.String.Concat";
+    public override string Description => "Concatenates the given strings";
     public override string Parameters => "Multiple strings";
 
     public override List<BaseValue> Execute(List<object> arguments)
@@ -21,15 +21,14 @@ public class PrintFunction : CSharpFunction
         {
             if (argument is BaseValue value)
             {
-                Console.Write(value.Value?.ToString());
                 result += value.Value?.ToString();
             }
             else
             {
-                Console.Write(argument.ToString());
                 result += argument.ToString();
             }
         }
+
         return new List<BaseValue> { new StringValue(result, Logger) };
     }
 }

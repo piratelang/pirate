@@ -23,17 +23,17 @@ public class ValueTable<T> : IValueTable<T> where T : IValueTableItem
     public T Get(string name)
     {
         var value = _values.GetValueOrDefault(name);
-        if (value == null) throw new NullReferenceException("Requested element from the Runtime.VariableList does not exist.");
+        if (value == null) throw new NullReferenceException($"Requested element: \"{name}\" does not exist in Runtime.ValueTable");
 
-        _logger.Info($"Fetched {name}: {value.ToString()} from Runtime.VariableList");
+        _logger.Info($"Fetched {name}: {value.ToString()} from Runtime.ValueTable");
         return value;
     }
 
     public bool Set(string name, T value)
     {
         _values[name] = value;
-        _logger.Debug($"Added {name}: {value.ToString()} to Runtime.VariableList");
-        _logger.Info($"Runtime.VariableList now contains {_values[name]}");
+        _logger.Debug($"Added {name}: {value.ToString()} to Runtime.ValueTable");
+        _logger.Info($"Runtime.ValueTable now contains {_values[name]}");
         return true;
     }
 

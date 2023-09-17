@@ -32,6 +32,17 @@ public class StandardLibraryProvider : IStandardLibraryProvider
 
         // Standard.Terminal
         RegisterFunction(new PrintFunction(logger));
+        RegisterFunction(new PrintLineFunction(logger));
         RegisterFunction(new ReadFunction(logger));
+
+        // Standard.String
+        RegisterFunction(new CharAtFunction(logger));
+        RegisterFunction(new CharCodeAtFunction(logger));
+        RegisterFunction(new ConcatFunction(logger));
+        RegisterFunction(new IndexOfFunction(logger));
+        RegisterFunction(new LastIndexOfFunction(logger));
+        RegisterFunction(new LengthFunction(logger));
+        RegisterFunction(new SplitFunction(logger));
+
     }
 }
