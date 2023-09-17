@@ -1,19 +1,17 @@
-func test(int a, int b): void
-{
-    return a + b;
-}
+extern Standard;
 
-var first = 1;
-var second = 2;
+PrintLine(
+    "The length of the string 'Hello World' is: ",
+    Length("Hello World")    
+);
 
-test(first, second);
+PrintLine(
+    "The character at index 6 of the string 'Hello World' is: ",
+    CharAt("Hello World", 6)
+);
 
-for var i = 0 to 10
-{
-    test(first, i);
-}
 
-while first < 10
-{
-    first = test(first, second);
-}
+PrintLine(
+    "The index of the first occurence of the character 'o' in the string 'Hello World' is: ",
+    IndexOf("Hello World", "o")
+);

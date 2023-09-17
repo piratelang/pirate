@@ -12,6 +12,7 @@ public enum FileExtension
     TXT,
     MD,
     PIRATE,
+    PIRATEPROJ,
     gitignore,
     gitattributes,
 }

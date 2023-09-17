@@ -4,7 +4,7 @@ open Pirate.Lexer.Enums
 
 type KeyWordService() =
     member _.typeKeyWords = ["var"; "int"; "float"; "string"; "char"; "void"]
-    member _.controlKeyWords = [ "if"; "else"; "for"; "to"; "foreach"; "in"; "while"; "func"; "class"; "new"; "return" ]
+    member _.controlKeyWords = [ "if"; "else"; "for"; "to"; "foreach"; "in"; "while"; "func"; "class"; "new"; "return"; "extern" ]
 
     member this.GetTypeKeyword (idString:string) : TokenType =
         if this.typeKeyWords |> List.contains idString then
@@ -33,6 +33,7 @@ type KeyWordService() =
             | "class" -> CLASS;
             | "new" -> NEW;
             | "return" -> RETURN;
+            | "extern" -> EXTERN;
             | _ -> raise (System.NotImplementedException($"Control keyword, {idString} has not been implemented"));
         else
             TokenType.Empty;

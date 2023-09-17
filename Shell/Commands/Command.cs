@@ -17,6 +17,7 @@ public abstract class Command : ICommand
 
     public abstract void Help();
     public abstract object Run(string[] arguments);
+
     public virtual void Error(string message)
     {
         Console.ForegroundColor = ConsoleColor.Red;

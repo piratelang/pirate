@@ -1,15 +1,16 @@
-using Pirate.Interpreter.StandardLibrary.Interfaces;
+//using Pirate.Interpreter.StandardLibrary.Interfaces;
 using Pirate.Interpreter.Interpreters.Interfaces;
+using Pirate.Interpreter.Interfaces;
 
 namespace Pirate.Interpreter.Interpreters;
 
 public class InterpreterFactory : IInterpreterFactory
 {
-    private IStandardLibraryCallManager StandardLibraryFactory;
+    private IStandardLibraryProvider StandardLibraryFactory;
     private ILogger Logger;
     private IRuntime Runtime;
 
-    public InterpreterFactory(IStandardLibraryCallManager standardLibraryFactory, ILogger logger, IRuntime runtime)
+    public InterpreterFactory(IStandardLibraryProvider standardLibraryFactory, ILogger logger, IRuntime runtime)
     {
         StandardLibraryFactory = standardLibraryFactory;
         Logger = logger;
@@ -42,6 +43,8 @@ public class InterpreterFactory : IInterpreterFactory
                 return new ValueInterpreter(node, this, Logger, Runtime);
             case CommentNode:
                 return new CommentInterpreter(node, this, Logger);
+            case ExternNode:
+                return new ExternInterpreter(node, Runtime, StandardLibraryFactory, Logger, this);
         }
         throw new ArgumentNullException("node", $"Factory cannot find interpreter for {node.GetType().Name}");
     }

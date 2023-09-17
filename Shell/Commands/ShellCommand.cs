@@ -1,6 +1,7 @@
 using Pirate.Interpreter.Interfaces;
 using Pirate.Lexer;
 using Pirate.Parser.Interfaces;
+using PirateLang.Commands.Models;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;
@@ -77,15 +78,19 @@ public class ShellCommand : Command, ICommand, IShellCommand
 
     public override void Help()
     {
-        Console.WriteLine(String.Join(
-            Environment.NewLine,
-            "Description",
-            "   pirate repl command",
-            "\nUsage",
-            "   pirate shell",
-            "\nOptions",
-            "   -h --help       Show command line help."
-        ));
+        Console.WriteLine(
+            new HelpOption(
+                description: "pirate repl command",
+                usage: "pirate shell",
+                options: new List<OptionDescription>()
+                {
+                    new OptionDescription(
+                        options: new List<string>() { "-h", "--help" },
+                        description: "Show command line help."
+                    )
+                }
+            ).ToString()
+        );
     }
 
     public override void Error(string message)

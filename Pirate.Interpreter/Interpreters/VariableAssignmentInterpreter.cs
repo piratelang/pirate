@@ -1,4 +1,4 @@
-using Pirate.Interpreter.Runtime;
+using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Values;
 
 namespace Pirate.Interpreter.Interpreters;

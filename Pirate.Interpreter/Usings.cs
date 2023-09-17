@@ -22,4 +22,3 @@ global using Pirate.Lexer.Tokens;
 global using Pirate.Parser.Node.Interfaces;
 global using Pirate.Parser.Node;
 
-global using Pirate.Interpreter.Runtime.Interfaces;

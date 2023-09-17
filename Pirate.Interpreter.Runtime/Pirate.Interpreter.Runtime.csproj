@@ -8,12 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pirate.Common.Logger\Pirate.Common.Logger.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Pirate.Lexer">
-      <HintPath>..\Pirate.Lexer.F\bin\Debug\net6.0\win-x64\Pirate.Lexer.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Pirate.Interpreter\Pirate.Interpreter.csproj" />
   </ItemGroup>
 
 </Project>
