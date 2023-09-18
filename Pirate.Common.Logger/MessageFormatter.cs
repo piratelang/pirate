@@ -15,7 +15,7 @@ internal static class MessageFormatter
     internal static string GetCallingClassName()
     {
         var stackTrace = new StackTrace();
-        var callingClass = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.Name ?? "Unknown";
+        var callingClass = stackTrace.GetFrame(3)?.GetMethod()?.DeclaringType?.Name ?? "Unknown";
 
         return callingClass;
     }

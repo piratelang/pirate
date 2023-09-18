@@ -6,6 +6,9 @@ namespace Shell.Project.Models;
 public class PropertyGroup
 {
 
+    [XmlElement(ElementName = "ProjectName")]
+    public string? ProjectName { get; set; }
+
     [XmlElement(ElementName = "TargetFramework")]
     public string? TargetFramework { get; set; }
 }

@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <ProjectName>PirateBuildTest</ProjectName>
+        <TargetFramework>pirate1.1.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Module File="main.pirate">
+            <EntryPoint>true</EntryPoint>
+        </Module>
+    </ItemGroup>
+</Project>

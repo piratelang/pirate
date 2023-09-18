@@ -10,28 +10,20 @@ namespace Pirate.Interpreter;
 /// </summary>
 public class Interpreter : IInterpreter
 {
-    private IObjectSerializer ObjectSerializer;
     private IInterpreterFactory InterpreterFactory;
 
     public ILogger Logger { get; set; }
 
-    public Interpreter(IObjectSerializer objectSerializer, ILogger logger, IInterpreterFactory interpreterFactory)
+    public Interpreter(ILogger logger, IInterpreterFactory interpreterFactory)
     {
-        ObjectSerializer = objectSerializer;
         Logger = logger;
         InterpreterFactory = interpreterFactory;
     }
 
-    public List<BaseValue> StartInterpreter(string filename)
+    public List<BaseValue> StartInterpreter(Scope scope)
     {
-        if (filename == null)
-        {
-            throw new NullReferenceException("filename provided is null");
-        }
-        var scopeList = ObjectSerializer.Deserialize<Scope>(filename + ".pirate");
-
         List<BaseValue> result = new();
-        foreach (var item in scopeList.Nodes)
+        foreach (var item in scope.Nodes)
         {
             Logger.Info($"Interpreting {item.GetType().Name}");
             var interpreter = InterpreterFactory.GetInterpreter(item);

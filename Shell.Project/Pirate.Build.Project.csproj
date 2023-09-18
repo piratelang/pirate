@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,14 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Pirate.Common.FileHandler\Pirate.Common.FileHandler.csproj" />
+    <ProjectReference Include="..\Pirate.Interpreter.Runtime\Pirate.Interpreter.Runtime.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="test.pirateproj" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="full.pirateproj" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

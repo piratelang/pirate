@@ -456,3 +456,4 @@ $RECYCLE.BIN/
 .release/*
 github.key.txt
 nuget.config
+.pirate/

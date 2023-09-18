@@ -1,4 +1,5 @@
 using Pirate.Interpreter.Values;
+using Pirate.Parser;
 
 namespace Pirate.Interpreter.Interfaces;
 
@@ -9,5 +10,5 @@ public interface IInterpreter
 {
     ILogger Logger { get; set; }
 
-    List<BaseValue> StartInterpreter(string filename);
+    List<BaseValue> StartInterpreter(Scope scope);
 }

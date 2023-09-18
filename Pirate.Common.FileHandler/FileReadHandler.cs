@@ -30,7 +30,7 @@ public class FileReadHandler : BaseFileHandler, IFileReadHandler
 
         return FileExists(name, extension, location)
             ? await File.ReadAllTextAsync(fileName)
-            : throw new FileNotFoundException("File not found");
+            : throw new FileNotFoundException($"File not found at {fileName}.{extension} in {location}");
     }
 
     /// <summary>

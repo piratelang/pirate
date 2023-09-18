@@ -16,7 +16,7 @@ while (true)
     var fileWriteHandler = new FileWriteHandler();
     ObjectSerializer objectSerializer = new(logger, new EnvironmentVariables(fileReadHandler, fileWriteHandler), fileWriteHandler, fileReadHandler);
 
-    var parser = new Parser(logger, objectSerializer);
+    var parser = new Parser(logger);
     var parseResult = parser.StartParse(tokens, "Test");
 
     if (parseResult.Nodes == null)

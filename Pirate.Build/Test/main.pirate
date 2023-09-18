@@ -1,0 +1,3 @@
+﻿extern Standard.Terminal;
+
+Print("Hello, World!");

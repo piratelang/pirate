@@ -12,7 +12,7 @@ public class LoggerConfiguration : ILoggerConfiguration
     /// <summary>
     /// The name of the folder where the logs will be stored.
     /// </summary>
-    public string FolderName { get; set; } = ".logs";
+    public string FolderName { get; set; } = ".pirate/logs";
 
 
     /// <summary>

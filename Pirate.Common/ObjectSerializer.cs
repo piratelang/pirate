@@ -25,7 +25,7 @@ public class ObjectSerializer : IObjectSerializer
         _fileReadHandler = fileReadHandler;
         _fileWriteHandler = fileWriteHandler;
 
-        Location = environmentVariables.GetVariable("location") + "/cache";
+        Location = ".pirate/cache";
         bool exists = Directory.Exists(Location);
         if (!exists)
             Directory.CreateDirectory(Location);

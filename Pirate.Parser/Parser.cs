@@ -1,6 +1,5 @@
 using Pirate.Parser.Parsers.Interfaces;
 using Pirate.Parser.Parsers;
-using Pirate.Lexer.TokenType.Enums;
 using Pirate.Parser.Interfaces;
 
 namespace Pirate.Parser;
@@ -12,12 +11,10 @@ public class Parser : IParser
 {
     private IParserFactory parserFactory = new ParserFactory();
     public ILogger Logger { get; set; }
-    public IObjectSerializer ObjectSerializer { get; set; }
 
-    public Parser(ILogger logger, IObjectSerializer objectSerializer)
+    public Parser(ILogger logger)
     {
         Logger = logger;
-        ObjectSerializer = objectSerializer;
         logger.Info("Created Parser");
     }
     public Scope StartParse(List<Token> tokens, string fileName)
@@ -51,8 +48,6 @@ public class Parser : IParser
         }
 
         Logger.Info("Finished Parsing");
-
-        ObjectSerializer.SerializeObject(scope, $"{fileName}.pirate");
 
         return scope;
     }

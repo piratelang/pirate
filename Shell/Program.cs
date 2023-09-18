@@ -13,28 +13,38 @@ using Pirate.Lexer;
 using Pirate.Parser.Interfaces;
 using Pirate.Interpreter.Runtime;
 using PirateLang;
+using PirateLang.Commands;
 
 var version = "1.0.0";
 
 var builder = new ServiceCollection();
+
+Pirate.Build.Register.RegisterDependencies(builder);
+
+
+//PirateLang
 builder.AddSingleton<Application, Application>();
-builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
-builder.AddSingleton<ILogger, Logger>();
-builder.AddSingleton<IEnvironmentVariables, EnvironmentVariables>();
-builder.AddSingleton<IFileWriteHandler, FileWriteHandler>();
-builder.AddSingleton<IFileReadHandler, FileReadHandler>();
-
-//Shell
-builder.AddSingleton<IModuleListRepository, ModuleListRepository>();
 builder.AddSingleton<ICommandManager, CommandManager>();
-builder.AddSingleton<CommandFactory, CommandFactory>();
-
 builder.AddTransient<IBuildCommand, BuildCommand>();
 builder.AddTransient<IInitCommand, InitCommand>();
 builder.AddTransient<INewCommand, NewCommand>();
 builder.AddTransient<IRunCommand, RunCommand>();
 builder.AddTransient<IShellCommand, ShellCommand>();
 builder.AddTransient<ICommandFactory, CommandFactory>();
+
+//Shell.Modulelist
+builder.AddSingleton<IModuleListRepository, ModuleListRepository>();
+
+// Common
+builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
+builder.AddSingleton<IEnvironmentVariables, EnvironmentVariables>();
+
+//Common.FileHandler
+builder.AddSingleton<IFileWriteHandler, FileWriteHandler>();
+builder.AddSingleton<IFileReadHandler, FileReadHandler>();
+
+//Common.Logger
+builder.AddSingleton<ILogger, Logger>();
 
 //Lexer
 builder.AddTransient<Pirate.Lexer.Lexer, Lexer>();

@@ -1,5 +1,6 @@
 <Project>
     <PropertyGroup>
+        <ProjectName>Shell.Project</ProjectName>
         <TargetFramework>pirate1.1.0</TargetFramework>
     </PropertyGroup>
 

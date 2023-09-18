@@ -8,7 +8,7 @@ var projectFileHandler = new ProjectFileHandler(new FileReadHandler(), new FileW
 var project = await projectFileHandler.ReadProjectFile("test", "");
 
 Console.WriteLine($"Hello, {project.PropertyGroup.TargetFramework}!");
-project.ItemGroup.Modules.ForEach(module =>
-{
-    Console.WriteLine($"Module: {module.File} - EntryPoint: {module.EntryPoint}");
-});
+project.ItemGroup.ForEach(itemGroup =>
+    itemGroup.Modules.ForEach(module => {
+        Console.WriteLine($"Module: {module.File} - EntryPoint: {module.EntryPoint}");
+}));

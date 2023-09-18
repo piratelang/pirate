@@ -37,7 +37,8 @@ public class RunCommand : Command, ICommand, IRunCommand
 
         Logger.Info($"Executing {fileName}.pirate\n");
 
-        return Interpreter.StartInterpreter(fileName);
+        //return Interpreter.StartInterpreter(fileName);
+        return null;
     }
 
     public override void Help()
