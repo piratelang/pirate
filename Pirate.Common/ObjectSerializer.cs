@@ -45,11 +45,11 @@ public class ObjectSerializer : IObjectSerializer
             string json = JsonConvert.SerializeObject(ObjectToSerialize, settings);
             _fileWriteHandler.WriteToFile(new FileWriteModel(FileName, FileExtension.JSON, Location, json));
 
-            Logger.Log($"Serialized and written \"{FileName}\" to \"{FileName}\".json", LogType.INFO);
+            Logger.Info($"Serialized and written \"{FileName}\" to \"{FileName}\".json");
         }
         catch (System.Exception ex)
         {
-            Logger.Log($"Failed to Serialize {FileName}.json. \"{ex.ToString()}\"", LogType.ERROR);
+            Logger.Info($"Failed to Serialize {FileName}.json. \"{ex.ToString()}\"");
             throw;
         }
     }
@@ -70,13 +70,13 @@ public class ObjectSerializer : IObjectSerializer
             T deserializedObject = JsonConvert.DeserializeObject<T>(json, settings);
 
             if (deserializedObject == null) throw new SerializationException("Deserialized object is null");
-            Logger.Log($"Deserialized and converted {FileName} to {FileName}.json", LogType.INFO);
+            Logger.Info($"Deserialized and converted {FileName} to {FileName}.json");
 
             return deserializedObject;
         }
         catch (SerializationException ex)
         {
-            Logger.Log($"Failed to Deserialize {FileName}.json. \"{ex.ToString() + "\n" + ex.Source}\"", LogType.ERROR);
+            Logger.Info($"Failed to Deserialize {FileName}.json. \"{ex.ToString() + "\n" + ex.Source}\"");
             throw new SerializationException(ex.ToString() + "\n" + ex.Source);
         }
     }

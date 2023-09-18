@@ -11,6 +11,7 @@ public interface ILogger
 
     bool Fatal(System.Exception exception);
     bool Error(System.Exception exception);
+    bool Error(string message);
     bool Warning(string  message);
     bool Info(string message);
     bool Debug(string message);

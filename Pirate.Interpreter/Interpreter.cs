@@ -33,7 +33,7 @@ public class Interpreter : IInterpreter
         List<BaseValue> result = new();
         foreach (var item in scopeList.Nodes)
         {
-            Logger.Log($"Interpreting {item.GetType().Name}", LogType.INFO);
+            Logger.Info($"Interpreting {item.GetType().Name}");
             var interpreter = InterpreterFactory.GetInterpreter(item);
             result.AddRange(interpreter.VisitNode());
         }

@@ -16,8 +16,14 @@ public class CharCodeAtFunction : CSharpFunction
     {
         Logger.Info($"[{Name}] called with {arguments.Count} parameters");
 
-        var str = arguments[0] is BaseValue value ? value.Value?.ToString() : arguments[0].ToString();
-        var idx = arguments[1] is BaseValue value2 ? (int)value2.Value : (int)arguments[1];
+        var str = arguments[0] is BaseValue value 
+            ? value.Value?.ToString() 
+            : arguments[0].ToString();
+        var idx = arguments[1] is BaseValue value2 
+            ? value2.Value is int intValue
+                ? intValue
+                : throw new InvalidOperationException()
+            : (int)arguments[1];
 
         if (idx >= 0 && idx < str.Length)
         {

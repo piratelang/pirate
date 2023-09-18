@@ -16,8 +16,12 @@ public class CharAtFunction : CSharpFunction
     {
         Logger.Info($"[{Name}] called with {arguments.Count} parameters");
 
-        var str = arguments[0] is BaseValue value ? value.Value?.ToString() : arguments[0].ToString();
-        var idx = arguments[1] is BaseValue value2 ? int.Parse(value2.Value?.ToString()) : int.Parse(arguments[1].ToString());
+        var str = arguments[0] is BaseValue value 
+            ? value.Value?.ToString() ?? throw new InvalidOperationException()
+            : arguments[0].ToString() ?? throw new InvalidOperationException();
+        var idx = arguments[1] is BaseValue value2 
+            ? int.Parse(value2.Value?.ToString() ?? throw new InvalidOperationException())
+            : int.Parse(arguments[1].ToString() ?? throw new InvalidOperationException());
 
         if (idx >= 0 && idx < str.Length)
         {

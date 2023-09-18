@@ -13,7 +13,6 @@ using Pirate.Lexer;
 using Pirate.Parser.Interfaces;
 using Pirate.Interpreter.Runtime;
 using PirateLang;
-using Pirate.Interpreter.StandarLibrary;
 
 var version = "1.0.0";
 

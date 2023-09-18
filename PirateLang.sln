@@ -95,7 +95,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "11. Installers", "11. Insta
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Shell.Installer.x64", "Shell.Installer.x64\Shell.Installer.x64.vdproj", "{DA7C1F24-D53A-45B9-BD4B-3AB243DE2F4C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Interpreter.StandardLibrary", "Pirate.Interpreter.StandarLibrary\Pirate.Interpreter.StandardLibrary.csproj", "{7FBBEFFD-98F0-4235-9E3C-CAD6482E5824}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Interpreter.StandardLibrary", "Pirate.Interpreter.StandardLibrary\Pirate.Interpreter.StandardLibrary.csproj", "{7FBBEFFD-98F0-4235-9E3C-CAD6482E5824}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

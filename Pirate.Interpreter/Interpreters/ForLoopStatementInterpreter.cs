@@ -17,11 +17,11 @@ public class ForLoopStatementInterpreter : BaseInterpreter
         forLoopStatementNode = (IForLoopStatementNode)node;
         _runtime = runtime;
 
-        Logger.Log($"Created {GetType().Name} : \"{forLoopStatementNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{forLoopStatementNode.ToString()}\"");
     }
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{forLoopStatementNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Visiting {GetType().Name} : \"{forLoopStatementNode.ToString()}\"");
 
         var interpreter = InterpreterFactory.GetInterpreter(forLoopStatementNode.VariableNode);
         var variableValue = interpreter.VisitSingleNode();
@@ -47,7 +47,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
         List<BaseValue> bodyValues = new();
         for (long i = variable; i < start; i++)
         {
-            Logger.Log($"For Loop iteration: {i}", LogType.INFO);
+            Logger.Info($"For Loop iteration: {i}");
             foreach (var node in forLoopStatementNode.BodyNodes)
             {
                 interpreter = InterpreterFactory.GetInterpreter(node);

@@ -33,7 +33,7 @@ public abstract class PirateException : System.Exception, IPirateException
         ResourceManager resourceManager = new("Pirate.Common.Exception.ExceptionMessages", typeof(PirateException).Assembly);
         var message = resourceManager.GetString(code.GetFullCode()) ?? "Unknown error";
         if (parameters != null)
-            message = string.Format(message, parameters?.ToArray());
+            message = string.Format(message, parameters?.ToArray() ?? Array.Empty<string>());
 
         return $"{code.Prefix}{code.Code}: {message}";
     }

@@ -20,7 +20,9 @@ public class LengthFunction : CSharpFunction
 
         if (arguments[0] is BaseValue value)
         {
-            return new List<BaseValue> { new IntegerValue(value.Value?.ToString().Length ?? 0, Logger) };
+            return new List<BaseValue> { 
+                new IntegerValue(value.Value?.ToString().Length ?? 0, Logger) 
+            };
         }
         else
         {

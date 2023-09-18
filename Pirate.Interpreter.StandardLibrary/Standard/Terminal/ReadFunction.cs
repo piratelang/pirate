@@ -17,7 +17,7 @@ public class ReadFunction : CSharpFunction
         Logger.Info($"[Standard.Terminal.Read] called with {arguments.Count} parameters");
 
         if (arguments.Count > 0)
-            arguments.ForEach(a => Console.Write(a.ToString()));
+            arguments.ForEach(a => Console.Write(a?.ToString()));
 
         var result = Console.ReadLine();
         return new List<BaseValue> { new StringValue(result, Logger) };

@@ -3,7 +3,7 @@ using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.StandardLibrary.Standard.Terminal;
 using Pirate.Interpreter.Values.Function;
 
-namespace Pirate.Interpreter.StandarLibrary;
+namespace Pirate.Interpreter.StandardLibrary;
 
 public class StandardLibraryProvider : IStandardLibraryProvider
 {

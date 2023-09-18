@@ -3,7 +3,6 @@ using Pirate.Interpreter.Interpreters;
 using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.StandardLibrary;
-using Pirate.Interpreter.StandarLibrary;
 using Pirate.Lexer;
 using Pirate.Lexer.Tokens;
 using Pirate.Parser.Interfaces;

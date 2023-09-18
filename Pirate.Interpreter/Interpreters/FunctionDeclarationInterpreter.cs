@@ -17,13 +17,13 @@ public class FunctionDeclarationInterpreter : BaseInterpreter
         if (node is not IFunctionDeclarationNode) throw new TypeConversionException(node.GetType(), typeof(IFunctionDeclarationNode));
         FunctionDeclarationNode = (IFunctionDeclarationNode)node;
 
-        Logger.Log($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"");
         _runtime = runtime;
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Visiting {GetType().Name} : \"{FunctionDeclarationNode.ToString()}\"");
 
         var function = new FunctionValue(FunctionDeclarationNode, Logger);
         _runtime.Functions.Set((string)FunctionDeclarationNode.Identifier.Value.Value, function);

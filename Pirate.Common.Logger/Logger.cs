@@ -99,6 +99,12 @@ public class Logger : ILogger
         return result;
     }
 
+    public bool Error(string message)
+    {
+        Error(new System.Exception(message));
+        return true;
+    }
+
     /// <summary>
     /// Logs a warning
     /// </summary>

@@ -19,23 +19,23 @@ public class CharValue : BaseValue, IValue
                 return new StringValue(value + other.Value.ToString(), Logger);
 
             case TokenType.MINUS:
-                Logger.Log("<char> - <char> is not supported", LogType.ERROR);
+                Logger.Error("<char> - <char> is not supported");
                 throw new NotImplementedException();
 
             case TokenType.MULTIPLY:
-                Logger.Log("<char> * <char> is not supported", LogType.ERROR);
+                Logger.Error("<char> * <char> is not supported");
                 throw new NotImplementedException();
 
             case TokenType.DIVIDE:
-                Logger.Log("<char> / <char> is not supported", LogType.ERROR);
+                Logger.Error("<char> / <char> is not supported");
                 throw new NotImplementedException();
 
             case TokenType.POWER:
-                Logger.Log("<char> ^ <char> is not supported", LogType.ERROR);
+                Logger.Error("<char> ^ <char> is not supported");
                 throw new NotImplementedException();
 
             case TokenType.MODULO:
-                Logger.Log("<char> % <char> is not supported", LogType.ERROR);
+                Logger.Error("<char> % <char> is not supported");
                 throw new NotImplementedException();
 
         }
