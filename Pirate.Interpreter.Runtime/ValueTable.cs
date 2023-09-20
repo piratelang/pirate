@@ -32,7 +32,6 @@ public class ValueTable<T> : IValueTable<T> where T : IValueTableItem
     public bool Set(string name, T value)
     {
         _values[name] = value;
-        _logger.Debug($"Added {name}: {value.ToString()} to Runtime.ValueTable");
         _logger.Info($"Runtime.ValueTable now contains {_values[name]}");
         return true;
     }

@@ -20,7 +20,7 @@ public class ProjectFileHandler : IProjectFileHandler
 
     public async Task<ProjectFile?> ReadProjectFile(string name, string path)
     {
-        var projectFile = await _fileReadHandler.ReadAllTextFromFile(name, FileExtension.PIRATEPROJ, path);
+        var projectFile = await _fileReadHandler.ReadAllTextFromFile(name, FileExtension.SHIP, path);
 
         if (projectFile == null) throw new Exception("Project file not found");
 
@@ -39,7 +39,7 @@ public class ProjectFileHandler : IProjectFileHandler
 
         _fileWriteHandler.WriteToFile(new FileWriteModel(
             fileName: "project",
-            fileExtension: FileExtension.PIRATEPROJ,
+            fileExtension: FileExtension.SHIP,
             fileLocation: path,
             fileText: stringWriter.ToString()
         ));

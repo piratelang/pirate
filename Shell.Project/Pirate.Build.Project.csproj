@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="full.pirateproj" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="full.ship" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
