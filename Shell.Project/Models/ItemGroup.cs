@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Shell.Project.Models;
+namespace Pirate.Build.Project.Models;
 
 [XmlRoot(ElementName = "ItemGroup")]
 public class ItemGroup

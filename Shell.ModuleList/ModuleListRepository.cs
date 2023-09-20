@@ -6,6 +6,7 @@ namespace Shell.ModuleList;
 /// <summary>
 /// A repository handling the module list file.
 /// </summary>
+[Obsolete]
 public class ModuleListRepository : IModuleListRepository
 {
     private ILogger _logger;

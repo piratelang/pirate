@@ -1,4 +1,4 @@
-﻿namespace PirateLang.Commands.Models;
+﻿namespace PirateLang.Models;
 
 public class OptionDescription
 {

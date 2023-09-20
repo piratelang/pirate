@@ -1,5 +1,5 @@
 using Pirate.Interpreter.Interfaces;
-using PirateLang.Commands.Models;
+using PirateLang.Models;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;

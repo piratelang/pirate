@@ -1,11 +1,11 @@
 ﻿using System.Xml.Serialization;
+using Pirate.Build.Project.Interfaces;
+using Pirate.Build.Project.Models;
 using Pirate.Common.FileHandler.Enum;
 using Pirate.Common.FileHandler.Interfaces;
 using Pirate.Common.FileHandler.Model;
-using Shell.Project.Interfaces;
-using Shell.Project.Models;
 
-namespace Shell.Project;
+namespace Pirate.Build.Project;
 
 public class ProjectFileHandler : IProjectFileHandler
 {
@@ -43,6 +43,15 @@ public class ProjectFileHandler : IProjectFileHandler
             fileLocation: path,
             fileText: stringWriter.ToString()
         ));
+    }
+
+    public ProjectFile AddFileToProject(ProjectFile projectFile, string filePath)
+    {
+        projectFile.ItemGroup?.FirstOrDefault()?.Modules?.Add(new Module()
+        {
+            File = filePath,
+        });
+        return projectFile;
     }
 
 }

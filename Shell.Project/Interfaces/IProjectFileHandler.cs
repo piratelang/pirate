@@ -1,6 +1,6 @@
-﻿using Shell.Project.Models;
+﻿using Pirate.Build.Project.Models;
 
-namespace Shell.Project.Interfaces
+namespace Pirate.Build.Project.Interfaces
 {
     public interface IProjectFileHandler
     {

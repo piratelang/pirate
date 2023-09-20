@@ -1,7 +1,7 @@
 using Pirate.Interpreter.Interfaces;
 using Pirate.Lexer;
 using Pirate.Parser.Interfaces;
-using PirateLang.Commands.Models;
+using PirateLang.Models;
 using Shell.Commands.Interfaces;
 
 namespace Shell.Commands;

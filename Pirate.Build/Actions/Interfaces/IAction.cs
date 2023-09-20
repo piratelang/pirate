@@ -1,4 +1,6 @@
-﻿namespace Pirate.Build.Actions.Interfaces;
+﻿using Pirate.Build.Project.Models;
+
+namespace Pirate.Build.Actions.Interfaces;
 
 public interface IAction
 {

@@ -1,4 +1,6 @@
-﻿namespace Pirate.Build.Actions.Util;
+﻿using Pirate.Build.Project.Models;
+
+namespace Pirate.Build.Actions.Util;
 
 public static class ProjectUtil
 {

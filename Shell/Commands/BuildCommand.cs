@@ -2,7 +2,7 @@ using Shell.ModuleList;
 using Shell.Commands.Interfaces;
 using Pirate.Lexer;
 using Pirate.Parser.Interfaces;
-using PirateLang.Commands.Models;
+using PirateLang.Models;
 
 namespace Shell.Commands;
 

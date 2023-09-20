@@ -1,5 +1,6 @@
 ﻿using Pirate.Build.Actions.Util;
 using Pirate.Build.Models;
+using Pirate.Build.Project.Models;
 using Pirate.Common;
 using Pirate.Common.Interfaces;
 using Pirate.Parser;
