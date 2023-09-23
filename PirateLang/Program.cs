@@ -20,6 +20,7 @@ var version = "1.0.0";
 var builder = new ServiceCollection();
 
 Pirate.Build.Register.RegisterDependencies(builder);
+Pirate.Build.Project.Register.RegisterServices(builder);
 
 
 //PirateLang
