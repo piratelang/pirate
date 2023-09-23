@@ -27,7 +27,7 @@
     <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.csproj" />
     <ProjectReference Include="..\Pirate.Common\Pirate.Common.csproj" />
     <ProjectReference Include="..\Shell.ModuleList\Shell.ModuleList.csproj" />
-    <ProjectReference Include="..\Shell.Project\Pirate.Build.Project.csproj" />
+    <ProjectReference Include="..\Pirate.Build.Project\Pirate.Build.Project.csproj" />
   </ItemGroup>
 
 </Project>

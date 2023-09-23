@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PirateLang", "Shell\PirateLang.csproj", "{12B19978-5BBE-43F9-B73F-941AE86CDE6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PirateLang", "PirateLang\PirateLang.csproj", "{12B19978-5BBE-43F9-B73F-941AE86CDE6A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{994A0905-9118-40F0-ABEE-7E8863AB885F} = {994A0905-9118-40F0-ABEE-7E8863AB885F}
 		{9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306} = {9D8F5DFE-5D3E-499B-9EC3-BA1E40BC5306}
@@ -87,9 +87,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Interpreter.Runtime"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shell.ModuleList", "Shell.ModuleList\Shell.ModuleList.csproj", "{19591A47-6257-4E14-8FE3-9F328A46D041}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Build.Project", "Shell.Project\Pirate.Build.Project.csproj", "{93666037-8CB7-4CAF-A0C1-FBE5ADAAE7DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pirate.Build.Project", "Pirate.Build.Project\Pirate.Build.Project.csproj", "{93666037-8CB7-4CAF-A0C1-FBE5ADAAE7DF}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Shell.Installer.x86", "Shell.Installer\Shell.Installer.vdproj", "{B8D812EE-68A5-48FE-970C-AB44EB91ECB3}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Shell.Installer.x86", "Shell.Installer.x86\Shell.Installer.vdproj", "{B8D812EE-68A5-48FE-970C-AB44EB91ECB3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "11. Installers", "11. Installers", "{D713301D-CF9D-4289-B11A-A071C6619605}"
 EndProject
