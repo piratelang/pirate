@@ -50,7 +50,7 @@ public class ShellCommand : Command, ICommand, IShellCommand
                 var parseResult = Parser.StartParse(tokens, "repl");
                 if (parseResult.Nodes.Count() < 1) Error("Error occured while parsing tokens.");
 
-                var interpreterResult = Interpreter.StartInterpreter("repl");
+                var interpreterResult = Interpreter.StartInterpreter(parseResult);
                 foreach (var item in interpreterResult)
                 {
                     if (item == null)
