@@ -1,6 +1,6 @@
-using Shell.Commands;
+using PirateLang.Commands;
 
-namespace Shell;
+namespace PirateLang;
 
 /// <summary>
 /// A class starting the application.

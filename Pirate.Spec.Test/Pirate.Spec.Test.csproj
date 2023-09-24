@@ -28,7 +28,8 @@
     <ProjectReference Include="..\Pirate.Lexer.F\Pirate.Lexer.fsproj" />
     <ProjectReference Include="..\Pirate.Lexer.TokenType\Pirate.Lexer.TokenType.csproj" />
     <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.csproj" />
-    <ProjectReference Include="..\Shell\PirateLang.csproj" />
+    <ProjectReference Include="..\PirateLang\PirateLang.csproj" />
+    <ProjectReference Include="..\PirateLang\PirateLang.csproj" />
   </ItemGroup>
 
 </Project>

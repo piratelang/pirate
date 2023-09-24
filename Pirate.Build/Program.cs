@@ -1,4 +1,5 @@
-﻿using Pirate.Common;
+﻿using Pirate.Build.Project;
+using Pirate.Common;
 using Pirate.Common.FileHandler;
 using Pirate.Common.Logger;
 using Pirate.Interpreter;
@@ -7,7 +8,6 @@ using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Lexer;
 using Pirate.Parser;
-using Shell.Project;
 
 
 var logger = new Logger();

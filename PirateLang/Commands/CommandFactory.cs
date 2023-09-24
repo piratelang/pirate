@@ -1,6 +1,6 @@
-using Shell.Commands.Interfaces;
+using PirateLang.Commands.Interfaces;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 /// <summary>
 /// Return the right command based on the command name.

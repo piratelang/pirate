@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Pirate.Common.FileHandler;
-using Shell.Project;
+using Pirate.Build.Project;
 
 var projectFileHandler = new ProjectFileHandler(new FileReadHandler(), new FileWriteHandler());
 

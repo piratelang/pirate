@@ -45,13 +45,4 @@ public class ProjectFileHandler : IProjectFileHandler
         ));
     }
 
-    public ProjectFile AddFileToProject(ProjectFile projectFile, string filePath)
-    {
-        projectFile.ItemGroup?.FirstOrDefault()?.Modules?.Add(new Module()
-        {
-            File = filePath,
-        });
-        return projectFile;
-    }
-
 }

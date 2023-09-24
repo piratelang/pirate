@@ -1,10 +1,11 @@
 using Shell.ModuleList;
-using Shell.Commands.Interfaces;
 using Pirate.Lexer;
 using Pirate.Parser.Interfaces;
 using PirateLang.Commands.Models;
+using PirateLang.Commands.Interfaces;
+using Pirate.Build.Project.Interfaces;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 /// <summary>
 /// A command which builds a module.
@@ -26,20 +27,20 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 
         Location = environmentVariables.GetVariable("location");
     }
-    
+
     public override object Run(string[] arguments)
     {
         Logger.Info("Starting Build Command");
-
-        // check for files
-        var foundfiles = directory.getfiles("./", "*.ship", searchoption.alldirectories);
-        if (foundfiles.length == 0) error("no project files were found in the directory");
-
-         
         
+        // check for files
+        var foundfiles = Directory.GetFiles("./", "*.ship", SearchOption.AllDirectories);
+        if (foundfiles.Length == 0) Error("no project files were found in the directory");
+
+
+
         return true;
     }
-    
+
     public override void Help()
     {
         Console.WriteLine(

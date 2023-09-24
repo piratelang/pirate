@@ -1,8 +1,8 @@
 using Pirate.Interpreter.Interfaces;
-using PirateLang.Models;
-using Shell.Commands.Interfaces;
+using PirateLang.Commands.Interfaces;
+using PirateLang.Commands.Models;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 /// <summary>
 /// A command which builds and then runs the code.

@@ -1,7 +1,7 @@
-using PirateLang.Models;
-using Shell.Commands.Interfaces;
+using PirateLang.Commands.Interfaces;
+using PirateLang.Commands.Models;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 /// <summary>
 /// A command which initializes files based on the parameters.
@@ -10,7 +10,7 @@ public class InitCommand : Command, ICommand, IInitCommand
 {
     private IFileWriteHandler _fileWriteHandler;
     public InitCommand(ILogger Logger, IFileWriteHandler FileWriteHandler, IEnvironmentVariables EnvironmentVariables) : base(Logger, EnvironmentVariables)
-    { 
+    {
         _fileWriteHandler = FileWriteHandler;
     }
 
@@ -23,7 +23,7 @@ public class InitCommand : Command, ICommand, IInitCommand
         Logger.Info($"Creating {nameArgument} file");
         var fileName = nameArgument.Replace(".pirate", "");
 
-        var text = String.Join(
+        var text = string.Join(
             Environment.NewLine,
             "func main()",
             "{",

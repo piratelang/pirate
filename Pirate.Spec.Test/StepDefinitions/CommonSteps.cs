@@ -7,8 +7,8 @@ using Pirate.Lexer;
 using Pirate.Lexer.Tokens;
 using Pirate.Parser;
 using Pirate.Spec.Test.Setup;
-using Shell.Commands;
-using Shell.Commands.Interfaces;
+using PirateLang.Commands;
+using PirateLang.Commands.Interfaces;
 using Shell.ModuleList;
 
 namespace Pirate.Spec.Test.StepDefinitions;

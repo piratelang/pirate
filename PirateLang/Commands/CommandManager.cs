@@ -1,4 +1,4 @@
-using Shell.Commands.Interfaces;
+using PirateLang.Commands.Interfaces;
 
 namespace PirateLang.Commands;
 

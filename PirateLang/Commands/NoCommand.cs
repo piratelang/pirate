@@ -1,6 +1,6 @@
-﻿using Shell.Commands.Interfaces;
+﻿using PirateLang.Commands.Interfaces;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 public class NoCommand
 {

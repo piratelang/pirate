@@ -1,7 +1,7 @@
-using PirateLang.Models;
-using Shell.Commands.Interfaces;
+using PirateLang.Commands.Interfaces;
+using PirateLang.Commands.Models;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 /// <summary>
 /// A command which creates a new file.
@@ -11,7 +11,7 @@ public class NewCommand : Command, ICommand, INewCommand
     private IFileWriteHandler _fileWriteHandler;
     private IFileReadHandler _fileReadHandler;
     public NewCommand(ILogger Logger, IFileWriteHandler FileWriteHandler, IFileReadHandler FileReadHandler, IEnvironmentVariables EnvironmentVariables) : base(Logger, EnvironmentVariables)
-    { 
+    {
         _fileWriteHandler = FileWriteHandler;
         _fileReadHandler = FileReadHandler;
     }
@@ -24,7 +24,7 @@ public class NewCommand : Command, ICommand, INewCommand
         if (typeArgument == string.Empty)
         {
             Logger.Info("Argument is empty");
-            Console.WriteLine(String.Join(
+            Console.WriteLine(string.Join(
                 Environment.NewLine,
                 "\nThe \"pirate new [type]\" command creates a new file from a template",
                 "\nOptions",
@@ -51,10 +51,10 @@ public class NewCommand : Command, ICommand, INewCommand
         switch (typeArgument)
         {
             case "gitignore":
-                _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitignore,  "", "[Bb]in/"));
+                _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitignore, "", "[Bb]in/"));
                 return true;
             case "gitattributes":
-                _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitattributes, "", "*.pirate linguist-language=Squirrel" ));
+                _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitattributes, "", "*.pirate linguist-language=Squirrel"));
                 return true;
             case "pirate":
                 var filename = "main";
@@ -62,7 +62,7 @@ public class NewCommand : Command, ICommand, INewCommand
                 {
                     filename = arguments[2];
                 }
-                catch (System.Exception) { }
+                catch (Exception) { }
 
                 if (_fileReadHandler.FileExists(filename, FileExtension.PIRATE, " "))
                 {

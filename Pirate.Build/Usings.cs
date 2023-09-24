@@ -10,4 +10,4 @@ global using Pirate.Interpreter.Interfaces;
 
 global using Pirate.Parser.Interfaces;
 
-global using Shell.Project.Models;
+global using Pirate.Build.Project.Models;

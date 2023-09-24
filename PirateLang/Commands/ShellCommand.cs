@@ -1,10 +1,10 @@
 using Pirate.Interpreter.Interfaces;
 using Pirate.Lexer;
 using Pirate.Parser.Interfaces;
-using PirateLang.Models;
-using Shell.Commands.Interfaces;
+using PirateLang.Commands.Interfaces;
+using PirateLang.Commands.Models;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 /// <summary>
 /// A command which starts the pirate repl.

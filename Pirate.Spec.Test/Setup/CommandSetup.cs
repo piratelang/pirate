@@ -4,10 +4,9 @@ using Pirate.Interpreter.Interpreters.Interfaces;
 using Pirate.Interpreter.Runtime;
 using Pirate.Interpreter.StandardLibrary;
 using Pirate.Lexer;
-using Pirate.Lexer.Tokens;
 using Pirate.Parser.Interfaces;
-using Shell.Commands;
-using Shell.Commands.Interfaces;
+using PirateLang.Commands;
+using PirateLang.Commands.Interfaces;
 using Shell.ModuleList;
 using Shell.ModuleList.interfaces;
 
@@ -37,17 +36,18 @@ public class CommandSetup
     
     public RunCommand GetRunCommand()
     {
-        Lexer.Lexer lexer = new Lexer.Lexer(_logger, new TokenRepository(new KeyWordService()));
-        IParser parser = new Parser.Parser(_logger, _objectSerializer);
-        Runtime runtime = new Runtime(_logger);
-        IInterpreterFactory interpreterFactory = new InterpreterFactory(new StandardLibraryProvider(_logger), _logger, runtime);
-        IInterpreter interpreter = new Interpreter.Interpreter(_objectSerializer, _logger, interpreterFactory);
-        IModuleListRepository moduleListRepository = new ModuleListRepository(_logger, _fileWriteHandler, _fileReadHandler);
+        //Lexer.Lexer lexer = new Lexer.Lexer(_logger, new TokenRepository(new KeyWordService()));
+        //IParser parser = new Parser.Parser(_logger, _objectSerializer);
+        //Runtime runtime = new Runtime(_logger);
+        //IInterpreterFactory interpreterFactory = new InterpreterFactory(new StandardLibraryProvider(_logger), _logger, runtime);
+        //IInterpreter interpreter = new Interpreter.Interpreter(_objectSerializer, _logger, interpreterFactory);
+        //IModuleListRepository moduleListRepository = new ModuleListRepository(_logger, _fileWriteHandler, _fileReadHandler);
 
-        IBuildCommand buildCommand = new BuildCommand(_logger, _objectSerializer, parser, lexer, moduleListRepository,
-            _fileReadHandler, _environmentVariables);
-        return new RunCommand(_logger, _objectSerializer, buildCommand, interpreter, _fileReadHandler,
-            _environmentVariables);
+        //IBuildCommand buildCommand = new IBuildCommand(_logger, _objectSerializer, parser, lexer, moduleListRepository,
+        //    _fileReadHandler, _environmentVariables);
+        //return new RunCommand(_logger, _objectSerializer, buildCommand, interpreter, _fileReadHandler,
+        //    _environmentVariables);
+        return null;
     }
 
     public ILogger GetLogger()

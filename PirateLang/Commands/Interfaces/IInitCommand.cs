@@ -1,4 +1,4 @@
-namespace Shell.Commands.Interfaces;
+namespace PirateLang.Commands.Interfaces;
 
 public interface IInitCommand
 {

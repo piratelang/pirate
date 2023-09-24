@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Shell;
-using Shell.Commands;
-using Shell.Commands.Interfaces;
 using Shell.ModuleList;
 using Pirate.Interpreter.Interfaces;
 using Pirate.Interpreter.Interpreters;
@@ -14,13 +11,13 @@ using Pirate.Parser.Interfaces;
 using Pirate.Interpreter.Runtime;
 using PirateLang;
 using PirateLang.Commands;
+using PirateLang.Commands.Interfaces;
 
 var version = "1.0.0";
 
 var builder = new ServiceCollection();
 
 Pirate.Build.Register.RegisterDependencies(builder);
-Pirate.Build.Project.Register.RegisterServices(builder);
 
 
 //PirateLang

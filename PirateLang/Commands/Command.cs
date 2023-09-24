@@ -1,6 +1,6 @@
-using Shell.Commands.Interfaces;
+using PirateLang.Commands.Interfaces;
 
-namespace Shell.Commands;
+namespace PirateLang.Commands;
 
 /// <summary>
 /// A base class for all commands.
