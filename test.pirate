@@ -1,0 +1,5 @@
+func main() : void
+{
+    var message = "Hello, World!";
+    print(message);
+}
