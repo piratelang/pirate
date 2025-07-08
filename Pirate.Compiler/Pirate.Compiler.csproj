@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageReference Include="Antlr4" Version="4.6.6" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,11 @@
 using Shell.ModuleList;
 using Shell.Commands.Interfaces;
 using Pirate.Lexer;
+using Pirate.Parser;
 using Pirate.Parser.Interfaces;
 using PirateLang.Commands.Models;
 using Pirate.Compiler.Interfaces;
+using Pirate.Compiler;
 
 namespace Shell.Commands;
 
@@ -81,15 +83,28 @@ public class CompileCommand : Command, ICommand, ICompileCommand
             var text = _fileReadHandler.ReadAllTextFromFile(fileName, FileExtension.PIRATE, "").Result;
             if (text == null) Error($"{fileName} contains no text");
 
-            // Running Lexer
-            Logger.Info($"Lexing {fileName}.pirate");
-            var tokens = _lexer.MakeTokens(text, "test").ToList();
-            if (tokens.Count() == 0) Error($"Error occurred while lexing tokens, in the file {fileName}.");
+            // Option to use ANTLR parser (demonstration)
+            bool useAntlr = arguments.Contains("--antlr");
+            Scope parseResult;
+            
+            if (useAntlr)
+            {
+                Logger.Info("Using ANTLR-based parser with G4 grammar");
+                var antlrParser = new AntlrParserAdapter(Logger);
+                parseResult = antlrParser.ParseWithAntlr(text, fileName);
+            }
+            else
+            {
+                // Running Lexer
+                Logger.Info($"Lexing {fileName}.pirate");
+                var tokens = _lexer.MakeTokens(text, "test").ToList();
+                if (tokens.Count() == 0) Error($"Error occurred while lexing tokens, in the file {fileName}.");
 
-            // Running Parser
-            Logger.Info($"Parsing {fileName}.pirate");
-            var parseResult = _parser.StartParse(tokens, fileName);
-            if (parseResult.Nodes.Count() < 1) Error("Error occurred while parsing tokens.");
+                // Running Parser
+                Logger.Info($"Parsing {fileName}.pirate");
+                parseResult = _parser.StartParse(tokens, fileName);
+                if (parseResult.Nodes.Count() < 1) Error("Error occurred while parsing tokens.");
+            }
 
             // Running Compiler
             Logger.Info($"Compiling {fileName} to {outputPath}");
@@ -99,6 +114,11 @@ public class CompileCommand : Command, ICommand, ICompileCommand
             {
                 Console.WriteLine($"Compilation successful!");
                 Console.WriteLine($"Output: {compilationResult.OutputPath}");
+                
+                if (useAntlr)
+                {
+                    Console.WriteLine("Used ANTLR parser with G4 grammar");
+                }
                 
                 if (compilationResult.Warnings.Any())
                 {
@@ -142,6 +162,10 @@ public class CompileCommand : Command, ICommand, ICompileCommand
                     new OptionDescription(
                         options: new List<string>() { "-o", "--output" },
                         description: "Specify output directory (default: ./output)"
+                    ),
+                    new OptionDescription(
+                        options: new List<string>() { "--antlr" },
+                        description: "Use ANTLR parser with G4 grammar (experimental)"
                     )
                 }
             ).ToString()
