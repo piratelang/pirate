@@ -12,15 +12,17 @@ public class CommandFactory : ICommandFactory
     public IRunCommand RunCommand { get; set; }
     public IBuildCommand BuildCommand { get; set; }
     public IShellCommand ShellCommand { get; set; }
+    public ICompileCommand CompileCommand { get; set; }
     public ILogger Logger { get; set; }
 
-    public CommandFactory(IInitCommand initCommand, INewCommand newCommand, IRunCommand runCommand, IBuildCommand buildCommand, ILogger logger, IShellCommand shellCommand)
+    public CommandFactory(IInitCommand initCommand, INewCommand newCommand, IRunCommand runCommand, IBuildCommand buildCommand, ILogger logger, IShellCommand shellCommand, ICompileCommand compileCommand)
     {
         InitCommand = initCommand;
         NewCommand = newCommand;
         RunCommand = runCommand;
         BuildCommand = buildCommand;
         ShellCommand = shellCommand;
+        CompileCommand = compileCommand;
         Logger = logger;
     }
     public ICommand GetCommand(string commandArgument)
@@ -35,6 +37,8 @@ public class CommandFactory : ICommandFactory
                 return (ICommand)RunCommand;
             case "build":
                 return (ICommand)BuildCommand;
+            case "compile":
+                return (ICommand)CompileCommand;
             case "shell":
                 return (ICommand)ShellCommand;
         }

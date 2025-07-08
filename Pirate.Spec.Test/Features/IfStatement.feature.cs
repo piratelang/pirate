@@ -109,7 +109,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
-    testRunner.Given("the following pirate code:", "if 3 == 3 {\r\n    IO.print(\"Ahoy!\");\r\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("the following pirate code:", "if 3 == 3 {\n    IO.print(\"Ahoy!\");\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 12
     testRunner.When("the code is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

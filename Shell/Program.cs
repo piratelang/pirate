@@ -14,6 +14,8 @@ using Pirate.Parser.Interfaces;
 using Pirate.Interpreter.Runtime;
 using PirateLang;
 using Pirate.Interpreter.StandarLibrary;
+using Pirate.Compiler.Interfaces;
+using Pirate.Compiler;
 
 var version = "1.0.0";
 
@@ -35,6 +37,7 @@ builder.AddTransient<IInitCommand, InitCommand>();
 builder.AddTransient<INewCommand, NewCommand>();
 builder.AddTransient<IRunCommand, RunCommand>();
 builder.AddTransient<IShellCommand, ShellCommand>();
+builder.AddTransient<ICompileCommand, CompileCommand>();
 builder.AddTransient<ICommandFactory, CommandFactory>();
 
 //Lexer
@@ -54,6 +57,9 @@ builder.AddSingleton<IRuntime, Runtime>();
 
 // Interpreter.StandardLibrary
 builder.AddTransient<IStandardLibraryProvider, StandardLibraryProvider>();
+
+//Compiler
+builder.AddTransient<ICompiler, ILCompiler>();
 
 
 var provider = builder.BuildServiceProvider();
