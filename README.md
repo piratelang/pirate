@@ -52,7 +52,37 @@ extern Standard.Terminal.Print;
 Print("Hello World");
 ```
 
+You can also compile Pirate code to C#:
+
+```nim
+func main() : void
+{
+    var message = "Hello, World!";
+    print(message);
+}
+```
+
 More syntax is defined in the [Syntax.md](syntax.md) file.
+
+## Compilation
+
+The Pirate language now supports both interpretation and compilation modes:
+
+### Interpreting Code (Default)
+```bash
+pirate run main.pirate
+```
+
+### Compiling Code
+```bash
+pirate compile main.pirate -o ./output
+```
+
+This will generate C# source code that can be further compiled using the .NET SDK.
+
+### Grammar Definition
+
+The language grammar is formally defined in `Pirate.g4` using ANTLR syntax. This grammar file can be used with ANTLR to generate parsers for other tools and languages.
 
 ## Solution Structure
 
@@ -86,6 +116,20 @@ A scope consists of a list of Node. A node is created in the Parsers.
 
 Takes the serialized scope and visits each node for a result. Returns a `BaseValue` type object.
 
+### Pirate.Compiler
+
+Compiles the parsed scope to different target formats:
+
+- **CSharpTranspiler**: Converts Pirate AST to C# source code
+- **ILCompiler**: (Planned) Direct compilation to .NET IL
+
+The compiler supports generating standalone C# files that can be compiled with the .NET SDK.
+
 ### Shell
 
-Runs the Lexer, Parser and Interpreter of the file path in the argument.
+Runs the Lexer, Parser and Interpreter/Compiler of the file path in the argument.
+
+Available commands:
+- `pirate run <file>` - Interpret and execute a Pirate file
+- `pirate compile <file> -o <output>` - Compile a Pirate file to C# source
+- `pirate build` - Build/validate Pirate files in current directory
