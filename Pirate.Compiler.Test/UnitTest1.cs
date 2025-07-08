@@ -10,14 +10,14 @@ using Pirate.Lexer.Tokens;
 
 namespace Pirate.Compiler.Test;
 
-public class CSharpTranspilerTest
+public class ILCompilerTest
 {
     [Fact]
     public void ShouldCompileSimpleFunction()
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        var transpiler = new CSharpTranspiler(logger);
+        var compiler = new ILCompiler(logger);
         
         var scope = CreateSimpleScope();
         var outputPath = "./test_output";
@@ -28,17 +28,17 @@ public class CSharpTranspilerTest
             Directory.CreateDirectory(outputPath);
         
         // Act
-        var result = transpiler.Compile(scope, outputPath, fileName);
+        var result = compiler.Compile(scope, outputPath, fileName);
         
         // Assert
         Assert.True(result.Success);
-        Assert.Contains("test.cs", result.OutputPath);
+        Assert.Contains("test.dll.info", result.OutputPath);
         Assert.True(File.Exists(result.OutputPath));
         
-        var generatedCode = File.ReadAllText(result.OutputPath);
-        Assert.Contains("namespace test", generatedCode);
-        Assert.Contains("public class Program", generatedCode);
-        Assert.Contains("public static void main()", generatedCode);
+        var generatedInfo = File.ReadAllText(result.OutputPath);
+        Assert.Contains("IL Assembly generated for test", generatedInfo);
+        Assert.Contains("Type: test.Program", generatedInfo);
+        Assert.Contains("Methods:", generatedInfo);
         
         // Clean up
         if (File.Exists(result.OutputPath))
@@ -52,7 +52,7 @@ public class CSharpTranspilerTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        var transpiler = new CSharpTranspiler(logger);
+        var compiler = new ILCompiler(logger);
         
         var scope = CreateScopeWithVariable();
         var outputPath = "./test_output";
@@ -63,13 +63,13 @@ public class CSharpTranspilerTest
             Directory.CreateDirectory(outputPath);
         
         // Act
-        var result = transpiler.Compile(scope, outputPath, fileName);
+        var result = compiler.Compile(scope, outputPath, fileName);
         
         // Assert
         Assert.True(result.Success);
         
-        var generatedCode = File.ReadAllText(result.OutputPath);
-        Assert.Contains("var message", generatedCode);
+        var generatedInfo = File.ReadAllText(result.OutputPath);
+        Assert.Contains("IL Assembly generated for test_var", generatedInfo);
         
         // Clean up
         if (File.Exists(result.OutputPath))
@@ -83,14 +83,14 @@ public class CSharpTranspilerTest
     {
         // Arrange
         var logger = A.Fake<ILogger>();
-        var transpiler = new CSharpTranspiler(logger);
+        var compiler = new ILCompiler(logger);
         
         var scope = new Scope(logger); // Empty scope
         var outputPath = "/invalid/path/that/does/not/exist";
         var fileName = "test";
         
         // Act
-        var result = transpiler.Compile(scope, outputPath, fileName);
+        var result = compiler.Compile(scope, outputPath, fileName);
         
         // Assert
         Assert.False(result.Success);

@@ -59,7 +59,7 @@ builder.AddSingleton<IRuntime, Runtime>();
 builder.AddTransient<IStandardLibraryProvider, StandardLibraryProvider>();
 
 //Compiler
-builder.AddTransient<ICompiler, CSharpTranspiler>();
+builder.AddTransient<ICompiler, ILCompiler>();
 
 
 var provider = builder.BuildServiceProvider();

@@ -143,12 +143,12 @@ logicalOperator
 
 // Types
 type
-    : 'int'
-    | 'string'
-    | 'float'
-    | 'char'
-    | 'bool'
-    | 'void'
+    : 'int'                                         # PrimitiveType
+    | 'string'                                      # PrimitiveType
+    | 'float'                                       # PrimitiveType
+    | 'char'                                        # PrimitiveType
+    | 'bool'                                        # PrimitiveType
+    | 'void'                                        # PrimitiveType
     | type '[' ']'                                  # ArrayType
     ;
 
