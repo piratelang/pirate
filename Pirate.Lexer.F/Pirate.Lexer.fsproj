@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +13,6 @@
     <Compile Include="KeyWordService.fs" />
     <Compile Include="TokenRepository.fs" />
     <Compile Include="Lexer.fs" />
-    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
