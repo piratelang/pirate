@@ -45,7 +45,7 @@ public class ForLoopStatementInterpreter : BaseInterpreter
     private List<BaseValue> InterpretBodyNodes(ref BaseInterpreter interpreter, long variable, long start)
     {
         List<BaseValue> bodyValues = new();
-        for (long i = variable; i < start; i++)
+        for (long i = variable; i <= start; i++)
         {
             Logger.Log($"For Loop iteration: {i}", LogType.INFO);
             foreach (var node in forLoopStatementNode.BodyNodes)

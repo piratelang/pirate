@@ -49,7 +49,7 @@ public class ComparisonOperationInterpreter : BaseInterpreter
             case TokenType.GREATERTHANEQUALS:
                 if ((left.Value is int || left.Value is long) && (right.Value is int || right.Value is long))
                 {
-                    if (Convert.ToInt64(left.Value) >= Convert.ToInt64(right.Value))
+                    if (Convert.ToInt64(left.Value) <= Convert.ToInt64(right.Value))
                     {
                         value = 1;
                     }

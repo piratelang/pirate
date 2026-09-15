@@ -1,49 +1,36 @@
-//namespace Pirate.Interpreter.Test
-//{
-//    public class SymbolTableTest
-//    {
-//        [Fact]
-//        public void ShouldSetValue()
-//        {
-//            // Arrange
-//            var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-//            var value = new Values.StringValue("test", A.Fake<ILogger>());
+using System;
+using Pirate.Interpreter.Runtime;
+using Pirate.Interpreter.Values;
+using Pirate.Interpreter.Values.Interfaces;
 
-//            // Act
-//            var result = symbolTable.SetBaseValue("test", value);
+namespace Pirate.Interpreter.Test;
 
-//            // Assert
-//            Assert.True(result);
-//        }
+public class SymbolTableTest
+{
+    [Fact]
+    public void ShouldSetAndGetValue()
+    {
+        var logger = A.Fake<ILogger>();
+        var valueTable = new ValueTable<IValue>(logger);
+        var value = new StringValue("test", logger);
 
-//        [Fact]
-//        public void ShouldGetValue()
-//        {
-//            // Arrange
-//            var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-//            var value = new Values.StringValue("test", A.Fake<ILogger>());
-//            symbolTable.SetBaseValue("test", value);
+        var setResult = valueTable.Set("test", value);
+        var getResult = valueTable.Get("test");
 
-//            // Act
-//            var result = symbolTable.GetBaseValue("test");
+        Assert.True(setResult);
+        Assert.Equal(value, getResult);
+    }
 
-//            // Assert
-//            Assert.Equal(value, result);
-//        }
+    [Fact]
+    public void ShouldRemoveValue()
+    {
+        var logger = A.Fake<ILogger>();
+        var valueTable = new ValueTable<IValue>(logger);
+        valueTable.Set("test", new StringValue("test", logger));
 
-//        [Fact]
-//        public void ShouldRemoveValue()
-//        {
-//            // Arrange
-//            var symbolTable = SymbolTable.Instance(A.Fake<ILogger>());
-//            var value = new Values.StringValue("test", A.Fake<ILogger>());
-//            symbolTable.SetBaseValue("test", value);
+        var removeResult = valueTable.Remove("test");
 
-//            // Act
-//            var result = symbolTable.Remove("test");
-
-//            // Assert
-//            Assert.True(result);
-//        }
-//    }
-//}
+        Assert.True(removeResult);
+        Assert.Throws<NullReferenceException>(() => valueTable.Get("test"));
+    }
+}
