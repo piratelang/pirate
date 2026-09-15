@@ -1,0 +1,15 @@
+<Solution>
+  <Project Path="Pirate.Cli/Pirate.Cli.csproj" />
+  <Project Path="Pirate.Compiler.Test/Pirate.Compiler.Test.csproj" />
+  <Project Path="Pirate.Compiler/Pirate.Compiler.csproj" />
+  <Project Path="Pirate.Lexer.Test/Pirate.Lexer.Test.csproj" />
+  <Project Path="Pirate.Lexer/Pirate.Lexer.csproj" />
+  <Project Path="Pirate.Parser.Test/Pirate.Parser.Test.csproj" />
+  <Project Path="Pirate.Parser/Pirate.Parser.csproj" />
+  <Project Path="Pirate.Semantics.Test/Pirate.Semantics.Test.csproj" />
+  <Project Path="Pirate.Semantics/Pirate.Semantics.csproj" />
+  <Project Path="Pirate.StandardLibrary/Pirate.StandardLibrary.csproj" />
+  <Project Path="Pirate.Syntax/Pirate.Syntax.csproj" />
+  <Project Path="Pirate.VM.Test/Pirate.VM.Test.csproj" />
+  <Project Path="Pirate.VM/Pirate.VM.csproj" />
+</Solution>

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Lexer\Pirate.Lexer.csproj" />
+    <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.csproj" />
+    <ProjectReference Include="..\Pirate.Semantics\Pirate.Semantics.csproj" />
+    <ProjectReference Include="..\Pirate.Compiler\Pirate.Compiler.csproj" />
+    <ProjectReference Include="..\Pirate.VM\Pirate.VM.csproj" />
+    <ProjectReference Include="..\Pirate.StandardLibrary\Pirate.StandardLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console.Cli" Version="0.55.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
