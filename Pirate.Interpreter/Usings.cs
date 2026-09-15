@@ -1,7 +1,7 @@
 // Pirate.Common project
 global using Pirate.Common;
 global using Pirate.Common.Interfaces;
-global using Pirate.Common.Errors;
+global using Pirate.Common.Exception.Exceptions;
 
 // Pirate.Common.Logger project
 global using Pirate.Common.Logger;
@@ -21,4 +21,3 @@ global using Pirate.Lexer.Tokens;
 //Parser
 global using Pirate.Parser.Node.Interfaces;
 global using Pirate.Parser.Node;
-

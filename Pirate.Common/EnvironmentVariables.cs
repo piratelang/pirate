@@ -1,4 +1,4 @@
-using Pirate.Common.Errors;
+using Pirate.Common.Exception.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Pirate.Common.Interfaces;
 using Pirate.Common.FileHandler.Model;
