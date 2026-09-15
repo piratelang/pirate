@@ -22,7 +22,7 @@ public class VariableAssignmentInterpreter : BaseInterpreter
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{variableAssignmentNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Visiting {GetType().Name} : \"{variableAssignmentNode.ToString()}\"");
         if (variableAssignmentNode.Identifier.Value.Value is not string) throw new TypeConversionException(typeof(string));
         var identifier = (string)variableAssignmentNode.Identifier.Value.Value;
 

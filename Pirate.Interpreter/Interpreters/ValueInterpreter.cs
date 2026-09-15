@@ -19,12 +19,12 @@ public class ValueInterpreter : BaseInterpreter
         _valueNode = (IValueNode)node;
         _runtime = runtime;
 
-        Logger.Log($"Created {GetType().Name} : \"{_valueNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{_valueNode.ToString()}\"");
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{_valueNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Visiting {GetType().Name} : \"{_valueNode.ToString()}\"");
         if (_valueNode.Value.Value == null) throw new ArgumentNullException($"{_valueNode.Value.GetType().Name} does not contain a vaild value type.");
         switch (_valueNode.Value.TokenType)
         {

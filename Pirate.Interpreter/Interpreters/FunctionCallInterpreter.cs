@@ -24,12 +24,12 @@ public class FunctionCallInterpreter : BaseInterpreter
         _standardLibraryFactory = standardLibraryFactory;
         _runtime = runtime;
 
-        Logger.Log($"Created {GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{functionCallNode.ToString()}\"");
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{functionCallNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Visiting {GetType().Name} : \"{functionCallNode.ToString()}\"");
 
         var functionCallName = (string)functionCallNode.Identifier.Value.Value;
 

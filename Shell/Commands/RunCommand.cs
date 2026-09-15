@@ -24,18 +24,18 @@ public class RunCommand : Command, ICommand, IRunCommand
     }
     public override object Run(string[] arguments)
     {
-        Logger.Log("Starting Run Command", LogType.INFO);
+        Logger.Info("Starting Run Command");
         var fileArgument = "main";
         if (arguments.Length >= 2) { fileArgument = arguments[1]; }
         var fileName = fileArgument.Replace(".pirate", "");
 
         if (!_fileReadHandler.FileExists(fileName, FileExtension.PIRATE, "")) Error($"File \"{fileArgument}\" not provided or does not exist.");
 
-        Logger.Log("Starting build", LogType.INFO);
+        Logger.Info("Starting build");
         BuildCommand.Run(arguments);
-        Logger.Log("Completed Build", LogType.INFO);
+        Logger.Info("Completed Build");
 
-        Logger.Log($"Executing {fileName}.pirate\n", LogType.INFO);
+        Logger.Info($"Executing {fileName}.pirate\n");
 
         return Interpreter.StartInterpreter(fileName);
     }

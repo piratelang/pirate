@@ -34,28 +34,6 @@ public class Logger : ILogger
         LogFileName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
     }
 
-    /// <summary>
-    /// Logs a message
-    /// </summary>
-    /// <param name="message">The message to log</param>
-    /// <param name="logType">INFO, WARNING or ERROR</param>
-    /// <returns>True if the message was logged successfully</returns>
-    /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
-    [Obsolete]
-    public bool Log(string message, LogType logType)
-    {
-        if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");
-
-        var time = DateTime.Now.ToString();
-        var formattedMessage = MessageFormatter.FormatMessage(message);
-
-        if (string.IsNullOrEmpty(formattedMessage)) throw new LoggerException("Message cannot be null or empty");
-
-        var text = $"{time.Replace(" uur", "")}: {logType}: {MessageFormatter.GetCallingClassName()}.cs: {formattedMessage}";
-
-        return WriteToTarget(text);
-    }
-
     private bool PirateLog(string message, LogType logType)
     {
         if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");
@@ -71,6 +49,17 @@ public class Logger : ILogger
     }
 
     /// <summary>
+    /// Logs a fatal message
+    /// </summary>
+    /// <param name="message">The message to log</param>
+    /// <returns>True if the message was logged successfully</returns>
+    /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
+    public bool Fatal(string message)
+    {
+        return PirateLog(message, LogType.FATAL);
+    }
+
+    /// <summary>
     /// Logs an exception as a fatal error
     /// </summary>
     /// <param name="exception">The exception to log</param>
@@ -82,6 +71,17 @@ public class Logger : ILogger
         if (exception.InnerException != null) result = PirateLog(exception.InnerException.Message, LogType.INNEREXCEPTION);
 
         return result;
+    }
+
+    /// <summary>
+    /// Logs an error message
+    /// </summary>
+    /// <param name="message">The message to log</param>
+    /// <returns>True if the message was logged successfully</returns>
+    /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
+    public bool Error(string message)
+    {
+        return PirateLog(message, LogType.ERROR);
     }
 
     /// <summary>
