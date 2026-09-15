@@ -18,14 +18,14 @@ public class LoggerConfiguration : ILoggerConfiguration
     /// <summary>
     /// If the logger should use the console.
     /// </summary>
-    public UseConsoleEnum UseConsole { get; set; } = UseConsoleEnum.False;
+    public UseConsoleEnum UseConsole { get; set; } = UseConsoleEnum.True;
 
 
 
     /// <summary>
     /// If the logger should use a file.
     /// </summary>
-    public UseFileEnum UseFile { get; set; } = UseFileEnum.True;
+    public UseFileEnum UseFile { get; set; } = UseFileEnum.OnFatal;
 
 
 }

@@ -5,11 +5,12 @@ using Pirate.Common.FileHandler.Interfaces;
 using Pirate.Common.Logger.Enum;
 using Pirate.Common.Logger.Interfaces;
 using Pirate.Common.Logger.Exception;
-using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Pirate.Common.Logger;
 
-public class Logger : ILogger
+public class Logger : ILogger, IDisposable
 {
     /// <summary>
     /// The configuration options for the logger.
@@ -17,7 +18,11 @@ public class Logger : ILogger
     public ILoggerConfiguration LoggerConfiguration { get; set; }
 
     private string LogFileName { get; set; }
-    private string CacheText { get; set; }
+    private readonly StringBuilder _cacheText = new();
+    private readonly StringBuilder _fileBuffer = new();
+    private const int MaxCacheSize = 32_768;
+    private const int FileFlushThreshold = 4_096;
+    private bool _isDisposed;
 
     private readonly IFileWriteHandler _fileWriteHandler;
 
@@ -31,7 +36,8 @@ public class Logger : ILogger
         _fileWriteHandler = fileWriteHandler;
         LoggerConfiguration = loggerConfiguration;
 
-        LogFileName = $"{DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}.{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
+        LogFileName = $"{DateTime.UtcNow:yyyy.M.d.H.m.s}";
+        AppDomain.CurrentDomain.ProcessExit += (_, _) => FlushBufferedFileLogs();
     }
 
     /// <summary>
@@ -42,30 +48,22 @@ public class Logger : ILogger
     /// <returns>True if the message was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
     [Obsolete]
-    public bool Log(string message, LogType logType)
+    public bool Log(string message, LogType logType, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "")
     {
-        if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");
-
-        var time = DateTime.Now.ToString();
-        var formattedMessage = MessageFormatter.FormatMessage(message);
-
-        if (string.IsNullOrEmpty(formattedMessage)) throw new LoggerException("Message cannot be null or empty");
-
-        var text = $"{time.Replace(" uur", "")}: {logType}: {MessageFormatter.GetCallingClassName()}.cs: {formattedMessage}";
-
-        return WriteToTarget(text);
+        return PirateLog(message, logType, callerFilePath, callerMemberName);
     }
 
-    private bool PirateLog(string message, LogType logType)
+    private bool PirateLog(string message, LogType logType, string callerFilePath, string callerMemberName)
     {
         if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");
 
-        var time = DateTime.Now.ToString();
+        var time = DateTime.UtcNow.ToString("O");
         var formattedMessage = MessageFormatter.FormatMessage(message);
 
         if (string.IsNullOrEmpty(formattedMessage)) throw new LoggerException("Message cannot be null or empty");
 
-        var text = $"{time.Replace(" uur", "")}: {logType}: {MessageFormatter.GetCallingClassName()}.cs: {formattedMessage}";
+        var source = MessageFormatter.GetCallingLocation(callerFilePath, callerMemberName);
+        var text = $"{time}: {logType}: {source}: {formattedMessage}";
 
         return WriteToTarget(text);
     }
@@ -76,10 +74,10 @@ public class Logger : ILogger
     /// <param name="exception">The exception to log</param>
     /// <returns>True if the exception was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the exception is null or empty</exception>
-    public bool Fatal(System.Exception exception)
+    public bool Fatal(System.Exception exception, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "")
     {
-        var result = exception.Message.Split(Environment.NewLine).All(line => PirateLog(line, LogType.FATAL));
-        if (exception.InnerException != null) result = PirateLog(exception.InnerException.Message, LogType.INNEREXCEPTION);
+        var result = exception.Message.Split(Environment.NewLine).All(line => PirateLog(line, LogType.FATAL, callerFilePath, callerMemberName));
+        if (exception.InnerException != null) result = PirateLog(exception.InnerException.Message, LogType.INNEREXCEPTION, callerFilePath, callerMemberName);
 
         return result;
     }
@@ -90,11 +88,11 @@ public class Logger : ILogger
     /// <param name="exception">The exception to log</param>
     /// <returns>True if the exception was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the exception is null or empty</exception>
-    public bool Error(System.Exception exception)
+    public bool Error(System.Exception exception, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "")
     {
-        var result = exception.Message.Split(Environment.NewLine).All(line => PirateLog(line, LogType.ERROR));
-        if (exception.InnerException != null) result = PirateLog(exception.InnerException.Message, LogType.INNEREXCEPTION);
-        if (exception.StackTrace != null) result = exception.StackTrace.Split(Environment.NewLine).All(line => PirateLog(line, LogType.STACKTRACE));
+        var result = exception.Message.Split(Environment.NewLine).All(line => PirateLog(line, LogType.ERROR, callerFilePath, callerMemberName));
+        if (exception.InnerException != null) result = PirateLog(exception.InnerException.Message, LogType.INNEREXCEPTION, callerFilePath, callerMemberName);
+        if (exception.StackTrace != null) result = exception.StackTrace.Split(Environment.NewLine).All(line => PirateLog(line, LogType.STACKTRACE, callerFilePath, callerMemberName));
 
         return result;
     }
@@ -105,9 +103,9 @@ public class Logger : ILogger
     /// <param name="message">The message to log</param>
     /// <returns>True if the message was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
-    public bool Warning(string message)
+    public bool Warning(string message, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "")
     {
-        return PirateLog(message, LogType.WARNING);
+        return PirateLog(message, LogType.WARNING, callerFilePath, callerMemberName);
     }
 
     /// <summary>
@@ -116,9 +114,9 @@ public class Logger : ILogger
     /// <param name="message">The message to log</param>
     /// <returns>True if the message was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
-    public bool Info(string message)
+    public bool Info(string message, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "")
     {
-        return PirateLog(message, LogType.INFO);
+        return PirateLog(message, LogType.INFO, callerFilePath, callerMemberName);
     }
 
     /// <summary>
@@ -127,15 +125,19 @@ public class Logger : ILogger
     /// <param name="message">The message to log</param>
     /// <returns>True if the message was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
-    public bool Debug(string message)
+    public bool Debug(string message, [CallerFilePath] string callerFilePath = "", [CallerMemberName] string callerMemberName = "")
     {
-        return PirateLog(message, LogType.DEBUG);
+        return PirateLog(message, LogType.DEBUG, callerFilePath, callerMemberName);
     }
 
     private bool WriteToTarget(string text)
     {
         text += Environment.NewLine;
-        CacheText += text;
+        _cacheText.Append(text);
+        if (_cacheText.Length > MaxCacheSize)
+        {
+            _cacheText.Remove(0, _cacheText.Length - MaxCacheSize);
+        }
 
         switch (LoggerConfiguration.UseConsole)
         {
@@ -152,11 +154,8 @@ public class Logger : ILogger
         switch (LoggerConfiguration.UseFile)
         {
             case UseFileEnum.True:
-                _fileWriteHandler.AppendToFile(new FileWriteModel(
-                    LogFileName,
-                    FileExtension.LOG,
-                    LoggerConfiguration.FolderName,
-                    text));
+                _fileBuffer.Append(text);
+                if (_fileBuffer.Length >= FileFlushThreshold) FlushBufferedFileLogs();
                 break;
             case UseFileEnum.False:
                 break;
@@ -167,8 +166,8 @@ public class Logger : ILogger
                         LogFileName,
                         FileExtension.LOG,
                         LoggerConfiguration.FolderName,
-                        CacheText));
-                    CacheText = string.Empty;
+                        _cacheText.ToString()));
+                    _cacheText.Clear();
                 }
                 break;
 
@@ -177,5 +176,26 @@ public class Logger : ILogger
         }
 
         return true;
+    }
+
+    private void FlushBufferedFileLogs()
+    {
+        if (_fileBuffer.Length == 0 || LoggerConfiguration.UseFile != UseFileEnum.True) return;
+
+        _fileWriteHandler.AppendToFile(new FileWriteModel(
+            LogFileName,
+            FileExtension.LOG,
+            LoggerConfiguration.FolderName,
+            _fileBuffer.ToString()));
+        _fileBuffer.Clear();
+    }
+
+    public void Dispose()
+    {
+        if (_isDisposed) return;
+
+        FlushBufferedFileLogs();
+        _isDisposed = true;
+        GC.SuppressFinalize(this);
     }
 }

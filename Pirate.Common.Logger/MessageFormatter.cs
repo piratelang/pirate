@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using System.IO;
 
 namespace Pirate.Common.Logger;
 
@@ -12,11 +12,13 @@ internal static class MessageFormatter
         return message;
     }
 
-    internal static string GetCallingClassName()
+    internal static string GetCallingLocation(string callerFilePath, string callerMemberName)
     {
-        var stackTrace = new StackTrace();
-        var callingClass = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.Name ?? "Unknown";
+        var callerFileName = Path.GetFileNameWithoutExtension(callerFilePath);
+        if (string.IsNullOrEmpty(callerFileName) && string.IsNullOrEmpty(callerMemberName)) return "Unknown";
+        if (string.IsNullOrEmpty(callerFileName)) return callerMemberName;
+        if (string.IsNullOrEmpty(callerMemberName)) return callerFileName;
 
-        return callingClass;
+        return $"{callerFileName}.{callerMemberName}";
     }
 }
