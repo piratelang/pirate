@@ -35,6 +35,9 @@ public class ParserFactory : IParserFactory
             case TokenType.EXTERN:
                 return new ExternParser(tokens, index, logger, this);
         }
-        throw new ArgumentNullException("node", $"Factory cannot find parser for {tokens[index].GetType().Name} {tokens[index].TokenType.GetType().Name}");
+        throw new ParserException(
+            new ExceptionCode(ExceptionPrefix.PARSER, "021"),
+            new List<string> { tokens[index].GetType().Name, tokens[index].TokenType.GetType().Name }
+        );
     }
 }

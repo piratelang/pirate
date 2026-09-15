@@ -1,6 +1,9 @@
 ﻿namespace Pirate.Lexer
 
 open Pirate.Lexer.Enums
+open Pirate.Common.Errors
+open Pirate.Common.Exception
+open System.Collections.Generic
 
 type KeyWordService() =
     member _.typeKeyWords = ["var"; "int"; "float"; "string"; "char"; "void"]
@@ -15,7 +18,7 @@ type KeyWordService() =
             | "string" -> STRING;
             | "char" -> CHAR;
             | "void" -> VOID;
-            | _ -> raise (System.NotImplementedException($"Type keyword, {idString} has not been implemented"));
+            | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "011"), List<string>([ idString ])));
         else
             TokenType.Empty;
 
@@ -34,6 +37,6 @@ type KeyWordService() =
             | "new" -> NEW;
             | "return" -> RETURN;
             | "extern" -> EXTERN;
-            | _ -> raise (System.NotImplementedException($"Control keyword, {idString} has not been implemented"));
+            | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "012"), List<string>([ idString ])));
         else
             TokenType.Empty;

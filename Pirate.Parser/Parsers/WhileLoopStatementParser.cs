@@ -22,7 +22,7 @@ public class WhileLoopStatementParser : BaseParser
     {
         INode node;
 
-        if (!_tokens[_index].Matches(TokenType.WHILE)) throw new ParserException("No While Statement was found");
+        if (!_tokens[_index].Matches(TokenType.WHILE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "011"));
 
         BaseParser parser;
         ParseResult result;
@@ -30,7 +30,7 @@ public class WhileLoopStatementParser : BaseParser
 
         GetOperationNode(out parser, out result, out Operation);
 
-        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "008"));
 
         List<INode> Nodes = GetBodyNodes(ref parser, ref result);
 
@@ -60,7 +60,7 @@ public class WhileLoopStatementParser : BaseParser
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.Node is not IOperationNode) throw new ParserException("While Statement does not contain a valid operation");
+        if (result.Node is not IOperationNode) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "012"));
 
         Operation = (IOperationNode)result.Node;
         _index = result.Index;

@@ -6,6 +6,8 @@ open Pirate.Lexer.Tokens
 open Pirate.Common.Logger.Enum
 open Pirate.Lexer.Enums
 open Pirate.Common.Logger.Interfaces
+open Pirate.Common.Errors
+open Pirate.Common.Exception
 
 type Lexer (logger:ILogger, tokenRepository:TokenRepository) =
     let mutable _logger = logger
@@ -37,7 +39,7 @@ type Lexer (logger:ILogger, tokenRepository:TokenRepository) =
         let mutable text = text.Replace("\n", "").Replace("\r", "").Replace("\t", "").Replace("    ", "")
         if text = null || text = "" then
             _logger.Info("Lexer text is null") |> ignore
-            raise (System.Exception("Lexer text is null"))
+            raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "001")))
 
         _position <- 0
         _fileName <- fileName

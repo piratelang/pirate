@@ -14,7 +14,7 @@ public class CommentParser : BaseParser
 
     public override ParseResult CreateNode()
     { 
-        if (!_tokens[_index].Matches(TokenType.DOUBLEDIVIDE)) throw new ParserException("No Comment was found");
+        if (!_tokens[_index].Matches(TokenType.DOUBLEDIVIDE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "001"));
         _index++;
 
         List<Token> comment = new();

@@ -127,4 +127,115 @@
   <data name="PARSER-002" xml:space="preserve">
     <value>No For Statement was found</value>
   </data>
+  <data name="PARSER-003" xml:space="preserve">
+    <value>Variable Identifier is not a single value</value>
+  </data>
+  <data name="PARSER-004" xml:space="preserve">
+    <value>No Equals assign Operator was found, following the Identifier</value>
+  </data>
+  <data name="PARSER-005" xml:space="preserve">
+    <value>Expected EXTERN but got {0}</value>
+  </data>
+  <data name="PARSER-006" xml:space="preserve">
+    <value>Expected IValueNode but got {0}</value>
+  </data>
+  <data name="PARSER-007" xml:space="preserve">
+    <value>No If Statement was found</value>
+  </data>
+  <data name="PARSER-008" xml:space="preserve">
+    <value>No Left Curly Braces was found</value>
+  </data>
+  <data name="PARSER-009" xml:space="preserve">
+    <value>If Statement does not contain a valid operation</value>
+  </data>
+  <data name="PARSER-010" xml:space="preserve">
+    <value>No Right Curly Braces was found</value>
+  </data>
+  <data name="PARSER-011" xml:space="preserve">
+    <value>No While Statement was found</value>
+  </data>
+  <data name="PARSER-012" xml:space="preserve">
+    <value>While Statement does not contain a valid operation</value>
+  </data>
+  <data name="PARSER-013" xml:space="preserve">
+    <value>No Function Declaration was found</value>
+  </data>
+  <data name="PARSER-014" xml:space="preserve">
+    <value>No Left Parenthesis was found</value>
+  </data>
+  <data name="PARSER-015" xml:space="preserve">
+    <value>No Colon was found</value>
+  </data>
+  <data name="PARSER-016" xml:space="preserve">
+    <value>No Semicolon was found</value>
+  </data>
+  <data name="PARSER-017" xml:space="preserve">
+    <value>No Right Parenthesis was found</value>
+  </data>
+  <data name="PARSER-018" xml:space="preserve">
+    <value>No To Statement was found</value>
+  </data>
+  <data name="PARSER-019" xml:space="preserve">
+    <value>For Statement does not contain a valid variable assignment</value>
+  </data>
+  <data name="PARSER-020" xml:space="preserve">
+    <value>For Statement does not contain a valid value</value>
+  </data>
+  <data name="PARSER-021" xml:space="preserve">
+    <value>Factory cannot find parser for {0} {1}</value>
+  </data>
+  <data name="PARSER-022" xml:space="preserve">
+    <value>tokens argument cannot be null</value>
+  </data>
+  <data name="LEXER-001" xml:space="preserve">
+    <value>Lexer text is null</value>
+  </data>
+  <data name="LEXER-002" xml:space="preserve">
+    <value>Invalid number format</value>
+  </data>
+  <data name="LEXER-003" xml:space="preserve">
+    <value>Invalid identifier format</value>
+  </data>
+  <data name="LEXER-004" xml:space="preserve">
+    <value>Invalid char format</value>
+  </data>
+  <data name="LEXER-005" xml:space="preserve">
+    <value>Invalid not equals format</value>
+  </data>
+  <data name="LEXER-006" xml:space="preserve">
+    <value>Invalid greater than format</value>
+  </data>
+  <data name="LEXER-007" xml:space="preserve">
+    <value>Invalid less than format</value>
+  </data>
+  <data name="LEXER-008" xml:space="preserve">
+    <value>Invalid equals format</value>
+  </data>
+  <data name="LEXER-009" xml:space="preserve">
+    <value>Invalid plus format</value>
+  </data>
+  <data name="LEXER-010" xml:space="preserve">
+    <value>Invalid divide format</value>
+  </data>
+  <data name="LEXER-011" xml:space="preserve">
+    <value>Type keyword, {0} has not been implemented</value>
+  </data>
+  <data name="LEXER-012" xml:space="preserve">
+    <value>Control keyword, {0} has not been implemented</value>
+  </data>
+  <data name="INTERPRETER-001" xml:space="preserve">
+    <value>Failed to convert to {0}</value>
+  </data>
+  <data name="INTERPRETER-002" xml:space="preserve">
+    <value>Failed to convert {0} to {1}</value>
+  </data>
+  <data name="INTERPRETER-003" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="SHELL-001" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="SHELL-002" xml:space="preserve">
+    <value>Runtime command failed</value>
+  </data>
 </root>

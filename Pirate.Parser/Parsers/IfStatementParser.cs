@@ -25,17 +25,17 @@ public class IfStatementParser : BaseParser
         ParseResult result;
         IOperationNode Operation;
 
-        if (!_tokens[_index].Matches(TokenType.IF)) throw new ParserException("No If Statement was found");
+        if (!_tokens[_index].Matches(TokenType.IF)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "007"));
 
         GetOperationNode(out parser, out result, out Operation);
 
-        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "008"));
 
         List<INode> Nodes = GetBodyNodes(ref parser, ref result);
 
         if (_index + 1 == _tokens.Count) return new ParseResult(new IfStatementNode(Operation, Nodes), _index);
         if (!_tokens[_index + 1].Matches(TokenType.ELSE)) return new ParseResult(new IfStatementNode(Operation, Nodes), _index);
-        if (!_tokens[_index += 2].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+        if (!_tokens[_index += 2].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "008"));
 
         List<INode> ElseNodes = GetElseBodyNodes(ref parser, ref result);
         node = new IfStatementNode(Operation, Nodes, ElseNodes);
@@ -64,7 +64,7 @@ public class IfStatementParser : BaseParser
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.Node is not IOperationNode) throw new ParserException("If Statement does not contain a valid operation");
+        if (result.Node is not IOperationNode) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "009"));
 
         Operation = (IOperationNode)result.Node;
         _index = result.Index;
@@ -79,7 +79,7 @@ public class IfStatementParser : BaseParser
             result = parser.CreateNode();
             Nodes.Add(result.Node);
             _index = result.Index;
-            if (_index + 1 == _tokens.Count) throw new ParserException("No Right Curly Braces was found");
+            if (_index + 1 == _tokens.Count) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "010"));
             if (_tokens[_index++].TokenType.Equals(TokenType.SEMICOLON))
             {
                 _index++;

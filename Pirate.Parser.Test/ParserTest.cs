@@ -334,4 +334,20 @@ public class ParserTest
         // Assert
         Assert.IsType<CommentNode>(result.Node);
     }
+
+    [Fact]
+    public void ShouldThrowStructuredParserExceptionForUnknownToken()
+    {
+        // Arrange
+        var logger = A.Fake<ILogger>();
+        var tokens = new List<Token> { new(TokenGroup.Empty, TokenType.Empty) };
+
+        var parserFactory = new ParserFactory();
+
+        // Act
+        var exception = Assert.Throws<ParserException>(() => parserFactory.GetParser(0, tokens, logger));
+
+        // Assert
+        Assert.Equal("PARSER021: Factory cannot find parser for Token TokenType", exception.Message);
+    }
 }

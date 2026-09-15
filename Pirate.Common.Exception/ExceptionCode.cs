@@ -5,9 +5,9 @@ public class ExceptionCode
     public ExceptionPrefix Prefix { get; set; }
     public string Code { get; set; }
 
-    public ExceptionCode(string prefix, string code)
+    public ExceptionCode(ExceptionPrefix prefix, string code)
     {
-        Prefix = Enum.Parse<ExceptionPrefix>(prefix);
+        Prefix = prefix;
         Code = code;
     }
 

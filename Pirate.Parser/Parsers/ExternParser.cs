@@ -15,14 +15,14 @@ public class ExternParser : BaseParser
 
     public override ParseResult CreateNode()
     {
-        if (_tokens[_index].TokenType != TokenType.EXTERN) throw new ParserException($"Expected EXTERN but got {_tokens[_index].TokenType}");
+        if (_tokens[_index].TokenType != TokenType.EXTERN) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "005"), new List<string> { _tokens[_index].TokenType.ToString() });
 
         var externToken = _tokens[_index];
         
         var parser = _parserFactory.GetParser(_index + 1, _tokens, Logger);
         var parseResult = parser.CreateNode();
 
-        if (parseResult.Node is not IValueNode) throw new ParserException($"Expected IValueNode but got {parseResult.Node.GetType().Name}");
+        if (parseResult.Node is not IValueNode) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "006"), new List<string> { parseResult.Node.GetType().Name });
         return new ParseResult(
             new ExternNode((IValueNode)parseResult.Node), parseResult.Index
         );

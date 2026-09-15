@@ -26,10 +26,10 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
         INode IdentifierNode;
         GetIdentifierNode(out result, out IdentifierNode);
 
-        if (IdentifierNode is not ValueNode) throw new ParserException("Variable Identifier is not a single value");
+        if (IdentifierNode is not ValueNode) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "003"));
 
         var Operator = _tokens[_index += 1];
-        if (!Operator.Matches(TokenType.EQUALS)) throw new ParserException("No Equals assign Operator was found, following the Identifier");
+        if (!Operator.Matches(TokenType.EQUALS)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "004"));
 
         INode Value;
         GetValue(out result, out Value);
@@ -54,4 +54,3 @@ public class VariableDeclarationParser : BaseParser, ITokenParser
         _index = result.Index;
     }
 }
-

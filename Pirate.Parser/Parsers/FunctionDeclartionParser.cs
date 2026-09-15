@@ -16,19 +16,19 @@ public class FunctionDeclartionParser : BaseParser
         INode node;
 
         var functionToken = _tokens[_index];
-        if (!functionToken.Matches(TokenType.FUNC)) throw new ParserException("No Function Declaration was found");
+        if (!functionToken.Matches(TokenType.FUNC)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "013"));
 
         var identifierNode = new ValueNode(_tokens[_index += 1]);
 
-        if (!_tokens[_index += 1].Matches(TokenType.LEFTPARENTHESES)) throw new ParserException("No Left Parenthesis was found");
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTPARENTHESES)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "014"));
 
         List<IParameterDefinitionNode> parameters = CreateParameterDefinitionNodes();
 
-        if (!_tokens[_index += 1].Matches(TokenType.COLON)) throw new ParserException("No Colon was found");
+        if (!_tokens[_index += 1].Matches(TokenType.COLON)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "015"));
 
         var returnTypeToken = _tokens[_index += 1];
 
-        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "008"));
         List<INode> Nodes = CreateBodyNodes();
 
         if (_tokens[_index].Matches(TokenType.RETURN))
@@ -48,8 +48,8 @@ public class FunctionDeclartionParser : BaseParser
         _index = result.Index;
         node = new FunctionDeclarationNode(identifierNode, parameters, returnTypeToken, Nodes, result.Node);
 
-        if (!_tokens[_index += 1].Matches(TokenType.SEMICOLON)) throw new ParserException("No Semicolon was found");
-        if (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE)) throw new ParserException("No Right Curly Braces was found");
+        if (!_tokens[_index += 1].Matches(TokenType.SEMICOLON)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "016"));
+        if (!_tokens[_index += 1].Matches(TokenType.RIGHTCURLYBRACE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "010"));
 
         return new ParseResult(node, _index);
     }
@@ -84,7 +84,7 @@ public class FunctionDeclartionParser : BaseParser
 
             if (_tokens[_index += 1].Matches(TokenType.COMMA)) continue;
             if (_tokens[_index].Matches(TokenType.RIGHTPARENTHESES)) break;
-            throw new ParserException("No Right Parenthesis was found");
+            throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "017"));
         }
 
         return parameters;

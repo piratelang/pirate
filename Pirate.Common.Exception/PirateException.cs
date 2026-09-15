@@ -30,10 +30,17 @@ public abstract class PirateException : System.Exception, IPirateException
 
     private static string GetFullMessage(ExceptionCode code, List<string>? parameters = null)
     {
-        ResourceManager resourceManager = new("Pirate.Common.Exception.ExceptionMessages", typeof(PirateException).Assembly);
-        var message = resourceManager.GetString(code.GetFullCode()) ?? "Unknown error";
+        var message = ExceptionMessages.ResourceManager.GetString(code.GetFullCode());
+        if (message is null)
+        {
+#if DEBUG
+            throw new MissingManifestResourceException($"Exception message not found for code '{code.GetFullCode()}'.");
+#else
+            message = "Unknown error";
+#endif
+        }
         if (parameters != null)
-            message = string.Format(message, parameters?.ToArray());
+            message = string.Format(message, parameters.ToArray());
 
         return $"{code.Prefix}{code.Code}: {message}";
     }

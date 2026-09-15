@@ -29,7 +29,7 @@ public class Parser : IParser
             if (tokens == null)
             {
                 Logger.Info("No Tokens Found");
-                throw new ArgumentNullException(nameof(tokens));
+                throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "022"));
             }
             var tokenParser = parserFactory.GetParser(index, tokens, Logger);
             var parseResult = tokenParser.CreateNode();

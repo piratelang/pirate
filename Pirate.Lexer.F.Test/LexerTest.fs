@@ -10,6 +10,7 @@ open FakeItEasy
 open Pirate.Common.Logger
 open Pirate.Lexer
 open Pirate.Lexer.TokenType.Enums
+open Pirate.Common.Errors
 
 [<Fact>]
 let ShouldMakeNumber () =
@@ -370,3 +371,15 @@ let ShouldMakeNotEquals () =
     Assert.Equal(TokenGroup.COMPARISONOPERATORS, result.[0].TokenGroup)
     Assert.Equal(TokenType.NOTEQUALS, result.[0].TokenType)
     Assert.Equal("!=", result.[0].Value |> unbox<string>)
+
+[<Fact>]
+let ShouldThrowStructuredExceptionForEmptyInput () =
+    // Arrange
+    let logger = A.Fake<Logger>()
+    let tokenRepository = A.Fake<TokenRepository>()
+
+    // Act
+    let exn = Assert.Throws<InvalidSyntaxException>(fun () -> Lexer(logger, tokenRepository).MakeTokens("", "test") |> ignore)
+
+    // Assert
+    Assert.Equal("LEXER001: Lexer text is null", exn.Message)

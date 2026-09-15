@@ -5,8 +5,8 @@ open Pirate.Lexer.Enums
 open System
 open System.Globalization
 open System.Collections.Generic
-
-exception TokenRepositoryException of string
+open Pirate.Common.Errors
+open Pirate.Common.Exception
 
 type TokenRepository(keyWordService:KeyWordService) =
     let mutable _keyWordService = keyWordService
@@ -42,7 +42,7 @@ type TokenRepository(keyWordService:KeyWordService) =
             
             match Double.TryParse(numberString, NumberStyles.Number, CultureInfo.InvariantCulture) with
             | (true, result) -> token <- Token(VALUE, FLOAT, result)
-            | (false, result) -> raise (System.Exception("Invalid number format"))
+            | (false, result) -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "002")))
 
         TokenResult(token, position)
 
@@ -66,7 +66,7 @@ type TokenRepository(keyWordService:KeyWordService) =
                     Break <- true
         with
         | :? IndexOutOfRangeException -> ()
-        | _ -> raise (TokenRepositoryException("Invalid identifier format"))
+        | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "003")))
 
         let mutable TokenTypeType = _keyWordService.GetTypeKeyword(idString)
         let mutable TokenTypeControl = _keyWordService.GetTokenControlKeyword(idString)
@@ -123,7 +123,7 @@ type TokenRepository(keyWordService:KeyWordService) =
         let mutable resultString = text.[position].ToString()
         position <- position + 1
         if text.[position] <> '\'' then
-            raise (System.Exception("Invalid char format"))
+            raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "004")))
         position <- position + 1
 
         TokenResult(
@@ -135,7 +135,7 @@ type TokenRepository(keyWordService:KeyWordService) =
         let mutable position = position + 1
 
         if text.[position] <> '=' then
-            raise (System.Exception("Invalid not equals format"))
+            raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "005")))
 
         position <- position + 1
         TokenResult(
@@ -164,7 +164,7 @@ type TokenRepository(keyWordService:KeyWordService) =
                 Token(COMPARISONOPERATORS, GREATERTHAN, ">"),
                 position
             )
-        | _ -> raise (System.Exception("Invalid greater than format"))
+        | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "006")))
 
     member _.MakeLessThan(text:string, position:int) : TokenResult =
         let mutable position = position + 1
@@ -186,7 +186,7 @@ type TokenRepository(keyWordService:KeyWordService) =
                 Token(COMPARISONOPERATORS, LESSTHAN, "<"),
                 position
             )
-        | _ -> raise (System.Exception("Invalid less than format"))
+        | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "007")))
 
     member _.MakeEquals(text:string, position:int) =
         let mutable position = position + 1
@@ -208,7 +208,7 @@ type TokenRepository(keyWordService:KeyWordService) =
                 Token(SYNTAX, EQUALS, "="),
                 position
             )
-        | _ -> raise (System.Exception("Invalid equals format"))
+        | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "008")))
 
     member _.MakePlus(text:string, position:int) =
         let mutable position = position + 1
@@ -230,7 +230,7 @@ type TokenRepository(keyWordService:KeyWordService) =
                 Token(OPERATORS, PLUS, "+"),
                 position
             )
-        | _ -> raise (System.Exception("Invalid plus format"))
+        | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "009")))
 
     member _.MakeDivide(text:string, position:int) =
         let mutable position = position + 1
@@ -253,4 +253,4 @@ type TokenRepository(keyWordService:KeyWordService) =
                     Token(OPERATORS, DIVIDE, "/"),
                     position
                 )
-            | _ -> raise (System.Exception("Invalid divide format"))
+            | _ -> raise (InvalidSyntaxException(ExceptionCode(ExceptionPrefix.LEXER, "010")))

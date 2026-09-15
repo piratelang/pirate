@@ -42,7 +42,7 @@ public class EnvironmentVariables : IEnvironmentVariables
         catch (System.Exception ex)
         {
             Console.WriteLine($"Failed to get variable \"{variablename}\" from variables.json");
-            throw new FileException(new ExceptionCode("COMMON", "001"), new List<string> { variablename }, ex);
+            throw new FileException(new ExceptionCode(ExceptionPrefix.COMMON, "001"), new List<string> { variablename }, ex);
         }
     }
 

@@ -25,16 +25,16 @@ public class ForLoopStatementParser : BaseParser
         VariableDeclarationNode VariableAssign;
         ValueNode Value;
 
-        if (!_tokens[_index].Matches(TokenType.FOR)) throw new ParserException("No For Statement was found");
+        if (!_tokens[_index].Matches(TokenType.FOR)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "002"));
 
         GetVariableNode(out parser, out result, out VariableAssign);
 
-        if (!_tokens[_index += 1].Matches(TokenType.TO)) throw new ParserException("No To Statement was found");
+        if (!_tokens[_index += 1].Matches(TokenType.TO)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "018"));
 
 
         GetValueNode(out parser, out result, out Value);
 
-        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException("No Left Curly Braces was found");
+        if (!_tokens[_index += 1].Matches(TokenType.LEFTCURLYBRACE)) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "008"));
 
         List<INode> Nodes = GetBodyNodes(ref parser, ref result);
 
@@ -46,7 +46,7 @@ public class ForLoopStatementParser : BaseParser
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.Node is not VariableDeclarationNode) throw new ParserException("For Statement does not contain a valid variable assignment");
+        if (result.Node is not VariableDeclarationNode) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "019"));
 
         VariableAssign = (VariableDeclarationNode)result.Node;
         _index = result.Index;
@@ -56,7 +56,7 @@ public class ForLoopStatementParser : BaseParser
     {
         parser = _parserFactory.GetParser(_index += 1, _tokens, Logger);
         result = parser.CreateNode();
-        if (result.Node is not ValueNode) throw new ParserException("For Statement does not contain a valid value");
+        if (result.Node is not ValueNode) throw new ParserException(new ExceptionCode(ExceptionPrefix.PARSER, "020"));
 
         Value = (ValueNode)result.Node;
         _index = result.Index;
