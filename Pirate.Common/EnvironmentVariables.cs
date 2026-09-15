@@ -21,38 +21,41 @@ public class EnvironmentVariables : IEnvironmentVariables
     {
         FileReadHandler = fileReadHandler;
         FileWriteHandler = fileWriteHandler;
-        var directory = Directory.GetCurrentDirectory();
-        if (!FileReadHandler.FileExists("variables", FileExtension.JSON, $"{directory}/bin"))
-        {
-            CreateTemplateVariablesFile(directory);
-        }
+        var configDirectory = GetConfigDirectory();
+        CreateTemplateVariablesFile(configDirectory);
 
         Configuration = new ConfigurationBuilder()
-            .AddJsonFile($"{directory}/bin/variables.json", false, true)
+            .AddJsonFile(Path.Combine(configDirectory, "variables.json"), false, true)
             .Build();
     }
 
     public string GetVariable(string variablename)
     {
         if (variablename is null) throw new ArgumentNullException(nameof(variablename));
-        try
-        {
-            return Configuration[variablename];
-        }
-        catch (System.Exception ex)
-        {
-            Console.WriteLine($"Failed to get variable \"{variablename}\" from variables.json");
-            throw new FileException(new ExceptionCode("COMMON", "001"), new List<string> { variablename }, ex);
-        }
+        var variable = Configuration[variablename];
+        if (variable is null)
+            throw new FileException(new ExceptionCode("COMMON", "001"), new List<string> { variablename });
+
+        return variable;
     }
 
-    private void CreateTemplateVariablesFile(string directory)
+    private string GetConfigDirectory()
+    {
+        var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
+        var configDirectory = string.IsNullOrWhiteSpace(xdgConfigHome)
+            ? Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            : xdgConfigHome;
+
+        return Path.Combine(configDirectory, "pirate");
+    }
+
+    private void CreateTemplateVariablesFile(string configDirectory)
     {
         FileWriteHandler.WriteToFile(
             new FileWriteModel(
                 "variables",
                 FileExtension.JSON,
-                $"{directory}/bin/",
+                configDirectory,
                 string.Join(
                     Environment.NewLine,
                     "{",

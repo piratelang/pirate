@@ -51,7 +51,12 @@ public class NewCommand : Command, ICommand, INewCommand
         switch (typeArgument)
         {
             case "gitignore":
-                _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitignore,  "", "[Bb]in/"));
+                _fileWriteHandler.WriteToFile(new FileWriteModel(
+                    "",
+                    FileExtension.gitignore,
+                    "",
+                    string.Join(Environment.NewLine, "[Bb]in/", ".logs/", "**/cache/")
+                ));
                 return true;
             case "gitattributes":
                 _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitattributes, "", "*.pirate linguist-language=Squirrel" ));
