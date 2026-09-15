@@ -2,8 +2,8 @@
     <img height="88" src=".github/owllogowhite.png" alt="Material Bread logo" style="margin-right:12px;"><br>
     <img width="500" src=".github/logo.png" alt="Material Bread logo">
     <br>
-    <a href="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml">
-        <img src="https://github.com/joerivanarkel/PirateLang/actions/workflows/dotnet.yml/badge.svg" alt=".NET">
+    <a href="https://github.com/piratelang/pirate/actions/workflows/dotnet.yml">
+        <img src="https://github.com/piratelang/pirate/actions/workflows/dotnet.yml/badge.svg" alt=".NET">
     </a>
     <a href="https://github.com/piratelang/pirate/actions/workflows/github-code-scanning/codeql">
         <img src="https://github.com/piratelang/pirate/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL">
@@ -14,8 +14,8 @@
     <a href="https://marketplace.visualstudio.com/items?itemName=joerivanarkel.piratelang">
         <img src="https://img.shields.io/visual-studio-marketplace/v/joerivanarkel.piratelang?label=VSCode%20Extension" alt="HTML tutorial">
     </a>
-    <a href="https://github.com/piratelang/PirateLang/releases">
-        <img src="https://img.shields.io/github/v/release/joerivanarkel/piratelang" alt="Release">
+    <a href="https://github.com/piratelang/pirate/releases">
+        <img src="https://img.shields.io/github/v/release/piratelang/pirate" alt="Release">
     </a>
     <a href="https://wakatime.com/badge/user/261ee501-1b33-464c-8873-6be422308f2f/project/addb9833-5df4-46f5-98b2-36bfb78b5994">
         <img src="https://wakatime.com/badge/user/261ee501-1b33-464c-8873-6be422308f2f/project/addb9833-5df4-46f5-98b2-36bfb78b5994.svg" alt="wakatime">
@@ -36,11 +36,31 @@ Pirate is a toy programming language that is written in C# and F#. It is a simpl
     - [Pirate.Lexer.TokenType](#piratelexertokentype)
   - [Pirate.Parser](#pirateparser)
   - [Pirate.Interpreter](#pirateinterpreter)
+    - [Pirate.Interpreter.Runtime](#pirateinterpreterruntime)
+    - [Pirate.Interpreter.StandardLibrary](#pirateinterpreterstandardlibrary)
+  - [Pirate.Common](#piratecommon)
+    - [Pirate.Common.Logger](#piratecommonlogger)
+    - [Pirate.Common.FileHandler](#piratecommonfilehandler)
+    - [Pirate.Common.Exception](#piratecommonexception)
   - [Shell](#shell)
+    - [Shell.ModuleList](#shellmodulelist)
+    - [Shell.Project](#shellproject)
 
 ## Installation
 
-TBD
+There is no installer script yet. Until then, two options work:
+
+- **Published artifacts**: a `PirateLang.CLI` package is published to [NuGet](https://www.nuget.org/packages/PirateLang.CLI)
+  and a `piratelang` extension is published to the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=joerivanarkel.piratelang)
+  for syntax highlighting (see the badges above for current versions).
+- **From source**: clone the repository and build with the .NET SDK (the projects target `net6.0`/`net7.0`):
+
+```sh
+dotnet build PirateLang.sln
+dotnet run --project Shell -- run main.pirate
+```
+
+The Shell CLI also exposes `build`, `init`, `new` and `shell` (REPL) commands; run `dotnet run --project Shell -- -h` for the full list.
 
 ## Syntax and Structure
 
@@ -52,7 +72,7 @@ extern Standard.Terminal.Print;
 Print("Hello World");
 ```
 
-More syntax is defined in the [Syntax.md](syntax.md) file.
+More syntax is defined in the [SYNTAX.md](SYNTAX.md) file, and the formal grammar in [GRAMMAR.md](GRAMMAR.md).
 
 ## Solution Structure
 
@@ -78,7 +98,7 @@ Takes a list of tokens from the lexer and parses it to a Scope.
 
 The Parser is written in C#, and consists of a Parser, many individual Parsers, a ParserFactory and a Scope. The Parser takes the list of tokens and finds the acompanying parser for the token. The parser will then parse the token and return a Node. A Parser itself may call other parsers to parse the token or the ParserFactory to create a new parser. The ParserFactory is used to create a new parser for a token. The Scope is used to store the nodes.
 
-A Node is a representation of one or more tokens. It represents a expression, operation or value. With the way that parser works, it is possible to create a tree of nodes. For example, the expression `1 + 2 + 3` will be parsed to a tree of nodes, where the root node is the first `+`, which contains a left node of `1` and a right node of `2 + 3`. The `2 + 3` node will then have a left node of `2` and a right node of `3`. 
+A Node is a representation of one or more tokens. It represents a expression, operation or value. With the way that parser works, it is possible to create a tree of nodes. Binary operations are left-associative: the expression `1 + 2 + 3` is parsed to a tree of nodes where the root node is the second `+`, which contains a left node of `1 + 2` and a right node of `3`. The `1 + 2` node in turn has a left node of `1` and a right node of `2`.
 
 A scope consists of a list of Node. A node is created in the Parsers.
 
@@ -86,6 +106,38 @@ A scope consists of a list of Node. A node is created in the Parsers.
 
 Takes the serialized scope and visits each node for a result. Returns a `BaseValue` type object.
 
+##### Pirate.Interpreter.Runtime
+
+Holds the mutable runtime state (variables and function table) that the Interpreter reads and writes while visiting nodes.
+
+##### Pirate.Interpreter.StandardLibrary
+
+Implements the built-in functions (e.g. `Standard.Terminal.Print`, `Standard.String.Length`) that a pirate program can bring into scope with an `extern` declaration.
+
+### Pirate.Common
+
+Shared, cross-cutting building blocks used by the other projects.
+
+##### Pirate.Common.Logger
+
+The logging abstraction and implementation used throughout the Lexer, Parser, Interpreter and Shell.
+
+##### Pirate.Common.FileHandler
+
+Reads and writes `.pirate` source files and the serialized scope/cache files.
+
+##### Pirate.Common.Exception
+
+Shared exception types (e.g. type conversion and parsing exceptions) used across the pipeline.
+
 ### Shell
 
-Runs the Lexer, Parser and Interpreter of the file path in the argument.
+Runs the Lexer, Parser and Interpreter of the file path in the argument, and exposes the `pirate` command-line interface (`run`, `build`, `init`, `new`, `shell`).
+
+##### Shell.ModuleList
+
+Tracks the modules/files known to a project (used by the `build`/`new` commands).
+
+##### Shell.Project
+
+Project-level configuration and file discovery for the Shell commands.
