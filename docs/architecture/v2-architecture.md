@@ -50,7 +50,9 @@ Pirate.Syntax  ←  Pirate.Lexer  ←  Pirate.Parser  ←┐
                                                       │
 Pirate.VM  ←  Pirate.Compiler ───────────────────────┤
      ↑                                                │
-     └── Pirate.StandardLibrary ──────────────────────┘
+     └── Pirate.StandardLibrary ──────────────────────┤
+                                                      │
+                              Pirate.Shared.File ←──── Pirate.Fleet ─┤
 ```
 
 ### Pirate.Syntax
@@ -123,6 +125,61 @@ resolved by an `extern Standard.X.Y;` declaration — same dotted-namespace
 convention as v1's `Pirate.Interpreter.StandarLibrary`, reimplemented against
 the VM's calling convention instead of wrapping `BaseValue` objects.
 
+### Pirate.Shared.File
+
+Dependency-free file-path helpers for both `.pirate` and `.fleet` files —
+kept in one project since, past the two generic mechanisms both rely on,
+they're the same kind of thing (find-by-extension, resolve-a-name-with-a-
+default) and there's no reason a `.fleet`-aware component should need a
+different project reference than a `.pirate`-aware one.
+
+- `FileDiscovery.Discover(directory, extension, searchOption)` and
+  `FileNameResolver.Resolve(argument, defaultName, extension)` are the
+  actual `Directory.GetFiles`/default-and-strip-extension mechanisms,
+  extension-agnostic.
+- `PirateFileLocator` (recursive `*.pirate` discovery) and `PirateFileName`
+  (filename argument → module name, defaulting to `"main"`) are thin
+  wrappers supplying `.pirate`/`"main"`/recursive.
+- `FleetFileLocator` (non-recursive `*.fleet` discovery — a manifest
+  identifies a project root, so unlike a `.pirate` module it isn't
+  searched for in subdirectories) and `FleetFileName` (`-n|--name`
+  argument → manifest base name, defaulting to `"module"`) are the same
+  wrapper shape, supplying `.fleet`/`"module"`/non-recursive. See
+  [`../FLEET.md`](../FLEET.md) for how `Pirate.Fleet` uses them.
+
+Split out of `Pirate.Cli` into its own project specifically so this logic
+isn't tied to the CLI — a future `build`/`run` pipeline component other
+than `Pirate.Cli` could depend on it without also pulling in
+`Spectre.Console.Cli`. No package references, just the BCL.
+
+One naming gotcha worth knowing if this project grows: any type declared in
+a namespace nested under `Pirate.Shared.File` (e.g. its own test project,
+`Pirate.Shared.File.Test`) has `System.IO.File` shadowed — an unqualified
+`File` there resolves to the `Pirate.Shared.File` namespace itself, not the
+BCL type, because C# namespace lookup prefers an enclosing namespace segment
+over anything brought in by `using`. Code in that situation needs
+`System.IO.File` written out in full — every test file here that touches
+the filesystem does this.
+
+### Pirate.Fleet
+
+The `.fleet` project manifest — a `package.json`-style JSON file
+(`FleetFile`: `name`, `version`, `entryPoint`, plus reserved empty-shaped
+`build`/`dependencies` placeholders with no consumer yet) identifying a
+directory as a Pirate project. See [`../FLEET.md`](../FLEET.md) for the
+full schema. `FleetFileRepository` handles read/write on top of
+`Pirate.Shared.File`'s `FleetFileLocator`; `FleetEntryPoint.Resolve(argument, directory)`
+is the composition helper `Pirate.Cli` calls — explicit argument wins,
+else the `*.fleet` `FleetFileLocator` finds in `directory` supplies
+`entryPoint`, else `PirateFileName`'s default (`"main"`) applies. Discovery
+and naming (`FleetFileLocator`/`FleetFileName`) live in `Pirate.Shared.File`
+rather than here — once they were thin wrappers over that project's generic
+`FileDiscovery`/`FileNameResolver`, there was nothing `.fleet`-specific
+left in them worth a separate home from their `.pirate` counterparts.
+What's left in `Pirate.Fleet` (the model, the JSON read/write, the
+entry-point composition) is manifest-specific in a way file discovery and
+naming aren't.
+
 ### Pirate.Cli
 
 `Spectre.Console.Cli` `CommandApp` with one `Command<TSettings>` per verb
@@ -130,7 +187,9 @@ the VM's calling convention instead of wrapping `BaseValue` objects.
 replacing v1's hand-rolled `CommandManager`/`CommandFactory`/`ICommand`
 dispatch and manual `-h`/`--help` handling. Diagnostics render as
 `AnsiConsole` tables (file/line/col/message); build/run wrap in a
-`Status`/spinner.
+`Status`/spinner. File discovery/resolution is delegated to
+`Pirate.Shared.File`, and `run`'s no-argument entry-point resolution to
+`Pirate.Fleet`, rather than living in `Pirate.Cli` itself.
 
 ## Testing
 

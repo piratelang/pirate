@@ -1,0 +1,6 @@
+extern Standard.Terminal.Print;
+
+func main() : void
+{
+    Print("Hello World");
+}

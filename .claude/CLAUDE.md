@@ -1,47 +1,51 @@
 # Pirate — instructions for agents working in this repo
 
-Before making any change in this repo, read the relevant docs in `docs/`:
+## Required reading, before any change
 
-- [`docs/GRAMMAR.md`](../docs/GRAMMAR.md) — canonical v2 language grammar (lexical rules, types, full statement/expression grammar). Any change to v2 syntax or semantics must be reflected here in the same change.
-- [`docs/GRAMMAR_CHANGES.md`](../docs/GRAMMAR_CHANGES.md) — why v2 differs from v1 (dropped keywords, static typing, arrays, etc.). Read this before assuming v1 behavior carries over.
+Read **every file in [`docs/architecture/`](../docs/architecture/)** in
+full before starting work — not just the file that looks most relevant.
+That folder is the source of truth for how v1 and v2 are actually built,
+not a summary; it currently contains:
+
+- [`docs/architecture/README.md`](../docs/architecture/README.md) — how v1 and v2 relate, and current project state.
+- [`docs/architecture/v1-architecture.md`](../docs/architecture/v1-architecture.md) — v1's actual pipeline, file-by-file.
+- [`docs/architecture/v2-architecture.md`](../docs/architecture/v2-architecture.md) — v2's pipeline, project graph, and design decisions.
+
+If a new file is added to `docs/architecture/` after this instruction was
+written, read that one too — "the entire folder" means whatever is in it at
+the time, not just the three above.
+
+Also read, as needed for the task:
+
+- [`docs/GRAMMAR.md`](../docs/GRAMMAR.md) — canonical v2 language grammar. Any change to v2 syntax or semantics must be reflected here in the same change.
+- [`docs/GRAMMAR_CHANGES.md`](../docs/GRAMMAR_CHANGES.md) — why v2 differs from v1. Read before assuming v1 behavior carries over.
 - [`docs/TESTING.md`](../docs/TESTING.md) — testing strategy: xUnit per project, Gherkin/Reqnroll end-to-end. Any grammar or pipeline change needs unit tests in the matching `*.Test` project and, for syntax/semantics changes, an e2e scenario in `Pirate.Spec.Test`.
 
-Root `GRAMMAR.md` and `SYNTAX.md` (outside `docs/`) describe **v1 only** and are historical — do not use them as a source of truth for `src-v2/` work, and do not edit them as part of v2 work.
+Root `GRAMMAR.md` and `SYNTAX.md` (outside `docs/`) describe **v1 only** and
+are historical — do not use them as a source of truth for `src-v2/` work,
+and do not edit them as part of v2 work.
 
-## Repo architecture, in general
+## Two solutions, kept independent
 
-There are two complete, independent implementations of the Pirate language in this repo, in separate solutions, sharing nothing at the project level:
+- **v1** — `src/PirateLang.sln`. Currently shipped; do not break it while v2
+  is in progress.
+- **v2** — `src-v2/PirateLang.slnx`. Rewrite in progress; see
+  `v2-architecture.md` for what exists vs. what's still a stub.
 
-- **v1** — `src/PirateLang.sln`. The shipped implementation: F# lexer (`Pirate.Lexer.F`) → C# recursive-descent parser (`Pirate.Parser`) producing an AST of `INode`-derived classes → a tree-walking interpreter (`Pirate.Interpreter`) that evaluates that AST directly, dynamically typed. `Shell` is the CLI (hand-rolled command dispatch). `Pirate.Common*` holds cross-cutting exception/logging/file-handling libraries. Still the version users run; do not break it while v2 is in progress.
-- **v2** — `src-v2/PirateLang.slnx`. A ground-up rewrite, not a port. See below.
+Do not add cross-references between `src/` and `src-v2/` projects.
 
-Do not add cross-references between `src/` and `src-v2/` projects — they are meant to build, run, and be deleted independently. `src/` goes away entirely once v2 reaches parity (see the migration plan discussed with the user; there is no migration doc checked in yet — ask before assuming a cutover step is already decided).
+## Before declaring any task finished
 
-## v2 architecture, specifically
-
-v2's goals: a CLI built on Spectre.Console, a faster single-pass lexer and a cleaner parser, and a genuinely **compiled** pipeline (bytecode + VM) instead of v1's tree-walking interpreter, with **static typing** checked before a program ever runs.
-
-Project graph (`src-v2/PirateLang.slnx`):
+Run the test suite for whichever solution(s) the change touches, and don't
+report the task as done until it actually passes (or you've explained, with
+specifics, why a failure is pre-existing/unrelated — not assumed away):
 
 ```
-Pirate.Syntax  ←  Pirate.Lexer  ←  Pirate.Parser  ←┐
-       ↑                                            ├─ Pirate.Cli (Spectre.Console.Cli)
-       └────────  Pirate.Semantics  ─────────────────┤
-                                                      │
-Pirate.VM  ←  Pirate.Compiler ───────────────────────┤
-     ↑                                                │
-     └── Pirate.StandardLibrary ──────────────────────┘
+dotnet test src/PirateLang.sln         # any change under src/
+dotnet test src-v2/PirateLang.slnx     # any change under src-v2/
 ```
 
-- **Pirate.Syntax** — plain AST record types shared by everything downstream of parsing. No logic, no tests of its own (see `docs/TESTING.md`).
-- **Pirate.Lexer** — source text → tokens. Single pass over the source, no upfront mutation of the input (v1's lexer stripped newlines before lexing, which destroyed line info — v2 must not repeat that), real line/column tracked per token for diagnostics.
-- **Pirate.Parser** — tokens → `Pirate.Syntax` AST, per `docs/GRAMMAR.md` §3. Collects diagnostics and continues past errors rather than throwing on the first one.
-- **Pirate.Semantics** — name resolution + the static type-checking rules in `docs/GRAMMAR.md` §2. This is what turns a type error into a compile-time diagnostic instead of a runtime crash.
-- **Pirate.Compiler** — checked AST → bytecode (opcodes + constant pool), defined in `Pirate.VM`.
-- **Pirate.VM** — the bytecode/opcode definitions and the stack-machine interpreter loop that executes them. Values are a tagged-union struct, not a class hierarchy — scalars (int/float/bool/char) must not heap-allocate.
-- **Pirate.StandardLibrary** — native functions (`Standard.Terminal.Print`, `Standard.String.*`, …) registered into the VM's native-call table, resolved by an `extern` declaration.
-- **Pirate.Cli** — the `Spectre.Console.Cli` entry point wiring the above into `run`/`build`/etc. commands.
-- **`*.Test`** projects — xUnit, one per library project (see `docs/TESTING.md` for what each covers).
-- **Pirate.Spec.Test** — Gherkin/Reqnroll end-to-end scenarios running real `.pirate` scripts through the whole v2 pipeline and asserting on actual output. This is the parity gate against v1 before v1 is deleted.
-
-When extending v2: update the grammar doc first if syntax/semantics change, then implement bottom-up (Syntax → Lexer → Parser → Semantics → Compiler/VM → StandardLibrary → Cli), adding unit tests alongside each project and an e2e scenario for any user-visible behavior.
+If the change touched both, or touched shared docs whose claims cover both
+(e.g. `docs/TESTING.md`), run both. This is not optional and not satisfied
+by the code merely compiling — actually run `dotnet test` and read the
+result before saying you're finished.

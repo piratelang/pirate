@@ -28,7 +28,9 @@ project has behavior to unit-test:
 | `Pirate.Compiler` | `Pirate.Compiler.Test` | Checked AST → correct bytecode (opcodes, constant pool, jump targets) for each construct. |
 | `Pirate.VM` | `Pirate.VM.Test` | Given a hand-built bytecode chunk, the stack machine produces the correct result/state — independent of whatever the compiler emits, so a VM bug and a compiler bug can't mask each other. |
 | `Pirate.StandardLibrary` | `Pirate.StandardLibrary.Test` | Each native function (`Standard.Terminal.Print`, `Standard.String.Length`, …) against its inputs/outputs and error cases, independent of the VM. |
-| `Pirate.Cli` | *(no dedicated xUnit project)* | Command wiring is thin (Spectre.Console.Cli settings → pipeline calls); real coverage comes from the e2e layer below, which exercises the CLI as a whole. |
+| `Pirate.Shared.File` | `Pirate.Shared.File.Test` | `PirateFileLocator`/`PirateFileName` (`.pirate` file discovery and filename resolution) and `FleetFileLocator`/`FleetFileName` (`.fleet` discovery, non-recursive, and `-n\|--name` resolution, defaulting to `"module"`) — all four independent of any CLI framework or of `Pirate.Fleet`'s manifest-specific logic. All four are thin wrappers over `FileDiscovery`/`FileNameResolver`; no separate tests of those two, since the four wrappers' tests already exercise the generic mechanism (recursive vs. non-recursive discovery, default-name vs. explicit-argument resolution) with different constants. |
+| `Pirate.Fleet` | `Pirate.Fleet.Test` | `FleetFileRepository` (read/write/round-trip the [`.fleet`](../FLEET.md) manifest, missing-file and malformed-JSON cases, via `Pirate.Shared.File`'s `FleetFileLocator`) and `FleetEntryPoint` (argument > `.fleet` entry point > `"main"` precedence). |
+| `Pirate.Cli` | `Pirate.Cli.Test` | The pure logic each command delegates to (`Services/` — templates — plus settings-class `Validate()` decisions) and `Banner`. Command `Execute` methods themselves are thin (argument resolution + a couple of I/O/console calls) and are exercised by the e2e layer below plus manual testing, not unit tests — see [`CLI.md`](CLI.md). |
 
 Stack: **xUnit** + **AutoFixture** (anonymous test data) + **FakeItEasy**
 (fakes for collaborators), matching v1's test stack. One behavior per
@@ -37,6 +39,11 @@ between tests unless the type under test is genuinely stateless.
 
 Rule of thumb for what's worth a unit test: anything with a decision, a
 calculation, or an edge case. Passthrough plumbing isn't.
+
+Each `*.Test` project's folder structure mirrors the project it tests (e.g.
+`Pirate.Cli/Services/Templates.cs` → `Pirate.Cli.Test/Services/TemplatesTests.cs`,
+namespaced to match), so a file's test is always at the same relative path
+one directory over — no separate index to keep in your head.
 
 ## 2. End-to-end tests (Gherkin)
 

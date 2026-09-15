@@ -1,17 +1,41 @@
 <Solution>
-  <Project Path="Pirate.Cli/Pirate.Cli.csproj" />
-  <Project Path="Pirate.Compiler.Test/Pirate.Compiler.Test.csproj" />
-  <Project Path="Pirate.Compiler/Pirate.Compiler.csproj" />
+  <Folder Name="/01. CLI/">
+    <Project Path="Pirate.Cli.Test/Pirate.Cli.Test.csproj" />
+    <Project Path="Pirate.Cli/Pirate.Cli.csproj" />
+  </Folder>
+  <Folder Name="/02. Compiler/">
   <Project Path="Pirate.Lexer.Test/Pirate.Lexer.Test.csproj" />
   <Project Path="Pirate.Lexer/Pirate.Lexer.csproj" />
-  <Project Path="Pirate.Parser.Test/Pirate.Parser.Test.csproj" />
-  <Project Path="Pirate.Parser/Pirate.Parser.csproj" />
-  <Project Path="Pirate.Semantics.Test/Pirate.Semantics.Test.csproj" />
-  <Project Path="Pirate.Semantics/Pirate.Semantics.csproj" />
+  </Folder>
+  <Folder Name="/03. Parser/">
+    <Project Path="Pirate.Parser.Test/Pirate.Parser.Test.csproj" />
+    <Project Path="Pirate.Parser/Pirate.Parser.csproj" />
+  </Folder>
+  <Folder Name="/04. Compiler/">
+    <Project Path="Pirate.Compiler.Test/Pirate.Compiler.Test.csproj" />
+    <Project Path="Pirate.Compiler/Pirate.Compiler.csproj" />
+  </Folder>
+  <Folder Name="/05. VM/">
+    <Project Path="Pirate.VM.Test/Pirate.VM.Test.csproj" />
+    <Project Path="Pirate.VM/Pirate.VM.csproj" />
+  </Folder>
+  <Folder Name="/06. Standard Library/">
+    <Project Path="Pirate.StandardLibrary.Test/Pirate.StandardLibrary.Test.csproj" />
+    <Project Path="Pirate.StandardLibrary/Pirate.StandardLibrary.csproj" />
+  </Folder>
+  <Folder Name="/07. Semantics/">
+    <Project Path="Pirate.Semantics.Test/Pirate.Semantics.Test.csproj" />
+    <Project Path="Pirate.Semantics/Pirate.Semantics.csproj" />
+  </Folder>
+  <Folder Name="/08. Shared/">
+    <Project Path="Pirate.Shared.File.Test/Pirate.Shared.File.Test.csproj" />
+    <Project Path="Pirate.Shared.File/Pirate.Shared.File.csproj" />
+  </Folder>
+  <Folder Name="/09. Fleet/">
+    <Project Path="Pirate.Fleet.Test/Pirate.Fleet.Test.csproj" />
+    <Project Path="Pirate.Fleet/Pirate.Fleet.csproj" />
+  </Folder>
+
   <Project Path="Pirate.Spec.Test/Pirate.Spec.Test.csproj" />
-  <Project Path="Pirate.StandardLibrary.Test/Pirate.StandardLibrary.Test.csproj" />
-  <Project Path="Pirate.StandardLibrary/Pirate.StandardLibrary.csproj" />
   <Project Path="Pirate.Syntax/Pirate.Syntax.csproj" />
-  <Project Path="Pirate.VM.Test/Pirate.VM.Test.csproj" />
-  <Project Path="Pirate.VM/Pirate.VM.csproj" />
 </Solution>

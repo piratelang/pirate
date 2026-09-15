@@ -7,6 +7,8 @@
     <ProjectReference Include="..\Pirate.Compiler\Pirate.Compiler.csproj" />
     <ProjectReference Include="..\Pirate.VM\Pirate.VM.csproj" />
     <ProjectReference Include="..\Pirate.StandardLibrary\Pirate.StandardLibrary.csproj" />
+    <ProjectReference Include="..\Pirate.Shared.File\Pirate.Shared.File.csproj" />
+    <ProjectReference Include="..\Pirate.Fleet\Pirate.Fleet.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +20,12 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>2.0.0-alpha</Version>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Pirate.Cli.Test" />
+  </ItemGroup>
 
 </Project>
