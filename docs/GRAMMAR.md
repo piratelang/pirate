@@ -9,45 +9,13 @@ from each other. v1 keeps its own docs untouched; this file only governs v2.
 Grammar productions use EBNF: `|` alternation, `[ ]` optional, `{ }` zero or
 more repetitions, `'x'` a literal token spelling.
 
-## 1. Decisions and deltas from v1 (read this first)
+For the rationale behind where v2 deliberately differs from what v1's docs
+described or implemented (dropped keywords, static typing, arrays, etc.), see
+[`GRAMMAR_CHANGES.md`](GRAMMAR_CHANGES.md).
 
-These are the places v2 deliberately differs from what v1's docs described or
-implemented, and why:
+## 1. Lexical grammar
 
-- **Symbolic operators only.** `is` / `is not` / `and` / `or` (documented in
-  v1's `SYNTAX.md` but never implemented) are dropped. Use `==`, `!=`, `&&`,
-  `||`. One operator spelling, less lexer/parser surface.
-- **`for` unifies counting and iteration.** There is no separate `foreach`
-  keyword. `for (item in collection) { }` is a second form of the `for`
-  statement, alongside the existing counting form
-  `for var i = 0 to 10 { }`. `in` stays a keyword; `foreach` is retired.
-- **`elif` is deferred, not in v2 scope.** v1's `SYNTAX.md` showed it but no
-  parser/interpreter ever implemented it. `if` / `else` (with `else { if ... }`
-  nesting for chains) is what v2 ships; `elif` can be added later as sugar
-  for that nesting without changing anything else in the grammar.
-- **`bool` is a first-class type.** v1 could produce boolean values (from
-  comparisons) but had no `bool` type keyword and no `true`/`false` literals,
-  so a boolean couldn't be declared, typed, or written as a literal. Static
-  typing (below) needs every value to have a nameable type, so v2 adds `bool`
-  and `true` / `false` literals.
-- **Static typing, checked before compiling.** `<type> x = value;` and
-  `var x = value;` both produce a variable with one fixed, known-at-compile-time
-  type — `var`'s type is inferred from its initializer once, not re-inferred
-  or allowed to change. Type errors (mismatched operands, wrong argument
-  types, unknown names) are reported by the semantic pass as compile
-  diagnostics, not discovered mid-execution like v1's tree-walking
-  interpreter.
-- **Arrays are in scope now.** `T[]` element type, array literals, and
-  indexing are specified below rather than deferred, since v1's `SYNTAX.md`
-  already showed the surface syntax.
-- **`class` / `new` remain reserved, still unimplemented.** v1's lexer
-  already reserves these keywords for a future OOP extension. v2 keeps them
-  reserved (they cannot be used as identifiers) but defines no grammar for
-  them; out of scope for this pass.
-
-## 2. Lexical grammar
-
-### 2.1 Whitespace and comments
+### 1.1 Whitespace and comments
 
 ```
 comment    = '//' { any character except newline } (newline | EOF) ;
@@ -57,7 +25,7 @@ otherwise insignificant. Unlike v1, whitespace and newlines are **not**
 stripped before lexing — line/column are tracked per character so diagnostics
 can point at real source locations.
 
-### 2.2 Identifiers
+### 1.2 Identifiers
 
 ```
 identifier = letter { letter | digit | '_' } ;
@@ -67,7 +35,7 @@ digit      = '0'..'9' ;
 An identifier that matches a keyword below is tokenized as that keyword, not
 as an identifier.
 
-### 2.3 Keywords
+### 1.3 Keywords
 
 Type keywords: `var` `int` `float` `string` `char` `bool` `void`
 
@@ -77,7 +45,7 @@ Literal keywords: `true` `false`
 
 Reserved, not yet implemented: `class` `new`
 
-### 2.4 Literals
+### 1.4 Literals
 
 ```
 int-literal    = digit { digit } ;
@@ -87,7 +55,7 @@ char-literal   = "'" any single character "'" ;
 bool-literal   = 'true' | 'false' ;
 ```
 
-### 2.5 Operators and punctuation
+### 1.5 Operators and punctuation
 
 | Category    | Tokens |
 |-------------|--------|
@@ -98,7 +66,7 @@ bool-literal   = 'true' | 'false' ;
 | Grouping    | `(` `)` `{` `}` `[` `]` |
 | Separators  | `,` `:` `;` `.` |
 
-## 3. Types
+## 2. Types
 
 Scalar types: `int`, `float`, `string`, `char`, `bool`, `void` (function
 return type only — not a value type, cannot be a variable's type).
@@ -121,9 +89,9 @@ grammar pass.
   match the variable's declared type exactly; no implicit numeric widening
   (`int` does not implicitly convert to `float`).
 
-## 4. Grammar
+## 3. Grammar
 
-### 4.1 Program
+### 3.1 Program
 
 ```
 program           = { top-level-statement } ;
@@ -135,7 +103,7 @@ top-level-statement
 A valid program must define a zero-parameter `func main() : void { ... }` as
 its entry point (as in v1).
 
-### 4.2 Extern
+### 3.2 Extern
 
 ```
 extern-statement  = 'extern' qualified-name ';' ;
@@ -144,7 +112,7 @@ qualified-name    = identifier { '.' identifier } ;
 Declares a standard-library function available by its dotted path, e.g.
 `extern Standard.Terminal.Print;`.
 
-### 4.3 Function declaration
+### 3.3 Function declaration
 
 ```
 function-declaration
@@ -162,7 +130,7 @@ return-statement  = 'return' [ expression ] ';' ;
 "statements, then one return"); v2's semantic pass additionally rejects a
 non-`void` function with no reachable `return`.
 
-### 4.4 Statements
+### 3.4 Statements
 
 ```
 statement         = variable-declaration
@@ -192,12 +160,12 @@ expression-statement
 
 `if`'s and `while`'s condition is any `bool`-typed expression — no
 parentheses required (matching v1), though a parenthesized expression is
-still valid since `( expr )` is a primary expression (4.5).
+still valid since `( expr )` is a primary expression (3.5).
 
 `for-in` iterates `expression`, which must type-check as `T[]` for some `T`;
 `identifier` is bound with type `T` for the loop body.
 
-### 4.5 Expressions
+### 3.5 Expressions
 
 Precedence, lowest to highest (each level left-associative unless noted):
 
@@ -226,7 +194,7 @@ array-literal     = '[' [ expression { ',' expression } ] ']' ;
 `postfix` covers both function calls (`name(args)`, `Standard.Terminal.Print(x)`)
 and array indexing (`list[i]`), including chained forms like `f()[0]`.
 
-## 5. Open items (explicitly out of scope for this pass)
+## 4. Open items (explicitly out of scope for this pass)
 
 - `elif` sugar.
 - `class` / `new` (reserved keywords, no grammar defined).
