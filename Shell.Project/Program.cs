@@ -5,7 +5,7 @@ using Shell.Project;
 
 var projectFileHandler = new ProjectFileHandler(new FileReadHandler(), new FileWriteHandler());
 
-var project = await projectFileHandler.ReadProjectFile("test", "");
+var project = projectFileHandler.ReadProjectFile("test", "");
 
 Console.WriteLine($"Hello, {project.PropertyGroup.TargetFramework}!");
 project.ItemGroup.Modules.ForEach(module =>

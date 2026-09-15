@@ -19,7 +19,7 @@ public class FileReadHandler : BaseFileHandler, IFileReadHandler
     /// <exception cref="FileHandlerException">Thrown when the name is null or empty</exception>
     /// <exception cref="FileHandlerException">Thrown when the location is null or empty</exception>
     /// <exception cref="FileNotFoundException">Thrown when the file could not be found</exception>
-    public async Task<string> ReadAllTextFromFile(string name, FileExtension extension, string location)
+    public string ReadAllTextFromFile(string name, FileExtension extension, string location)
     {
         if (name == string.Empty) throw new FileHandlerException($"Name, ${name} is empty");
         //if (location == string.Empty) throw new FileHandlerException($"Location, ${location} is empty");
@@ -29,7 +29,7 @@ public class FileReadHandler : BaseFileHandler, IFileReadHandler
         string fileName = Path.Combine(targetFolder, nameAndExtension);
 
         return FileExists(name, extension, location)
-            ? await File.ReadAllTextAsync(fileName)
+            ? File.ReadAllText(fileName)
             : throw new FileNotFoundException("File not found");
     }
 

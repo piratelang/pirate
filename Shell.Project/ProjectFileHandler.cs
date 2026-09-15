@@ -18,9 +18,9 @@ public class ProjectFileHandler : IProjectFileHandler
         _fileWriteHandler = fileWriteHandler;
     }
 
-    public async Task<ProjectFile?> ReadProjectFile(string name, string path)
+    public ProjectFile? ReadProjectFile(string name, string path)
     {
-        var projectFile = await _fileReadHandler.ReadAllTextFromFile(name, FileExtension.PIRATEPROJ, path);
+        var projectFile = _fileReadHandler.ReadAllTextFromFile(name, FileExtension.PIRATEPROJ, path);
 
         if (projectFile == null) throw new Exception("Project file not found");
 

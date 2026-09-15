@@ -66,7 +66,7 @@ public class ObjectSerializer : IObjectSerializer
 
             };
             if (!_fileReadHandler.FileExists(FileName, FileExtension.JSON, Location)) _fileWriteHandler.WriteToFile(new FileWriteModel(FileName, FileExtension.JSON, Location, "{}"));
-            string json = _fileReadHandler.ReadAllTextFromFile(FileName, FileExtension.JSON, Location).Result;
+            string json = _fileReadHandler.ReadAllTextFromFile(FileName, FileExtension.JSON, Location);
             T deserializedObject = JsonConvert.DeserializeObject<T>(json, settings);
 
             if (deserializedObject == null) throw new SerializationException("Deserialized object is null");

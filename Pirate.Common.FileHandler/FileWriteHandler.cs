@@ -23,7 +23,7 @@ public class FileWriteHandler : BaseFileHandler, IFileWriteHandler
 
         CreateFolder(fileWriteModel.Location);
 
-        var result = Write(fileWriteModel).Result;
+        var result = Write(fileWriteModel);
 
         return result;
     }
@@ -42,7 +42,7 @@ public class FileWriteHandler : BaseFileHandler, IFileWriteHandler
 
         CreateFolder(fileWriteModel.Location);
 
-        var result = AppendWrite(fileWriteModel).Result;
+        var result = AppendWrite(fileWriteModel);
 
         return result;
     }
@@ -58,26 +58,26 @@ public class FileWriteHandler : BaseFileHandler, IFileWriteHandler
         }
     }
 
-    private async Task<bool> Write(FileWriteModel fileWriteModel)
+    private bool Write(FileWriteModel fileWriteModel)
     {
         var name = fileWriteModel.Name + fileWriteModel.Extension;
         var targetFolder = Path.Combine(Environment.CurrentDirectory, fileWriteModel.Location);
 
         string fileName = Path.Combine(targetFolder, name);
 
-        await File.WriteAllTextAsync(fileName, fileWriteModel.Text);
+        File.WriteAllText(fileName, fileWriteModel.Text);
 
         return true;
     }
 
-    private async Task<bool> AppendWrite(FileWriteModel fileWriteModel)
+    private bool AppendWrite(FileWriteModel fileWriteModel)
     {
         var name = fileWriteModel.Name + fileWriteModel.Extension;
         var targetFolder = Path.Combine(Environment.CurrentDirectory, fileWriteModel.Location);
 
         string fileName = Path.Combine(targetFolder, name);
 
-        await File.AppendAllTextAsync(fileName, fileWriteModel.Text);
+        File.AppendAllText(fileName, fileWriteModel.Text);
 
         return true;
     }

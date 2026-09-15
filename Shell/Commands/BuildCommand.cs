@@ -49,7 +49,7 @@ public class BuildCommand : Command, ICommand, IBuildCommand
 
             var fileName = file.Replace(".pirate", "").Replace("./", "");
             
-            var text = _fileReadHandler.ReadAllTextFromFile(fileName, FileExtension.PIRATE, "").Result;
+            var text = _fileReadHandler.ReadAllTextFromFile(fileName, FileExtension.PIRATE, "");
             if (text == null) Error($"{fileName} contains no text");
 
             // Running Lexer

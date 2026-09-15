@@ -47,7 +47,7 @@ public class ModuleListRepository : IModuleListRepository
             _logger.Log($"Creating module list at \"{location}/modules.json\"", LogType.INFO);
             _fileWriteHandler.WriteToFile(new FileWriteModel("modules", FileExtension.JSON, location, " "));
         }
-        var file = _fileReadHandler.ReadAllTextFromFile("modules", FileExtension.JSON, location).Result;
+        var file = _fileReadHandler.ReadAllTextFromFile("modules", FileExtension.JSON, location);
         var deserialize = JsonConvert.DeserializeObject<List<Module>>(file);
         return deserialize;
     }
