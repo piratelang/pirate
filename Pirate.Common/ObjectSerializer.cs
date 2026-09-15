@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Pirate.Common.Exception.Exceptions;
 using Newtonsoft.Json;
 using Pirate.Common.Interfaces;
 using Pirate.Common.FileHandler.Model;
@@ -65,19 +66,39 @@ public class ObjectSerializer : IObjectSerializer
                 Formatting = Formatting.Indented
 
             };
-            if (!_fileReadHandler.FileExists(FileName, FileExtension.JSON, Location)) _fileWriteHandler.WriteToFile(new FileWriteModel(FileName, FileExtension.JSON, Location, "{}"));
-            string json = _fileReadHandler.ReadAllTextFromFile(FileName, FileExtension.JSON, Location).Result;
+            if (!_fileReadHandler.FileExists(FileName, FileExtension.JSON, Location))
+                throw new ModuleNotBuiltException(FileName);
+            
+            string json = _fileReadHandler.ReadAllTextFromFile(FileName, FileExtension.JSON, Location).GetAwaiter().GetResult();
             T deserializedObject = JsonConvert.DeserializeObject<T>(json, settings);
 
             if (deserializedObject == null) throw new SerializationException("Deserialized object is null");
+            if (typeof(T).GetProperty("Nodes")?.GetValue(deserializedObject) == null) throw new SerializationException("Deserialized object contains no Nodes");
             Logger.Log($"Deserialized and converted {FileName} to {FileName}.json", LogType.INFO);
 
             return deserializedObject;
         }
+        catch (ModuleNotBuiltException ex)
+        {
+            Logger.Error(ex);
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            var serializationException = new SerializationException($"Failed to Deserialize {FileName}.json", ex);
+            Logger.Error(serializationException);
+            throw serializationException;
+        }
+        catch (IOException ex)
+        {
+            var serializationException = new SerializationException($"Failed to read {FileName}.json", ex);
+            Logger.Error(serializationException);
+            throw serializationException;
+        }
         catch (SerializationException ex)
         {
-            Logger.Log($"Failed to Deserialize {FileName}.json. \"{ex.ToString() + "\n" + ex.Source}\"", LogType.ERROR);
-            throw new SerializationException(ex.ToString() + "\n" + ex.Source);
+            Logger.Error(ex);
+            throw;
         }
     }
 }
