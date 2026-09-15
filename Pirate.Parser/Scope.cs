@@ -26,7 +26,7 @@ public class Scope
         }
         catch (Exception ex)
         {
-            Logger.Log($"Scope.AddNode() returned an error of {ex.ToString()}", LogType.ERROR);
+            Logger.Error(ex);
             return false;
         }
 

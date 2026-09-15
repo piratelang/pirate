@@ -14,12 +14,12 @@ public class BinaryOperationInterpreter : BaseInterpreter
         if (node is not IOperationNode) throw new TypeConversionException(node.GetType(), typeof(IOperationNode));
         _operationNode = (IOperationNode)node;
 
-        Logger.Log($"Created {GetType().Name} : \"{_operationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Created {GetType().Name} : \"{_operationNode.ToString()}\"");
     }
 
     public override List<BaseValue> VisitNode()
     {
-        Logger.Log($"Visiting {GetType().Name} : \"{_operationNode.ToString()}\"", LogType.INFO);
+        Logger.Info($"Visiting {GetType().Name} : \"{_operationNode.ToString()}\"");
         var interpreter = InterpreterFactory.GetInterpreter(_operationNode.Left);
         var left = interpreter.VisitSingleNode();
 

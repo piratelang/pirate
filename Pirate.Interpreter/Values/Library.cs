@@ -11,7 +11,7 @@ public class Library : BaseValue
     {
         Name = name;
         Callables = callables;
-        Logger.Log($"Created {GetType().Name}", LogType.INFO);
+        Logger.Info($"Created {GetType().Name}");
     }
 
     public override string ToString()

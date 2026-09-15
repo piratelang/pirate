@@ -41,21 +41,6 @@ public class Logger : ILogger
     /// <param name="logType">INFO, WARNING or ERROR</param>
     /// <returns>True if the message was logged successfully</returns>
     /// <exception cref="LoggerException">Thrown when the message is null or empty</exception>
-    [Obsolete]
-    public bool Log(string message, LogType logType)
-    {
-        if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");
-
-        var time = DateTime.Now.ToString();
-        var formattedMessage = MessageFormatter.FormatMessage(message);
-
-        if (string.IsNullOrEmpty(formattedMessage)) throw new LoggerException("Message cannot be null or empty");
-
-        var text = $"{time.Replace(" uur", "")}: {logType}: {MessageFormatter.GetCallingClassName()}.cs: {formattedMessage}";
-
-        return WriteToTarget(text);
-    }
-
     private bool PirateLog(string message, LogType logType)
     {
         if (string.IsNullOrEmpty(message)) throw new LoggerException("Message cannot be null or empty");

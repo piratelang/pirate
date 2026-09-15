@@ -19,24 +19,24 @@ public class CharValue : BaseValue, IValue
                 return new StringValue(value + other.Value.ToString(), Logger);
 
             case TokenType.MINUS:
-                Logger.Log("<char> - <char> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<char> - <char> is not supported"));
+                throw new NotImplementedException("<char> - <char> is not supported");
 
             case TokenType.MULTIPLY:
-                Logger.Log("<char> * <char> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<char> * <char> is not supported"));
+                throw new NotImplementedException("<char> * <char> is not supported");
 
             case TokenType.DIVIDE:
-                Logger.Log("<char> / <char> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<char> / <char> is not supported"));
+                throw new NotImplementedException("<char> / <char> is not supported");
 
             case TokenType.POWER:
-                Logger.Log("<char> ^ <char> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<char> ^ <char> is not supported"));
+                throw new NotImplementedException("<char> ^ <char> is not supported");
 
             case TokenType.MODULO:
-                Logger.Log("<char> % <char> is not supported", LogType.ERROR);
-                throw new NotImplementedException();
+                Logger.Error(new NotImplementedException("<char> % <char> is not supported"));
+                throw new NotImplementedException("<char> % <char> is not supported");
 
         }
         throw new NotImplementedException($"{_operator.TokenType.ToString()} has not been implemented");
