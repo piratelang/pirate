@@ -1,7 +1,5 @@
 namespace Shell.Commands.Interfaces;
 
-public interface IInitCommand
+public interface IInitCommand : ICommand
 {
-    void Help();
-    object Run(string[] arguments);
 }

@@ -16,15 +16,16 @@ public class Application
     }
 
 
-    public void Run(string[] args, string version)
+    public int Run(string[] args, string version)
     {
         if (args.Length == 0)
         {
             NoCommand.Run(version);
+            return 0;
         }
         else
         {
-            _commandManager.RunCommand(args);
+            return _commandManager.RunCommand(args);
         }
     }
 }

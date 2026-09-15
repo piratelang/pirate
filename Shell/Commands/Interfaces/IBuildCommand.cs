@@ -2,9 +2,7 @@ using Shell.ModuleList;
 
 namespace Shell.Commands.Interfaces;
 
-public interface IBuildCommand
+public interface IBuildCommand : ICommand
 {
     bool CheckModuleList(List<Module> moduleList, string file);
-    void Help();
-    object Run(string[] arguments);
 }

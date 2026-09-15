@@ -1,7 +1,5 @@
 namespace Shell.Commands.Interfaces;
 
-public interface IRunCommand
+public interface IRunCommand : ICommand
 {
-    void Help();
-    object Run(string[] arguments);
 }

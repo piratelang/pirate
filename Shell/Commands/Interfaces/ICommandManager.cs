@@ -1,4 +1,4 @@
 public interface ICommandManager
 {
-    void RunCommand(string[] args);
+    int RunCommand(string[] args);
 }

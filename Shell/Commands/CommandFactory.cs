@@ -28,15 +28,15 @@ public class CommandFactory : ICommandFactory
         switch (commandArgument)
         {
             case "init":
-                return (ICommand)InitCommand;
+                return InitCommand;
             case "new":
-                return (ICommand)NewCommand;
+                return NewCommand;
             case "run":
-                return (ICommand)RunCommand;
+                return RunCommand;
             case "build":
-                return (ICommand)BuildCommand;
+                return BuildCommand;
             case "shell":
-                return (ICommand)ShellCommand;
+                return ShellCommand;
         }
         throw new NotImplementedException($"{commandArgument} is not a found command.");
     }

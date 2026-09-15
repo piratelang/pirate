@@ -51,18 +51,16 @@ public class NewCommand : Command, ICommand, INewCommand
         switch (typeArgument)
         {
             case "gitignore":
+                if (arguments.Length > 2) Error("The gitignore template does not accept a filename argument.");
                 _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitignore,  "", "[Bb]in/"));
                 return true;
             case "gitattributes":
+                if (arguments.Length > 2) Error("The gitattributes template does not accept a filename argument.");
                 _fileWriteHandler.WriteToFile(new FileWriteModel("", FileExtension.gitattributes, "", "*.pirate linguist-language=Squirrel" ));
                 return true;
             case "pirate":
                 var filename = "main";
-                try
-                {
-                    filename = arguments[2];
-                }
-                catch (System.Exception) { }
+                if (arguments.Length >= 3) { filename = arguments[2]; }
 
                 if (_fileReadHandler.FileExists(filename, FileExtension.PIRATE, " "))
                 {

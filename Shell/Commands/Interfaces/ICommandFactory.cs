@@ -6,6 +6,7 @@ public interface ICommandFactory
         INewCommand NewCommand { get; set; }
         IRunCommand RunCommand { get; set; }
         IBuildCommand BuildCommand { get; set; }
+        IShellCommand ShellCommand { get; set; }
         ILogger Logger { get; set; }
 
         ICommand GetCommand(string commandArgument);

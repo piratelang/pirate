@@ -15,8 +15,6 @@ using Pirate.Interpreter.Runtime;
 using PirateLang;
 using Pirate.Interpreter.StandarLibrary;
 
-var version = "1.0.0";
-
 var builder = new ServiceCollection();
 builder.AddSingleton<Application, Application>();
 builder.AddSingleton<IObjectSerializer,ObjectSerializer>();
@@ -58,5 +56,6 @@ builder.AddTransient<IStandardLibraryProvider, StandardLibraryProvider>();
 
 var provider = builder.BuildServiceProvider();
 var app = provider.GetRequiredService<Application>();
+var environmentVariables = provider.GetRequiredService<IEnvironmentVariables>();
 
-app.Run(args, version);
+Environment.ExitCode = app.Run(args, environmentVariables.GetVariable("version"));
