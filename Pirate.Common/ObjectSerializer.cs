@@ -1,5 +1,6 @@
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Pirate.Common.Interfaces;
 using Pirate.Common.FileHandler.Model;
 using Pirate.Common.FileHandler.Enum;
@@ -14,6 +15,57 @@ namespace Pirate.Common;
 /// </summary>
 public class ObjectSerializer : IObjectSerializer
 {
+    private sealed class AllowedAstSerializationBinder : ISerializationBinder
+    {
+        private static readonly string[] AllowedTypePrefixes =
+        {
+            "Pirate.Parser.Node.",
+            "Pirate.Parser.Node.Interfaces."
+        };
+
+        private static readonly HashSet<string> AllowedTypes = new()
+        {
+            "Pirate.Parser.Scope",
+            "Pirate.Lexer.Tokens.Token"
+        };
+
+        public Type BindToType(string? assemblyName, string typeName)
+        {
+            if (!IsAllowedType(typeName))
+            {
+                throw new JsonSerializationException($"Type '{typeName}' is not allowed for deserialization.");
+            }
+
+            var resolvedType = assemblyName is null
+                ? Type.GetType(typeName, throwOnError: false)
+                : Type.GetType($"{typeName}, {assemblyName}", throwOnError: false);
+            if (resolvedType is null)
+            {
+                throw new JsonSerializationException($"Could not resolve type '{typeName}'.");
+            }
+
+            return resolvedType;
+        }
+
+        public void BindToName(Type serializedType, out string? assemblyName, out string? typeName)
+        {
+            assemblyName = serializedType.Assembly.FullName;
+            typeName = serializedType.FullName;
+        }
+
+        private static bool IsAllowedType(string typeName)
+        {
+            if (AllowedTypes.Contains(typeName))
+            {
+                return true;
+            }
+
+            return AllowedTypePrefixes.Any(prefix => typeName.StartsWith(prefix, StringComparison.Ordinal));
+        }
+    }
+
+    private static readonly ISerializationBinder AstSerializationBinder = new AllowedAstSerializationBinder();
+
     public string Location { get; set; }
     public ILogger Logger { get; set; }
 
@@ -61,6 +113,7 @@ public class ObjectSerializer : IObjectSerializer
             var settings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
+                SerializationBinder = AstSerializationBinder,
                 // TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple, 
                 Formatting = Formatting.Indented
 
