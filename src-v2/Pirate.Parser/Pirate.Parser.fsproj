@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ParserResult.fs" />
+    <Compile Include="Pratt.fs" />
+    <Compile Include="Parser.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Lexer\Pirate.Lexer.csproj" />
+    <ProjectReference Include="..\Pirate.Syntax\Pirate.Syntax.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -8,8 +8,8 @@
   <Project Path="Pirate.Lexer/Pirate.Lexer.csproj" />
   </Folder>
   <Folder Name="/03. Parser/">
-    <Project Path="Pirate.Parser.Test/Pirate.Parser.Test.csproj" />
-    <Project Path="Pirate.Parser/Pirate.Parser.csproj" />
+    <Project Path="Pirate.Parser.Test/Pirate.Parser.Test.fsproj" />
+    <Project Path="Pirate.Parser/Pirate.Parser.fsproj" />
   </Folder>
   <Folder Name="/04. Compiler/">
     <Project Path="Pirate.Compiler.Test/Pirate.Compiler.Test.csproj" />
@@ -30,6 +30,8 @@
   <Folder Name="/08. Shared/">
     <Project Path="Pirate.Shared.File.Test/Pirate.Shared.File.Test.csproj" />
     <Project Path="Pirate.Shared.File/Pirate.Shared.File.csproj" />
+    <Project Path="Pirate.Shared.Logging.Test/Pirate.Shared.Logging.Test.csproj" />
+    <Project Path="Pirate.Shared.Logging/Pirate.Shared.Logging.csproj" />
   </Folder>
   <Folder Name="/09. Fleet/">
     <Project Path="Pirate.Fleet.Test/Pirate.Fleet.Test.csproj" />
