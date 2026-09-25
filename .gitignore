@@ -457,5 +457,13 @@ $RECYCLE.BIN/
 github.key.txt
 nuget.config
 
-# Claude
-.claude/worktrees
+# Agent worktrees
+.agents/worktrees
+
+# Thorsten Ball reference books (local-only copies, not licensed for the public repo)
+.agents/*.html
+
+# Pirate build cache (written by `pirate build`/`run` into the project dir)
+.pirate/
+# Huddle CA extracted for the GitHub MCP server container (see .devcontainer/docker-compose.yaml)
+.devcontainer/huddle-ca.crt

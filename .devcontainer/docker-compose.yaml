@@ -1,0 +1,59 @@
+services:
+  # GitHub's official MCP server, served over Streamable HTTP so MCP clients
+  # (opencode on the host, agents in the devcontainer) can reach it without
+  # spawning their own container per session. Clients supply the GitHub token
+  # via an Authorization header; this container stores no credentials.
+  #
+  # Egress + proxy wiring is provided by the generated docker-compose.huddle.yml
+  # (see `huddle migrate`) — start with BOTH files:
+  #   docker compose -f docker-compose.yaml -f docker-compose.huddle.yml up -d
+  github-mcp-server:
+    image: ghcr.io/github/github-mcp-server:latest
+    container_name: github-mcp-server
+    command:
+      - http
+      - --port
+      - "8085"
+      - --toolsets
+      - context,issues,pull_requests
+    # The Go server MITM'd by Huddle needs its CA. Go ignores NODE_EXTRA_CA_CERTS,
+    # so point SSL_CERT_FILE at the extracted certificate (all outbound TLS goes
+    # through the Huddle proxy, so this single-CA bundle verifies everything).
+    # Bootstrap after (re)creating Huddle:
+    #   docker cp huddle:/data/ca.crt .devcontainer/huddle-ca.crt
+    # (ca.key stays out of reach — only the public cert is mounted.)
+    environment:
+      SSL_CERT_FILE: /huddle-ca.crt
+    volumes:
+      - ./huddle-ca.crt:/huddle-ca.crt:ro
+    networks:
+      - development   # internal: no direct route to the internet
+    restart: unless-stopped
+
+  # Docker Desktop won't publish host ports for containers attached only to
+  # gateway-less/internal networks, so this relay bridges 127.0.0.1:8085 on the
+  # host to github-mcp-server. It holds no GitHub credentials and only ever
+  # forwards TCP to the MCP container.
+  github-mcp-proxy:
+    image: alpine/socat:latest
+    container_name: github-mcp-proxy
+    command:
+      - tcp-listen:8085,fork,reuseaddr
+      - tcp-connect:github-mcp-server:8085
+    ports:
+      - "127.0.0.1:8085:8085"
+    networks:
+      - default
+      - huddle-egress
+    depends_on:
+      - github-mcp-server
+    restart: unless-stopped
+
+networks:
+  development:
+    internal: true            # required: no direct route to the internet
+    labels:
+      huddle.network: "true"  # Huddle wires every service on this network
+  huddle-egress:
+    external: true
+    name: devcontainer-net    # Huddle's own network (declared identically in the override)

@@ -23,8 +23,12 @@ Related docs, not architecture but load-bearing for the same work:
 
 ## Current state
 
-v1 is the shipped version and must keep working. v2 is scaffolded
-(`src-v2/PirateLang.slnx` exists with empty/stub projects wired together per
-`v2-architecture.md`) but has no lexer/parser/compiler/VM logic yet. There is
-no migration/cutover doc checked in yet — treat "when/how v1 gets deleted" as
-undecided until the user says otherwise.
+v1 is the shipped version and must keep working. v2 is past scaffolding: the
+lexer, syntax nodes/error hierarchy, F# parser, `Pirate.Shared.File`,
+`Pirate.Shared.Logging`, `Pirate.Fleet`, and the Spectre.Console CLI (build/run
+with content-hash caching and diagnostics rendering) are implemented and tested
+(`dotnet test src-v2/PirateLang.slnx`); semantics is a stub, and
+compiler/VM/standard library have no real code yet — see
+[`v2-architecture.md`](v2-architecture.md)'s "Current state" for the per-
+project status. There is no migration/cutover doc checked in yet — treat
+"when/how v1 gets deleted" as undecided until the user says otherwise.
