@@ -23,7 +23,7 @@ public static class Lexer
     {
         private readonly string _source;
         private readonly List<Token> _tokens = [];
-        private readonly List<Diagnostic> _diagnostics = [];
+        private readonly List<CompilationError> _errors = [];
         private int _position;
         private int _line = 1;
         private int _column = 1;
@@ -38,7 +38,7 @@ public static class Lexer
             }
 
             _tokens.Add(new Token(TokenType.Eof, string.Empty, null, CurrentLocation));
-            return new LexResult(_tokens, _diagnostics);
+            return new LexResult(_tokens, _errors);
         }
 
         private bool IsAtEnd => _position >= _source.Length;
@@ -172,7 +172,7 @@ public static class Lexer
                     Add(TokenType.AmpAmp, "&&", start);
                     return;
                 case '&':
-                    _diagnostics.Add(new Diagnostic("Unexpected character '&' (did you mean '&&'?)", start));
+                    _errors.Add(new LexError(LexErrorKind.LoneAmpersand, "Unexpected character '&' (did you mean '&&'?)", start));
                     return;
 
                 case '|' when Current == '|':
@@ -180,7 +180,7 @@ public static class Lexer
                     Add(TokenType.PipePipe, "||", start);
                     return;
                 case '|':
-                    _diagnostics.Add(new Diagnostic("Unexpected character '|' (did you mean '||'?)", start));
+                    _errors.Add(new LexError(LexErrorKind.LonePipe, "Unexpected character '|' (did you mean '||'?)", start));
                     return;
 
                 case '"':
@@ -199,7 +199,7 @@ public static class Lexer
                     return;
 
                 default:
-                    _diagnostics.Add(new Diagnostic($"Unexpected character '{c}'", start));
+                    _errors.Add(new LexError(LexErrorKind.UnexpectedCharacter, $"Unexpected character '{c}'", start));
                     return;
             }
         }
@@ -248,7 +248,7 @@ public static class Lexer
             }
             catch (OverflowException)
             {
-                _diagnostics.Add(new Diagnostic($"Integer literal '{text}' is out of range", start));
+                _errors.Add(new LexError(LexErrorKind.IntegerOutOfRange, $"Integer literal '{text}' is out of range", start, new SourceLocation(start.Line, start.Column + text.Length - 1)));
                 _tokens.Add(new Token(TokenType.IntLiteral, text, 0, start));
             }
         }
@@ -303,7 +303,7 @@ public static class Lexer
 
             if (IsAtEnd)
             {
-                _diagnostics.Add(new Diagnostic("Unterminated string literal", start));
+                _errors.Add(new LexError(LexErrorKind.UnterminatedStringLiteral, "Unterminated string literal", start));
                 var partial = sb.ToString();
                 _tokens.Add(new Token(TokenType.StringLiteral, partial, partial, start));
                 return;
@@ -318,7 +318,7 @@ public static class Lexer
         {
             if (IsAtEnd)
             {
-                _diagnostics.Add(new Diagnostic("Unterminated char literal", start));
+                _errors.Add(new LexError(LexErrorKind.UnterminatedCharLiteral, "Unterminated char literal", start, new SourceLocation(start.Line, start.Column + 1)));
                 return;
             }
 
@@ -327,7 +327,7 @@ public static class Lexer
             {
                 if (IsAtEnd)
                 {
-                    _diagnostics.Add(new Diagnostic("Unterminated char literal", start));
+                    _errors.Add(new LexError(LexErrorKind.UnterminatedCharLiteral, "Unterminated char literal", start, new SourceLocation(start.Line, start.Column + 1)));
                     return;
                 }
                 c = DecodeEscape(Advance(), start);
@@ -335,7 +335,7 @@ public static class Lexer
 
             if (IsAtEnd || Current != '\'')
             {
-                _diagnostics.Add(new Diagnostic("Unterminated char literal", start));
+                _errors.Add(new LexError(LexErrorKind.UnterminatedCharLiteral, "Unterminated char literal", start, new SourceLocation(start.Line, start.Column + 1)));
                 return;
             }
 
@@ -358,7 +358,7 @@ public static class Lexer
                 case '\\':
                     return '\\';
                 default:
-                    _diagnostics.Add(new Diagnostic($"Unknown escape sequence '\\{escape}'", start));
+                    _errors.Add(new LexError(LexErrorKind.UnknownEscapeSequence, $"Unknown escape sequence '\\{escape}'", start));
                     return escape;
             }
         }

@@ -1,5 +1,4 @@
 using Spectre.Console;
-using System.Reflection;
 
 namespace Pirate.Cli;
 
@@ -23,7 +22,7 @@ internal static class Banner
     public static void Render()
     {
         AnsiConsole.Write(new FigletText("Pirate").Color(Theme.Accent));
-        AnsiConsole.MarkupLine($"[{Theme.Info}]PirateLang version {Markup.Escape(Version())}[/]");
+        AnsiConsole.MarkupLine($"[{Theme.Info}]PirateLang version {Markup.Escape(CliInfo.Version())}[/]");
         AnsiConsole.WriteLine();
 
         AnsiConsole.Write(new Rule($"[{Theme.Warning}]Commands[/]").LeftJustified());
@@ -36,14 +35,5 @@ internal static class Banner
             table.AddRow($"[bold]pirate {Markup.Escape(usage)}[/]", Markup.Escape(description));
         }
         AnsiConsole.Write(table);
-
-    }
-    
-    private static string Version()
-    {
-        return Assembly.GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-            .InformationalVersion
-        ?? "unknown";
     }
 }

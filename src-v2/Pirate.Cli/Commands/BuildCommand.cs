@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Threading;
+using Pirate.Cli.Services;
 using Pirate.Shared.File;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -7,18 +8,15 @@ using Spectre.Console.Cli;
 namespace Pirate.Cli.Commands;
 
 /// <summary>
-/// pirate build [filename] — v2 equivalent of v1's BuildCommand. Discovers
-/// ".pirate" modules in the current directory, or resolves a single named
-/// one (real, working today); compiling them through the
-/// lexer/parser/semantics/compiler pipeline is not implemented yet — see
-/// docs/architecture/v2-architecture.md for pipeline status.
+/// pirate build [filename] — discovers .pirate modules, checks each against
+/// the content-hash cache, and rebuilds only those that changed.
 /// </summary>
 public sealed class BuildCommand : Command<BuildCommand.BuildCommandSettings>
 {
     public sealed class BuildCommandSettings : GlobalSettings
     {
         [CommandArgument(0, "[filename]")]
-        [Description("Optional filename to build; if not provided, all .pirate files in the current directory will be discovered and built.")]
+        [Description("Optional filename to build; if not provided, all .pirate files in the current directory will be discovered.")]
         [DefaultValue(null)]
         public string? Filename { get; set; }
     }
@@ -26,6 +24,7 @@ public sealed class BuildCommand : Command<BuildCommand.BuildCommandSettings>
     protected override int Execute(CommandContext context, BuildCommandSettings settings, CancellationToken cancellationToken)
     {
         var root = Directory.GetCurrentDirectory();
+        var cache = BuildCache.Load(root);
 
         IReadOnlyList<string> files;
         if (string.IsNullOrWhiteSpace(settings.Filename))
@@ -49,28 +48,70 @@ public sealed class BuildCommand : Command<BuildCommand.BuildCommandSettings>
             files = new[] { path };
         }
 
-        // Same look as the no-args banner's command list and "new"'s options
-        // table (Banner.cs, NewCommand.cs): a Rule divider over a borderless,
-        // bold-row Table, instead of a bordered ASCII grid.
-        AnsiConsole.Write(new Rule($"[{Theme.Info}]Discovered modules[/]").LeftJustified());
+        var rebuilt = 0;
+        var upToDate = 0;
+        var failed = 0;
 
-        var table = new Table().Border(TableBorder.None).HideHeaders();
-        table.AddColumn(string.Empty);
-        AnsiConsole.Progress().Start(ctx =>
+        AnsiConsole.Status().Start("Resolving modules...", ctx =>
         {
+            AnsiConsole.WriteLine();
+            AnsiConsole.Write(new Rule($"[{Theme.Info}]Build[/]").LeftJustified());
+
             foreach (var file in files)
             {
                 var relative = Path.GetRelativePath(root, file);
-                var task = ctx.AddTask(Markup.Escape(relative));
-                table.AddRow($"[bold]{Markup.Escape(relative)}[/]");
-                task.Increment(100);
+
+                if (cache.IsUpToDate(file))
+                {
+                    upToDate++;
+                    AnsiConsole.MarkupLine($"  [{Theme.Success}]✓[/] {Markup.Escape(relative)} (up to date)");
+                    if (settings.Verbose)
+                    {
+                        AnsiConsole.MarkupLine($"    hash: {BuildCache.HashFile(file)} (unchanged)");
+                    }
+                }
+                else
+                {
+                    var source = File.ReadAllText(file);
+                    // Fully qualified: inside Pirate.* namespaces, the simple
+                    // names Lexer/Parser bind to the namespaces, not the classes.
+                    var lexResult = Pirate.Lexer.Lexer.Tokenize(source);
+                    var parseResult = Pirate.Parser.Parser.Parse(lexResult);
+
+                    var allErrors = new List<Pirate.Syntax.CompilationError>(lexResult.Errors);
+                    allErrors.AddRange(parseResult.Errors);
+
+                    if (allErrors.Count > 0)
+                    {
+                        failed++;
+                        AnsiConsole.MarkupLine($"  [{Theme.Error}]✗[/] {Markup.Escape(relative)} (failed)");
+                        DiagnosticRenderer.RenderErrors(file, allErrors);
+                    }
+                    else
+                    {
+                        rebuilt++;
+                        cache.MarkBuilt(file);
+                        AnsiConsole.MarkupLine($"  [{Theme.Success}]⟳[/] {Markup.Escape(relative)} (rebuilt)");
+                        if (settings.Verbose)
+                        {
+                            AnsiConsole.MarkupLine($"    hash: {BuildCache.HashFile(file)}");
+                        }
+                    }
+                }
             }
         });
-        AnsiConsole.Write(table);
 
-        AnsiConsole.MarkupLine(
-            $"[{Theme.Warning}]Compilation is not implemented yet — the v2 lexer/parser/semantics/compiler " +
-            "pipeline is still a stub (see docs/architecture/v2-architecture.md).[/]");
+        cache.Save();
+
+        AnsiConsole.WriteLine();
+        var summary = $"{files.Count} module{(files.Count == 1 ? "" : "s")}: {rebuilt} rebuilt, {upToDate} up to date";
+        if (failed > 0)
+        {
+            summary += $", {failed} failed";
+            AnsiConsole.MarkupLine($"[{Theme.Error}]{summary}[/]");
+            return 1;
+        }
+        AnsiConsole.MarkupLine($"[{Theme.Success}]{summary}[/]");
         return 0;
     }
 }

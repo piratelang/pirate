@@ -1,4 +1,5 @@
 using Pirate.Lexer;
+using Pirate.Syntax;
 using Xunit;
 
 namespace Pirate.Lexer.Test;
@@ -14,7 +15,7 @@ public class LexerTests
         var result = Lexer.Tokenize(string.Empty);
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
-        Assert.Empty(result.Diagnostics);
+        Assert.Empty(result.Errors);
     }
 
     [Fact]
@@ -23,7 +24,7 @@ public class LexerTests
         var result = Lexer.Tokenize("  \t\r\n \n ");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
-        Assert.Empty(result.Diagnostics);
+        Assert.Empty(result.Errors);
     }
 
     [Theory]
@@ -130,12 +131,14 @@ public class LexerTests
     }
 
     [Fact]
-    public void Tokenize_IntLiteralOverflow_ReportsDiagnostic()
+    public void Tokenize_IntLiteralOverflow_ReportsError()
     {
         var result = Lexer.Tokenize("99999999999999999999");
 
-        Assert.Single(result.Diagnostics);
-        Assert.Contains("out of range", result.Diagnostics[0].Message);
+        Assert.Single(result.Errors);
+        var error = (LexError)result.Errors[0];
+        Assert.Equal(LexErrorKind.IntegerOutOfRange, error.Kind);
+        Assert.Contains("out of range", error.Message);
     }
 
     [Fact]
@@ -158,26 +161,30 @@ public class LexerTests
         var result = Lexer.Tokenize(source);
 
         Assert.Equal(expected, result.Tokens[0].Value);
-        Assert.Empty(result.Diagnostics);
+        Assert.Empty(result.Errors);
     }
 
     [Fact]
-    public void Tokenize_StringLiteral_UnknownEscapeSequence_ReportsDiagnosticAndKeepsCharacter()
+    public void Tokenize_StringLiteral_UnknownEscapeSequence_ReportsErrorAndKeepsCharacter()
     {
         var result = Lexer.Tokenize("\"a\\qb\"");
 
-        Assert.Single(result.Diagnostics);
-        Assert.Contains("Unknown escape sequence", result.Diagnostics[0].Message);
+        Assert.Single(result.Errors);
+        var error = (LexError)result.Errors[0];
+        Assert.Equal(LexErrorKind.UnknownEscapeSequence, error.Kind);
+        Assert.Contains("Unknown escape sequence", error.Message);
         Assert.Equal("aqb", result.Tokens[0].Value);
     }
 
     [Fact]
-    public void Tokenize_UnterminatedStringLiteral_ReportsDiagnostic()
+    public void Tokenize_UnterminatedStringLiteral_ReportsError()
     {
         var result = Lexer.Tokenize("\"never closed");
 
-        Assert.Single(result.Diagnostics);
-        Assert.Contains("Unterminated string literal", result.Diagnostics[0].Message);
+        Assert.Single(result.Errors);
+        var error = (LexError)result.Errors[0];
+        Assert.Equal(LexErrorKind.UnterminatedStringLiteral, error.Kind);
+        Assert.Contains("Unterminated string literal", error.Message);
     }
 
     [Fact]
@@ -199,12 +206,14 @@ public class LexerTests
     }
 
     [Fact]
-    public void Tokenize_UnterminatedCharLiteral_ReportsDiagnostic()
+    public void Tokenize_UnterminatedCharLiteral_ReportsError()
     {
         var result = Lexer.Tokenize("'x");
 
-        Assert.Single(result.Diagnostics);
-        Assert.Contains("Unterminated char literal", result.Diagnostics[0].Message);
+        Assert.Single(result.Errors);
+        var error = (LexError)result.Errors[0];
+        Assert.Equal(LexErrorKind.UnterminatedCharLiteral, error.Kind);
+        Assert.Contains("Unterminated char literal", error.Message);
     }
 
     [Theory]
@@ -239,35 +248,41 @@ public class LexerTests
         var result = Lexer.Tokenize(source);
 
         Assert.Equal([expected, TokenType.Eof], TypesOf(result));
-        Assert.Empty(result.Diagnostics);
+        Assert.Empty(result.Errors);
     }
 
     [Fact]
-    public void Tokenize_LoneAmpersand_ReportsDiagnosticInsteadOfToken()
+    public void Tokenize_LoneAmpersand_ReportsErrorInsteadOfToken()
     {
         var result = Lexer.Tokenize("&");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
-        Assert.Single(result.Diagnostics);
+        Assert.Single(result.Errors);
+        var error = (LexError)result.Errors[0];
+        Assert.Equal(LexErrorKind.LoneAmpersand, error.Kind);
     }
 
     [Fact]
-    public void Tokenize_LonePipe_ReportsDiagnosticInsteadOfToken()
+    public void Tokenize_LonePipe_ReportsErrorInsteadOfToken()
     {
         var result = Lexer.Tokenize("|");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
-        Assert.Single(result.Diagnostics);
+        Assert.Single(result.Errors);
+        var error = (LexError)result.Errors[0];
+        Assert.Equal(LexErrorKind.LonePipe, error.Kind);
     }
 
     [Fact]
-    public void Tokenize_UnknownCharacter_ReportsDiagnosticAndSkipsIt()
+    public void Tokenize_UnknownCharacter_ReportsErrorAndSkipsIt()
     {
         var result = Lexer.Tokenize("@");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
-        Assert.Single(result.Diagnostics);
-        Assert.Contains("Unexpected character '@'", result.Diagnostics[0].Message);
+        Assert.Single(result.Errors);
+        var error = (LexError)result.Errors[0];
+        Assert.Equal(LexErrorKind.UnexpectedCharacter, error.Kind);
+        Assert.Contains("Unexpected character '@'", error.Message);
     }
 
     [Fact]
@@ -336,7 +351,7 @@ public class LexerTests
 
         var result = Lexer.Tokenize(source);
 
-        Assert.Empty(result.Diagnostics);
+        Assert.Empty(result.Errors);
         Assert.Equal(TokenType.Extern, result.Tokens[0].Type);
         Assert.Equal(TokenType.Eof, result.Tokens[^1].Type);
         Assert.Contains(result.Tokens, t => t.Type == TokenType.StringLiteral && (string)t.Value! == "Ahoy!");
