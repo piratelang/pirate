@@ -1,9 +1,19 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "lsp": true,
   "instructions": [
     ".agents/AGENTS.md"
   ],
-  "lsp": true,
+  "agent": {
+    "ask" : {
+      "description": "Provides helpful and accurate responses to user questions about the code.",
+      "prompt": "The user is asking a question about the code. Provide a helpful and accurate response.",
+      "tools": {
+        "write": false,
+        "edit": false
+      }
+    }
+  },
   "mcp": {
     "github": {
       "type": "remote",
@@ -17,7 +27,7 @@
   "references": {
     "docs": {
       "path": "docs",
-      "description": "Pirate language docs — grammar, CLI guide, architecture, testing strategy"
+      "description": "Pirate language docs — grammar, CLI guide, architecture, code style, testing strategy"
     },
     "agents": {
       "path": ".agents",
