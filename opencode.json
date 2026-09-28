@@ -23,5 +23,8 @@
       "path": ".agents",
       "description": "Agent instructions (AGENTS.md) and compiler reference material (Thorsten Ball's Writing an Interpreter in Go / Writing a Compiler in Go)"
     }
-  }
+  },
+  "plugin": [
+    "opencode-wakatime"
+  ]
 }
