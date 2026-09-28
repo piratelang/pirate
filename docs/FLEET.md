@@ -29,7 +29,7 @@ lives in the project root as `<name>.fleet` — `<name>` defaults to `module`
 |---|---|---|
 | `name` | Project name. | The project directory's folder name. |
 | `version` | Project version (free-form string, not yet validated as semver). | `"0.1.0"` |
-| `entryPoint` | The module `pirate run` executes when invoked with no `[filename]` argument. | Whatever `pirate init`'s own `[filename]` argument resolved to (`"main"` by default). |
+| `entryPoint` | The module `pirate run` executes when invoked with no `[filename]` argument: its **top-level statements** are the program (GRAMMAR.md §3.1). A module with none is a valid build target but has nothing to run — `run` says so and exits `1`. | Whatever `pirate init`'s own `[filename]` argument resolved to (`"main"` by default). |
 | `build` | Reserved for future compiler/build configuration. | `{}` |
 | `dependencies` | Reserved for a future package ecosystem. | `{}` |
 
@@ -38,10 +38,15 @@ honesty-about-pipeline-status policy as `pirate build`/`run` themselves
 (see `docs/architecture/v2-architecture.md`, "Current state"). They exist
 in the schema as empty JSON objects so a `.fleet` written today round-trips
 cleanly once real fields land there, but nothing in `Pirate.Cli` or the
-compiler reads them yet. There's nothing to configure a build with (no
-compiler) and nothing to depend on (v2's only "import" mechanism is
-`extern Standard.X.Y;`, resolved entirely against the built-in standard
-library — see `docs/architecture/v2-architecture.md`'s `Pirate.StandardLibrary`
+compiler reads them yet. The frontend today can only check a single module
+at a time — there's still no bytecode compiler to configure and no module
+linker to consume dependencies. The grammar already defines the surfaces
+those fields will feed: `import module`/`import external` statements
+(GRAMMAR.md §3.2, currently rejected with SEM-013 until the linker lands)
+are how a module will reach what `dependencies` declares, while
+`import standard <NS>;` and `extern Standard.X.Y;` resolve entirely
+against the built-in registry — see
+`docs/architecture/v2-architecture.md`'s `Pirate.StandardLibrary`
 section).
 
 `.fleet` deliberately does **not** list project files — `pirate build`'s
@@ -77,6 +82,13 @@ edge case, not a supported multi-manifest feature.
 
 A project with no `.fleet` behaves exactly as before `.fleet` existed —
 this is additive, not a breaking change for existing `.pirate` directories.
+
+Whatever the resolution picks, `run` then executes that module's top-level
+statements (there is no `func main()` entry function; the statements *are*
+the program) after checking it cleanly through the whole frontend. Working
+manifests to copy live with the syntax examples:
+[`docs/examples/`](examples/) — each folder is a complete
+`<name>.fleet` + `.pirate`-modules project.
 
 `pirate build`'s no-argument behavior (recursive discovery of every
 `.pirate` file) does **not** consult `.fleet` — that's a fundamentally

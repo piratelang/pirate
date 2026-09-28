@@ -1,0 +1,8 @@
+// A helper module: declarations only, no top-level code. `export` marks
+// what importing modules can reach (GRAMMAR.md §3.3).
+
+export var data = "This is some shared data";
+
+export func greet(string name) : string {
+    return "Hello, " + name;
+}

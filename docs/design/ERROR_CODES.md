@@ -47,7 +47,7 @@ LexError                SyntaxError               SemanticsError
    // Pirate.Cli/Services/ErrorMapper.cs
    private static string MapSyntax(SyntaxErrorKind kind) => kind switch {
        // ... existing mappings ...
-       SyntaxErrorKind.MissingSemicolonAfterForLoop => "SYN-044",
+       SyntaxErrorKind.MissingSemicolonAfterForLoop => "SYN-050",
        _ => "SYN-999",
    };
    ```
@@ -61,9 +61,9 @@ LexError                SyntaxError               SemanticsError
        startLocation));
    ```
 
-4. **Document it** in the appropriate `docs/external/*_ERRORS.md` file:
+4. **Document it** in the appropriate `docs/errors/*_ERRORS.md` file:
    ```markdown
-   ### SYN-044 — Missing ';' after for loop
+   ### SYN-050 — Missing ';' after for loop
    ...explanation, example, fix...
    ```
 
@@ -82,9 +82,10 @@ Gaps in numbering allow inserting new errors without renumbering:
 | Range | Category | Values |
 |-------|----------|--------|
 | `SYN-001`–`SYN-014` | Missing tokens | 14 slots, ~8 used |
-| `SYN-020`–`SYN-027` | Missing identifiers | 8 slots |
+| `SYN-020`–`SYN-028` | Missing identifiers | 9 slots, all used |
 | `SYN-030`–`SYN-034` | Missing keywords | 5 slots |
-| `SYN-040`–`SYN-043` | Unexpected input | 4 slots, ~4 used |
+| `SYN-041`–`SYN-049` | Unexpected input, incl. import/export | 9 slots, all used (`SYN-040` retired: top-level statements made "expected extern or func" unreachable) |
+| `SYN-050`+ | free | next unexpected-input codes |
 
 ## Error Type Hierarchy
 
@@ -92,8 +93,8 @@ Gaps in numbering allow inserting new errors without renumbering:
 Pirate.Syntax/
   CompilationError.cs   ← abstract base class
   LexError.cs           ← LexErrorKind (7 values)
-  SyntaxError.cs        ← SyntaxErrorKind (28 values)
-  SemanticsError.cs     ← SemanticsErrorKind (10 values)
+  SyntaxError.cs        ← SyntaxErrorKind (37 values)
+  SemanticsError.cs     ← SemanticsErrorKind (14 values)
 ```
 
 Key design decisions:

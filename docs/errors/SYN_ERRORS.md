@@ -154,7 +154,7 @@ main.pirate:1:13 Expected ':' before return type *SYN-014*
 
 ---
 
-## Missing Identifiers (SYN-020 — SYN-027)
+## Missing Identifiers (SYN-020 — SYN-028)
 
 ### SYN-020 — Expected identifier after `extern`
 
@@ -238,6 +238,20 @@ main.pirate:2:9 Expected identifier in for *SYN-027*
 
 ---
 
+### SYN-028 — Expected identifier after `const`
+
+```
+main.pirate:3:11 Expected identifier after 'const' *SYN-028*
+  2 | func main() : void {
+  3 |     const = 5;
+    |           ^
+```
+
+**Cause**: `const` must be followed by a name, optionally preceded by a
+type or `var`.
+**Fix**: `const x = 5;`, `const int x = 5;`, or `const var x = 5;`
+
+
 ## Missing Keywords (SYN-030 — SYN-034)
 
 ### SYN-030 — Expected `var` or `(` after `for`
@@ -293,19 +307,7 @@ main.pirate:2:17 Expected 'to' in for *SYN-034*
 
 ---
 
-## Unexpected Input (SYN-040 — SYN-043)
-
-### SYN-040 — Expected `extern` or `func` at top level
-
-```
-main.pirate:3:1 Expected 'extern' or 'func', got 'bogus' *SYN-040*
-  2 | extern Standard.Terminal.Print;
-  3 | bogus;
-    | ^^^^^
-```
-
-**Fix**: Top-level code must be either an `extern` declaration or a
-`func` declaration. Remove or fix the invalid token.
+## Unexpected Input (SYN-041 — SYN-049)
 
 ### SYN-041 — Expected expression
 
@@ -337,3 +339,68 @@ main.pirate:1:14 Expected type, got 'void' *SYN-043*
 
 **Fix**: `void` is not a valid parameter type. Use `int`, `float`,
 `string`, `char`, or `bool`.
+
+### SYN-044 — Expected import source after `import`
+
+```
+main.pirate:1:8 Expected 'standard', 'module', or 'external' after 'import' *SYN-044*
+  1 | import Terminal;
+    |        ^^^^^^^^
+```
+
+**Cause**: `import` must be followed by one of the soft keywords
+`standard`, `module`, or `external`.
+**Fix**: `import standard Terminal;`
+
+### SYN-045 — Expected a name after `import standard|module|external`
+
+```
+main.pirate:1:16 Expected a name after 'import' *SYN-045*
+  1 | import standard ;
+    |                ^
+```
+
+**Fix**: name what you're importing: `import standard Terminal;`
+
+### SYN-046 — Expected identifier after `as`
+
+```
+main.pirate:1:29 Expected identifier after 'as' *SYN-046*
+  1 | import module data as ;
+    |                             ^
+```
+
+**Fix**: give the import an alias: `import module data as Data;`
+
+### SYN-047 — Missing `;` after import
+
+```
+main.pirate:1:1 import standard Terminal *SYN-047*
+  1 | import standard Terminal
+    |                             ^
+```
+
+**Fix**: terminate the statement: `import standard Terminal;`
+
+### SYN-048 — Expected declaration after `export`
+
+```
+main.pirate:1:8 Expected 'func', 'var', 'const', or a type after 'export' *SYN-048*
+  1 | export if x { }
+    |       ^
+```
+
+**Cause**: `export` only prefixes function and variable declarations.
+**Fix**: `export func get() : int { ... }` or `export var data = ...;`
+
+### SYN-049 — `as` alias on a standard import
+
+```
+main.pirate:1:26 'as' only applies to module and external imports *SYN-049*
+  1 | import standard Terminal as T;
+    |                          ^^
+```
+
+**Cause**: `import standard <NS>;` binds the group's own names (leaf and
+dotted path) — there is nothing for an alias to name.
+**Fix**: drop the alias: `import standard Terminal;`

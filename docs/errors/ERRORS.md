@@ -35,8 +35,8 @@ a sequential number:
 ## Error Catalogs
 
 - **[Lexical Errors](LEX_ERRORS.md)** — `LEX-001` through `LEX-007`
-- **[Syntax Errors](SYN_ERRORS.md)** — `SYN-001` through `SYN-043`
-- **[Semantic Errors](SEM_ERRORS.md)** — `SEM-001` through `SEM-010` *(future)*
+- **[Syntax Errors](SYN_ERRORS.md)** — `SYN-001` through `SYN-048` (no `SYN-040`)
+- **[Semantic Errors](SEM_ERRORS.md)** — `SEM-001` through `SEM-014`
 - **[Runtime Errors](RTN_ERRORS.md)** — `RTN-001` through `RTN-003` *(future)*
 
 ## Multiple Errors
@@ -48,7 +48,7 @@ problems in one edit-run cycle:
 ```
 main.pirate:4:12 Expected ';' after expression *SYN-005*
 main.pirate:7:5 Expected identifier after 'var' *SYN-024*
-helper.pirate:2:1 Expected 'extern' or 'func', got 'bogus' *SYN-040*
+main.pirate:9:13 Operator '+' cannot be applied to 'string' and 'int' *SEM-003*
 ```
 
 ## Verbose Mode

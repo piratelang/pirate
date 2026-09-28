@@ -19,12 +19,15 @@ Also read, as needed for the task:
 
 - [`docs/GRAMMAR.md`](../docs/GRAMMAR.md) — canonical v2 language grammar. Any change to v2 syntax or semantics must be reflected here in the same change.
 - [`docs/GRAMMAR_CHANGES.md`](../docs/GRAMMAR_CHANGES.md) — why v2 differs from v1. Read before assuming v1 behavior carries over.
+- [`docs/STYLE.md`](../docs/STYLE.md) — v2 code style guide (naming, DI per-project extensions, records, diagnostics, comments, testing). Any code written or edited under `src-v2/` must follow it; its "Migration appendix" lists known deviations as follow-up work, not precedent.
 - [`docs/TESTING.md`](../docs/TESTING.md) — testing strategy: xUnit per project, Gherkin/Reqnroll end-to-end. Any grammar or pipeline change needs unit tests in the matching `*.Test` project and, for syntax/semantics changes, an e2e scenario in `Pirate.Spec.Test`.
-- [`docs/internal/DESIGN_DECISIONS.md`](../docs/internal/DESIGN_DECISIONS.md) — record of architectural decisions. **After making any design choice, append a new entry to this file** so future-you or another agent knows why something was done a certain way.
+- [`docs/design/DESIGN_DECISIONS.md`](../docs/design/DESIGN_DECISIONS.md) — record of architectural decisions. **After making any design choice, append a new entry to this file** so future-you or another agent knows why something was done a certain way.
 
-Root `GRAMMAR.md` and `SYNTAX.md` (outside `docs/`) describe **v1 only** and
-are historical — do not use them as a source of truth for `src-v2/` work,
-and do not edit them as part of v2 work.
+v1's old root grammar docs (`GRAMMAR.md`, `SYNTAX.md`) were removed from the
+repo — `docs/architecture/v1-architecture.md` describes what v1 *actually
+does*. Don't use v1's behavior as a source of truth for `src-v2/` work
+(`docs/GRAMMAR.md` governs v2 alone), and don't edit anything under `src/`
+as part of v2 work.
 
 ## Two solutions, kept independent
 

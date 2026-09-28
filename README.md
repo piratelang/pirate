@@ -9,10 +9,10 @@
         <img src="https://github.com/piratelang/pirate/actions/workflows/github-code-scanning/codeql/badge.svg" alt="CodeQL">
     </a>
     <a href="https://www.nuget.org/packages/PirateLang.CLI">
-        <img src="https://img.shields.io/nuget/v/PirateLang.CLI.svg" alt="HTML tutorial">
+        <img src="https://img.shields.io/nuget/v/PirateLang.CLI.svg" alt="PirateLang.CLI on NuGet">
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=joerivanarkel.piratelang">
-        <img src="https://img.shields.io/visual-studio-marketplace/v/joerivanarkel.piratelang?label=VSCode%20Extension" alt="HTML tutorial">
+        <img src="https://img.shields.io/visual-studio-marketplace/v/joerivanarkel.piratelang?label=VSCode%20Extension" alt="VSCode Extension">
     </a>
     <a href="https://github.com/piratelang/PirateLang/releases">
         <img src="https://img.shields.io/github/v/release/joerivanarkel/piratelang" alt="Release">
@@ -24,19 +24,71 @@
 
 # Pirate Programming Language
 
-Pirate is a toy programming language that is written in C# and F#. It is a simple language that was created to learn more about programming languages and interpreters.
+Pirate is a toy programming language written in C# and F#, created to learn
+more about programming languages and compilers.
 
-## Contents
+**The current direction is v2** — a ground-up rewrite living in `src-v2/`
+(this repository's dev branch). v1 — the shipped, dynamically-typed
+tree-walking interpreter in `src/` — keeps working while v2 lands; the two
+solutions share no projects.
 
-- [Installation](#installation)
-- [Syntax and Structure](#syntax-and-structure)
-- [Solution Structure](#solution-structure)
-  - [Pirate.Lexer](#piratelexer)
-    - [Pirate.Lexer.Enums](#piratelexerenums)
-    - [Pirate.Lexer.TokenType](#piratelexertokentype)
-  - [Pirate.Parser](#pirateparser)
-  - [Pirate.Interpreter](#pirateinterpreter)
-  - [Shell](#shell)
+## v2 in one screen
+
+v2 replaces v1's interpreted pipeline with a compiled one:
+
+```
+source.pirate → lexer (C#) → parser (F#, Pratt) → static type-checker
+              → bytecode compiler → stack VM          (compiler/VM: next)
+```
+
+- **Statically typed** — every type error is a compile-time diagnostic with
+  a real source location; nothing crashes mid-run for a typo'd type.
+- **Every error in one pass** — stages collect typed diagnostics instead of
+  throwing; the Spectre.Console CLI renders them all, `LEX`/`SYN`/`SEM`
+  coded, with source excerpts and carets.
+- **Script-shaped programs** — the entry module's top-level statements *are*
+  the program (`pirate run`), with functions for reusable code and a
+  `.fleet` project manifest.
+
+A hello world looks like this:
+
+```pirate
+import standard Terminal;
+
+PrintLine("Hello World");
+```
+
+| Read this | For |
+|---|---|
+| [`docs/GRAMMAR.md`](docs/GRAMMAR.md) | the canonical v2 language specification |
+| [`docs/examples/`](docs/examples/) | runnable syntax examples, pinned by tests |
+| [`docs/architecture/`](docs/architecture/) | how v2 is built, and the honest current state |
+| [`docs/CLI.md`](docs/CLI.md) / [`docs/FLEET.md`](docs/FLEET.md) | the `pirate` command surface / project manifests |
+| [`docs/GRAMMAR_CHANGES.md`](docs/GRAMMAR_CHANGES.md) | why v2's language differs from v1's |
+
+Status: the front end (lexer, parser, semantics, CLI `build`/`run` checking,
+incremental content-hash cache) is complete and tested; the bytecode
+compiler, VM, standard library, and module linking (`import module` /
+`import external`) are the next milestones — see
+[`docs/architecture/v2-architecture.md`](docs/architecture/v2-architecture.md#current-state).
+
+Build and test v2 (requires .NET 9 SDK):
+
+```
+dotnet test src-v2/PirateLang.slnx
+```
+
+---
+
+# v1 — shipped (`src/`)
+
+The published implementation ([`PirateLang.CLI` on
+NuGet](https://www.nuget.org/packages/PirateLang.CLI)): dynamically typed,
+tree-walking interpreter. What v1 *actually does*, file by file, is
+described in
+[`docs/architecture/v1-architecture.md`](docs/architecture/v1-architecture.md);
+its historical `GRAMMAR.md`/`SYNTAX.md` root docs drifted from the
+implementation and were removed.
 
 ## Installation
 
@@ -52,7 +104,9 @@ extern Standard.Terminal.Print;
 Print("Hello World");
 ```
 
-More syntax is defined in the [Syntax.md](syntax.md) file.
+More syntax is defined in the [grammar](docs/GRAMMAR.md) — but note that
+that file now governs **v2**; for v1's real behavior see the
+[v1 architecture doc](docs/architecture/v1-architecture.md).
 
 ## Solution Structure
 

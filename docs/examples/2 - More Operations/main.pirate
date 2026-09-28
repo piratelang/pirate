@@ -1,0 +1,54 @@
+// Declaration forms, operators, control flow, and loops — the shape of
+// everything GRAMMAR.md §2–§3 puts inside a module.
+
+import standard Terminal;
+import standard String;
+
+// --- Declarations: three spellings, one fixed type each ---
+var one = "one";              // inferred: string
+string two = "two";           // explicit
+const three = 3;              // inferred const: int, and not reassignable
+
+bool isReady = true;
+char initial = 'A';
+float ratio = 1.5;
+
+// --- Arrays ---
+var list = ["Hello", "World"];           // inferred: string[]
+int[] counters = [];                     // empty literal needs the element type
+
+// --- Assignment keeps the declared type; string + concatenates ---
+one = one + " again";
+ratio = ratio * 2.0;
+
+// --- Conditionals: && || !, comparisons, if/else-if/else chains ---
+if list[0] == "Hello" && !isReady {
+    PrintLine("not ready, but polite");
+} else if three < 5 {
+    PrintLine("counting");
+} else {
+    PrintLine("ready");
+}
+
+// --- Loops: counting and iteration ---
+int sum = 0;
+for var i = 0 to 3 {
+    sum = sum + i;
+}
+
+for (item in list) {
+    PrintLine(item);
+}
+
+while sum > 0 {
+    sum = sum - 1;
+}
+
+// --- Functions: reusable code, called from top-level statements ---
+func shout(string text) : string {
+    return text + "!";
+}
+
+PrintLine(shout(one));
+PrintLine(Standard.String.Concat("counters: ", "0"));   // dotted path works
+                                                      // too — no extern needed

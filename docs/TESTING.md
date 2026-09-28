@@ -14,6 +14,17 @@ Unit tests catch "does this function do the right thing"; e2e tests catch
 — neither substitutes for the other. A change to the grammar
 ([`GRAMMAR.md`](GRAMMAR.md)) is not done until both layers reflect it.
 
+**Layer-2 status (user decision, 2026-09-28):** "actual output" requires
+execution, and the compiler/VM half of the pipeline doesn't exist yet, so
+`Pirate.Spec.Test` stays an empty scaffold until `pirate run` can run real
+programs — bootstrapping Reqnroll now would only assert on diagnostics,
+which is what the unit layer already does. Until then, the closest real
+stand-in lives in `Pirate.Cli.Test`: `CompilationPipeline` tests feed
+genuine multi-line source through the actual frontend (lexer → parser →
+semantics) and check the concatenated diagnostics, including the shipped
+`init` template. When the VM lands, grammar features get their Gherkin
+scenarios then — this deferral is scheduling, not a policy change.
+
 ## 1. Unit tests
 
 Every project in `src-v2/PirateLang.slnx` is tested with xUnit where the
@@ -30,7 +41,7 @@ project has behavior to unit-test:
 | `Pirate.StandardLibrary` | `Pirate.StandardLibrary.Test` | Each native function (`Standard.Terminal.Print`, `Standard.String.Length`, …) against its inputs/outputs and error cases, independent of the VM. |
 | `Pirate.Shared.File` | `Pirate.Shared.File.Test` | `PirateFileLocator`/`PirateFileName` (`.pirate` file discovery and filename resolution) and `FleetFileLocator`/`FleetFileName` (`.fleet` discovery, non-recursive, and `-n\|--name` resolution, defaulting to `"module"`) — all four independent of any CLI framework or of `Pirate.Fleet`'s manifest-specific logic. All four are thin wrappers over `FileDiscovery`/`FileNameResolver`; no separate tests of those two, since the four wrappers' tests already exercise the generic mechanism (recursive vs. non-recursive discovery, default-name vs. explicit-argument resolution) with different constants. |
 | `Pirate.Fleet` | `Pirate.Fleet.Test` | `FleetFileRepository` (read/write/round-trip the [`.fleet`](../FLEET.md) manifest, missing-file and malformed-JSON cases, via `Pirate.Shared.File`'s `FleetFileLocator`) and `FleetEntryPoint` (argument > `.fleet` entry point > `"main"` precedence). |
-| `Pirate.Cli` | `Pirate.Cli.Test` | The pure logic each command delegates to (`Services/` — templates — plus settings-class `Validate()` decisions) and `Banner`. Command `Execute` methods themselves are thin (argument resolution + a couple of I/O/console calls) and are exercised by the e2e layer below plus manual testing, not unit tests — see [`CLI.md`](CLI.md). |
+| `Pirate.Cli` | `Pirate.Cli.Test` | The pure logic each command delegates to (`Services/` — `Templates`, the `CompilationPipeline` frontend incl. error concatenation/ordering, `EntryPoint`, `BuildCache` including pipeline-version invalidation, `ErrorMapper`) plus settings-class `Validate()` decisions and `Banner`, and the `docs/examples` programs (each compiled through the real frontend; each manifest round-tripped through `FleetFileRepository`). Command `Execute` methods themselves are thin (argument resolution + a couple of I/O/console calls) and are exercised by the e2e layer below plus manual testing, not unit tests — see [`CLI.md`](CLI.md). |
 
 Stack: **xUnit** + **AutoFixture** (anonymous test data) + **FakeItEasy**
 (fakes for collaborators), matching v1's test stack. One behavior per

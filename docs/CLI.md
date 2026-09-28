@@ -22,11 +22,13 @@ Command surface is unchanged from v1: `run`, `init`, `new`, `build`, `shell`,
 plus the no-args banner. Every command still returns a process exit code
 (`0` success, non-zero failure) the same way v1's commands did via `Error()`.
 
-Every command's settings class inherits `GlobalSettings` (an intentionally
-empty `CommandSettings` subclass, for now) — the seam any future flag or
-behavior meant to apply to every command hangs off, rather than adding it to
-`RunCommandSettings`/`InitCommandSettings`/etc. individually. Nothing uses
-it today.
+Every command's settings class inherits `GlobalSettings` — the seam any
+flag or behavior meant to apply to every command hangs off, rather than
+adding it to `RunCommandSettings`/`InitCommandSettings`/etc. individually.
+It currently carries the cross-cutting `-v|--verbose` option, consumed by
+`build` to print each module's content hash (for both rebuilt and
+up-to-date files); future global flags extend this class, not the
+per-command ones.
 
 ## Commands
 
@@ -53,17 +55,14 @@ parsing instead of just checking string contents.
 
 Creates a new `.pirate` file from the hello-world template. `filename`
 defaults to `main`; the `.pirate` extension is optional (accepted with or
-without it, matching v1). Unlike v1's template (untyped `func main() { print(...); }`,
-which predates static typing), the v2 template is grammar-valid under
-[`docs/GRAMMAR.md`](GRAMMAR.md):
+without it). The template follows [`docs/GRAMMAR.md`](GRAMMAR.md) — a
+standard-library import plus a top-level call, since the entry module's
+statements are the program (GRAMMAR.md §3.1):
 
 ```pirate
-extern Standard.Terminal.Print;
+import standard Terminal;
 
-func main() : void
-{
-    Print("Hello World");
-}
+PrintLine("Hello World");
 ```
 
 `init` also writes a [`.fleet`](FLEET.md) manifest alongside it — `name`
@@ -148,40 +147,45 @@ Error: Specified file "bogus" not able to be created
 ### `pirate build [filename]`
 
 With no `filename`, discovers every `*.pirate` file under the current
-directory recursively (same as v1's
-`Directory.GetFiles("./", "*.pirate", SearchOption.AllDirectories)`); with
-one, resolves and builds just that file (same resolution as `run`). Either
-way the discovered file(s) are listed in a table. **Discovery/resolution is
-real; compiling them is not.** v1's module-list-based incremental rebuild
-(`Shell.ModuleList`/`ModuleListRepository`) has no v2 equivalent yet — there
-is nothing to incrementally rebuild until the lexer/parser/semantics/compiler
-pipeline exists (see `docs/architecture/v2-architecture.md`, "Current
-state"). `build` prints a clear stub message rather than silently pretending
-to compile.
+directory recursively; with one, resolves and builds just that file (same
+resolution as `run`). Every discovered module runs through the full
+frontend — `CompilationPipeline`: lexer → parser → semantics — and all
+errors from every stage are rendered together per file with source
+excerpts and `LEX`/`SYN`/`SEM` codes (`DiagnosticRenderer` +
+`ErrorMapper`).
 
-Discovery runs inside an `AnsiConsole.Progress()` block, one `ProgressTask`
-per file — today that task completes the instant the file is confirmed
-(there's nothing to compile yet), but the per-file granularity is already
-there for when `build` actually compiles each module. The results render
-with the same look as the no-args banner's command list and `new`'s
-options table — a `Rule` divider over a borderless, bold-row `Table` —
-rather than the bordered ASCII grid this used to be.
+Builds are incremental by **content hash** (`BuildCache`, `.pirate/cache.json`,
+SHA-256 per file): an unchanged module is reported `(up to date)` and not
+recompiled; a changed one is recompiled and reported `(rebuilt)`. The cache
+is also stamped with the front-end's `PipelineVersion` — a cache written by
+an older pipeline (one that checked less than today's does) is discarded
+whole on load, so "(up to date)" always means "clean under the compiler you
+just ran" (bump the version whenever a build becomes meaningful differently). A module
+is only marked built after a fully clean frontend pass — a file with type
+errors never gets cached as good, so fixing it forces a rebuild and an
+uncached bad file keeps re-reporting. A corrupt or unreadable cache is
+treated as empty (rebuild everything) rather than fatal, and saves are
+temp-file + rename so a crash can't write a half-cache. Exit code is `1`
+if any module failed, `0` otherwise.
 
-Examples:
+Examples (real output):
 
 ```
 $ pirate build
-── Discovered modules ──────────────────────────────────────────
-.example\main.pirate
-.example\test.pirate
-main.pirate
-Compilation is not implemented yet — the v2 lexer/parser/semantics/compiler
-pipeline is still a stub (see docs/architecture/v2-architecture.md).
+── Build ──────────────────────────────────────────
+  ⟳ main.pirate (rebuilt)
 
-$ pirate build main
-── Discovered modules ──────────────────────────────────────────
-main.pirate
-Compilation is not implemented yet — ...
+1 module: 1 rebuilt, 0 up to date
+
+$ pirate build bad
+── Build ──────────────────────────────────────────
+  ✗ bad.pirate (failed)
+bad.pirate:3:1 Cannot assign to 'LIMIT' (declared 'const') *SEM-004*
+  2 |     const int LIMIT = 10;
+  3 |     LIMIT = 20;
+    |     ^^^^^
+
+1 module: 0 rebuilt, 0 up to date, 1 failed
 
 $ pirate build nope
 File "nope.pirate" not provided or does not exist.
@@ -189,68 +193,75 @@ File "nope.pirate" not provided or does not exist.
 
 ### `pirate run [filename]`
 
-Resolves `filename` and checks the `.pirate` file exists. **File resolution
-is real; execution is not** — same pipeline-not-built-yet reason as `build`.
-Once the VM exists, `run` will lex, parse, check, compile, and execute the
-file and stream stdout, matching v1's `RunCommand` behavior of building then
-interpreting.
+Resolves `filename` and checks the `.pirate` file exists. Resolution order
+with **no** `filename` goes through [`.fleet`](FLEET.md)
+(`Pirate.Fleet`'s `FleetEntryPoint`): whatever `*.fleet` file
+`FleetFileLocator` finds in the current directory supplies its
+`entryPoint`, falling back to `main`. A `.fleet` that exists but isn't
+valid JSON is reported clearly and exits `1`. With an explicit
+`filename`, resolution accepts the name with or without the extension,
+and the argument always beats the manifest.
 
-With an explicit `filename`, resolution is unchanged from v1 — accepted
-with or without the `.pirate` extension. With **no** `filename`, resolution
-now goes through [`.fleet`](FLEET.md) (`Pirate.Fleet`'s `FleetEntryPoint`):
-whatever `*.fleet` file `FleetFileLocator` finds in the current directory
-(any name — `pirate init -n` can call it anything) supplies its
-`entryPoint` if one exists, falling back to `main` otherwise — matching
-v1's plain "`main` is the default" behavior for any directory without a
-`.fleet`. A `.fleet` that exists but isn't valid JSON is reported clearly
-and exits `1`, rather than silently falling back or crashing with a raw
-stack trace.
+What `run` does today is real up to the last step: the entry module runs
+through the full frontend (`CompilationPipeline`) — and, unlike `build`,
+**always**, even when the cache says the module is up to date, because
+there is no compiled artifact to reuse yet and the entry check needs the
+checked AST. The cache still decides whether the Build phase prints
+`(rebuilt)` or `(up to date)`. Only modules that pass lex+parse+semantics
+proceed; all frontend errors render as for `build`.
 
-The resolve-and-check step runs inside an `AnsiConsole.Status()` spinner —
-today that's instant, but it's the seam where lex/parse/check/compile/execute
-will hang once the pipeline exists, so `run` won't need restructuring to show
-progress on real work later.
-
-Examples:
+The entry rule (GRAMMAR.md §3.1) is checked at run time, in `Pirate.Cli`
+(`Services/EntryPoint`), not in the type-checker: the entry module must
+carry top-level statements — that statement list *is* the program. A
+declaration-only module is a valid, buildable module with nothing to run:
 
 ```
-$ pirate run main
-Resolving main.pirate...
-Found main.pirate, but execution is not implemented yet — the v2
-lexer/parser/semantics/compiler/VM pipeline is still a stub (see
-docs/architecture/v2-architecture.md).
-
-$ pirate run nope
-Resolving nope.pirate...
-File "nope.pirate" not provided or does not exist.
-
-$ pirate run
-Resolving main.pirate...
-Found main.pirate, but execution is not implemented yet — ...
+$ pirate run decl-only
+── Build ──────────────────────────────────────────
+  ⟳ decl-only.pirate (rebuilt)
+── Running ───────────────────────────────────────
+Module 'decl-only.pirate' has no top-level statements — nothing to run.
 ```
 
-The last example is with no `.fleet` present, so it falls back to `main` —
-identical to `pirate run main`. With a `.fleet` whose `entryPoint` is
-`"other"`, that same no-argument `pirate run` resolves `other.pirate`
-instead; `pirate run main` still resolves `main.pirate` regardless, since
-an explicit argument always wins. And with a `.fleet` that exists but isn't
-valid JSON:
+When the module does have a runnable body, `run` is honest about the
+remaining stub:
 
 ```
 $ pirate run
-".fleet" exists but could not be read: 'n' is an invalid start of a property
-name. Expected a '"'. Path: $ | LineNumber: 0 | BytePositionInLine: 2.
+── Build ──────────────────────────────────────────
+  ✓ main.pirate (up to date)
+── Running ───────────────────────────────────────
+✓ main.pirate type-checked clean.
+Execution is not implemented yet — the v2 VM pipeline is still a stub.
 ```
+
+The whole resolve/build/run sequence runs inside an `AnsiConsole.Status()`
+spinner; the "Execution is not implemented yet" line is the seam where
+compile + VM execution (and RTN-004 for the nothing-to-run case) will
+hang once the pipeline's back half exists, so `run` won't need
+restructuring to do real work later.
 
 ### `pirate shell`
 
 Opens a read-eval-print loop: prints the version banner, then reads lines
-from stdin until `stop`, `exit`, or `break` (matching v1's exit terms) or
-EOF. Uses plain `Console.ReadLine()`, not a Spectre `TextPrompt` — a
-`TextPrompt` requires an interactive terminal and fails on piped/redirected
-stdin, which would break both scripted usage and any future e2e test that
-feeds a script into `pirate shell` via stdin. **Reading input is real;
-lexing/evaluating each line is not** yet, same reason as `build`/`run`.
+from stdin until `stop`, `exit`, or `break` or EOF. Uses plain
+`Console.ReadLine()`, not a Spectre `TextPrompt` — a `TextPrompt` requires
+an interactive terminal and fails on piped/redirected stdin, which would
+break both scripted usage and any future e2e test that feeds a script into
+`pirate shell` via stdin. Each line is a fresh, line-numbered source fed
+through the full frontend (`CompilationPipeline`): every lex, syntax, and
+semantic error renders with `file:line:col`, the offending line, and a
+caret; a clean line reports the type-check success and the same execution
+stub as `run`:
+
+```
+>> import standard Terminal;
+(type-checked clean, but execution is not implemented yet)
+>> func f(void x) : int { return 1; }
+stdin:2:8 'void' is not a value type *SEM-003*
+  2 | func f(void x) : int { return 1; }
+             ^
+```
 
 ## Error handling
 
@@ -303,17 +314,14 @@ commands only throw via `Validate()`.
   `AssemblyInformationalVersionAttribute`), not a hardcoded constant — bump
   the version in one place. `IncludeSourceRevisionInInformationalVersion` is
   set to `false` so the displayed version doesn't get a `+<git-sha>` suffix
-  appended by the SDK's deterministic-build feature. **Known wart:** the
-  reflection lookup itself is currently duplicated as a private `Version()`
-  method in both `Banner.cs` and `ShellCommand.cs`, rather than shared
-  through one helper (a `CliInfo`-style type previously centralized this;
-  it was removed) — the source of truth (the csproj property) is still
-  single, but the lookup code isn't.
-- `build`/`run`/`shell` are honest about pipeline status: they do the real,
-  implementable-today part (file discovery/resolution/REPL loop) and print
-  an explicit "not implemented yet" message for the part that depends on the
-  lexer/parser/semantics/compiler/VM, rather than a silent no-op or a fake
-  success.
+  appended by the SDK's deterministic-build feature. The reflection lookup
+  is shared through `CliInfo.Version()` (`CliInfo.cs`), used by `Banner`
+  and `ShellCommand` — one source of truth and one lookup.
+- `build`/`run`/`shell` are honest about pipeline status: the whole
+  frontend they can do today (lexing, parsing, type-checking, diagnostics)
+  is real, and execution prints an explicit "not implemented yet" because
+  the compiler/VM half of the pipeline doesn't exist — rather than a
+  silent no-op or a fake success.
 - `pirate shell` reads input with plain `Console.ReadLine()`, not a Spectre
   `TextPrompt` — a `TextPrompt` requires an interactive terminal and throws
   on piped/redirected stdin, which would break both scripted usage and any
@@ -338,7 +346,7 @@ commands only throw via `Validate()`.
 Pirate.Cli/
   Program.cs                    entry point, CommandApp configuration, no-args banner
   Banner.cs                     ASCII art + command list (no-args output)
-  GlobalSettings.cs             base settings type every command's settings inherits (currently empty)
+  GlobalSettings.cs             base settings type every command's settings inherits (carries -v|--verbose)
   Theme.cs                      shared markup colors (error/warning/success/info/accent)
   Commands/
     InitCommand.cs               settings nested as InitCommand.InitCommandSettings
@@ -348,6 +356,13 @@ Pirate.Cli/
     ShellCommand.cs              settings nested as ShellCommand.ShellCommandSettings
   Services/                     pure, unit-testable logic used by the commands above
     Templates.cs                 init/new file contents
+    CompilationPipeline.cs       ICompilationPipeline: lex → parse → check, concatenated errors
+    EntryPoint.cs                run-entry rule (entry module needs top-level statements)
+    BuildCache.cs                content-hash incremental build state (.pirate/cache.json)
+    DiagnosticRenderer.cs        file:line:col + source excerpt + caret rendering
+    ErrorMapper.cs               the only place *ErrorKind enums become LEX/SYN/SEM code strings
+    TypeRegistrar.cs             Spectre ITypeRegistrar over Microsoft.Extensions.DependencyInjection
+    TypeAdapter.cs               ITypeResolver over the built IServiceProvider
 
 Pirate.Shared.File/              separate project (see docs/architecture/v2-architecture.md)
   FileDiscovery.cs               generic "find *.<ext> in a directory"
@@ -378,7 +393,8 @@ see "`pirate new [type] [filename]`" above. `Services/` holds that pure
 logic specifically so it's unit-testable without touching the
 filesystem-and-console-heavy `Execute` methods — see
 [`docs/TESTING.md`](TESTING.md) for the general policy. `Pirate.Cli.Test`
-covers `Templates` and `Banner`; `Pirate.Shared.File.Test` covers all four
+covers `Templates`, `Banner`, the `CompilationPipeline`, and `EntryPoint`;
+`Pirate.Shared.File.Test` covers all four
 of `Pirate.Shared.File`'s file-path classes. `Commands/*.Execute` methods are thin
 (argument resolution + one or two I/O calls + console output) and are
 exercised by manual/e2e testing rather than unit tests, per the same

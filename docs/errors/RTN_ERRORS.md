@@ -6,6 +6,10 @@ compile-time errors.
 
 *(Not yet implemented — documented for completeness.)*
 
+Planned additions when the VM lands: **RTN-004** — the module `pirate run`
+resolves as the fleet entry point has no top-level statements to execute
+(reported today as a plain CLI message, not yet coded).
+
 ---
 
 ### RTN-001 — Division by zero

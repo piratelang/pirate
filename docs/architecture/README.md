@@ -19,16 +19,21 @@ Related docs, not architecture but load-bearing for the same work:
 
 - [`../GRAMMAR.md`](../GRAMMAR.md) — canonical v2 language grammar.
 - [`../GRAMMAR_CHANGES.md`](../GRAMMAR_CHANGES.md) — why v2's grammar differs from v1.
+- [`../STYLE.md`](../STYLE.md) — v2 code style guide: naming, DI per-project extensions, records, diagnostics, comments, testing.
 - [`../TESTING.md`](../TESTING.md) — testing strategy for both layers (xUnit + Gherkin).
 
 ## Current state
 
 v1 is the shipped version and must keep working. v2 is past scaffolding: the
-lexer, syntax nodes/error hierarchy, F# parser, `Pirate.Shared.File`,
-`Pirate.Shared.Logging`, `Pirate.Fleet`, and the Spectre.Console CLI (build/run
-with content-hash caching and diagnostics rendering) are implemented and tested
-(`dotnet test src-v2/PirateLang.slnx`); semantics is a stub, and
-compiler/VM/standard library have no real code yet — see
+lexer, syntax nodes/error hierarchy/semantic-model data types, F# parser
+(including imports, exports, and top-level statements), the static
+type-checker (`Pirate.Semantics`), `Pirate.Shared.File`,
+`Pirate.Shared.Logging`, `Pirate.Fleet`, and the Spectre.Console CLI (a DI-
+composed `CompilationPipeline` for build/run/shell with content-hash caching
+gated on a clean frontend and diagnostics rendering incl. SEM codes) are
+implemented and tested (`dotnet test src-v2/PirateLang.slnx`); compiler/VM/
+standard library have no real code yet, and module linking (`import module` /
+`import external` resolution) is the next milestone — see
 [`v2-architecture.md`](v2-architecture.md)'s "Current state" for the per-
 project status. There is no migration/cutover doc checked in yet — treat
 "when/how v1 gets deleted" as undecided until the user says otherwise.

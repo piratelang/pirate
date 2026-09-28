@@ -45,7 +45,7 @@ throw-on-first-error `ParserException` behavior.
 ```
 Pirate.Syntax  ←  Pirate.Lexer ✅  ←  Pirate.Parser ✅  ←┐
         ↑                                                 ├─ Pirate.Cli (Spectre.Console.Cli)
-        └── Pirate.Semantics ─────────────────────────────┤
+        └── Pirate.Semantics ✅ ──────────────────────────┤
                                                            │
 Pirate.VM  ←  Pirate.Compiler ────────────────────────────┤
       ↑                                                    │
@@ -67,12 +67,21 @@ v1's `INode`/`I*Node`, no logic, so no dedicated test project (see
 Also defines the error type hierarchy:
 - `CompilationError` (abstract base class with `Message`, `StartLocation`, `EndLocation?`)
 - `LexError` (`LexErrorKind` — 7 values)
-- `SyntaxError` (`SyntaxErrorKind` — 28 values)
-- `SemanticsError` (`SemanticsErrorKind` — 10 values, future)
+- `SyntaxError` (`SyntaxErrorKind` — 37 values)
+- `SemanticsError` (`SemanticsErrorKind` — 14 values)
 
 Error codes (`LEX-xxx`, `SYN-xxx`, `SEM-xxx`) are **not** part of this
 project. They are assigned by `Pirate.Cli`'s `ErrorMapper` based on the
 `*ErrorKind` enum value — the compiler libraries are code-agnostic.
+
+`Pirate.Syntax` also holds the semantic model's *data* types — `PirateType`
+(a location-free scalar-plus-array type value) and the `Symbol` family
+(`VariableSymbol`, `FunctionSymbol`, `BuiltinSymbol`, `SymbolScope`) under
+`Symbols/` — because the checked AST annotates nodes with them and both the
+semantics pass and (later) the compiler must agree on their shape. The
+resolution *machinery* (`SymbolTable`, the analyzer) lives in
+`Pirate.Semantics` — see [v2-012] and [v2-022] in
+[`../design/DESIGN_DECISIONS.md`](../design/DESIGN_DECISIONS.md).
 
 ### Pirate.Lexer
 
@@ -80,7 +89,7 @@ Single pass over `ReadOnlySpan<char>`. No upfront mutation of the source (v1
 stripped newlines before lexing, destroying line info). Tokens are structs
 carrying `TokenType`, a value span, line, and column, appended to a
 pre-sized growable buffer — no O(n²) list-append like v1's F# lexer.
-Written in C#, already complete and tested (372 lines, 34+ tests).
+Written in C#, already complete and tested (372 lines, 83 tests).
 
 Errors are emitted as `LexError` with a `LexErrorKind` enum value
 (`UnexpectedCharacter`, `UnterminatedStringLiteral`, `IntegerOutOfRange`,
@@ -127,6 +136,22 @@ every identifier to a `Symbol`, and annotates nodes with their resolved
 symbols and inferred types. The compiler consumes these resolved symbols to
 emit index-based opcodes (`LOAD_GLOBAL 3`, `LOAD_LOCAL 0`) instead of
 name-based lookups.
+
+Implemented shape (`Pirate.Semantics`, C#): `ISemanticAnalyzer` /
+`SemanticAnalyzer` with `AddPirateSemantics()` DI registration, producing a
+`SemanticResult` (checked AST + collected `SemanticsError`s — the same
+collect-don't-throw result shape as `LexResult` / `ParseResult`). Two passes
+over a module: first the top-level definitions (externs resolved against
+`BuiltinRegistry`, `import standard <NS>` binding each group member by both
+leaf name and dotted path, function signatures hoisted so recursion and
+forward calls are legal), then the module's top-level statements in global
+scope, then every function body in its own scope. `import module` /
+`import external` parse but are reported as `SEM-013` until the module
+linker lands. `BuiltinRegistry` is the single source of builtin signatures;
+when `Pirate.StandardLibrary` lands it registers implementations against the
+same names/indexes. Node annotation happens through nullable mutable
+properties on the Syntax records (`InferredType`, `ResolvedSymbol`,
+`LoopVariable`, `ResolvedCallee`) — the same tree is the checked AST.
 
 ### Pirate.Compiler
 
@@ -256,11 +281,20 @@ naming aren't.
 `Spectre.Console.Cli` `CommandApp` with one `Command<TSettings>` per verb
 (`run`, `build`, `new`, `init`, `shell` — mirroring v1's command surface),
 replacing v1's hand-rolled `CommandManager`/`CommandFactory`/`ICommand`
-dispatch and manual `-h`/`--help` handling. Errors render as Spectre
+dispatch and manual `-h`/`--help` handling. `Program.cs` composes the app
+through a `ServiceCollection` + Spectre `TypeRegistrar`/`TypeAdapter`, so
+commands receive dependencies by constructor injection; the frontend
+(`Services/CompilationPipeline` → `FrontendResult`) runs lexer → parser →
+semantics and concatenates stage errors for one-pass rendering. Errors render as Spectre
 tables with source excerpts (file/line/col/message/caret); build/run wrap
 in a `Status`/spinner. File discovery/resolution is delegated to
 `Pirate.Shared.File`, and `run`'s no-argument entry-point resolution to
-`Pirate.Fleet`, rather than living in `Pirate.Cli` itself.
+`Pirate.Fleet`, rather than living in `Pirate.Cli` itself. The run-entry
+rule (GRAMMAR.md §3.1) is a CLI concern, not a semantic one: `Services/
+EntryPoint.HasRunnableBody` requires the entry module to carry top-level
+statements — helper modules may declare without running, and a module with
+no statements is "nothing to run" (formalized as RTN-004 when the VM
+lands).
 
 **Build cache** — content-hash based (`SHA256`) stored in `.pirate/cache.json`
 (project-directory-relative keys; a corrupt/unreadable cache file is treated as
@@ -351,36 +385,37 @@ sequential number:
 
 | Prefix | Stage | Range | File |
 |--------|-------|-------|------|
-| `LEX` | Lexer | `LEX-001`–`LEX-007` | `docs/external/LEX_ERRORS.md` |
-| `SYN` | Parser | `SYN-001`–`SYN-043` | `docs/external/SYN_ERRORS.md` |
-| `SEM` | Semantics | `SEM-001`–`SEM-010` | `docs/external/SEM_ERRORS.md` |
-| `RTN` | Runtime (VM) | `RTN-001`–`RTN-003` | `docs/external/RTN_ERRORS.md` |
+| `LEX` | Lexer | `LEX-001`–`LEX-007` | `docs/errors/LEX_ERRORS.md` |
+| `SYN` | Parser | `SYN-001`–`SYN-048` (no `SYN-040`) | `docs/errors/SYN_ERRORS.md` |
+| `SEM` | Semantics | `SEM-001`–`SEM-014` | `docs/errors/SEM_ERRORS.md` |
+| `RTN` | Runtime (VM) | `RTN-001`–`RTN-003` (+ planned `RTN-004`) | `docs/errors/RTN_ERRORS.md` |
 
 Error codes are assigned in `Pirate.Cli` by `ErrorMapper`, which maps
 `*ErrorKind` enum values to code strings. The compiler libraries never
 see or emit codes — they only produce typed errors with enum kinds.
 
-See [`docs/external/ERRORS.md`](../external/ERRORS.md) for the user-facing
-catalog and [`docs/internal/ERROR_CODES.md`](../internal/ERROR_CODES.md)
+See [`docs/errors/ERRORS.md`](../errors/ERRORS.md) for the user-facing
+catalog and [`docs/design/ERROR_CODES.md`](../design/ERROR_CODES.md)
 for how the system works in code.
 
 ## Current state
 
 **Completed:**
-- ✅ `Pirate.Lexer` — C#, single-pass, source locations, diagnostics, 34+ tests
-- ✅ `Pirate.Parser` — F#, Pratt expression parser + recursive-descent statements, 41 F# tests
-- ✅ `Pirate.Syntax` — 22 AST node types (`*Node` suffix, v1-aligned naming), `CompilationError` hierarchy
+- ✅ `Pirate.Lexer` — C#, single-pass, source locations, diagnostics, 83 tests; knows `const`/`import`/`export`
+- ✅ `Pirate.Parser` — F#, Pratt expression parser + recursive-descent statements, 59 tests; imports, exports, top-level statements, inferred-`const`
+- ✅ `Pirate.Syntax` — 23 AST node types (`*Node` suffix), `CompilationError` hierarchy, semantic-model data types (`PirateType`, `Symbol` family)
+- ✅ `Pirate.Semantics` — symbol table, builtin registry, two-pass analyzer (signatures → top-level code → function bodies), full static type checking incl. operator typing, 149 tests
 - ✅ `Pirate.Shared.File` — file discovery and naming helpers, tests
 - ✅ `Pirate.Fleet` — `.fleet` manifest model, read/write, entry-point resolution, tests
-- ✅ `Pirate.Cli` — 5 commands scaffolded with Spectre.Console, build cache, error rendering, lexer/parser wired into build/run/shell
+- ✅ `Pirate.Cli` — 5 commands on Spectre.Console with DI composition (`TypeRegistrar`), content-hash build cache gated on a clean frontend, `CompilationPipeline` (lexer → parser → semantics) wired into build/run/shell, error rendering incl. SEM codes, run-entry rule (entry module needs top-level statements), tests
 - ✅ `Pirate.Shared.Logging` — `ILogger`, `NullLogger`, `ConsoleLogger`, tests
 - ✅ `.agents/` — model/provider-agnostic agent instructions
 
 **In progress:**
-- 🔧 `Pirate.Cli` command wiring — build pipeline integration with lexer/parser (this milestone)
-- 🔧 `Pirate.Semantics` — symbol table + type checking (next milestone)
+- 🔧 Module linking — `import module` / `import external` resolution against the fleet manifest, export visibility, entry-only top-level code (SEM-013 today)
 
 **Not yet started:**
 - ⬜ `Pirate.Compiler` — bytecode emission (interleaved with VM)
 - ⬜ `Pirate.VM` — stack machine, call frames, `PirateValue` (interleaved with compiler)
 - ⬜ `Pirate.StandardLibrary` — native function implementations
+- ⬜ `Pirate.Spec.Test` Reqnroll scaffolding — e2e scenarios assert real stdout once execution lands
