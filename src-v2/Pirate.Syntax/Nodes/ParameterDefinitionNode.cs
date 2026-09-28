@@ -9,4 +9,10 @@ public sealed record ParameterDefinitionNode(
     SourceLocation EndLocation,
     TypeNode Type,
     string Name)
-    : StatementNode(StartLocation, EndLocation);
+    : StatementNode(StartLocation, EndLocation)
+{
+    /// <summary>
+    /// The local this parameter binds, set by the semantics pass.
+    /// </summary>
+    public VariableSymbol? ResolvedSymbol { get; set; }
+}

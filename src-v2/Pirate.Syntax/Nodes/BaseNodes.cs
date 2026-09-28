@@ -4,7 +4,15 @@ namespace Pirate.Syntax.Nodes;
 /// Base class for all expression nodes. Expressions produce a value — unlike
 /// statements, which perform an action.
 /// </summary>
-public abstract record ExpressionNode(SourceLocation StartLocation, SourceLocation EndLocation);
+public abstract record ExpressionNode(SourceLocation StartLocation, SourceLocation EndLocation)
+{
+    /// <summary>
+    /// Set by the semantics pass after a successful check; null before it
+    /// runs and for expressions that failed to type-check. The compiler
+    /// consumes this instead of re-deriving types.
+    /// </summary>
+    public PirateType? InferredType { get; set; }
+}
 
 /// <summary>
 /// Base class for all statement nodes. Statements perform actions and do not

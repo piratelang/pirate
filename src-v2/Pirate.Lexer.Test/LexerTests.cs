@@ -29,6 +29,7 @@ public class LexerTests
 
     [Theory]
     [InlineData("var", TokenType.Var)]
+    [InlineData("const", TokenType.Const)]
     [InlineData("int", TokenType.Int)]
     [InlineData("float", TokenType.Float)]
     [InlineData("string", TokenType.String)]
@@ -44,6 +45,8 @@ public class LexerTests
     [InlineData("to", TokenType.To)]
     [InlineData("return", TokenType.Return)]
     [InlineData("extern", TokenType.Extern)]
+    [InlineData("import", TokenType.Import)]
+    [InlineData("export", TokenType.Export)]
     [InlineData("true", TokenType.True)]
     [InlineData("false", TokenType.False)]
     [InlineData("class", TokenType.Class)]
@@ -86,6 +89,25 @@ public class LexerTests
     public void Tokenize_IdentifierWithKeywordPrefix_IsNotTreatedAsKeyword()
     {
         var result = Lexer.Tokenize("intValue");
+
+        Assert.Equal([TokenType.Identifier, TokenType.Eof], TypesOf(result));
+    }
+
+    [Fact]
+    public void Tokenize_IdentifierStartingWithConst_IsNotTreatedAsKeyword()
+    {
+        var result = Lexer.Tokenize("constX");
+
+        Assert.Equal([TokenType.Identifier, TokenType.Eof], TypesOf(result));
+    }
+
+    [Theory]
+    [InlineData("standard")]
+    [InlineData("module")]
+    [InlineData("external")]
+    public void Tokenize_SoftModuleKeywords_ProduceIdentifierTokens(string source)
+    {
+        var result = Lexer.Tokenize(source);
 
         Assert.Equal([TokenType.Identifier, TokenType.Eof], TypesOf(result));
     }

@@ -11,4 +11,11 @@ public sealed record ForInStatementNode(
     string VariableName,
     ExpressionNode Iterable,
     BlockNode Body)
-    : StatementNode(StartLocation, EndLocation);
+    : StatementNode(StartLocation, EndLocation)
+{
+    /// <summary>
+    /// The iteration variable's symbol (element type of the iterable), set
+    /// by the semantics pass.
+    /// </summary>
+    public VariableSymbol? LoopVariable { get; set; }
+}

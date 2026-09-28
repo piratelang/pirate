@@ -11,6 +11,7 @@
     <Compile Include="ExpressionParsingTests.fs" />
     <Compile Include="StatementParsingTests.fs" />
     <Compile Include="TopLevelParsingTests.fs" />
+    <Compile Include="ModuleParsingTests.fs" />
     <Compile Include="ErrorRecoveryTests.fs" />
   </ItemGroup>
 

@@ -1,6 +1,3 @@
-extern Standard.Terminal.Print;
+import standard Terminal;
 
-func main() : void
-{
-    Print("Hello World");
-}
+PrintLine("Hello World");

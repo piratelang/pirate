@@ -22,6 +22,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pirate.Semantics\Pirate.Semantics.csproj" />
+    <ProjectReference Include="..\Pirate.Syntax\Pirate.Syntax.csproj" />
+    <ProjectReference Include="..\Pirate.Lexer\Pirate.Lexer.csproj" />
+    <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.fsproj" />
   </ItemGroup>
 
 </Project>

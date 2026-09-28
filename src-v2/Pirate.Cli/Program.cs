@@ -1,6 +1,9 @@
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 using Pirate.Cli;
 using Pirate.Cli.Commands;
+using Pirate.Cli.Services;
+using Pirate.Semantics;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -22,7 +25,15 @@ if (args.Length == 0)
     return 0;
 }
 
-var app = new CommandApp();
+// Composition root: each project registers its own services through its
+// Add*() extension; the CLI adds the seams that glue them together and
+// commands receive dependencies via constructor injection (TypeRegistrar
+// bridges Spectre.Console.Cli onto this container).
+var services = new ServiceCollection();
+services.AddPirateSemantics();
+services.AddSingleton<ICompilationPipeline, CompilationPipeline>();
+
+var app = new CommandApp(new TypeRegistrar(services));
 app.Configure(config =>
 {
     config.SetApplicationName("pirate");

@@ -13,4 +13,11 @@ public sealed record QualifiedNameNode(
     SourceLocation StartLocation,
     SourceLocation EndLocation,
     IReadOnlyList<string> Parts)
-    : ExpressionNode(StartLocation, EndLocation);
+    : ExpressionNode(StartLocation, EndLocation)
+{
+    /// <summary>
+    /// The variable/function/builtin this name resolves to, set by the
+    /// semantics pass. Null until resolution.
+    /// </summary>
+    public Symbol? ResolvedSymbol { get; set; }
+}

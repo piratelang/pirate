@@ -16,8 +16,10 @@ module ErrorRecoveryTests =
         Assert.NotEmpty(result.Errors)
 
     [<Fact>]
-    let ``Invalid top-level token produces diagnostic`` () =
-        let result = Helpers.parse "bogus;"
+    let ``Invalid top-level construct produces diagnostic`` () =
+        // 'bogus;' alone is now a legal top-level expression statement (the
+        // undeclared name is semantics' problem); a malformed if is not.
+        let result = Helpers.parse "if { }"
         Assert.NotEmpty(result.Errors)
 
     [<Fact>]

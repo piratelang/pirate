@@ -92,13 +92,30 @@ module Parser =
             | TokenType.If     -> parseIf state
             | TokenType.While  -> parseWhile state
             | TokenType.For    -> parseFor state
-            | TokenType.Var    -> parseVarDecl state
+            | TokenType.Var    -> parseVarDecl state (peek state) false false
+            | TokenType.Const  -> parseConstDecl state (peek state) false
             | TokenType.Int
             | TokenType.Float
             | TokenType.String
             | TokenType.Char
-            | TokenType.Bool   -> parseTypedVarDecl state
+            | TokenType.Bool   -> parseTypedVarDecl state (peek state) false false
             | _                -> parseExprStmt state
+
+    // variable-declaration = [ 'const' ] [ ( type | 'var' ) ] identifier '=' expression ';'
+    // A 'const' with no type or 'var' infers its type from the initializer;
+    // plain (non-const) declarations still require type or 'var' so that
+    // 'x = 5;' stays an assignment, not a re-inferable declaration.
+    and private parseConstDecl state startToken isExported : StatementNode option =
+        advance state |> ignore // consume 'const'; startToken anchors the node
+        match (peek state).Type with
+        | TokenType.Var -> parseVarDecl state startToken true isExported
+        | TokenType.Int
+        | TokenType.Float
+        | TokenType.String
+        | TokenType.Char
+        | TokenType.Bool -> parseTypedVarDecl state startToken true isExported
+        | _ -> parseDeclarationTail state startToken true isExported
+                 SyntaxErrorKind.MissingIdentifierAfterConst "Expected identifier after 'const'"
 
     and private parseReturn state : StatementNode option =
         let startTok = advance state
@@ -183,9 +200,13 @@ module Parser =
                     | Some body -> Some (ForStatementNode(loc startTok, loc (peek state), id.Lexeme, startExpr, endExpr, body) :> StatementNode)
                     | None -> None
 
-    and private parseVarDecl state : StatementNode option =
-        let startTok = advance state // consume var
-        match expect state TokenType.Identifier SyntaxErrorKind.MissingIdentifierAfterVar "Expected identifier after 'var'" with
+    and private parseVarDecl state startToken isConst isExported : StatementNode option =
+        advance state |> ignore // consume 'var'
+        parseDeclarationTail state startToken isConst isExported
+            SyntaxErrorKind.MissingIdentifierAfterVar "Expected identifier after 'var'"
+
+    and private parseDeclarationTail state startToken isConst isExported idKind idMessage : StatementNode option =
+        match expect state TokenType.Identifier idKind idMessage with
         | None -> None
         | Some id ->
             if not (at state TokenType.Equal) then
@@ -195,11 +216,11 @@ module Parser =
                 advance state |> ignore
                 let init = Pratt.parseExpression state 0
                 expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterDeclaration "Expected ';' after declaration" |> ignore
-                // 'var' declarations have no explicit type: pass null for C# nullable VariableDeclarationNode.Type.
-                Some (VariableDeclarationNode(loc startTok, loc (peek state), null, id.Lexeme, init) :> StatementNode)
+                // Untype-annotated declarations (var, inferred const) pass null
+                // for C# nullable VariableDeclarationNode.Type.
+                Some (VariableDeclarationNode(loc startToken, loc (peek state), null, isConst, id.Lexeme, init, isExported) :> StatementNode)
 
-    and private parseTypedVarDecl state : StatementNode option =
-        let startTok = peek state
+    and private parseTypedVarDecl state startToken isConst isExported : StatementNode option =
         match parseType state with
         | None -> None
         | Some typ ->
@@ -213,7 +234,7 @@ module Parser =
                     advance state |> ignore
                     let init = Pratt.parseExpression state 0
                     expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterDeclaration "Expected ';' after declaration" |> ignore
-                    Some (VariableDeclarationNode(loc startTok, loc (peek state), typ, id.Lexeme, init) :> StatementNode)
+                    Some (VariableDeclarationNode(loc startToken, loc (peek state), typ, isConst, id.Lexeme, init, isExported) :> StatementNode)
 
     and private parseExprStmt state : StatementNode option =
         let startTok = peek state
@@ -241,6 +262,20 @@ module Parser =
             Some (ExpressionStatementNode(loc startTok, loc (peek state), expr) :> StatementNode)
 
     // --- Top-level ---
+
+    // Soft keywords: 'standard', 'module', 'external', 'as' lex as ordinary
+    // identifiers (they stay usable as names); only the token after 'import'
+    // and the token after a module/external path treat them as keywords.
+    let private isNamedToken (token: Token) (name: string) =
+        token.Type = TokenType.Identifier && token.Lexeme = name
+
+    // Error recovery: skip tokens until (and including) the next ';' so one
+    // malformed statement cannot spin the parse loop.
+    let private consumeThroughSemicolon state =
+        while not (eof state) && not (at state TokenType.Semicolon) do
+            advance state |> ignore
+        if at state TokenType.Semicolon then advance state |> ignore
+
     let private parseExtern state : TopLevelNode =
         let startTok = advance state
         let parts = ResizeArray<string>()
@@ -256,22 +291,48 @@ module Parser =
         expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterDeclaration "Expected ';' after extern" |> ignore
         ExternNode(loc startTok, loc (peek state), parts)
 
-    let rec private parseTopLevel state : TopLevelNode list =
-        if eof state then
-            []
-        else
-            match (peek state).Type with
-            | TokenType.Extern ->
-                parseExtern state :: parseTopLevel state
-            | TokenType.Func ->
-                parseFuncDecl state :: parseTopLevel state
-            | _ ->
-                let tok = peek state
-                state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedTopLevelDeclaration, sprintf "Expected 'extern' or 'func', got '%s'" tok.Lexeme, loc tok))
+    // import-statement = 'import' ( 'standard' | 'module' | 'external' )
+    //                     qualified-name [ 'as' identifier ] ';'
+    let rec private parseImport state : TopLevelNode =
+        let startToken = advance state // consume 'import'
+        let kind =
+            let tok = peek state
+            if isNamedToken tok "standard" then advance state |> ignore; Some ImportKind.Standard
+            elif isNamedToken tok "module" then advance state |> ignore; Some ImportKind.Module
+            elif isNamedToken tok "external" then advance state |> ignore; Some ImportKind.External
+            else
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedImportKind, "Expected 'standard', 'module', or 'external' after 'import'", loc tok))
+                None
+        match kind with
+        | None ->
+            consumeThroughSemicolon state
+            ImportStatementNode(loc startToken, loc (peek state), ImportKind.Standard, ResizeArray<string>(), null)
+        | Some k ->
+            let parts = ResizeArray<string>()
+            match expect state TokenType.Identifier SyntaxErrorKind.MissingImportName "Expected a name after 'import'" with
+            | None -> ()
+            | Some id ->
+                parts.Add(id.Lexeme)
+                while at state TokenType.Dot do
+                    advance state |> ignore
+                    match expect state TokenType.Identifier SyntaxErrorKind.MissingIdentifierAfterDot "Expected identifier after '.'" with
+                    | None -> ()
+                    | Some segment -> parts.Add(segment.Lexeme)
+            // C# nullable ImportStatementNode.Alias: null without 'as'.
+            // 'standard' imports bind the group's own names — an alias has
+            // nothing to name, so only module/external imports accept 'as'.
+            let mutable alias: string = null
+            if isNamedToken (peek state) "as" then
+                if k = ImportKind.Standard then
+                    state.Errors.Add(SyntaxError(SyntaxErrorKind.UnexpectedAliasForStandardImport, "'as' only applies to module and external imports", loc (peek state)))
                 advance state |> ignore
-                parseTopLevel state
+                match expect state TokenType.Identifier SyntaxErrorKind.MissingIdentifierAfterAs "Expected identifier after 'as'" with
+                | Some a -> alias <- a.Lexeme
+                | None -> ()
+            expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterImport "Expected ';' after import" |> ignore
+            ImportStatementNode(loc startToken, loc (peek state), k, parts, alias)
 
-    and private parseFuncDecl state : TopLevelNode =
+    and private parseFuncDecl state isExported : TopLevelNode =
         let startTok = advance state
         let name =
             match expect state TokenType.Identifier SyntaxErrorKind.MissingFunctionName "Expected function name" with
@@ -294,7 +355,7 @@ module Parser =
             match parseBlock state with
             | Some b -> b
             | None -> BlockNode(loc (peek state), loc (peek state), ResizeArray<StatementNode>(), null)
-        FunctionDeclarationNode(loc startTok, loc (peek state), name, parameters, retType, body)
+        FunctionDeclarationNode(loc startTok, loc (peek state), name, parameters, retType, body, isExported)
 
     and private parseParam state : ParameterDefinitionNode option =
         match parseType state with
@@ -303,6 +364,49 @@ module Parser =
             match expect state TokenType.Identifier SyntaxErrorKind.MissingParameterName "Expected parameter name" with
             | None -> None
             | Some id -> Some (ParameterDefinitionNode(typ.StartLocation, loc id, typ, id.Lexeme))
+
+    let private parseTopLevel state : TopLevelNode list * StatementNode list =
+        let members = ResizeArray<TopLevelNode>()
+        let statements = ResizeArray<StatementNode>()
+        let rec loop () =
+            if not (eof state) then
+                let posBefore = state.Pos
+                // export-statement = 'export' ( function-declaration
+                //                             | variable-declaration )
+                // Exported variable declarations are executable top-level
+                // statements (like any declaration); exported functions are
+                // declarations proper — hence the split destination lists.
+                match (peek state).Type with
+                | TokenType.Extern -> members.Add(parseExtern state)
+                | TokenType.Func -> members.Add(parseFuncDecl state false)
+                | TokenType.Import -> members.Add(parseImport state)
+                | TokenType.Export ->
+                    let exportToken = advance state
+                    match (peek state).Type with
+                    | TokenType.Func -> members.Add(parseFuncDecl state true)
+                    | TokenType.Var ->
+                        advance state |> ignore // consume 'var'
+                        parseDeclarationTail state exportToken false true
+                            SyntaxErrorKind.MissingIdentifierAfterVar "Expected identifier after 'var'"
+                        |> Option.iter statements.Add
+                    | TokenType.Const ->
+                        parseConstDecl state exportToken true |> Option.iter statements.Add
+                    | TokenType.Int
+                    | TokenType.Float
+                    | TokenType.String
+                    | TokenType.Char
+                    | TokenType.Bool ->
+                        parseTypedVarDecl state exportToken false true |> Option.iter statements.Add
+                    | _ ->
+                        state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedDeclarationAfterExport, "Expected 'func', 'var', 'const', or a type after 'export'", loc (peek state)))
+                        consumeThroughSemicolon state
+                | _ -> parseStatement state |> Option.iter statements.Add
+                // Forward-progress guard: any error path that consumed no
+                // token would otherwise spin on the same offending token.
+                if state.Pos = posBefore then advance state |> ignore
+                loop ()
+        loop ()
+        List.ofSeq members, List.ofSeq statements
 
     // --- Entry point ---
 
@@ -314,12 +418,15 @@ module Parser =
               // Syntax errors only — lexer errors stay in LexResult.Errors;
               // the CLI concatenates both lists for display.
               Errors = ResizeArray<CompilationError>() }
-        let topLevel = parseTopLevel state
+        let members, statements = parseTopLevel state
         let program =
-            match topLevel with
+            let bounds =
+                [ for m in members -> (m.StartLocation, m.EndLocation)
+                  for s in statements -> (s.StartLocation, s.EndLocation) ]
+            match bounds with
             | [] -> None
-            | nodes ->
-                let firstLoc = nodes.Head.StartLocation
-                let lastLoc = (List.last nodes).EndLocation
-                Some (ProgramNode(firstLoc, lastLoc, ResizeArray<TopLevelNode>(nodes)))
+            | _ ->
+                let firstLoc = bounds |> List.map fst |> List.minBy (fun l -> (l.Line, l.Column))
+                let lastLoc = bounds |> List.map snd |> List.maxBy (fun l -> (l.Line, l.Column))
+                Some (ProgramNode(firstLoc, lastLoc, ResizeArray<TopLevelNode>(members), ResizeArray<StatementNode>(statements)))
         ParseResult(program, state.Errors)

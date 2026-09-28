@@ -16,6 +16,10 @@ public enum SemanticsErrorKind
     EmptyArrayRequiresElementType,
     ForInIterableMustBeArray,
     DuplicateDeclaration,
+    UnknownExtern,
+    UnknownImport,
+    ModuleImportUnsupported,
+    ReturnAtTopLevel,
 }
 
 /// <summary>

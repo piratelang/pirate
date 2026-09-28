@@ -9,6 +9,7 @@ internal static class Keywords
     private static readonly Dictionary<string, TokenType> Map = new(StringComparer.Ordinal)
     {
         ["var"] = TokenType.Var,
+        ["const"] = TokenType.Const,
         ["int"] = TokenType.Int,
         ["float"] = TokenType.Float,
         ["string"] = TokenType.String,
@@ -24,6 +25,8 @@ internal static class Keywords
         ["to"] = TokenType.To,
         ["return"] = TokenType.Return,
         ["extern"] = TokenType.Extern,
+        ["import"] = TokenType.Import,
+        ["export"] = TokenType.Export,
         ["true"] = TokenType.True,
         ["false"] = TokenType.False,
         ["class"] = TokenType.Class,

@@ -1,9 +1,9 @@
 namespace Pirate.Cli.Services;
 
 /// <summary>
-/// File templates used by "init" and "new", mirroring v1's inline templates
-/// but updated for v2's grammar (docs/GRAMMAR.md) — a hello-world program
-/// needs an explicit "extern" declaration and a typed "func main() : void".
+/// File templates used by "init" and "new". The hello-world program follows
+/// docs/GRAMMAR.md: an <c>import standard</c> binding of the Terminal group
+/// and a top-level call in the entry module.
 /// </summary>
 internal static class Templates
 {
@@ -12,11 +12,8 @@ internal static class Templates
 
     public static string HelloWorldPirate => string.Join(
         Environment.NewLine,
-        "extern Standard.Terminal.Print;",
+        "import standard Terminal;",
         "",
-        "func main() : void",
-        "{",
-        "    Print(\"Hello World\");",
-        "}"
+        "PrintLine(\"Hello World\");"
     );
 }

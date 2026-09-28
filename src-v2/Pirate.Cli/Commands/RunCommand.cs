@@ -12,7 +12,7 @@ namespace Pirate.Cli.Commands;
 /// pirate run [filename] — builds changed modules (content-hash based),
 /// then executes through the VM (still stub).
 /// </summary>
-public sealed class RunCommand : Command<RunCommand.RunCommandSettings>
+public sealed class RunCommand(ICompilationPipeline compilationPipeline) : Command<RunCommand.RunCommandSettings>
 {
     public sealed class RunCommandSettings : GlobalSettings
     {
@@ -52,37 +52,48 @@ public sealed class RunCommand : Command<RunCommand.RunCommandSettings>
             // Build phase
             AnsiConsole.Write(new Rule($"[{Theme.Info}]Build[/]").LeftJustified());
 
+            // Always run the frontend: there is no compiled artifact to skip
+            // to yet, and the entry-point check needs the checked AST. The
+            // cache only decides the rebuilt/up-to-date wording for now.
+            var source = File.ReadAllText(path);
+            var frontend = compilationPipeline.Compile(source);
+            var relative = Path.GetRelativePath(root, path);
+
+            if (!frontend.Success)
+            {
+                AnsiConsole.MarkupLine($"  [{Theme.Error}]✗[/] {Markup.Escape(relative)} (failed)");
+                DiagnosticRenderer.RenderErrors(path, frontend.Errors);
+                failed = true;
+                return;
+            }
+
             if (cache.IsUpToDate(path))
             {
-                AnsiConsole.MarkupLine($"  [{Theme.Success}]✓[/] {Markup.Escape(Path.GetRelativePath(root, path))} (up to date)");
+                AnsiConsole.MarkupLine($"  [{Theme.Success}]✓[/] {Markup.Escape(relative)} (up to date)");
             }
             else
             {
-                var source = File.ReadAllText(path);
-                // Fully qualified: inside Pirate.* namespaces, the simple
-                // names Lexer/Parser bind to the namespaces, not the classes.
-                var lexResult = Pirate.Lexer.Lexer.Tokenize(source);
-                var parseResult = Pirate.Parser.Parser.Parse(lexResult);
-
-                var allErrors = new List<Pirate.Syntax.CompilationError>(lexResult.Errors);
-                allErrors.AddRange(parseResult.Errors);
-
-                if (allErrors.Count > 0)
-                {
-                    AnsiConsole.MarkupLine($"  [{Theme.Error}]✗[/] {Markup.Escape(Path.GetRelativePath(root, path))} (failed)");
-                    DiagnosticRenderer.RenderErrors(path, allErrors);
-                    failed = true;
-                    return;
-                }
-
                 cache.MarkBuilt(path);
-                AnsiConsole.MarkupLine($"  [{Theme.Success}]⟳[/] {Markup.Escape(Path.GetRelativePath(root, path))} (rebuilt)");
+                AnsiConsole.MarkupLine($"  [{Theme.Success}]⟳[/] {Markup.Escape(relative)} (rebuilt)");
             }
 
             cache.Save();
 
+            // Run phase
             AnsiConsole.WriteLine();
             AnsiConsole.Write(new Rule($"[{Theme.Warning}]Running[/]").LeftJustified());
+
+            // Run-entry rule (GRAMMAR.md §3.1): the entry module's top-level
+            // statements are the program; a module without any has nothing
+            // to run. RTN-004 when the VM lands.
+            if (!EntryPoint.HasRunnableBody(frontend.Program))
+            {
+                AnsiConsole.MarkupLine($"[{Theme.Error}]Module '{Markup.Escape(name)}.pirate' has no top-level statements — nothing to run.[/]");
+                failed = true;
+                return;
+            }
+
+            AnsiConsole.MarkupLine($"[{Theme.Success}]✓[/] {Markup.Escape(relative)} type-checked clean.");
             AnsiConsole.MarkupLine($"[{Theme.Warning}]Execution is not implemented yet — the v2 VM pipeline is still a stub.[/]");
         });
 

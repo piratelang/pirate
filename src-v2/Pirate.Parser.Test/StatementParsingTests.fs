@@ -25,6 +25,35 @@ module StatementParsingTests =
         Assert.Equal("x", stmt.Name)
         Assert.NotNull(stmt.Type)
         Assert.Equal(ScalarType.Int, stmt.Type.ScalarType)
+        Assert.False(stmt.IsConst)
+
+    [<Fact>]
+    let ``Const typed declaration`` () =
+        let result = Helpers.parse "func main() : void { const int limit = 10; }"
+        Assert.Empty(result.Errors)
+        let fd = (result.Program.Value.Members.[0]) :?> FunctionDeclarationNode
+        let stmt = fd.Body.Statements.[0] :?> VariableDeclarationNode
+        Assert.True(stmt.IsConst)
+        Assert.Equal("limit", stmt.Name)
+        Assert.Equal(ScalarType.Int, stmt.Type.ScalarType)
+
+    [<Fact>]
+    let ``Const var declaration`` () =
+        let result = Helpers.parse "func main() : void { const var greeting = \"ahoy\"; }"
+        Assert.Empty(result.Errors)
+        let fd = (result.Program.Value.Members.[0]) :?> FunctionDeclarationNode
+        let stmt = fd.Body.Statements.[0] :?> VariableDeclarationNode
+        Assert.True(stmt.IsConst)
+        Assert.Null(stmt.Type)
+
+    [<Fact>]
+    let ``Const starts node location`` () =
+        let result = Helpers.parse "func main() : void { const int x = 5; }"
+        let fd = (result.Program.Value.Members.[0]) :?> FunctionDeclarationNode
+        let stmt = fd.Body.Statements.[0] :?> VariableDeclarationNode
+        Assert.Equal(1, stmt.StartLocation.Line)
+        Assert.Equal(22, stmt.StartLocation.Column)
+
 
     [<Fact>]
     let ``Array type declaration`` () =

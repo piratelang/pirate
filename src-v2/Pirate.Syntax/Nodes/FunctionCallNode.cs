@@ -13,4 +13,10 @@ public sealed record FunctionCallNode(
     SourceLocation EndLocation,
     ExpressionNode Callee,
     IReadOnlyList<ExpressionNode> Arguments)
-    : ExpressionNode(StartLocation, EndLocation);
+    : ExpressionNode(StartLocation, EndLocation)
+{
+    /// <summary>
+    /// The function or builtin being called, set by the semantics pass.
+    /// </summary>
+    public Symbol? ResolvedCallee { get; set; }
+}

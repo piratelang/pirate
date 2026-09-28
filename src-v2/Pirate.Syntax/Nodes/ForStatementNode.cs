@@ -12,4 +12,10 @@ public sealed record ForStatementNode(
     ExpressionNode Start,
     ExpressionNode End,
     BlockNode Body)
-    : StatementNode(StartLocation, EndLocation);
+    : StatementNode(StartLocation, EndLocation)
+{
+    /// <summary>
+    /// The loop variable's symbol, set by the semantics pass.
+    /// </summary>
+    public VariableSymbol? LoopVariable { get; set; }
+}

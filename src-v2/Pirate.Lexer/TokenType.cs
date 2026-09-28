@@ -16,6 +16,7 @@ public enum TokenType
 
     // Type keywords
     Var,
+    Const,
     Int,
     Float,
     String,
@@ -33,6 +34,11 @@ public enum TokenType
     To,
     Return,
     Extern,
+
+    // Module-system keywords (GRAMMAR.md §1.3; soft keywords 'standard',
+    // 'module', 'external' stay ordinary identifiers)
+    Import,
+    Export,
 
     // Literal keywords
     True,

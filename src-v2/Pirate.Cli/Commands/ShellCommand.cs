@@ -9,7 +9,7 @@ namespace Pirate.Cli.Commands;
 /// pirate shell — REPL that lexes and parses each line, showing errors
 /// with source excerpts. Execution is stubbed until the VM is implemented.
 /// </summary>
-public sealed class ShellCommand : Command<ShellCommand.ShellCommandSettings>
+public sealed class ShellCommand(ICompilationPipeline compilationPipeline) : Command<ShellCommand.ShellCommandSettings>
 {
     public sealed class ShellCommandSettings : GlobalSettings
     {
@@ -41,18 +41,13 @@ public sealed class ShellCommand : Command<ShellCommand.ShellCommandSettings>
                 break;
             }
 
-            // Lex and parse each line. Fully qualified: inside Pirate.*
-            // namespaces, the simple names Lexer/Parser bind to the
-            // namespaces, not the classes.
-            var lexResult = Pirate.Lexer.Lexer.Tokenize(input);
-            var parseResult = Pirate.Parser.Parser.Parse(lexResult);
+            // Run the full frontend on each line (lexer → parser →
+            // semantics), rendering every error the stage chain collected.
+            var frontend = compilationPipeline.Compile(input);
 
-            var allErrors = new List<Pirate.Syntax.CompilationError>(lexResult.Errors);
-            allErrors.AddRange(parseResult.Errors);
-
-            if (allErrors.Count > 0)
+            if (frontend.Errors.Count > 0)
             {
-                foreach (var error in allErrors)
+                foreach (var error in frontend.Errors)
                 {
                     var code = ErrorMapper.Map(error);
                     var header = $"stdin:{lineNum}:{error.StartLocation.Column} {error.Message} *{code}*";
@@ -70,8 +65,8 @@ public sealed class ShellCommand : Command<ShellCommand.ShellCommandSettings>
             }
             else
             {
-                // Parse succeeded — execution is still stub
-                AnsiConsole.MarkupLine($"[{Theme.Warning}](parsed successfully, but execution is not implemented yet)[/]");
+                // Frontend succeeded — execution is still stub
+                AnsiConsole.MarkupLine($"[{Theme.Warning}](type-checked clean, but execution is not implemented yet)[/]");
             }
         }
 

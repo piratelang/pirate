@@ -6,9 +6,9 @@ namespace Pirate.Syntax;
 /// <para>
 /// Numbering convention (gaps allow inserting new errors without renumbering):
 /// 001-014: Missing closing/separator tokens
-/// 020-027: Missing identifiers
+/// 020-028: Missing identifiers
 /// 030-034: Missing keywords
-/// 040-043: Unexpected input
+/// 041-048: Unexpected input, including import/export shapes
 /// </para>
 /// </summary>
 public enum SyntaxErrorKind
@@ -29,7 +29,7 @@ public enum SyntaxErrorKind
     MissingCloseParenAfterParameters,
     MissingColonBeforeReturnType,
 
-    // Missing identifiers (SYN-020 — SYN-027)
+    // Missing identifiers (SYN-020 — SYN-028)
     MissingIdentifierAfterExtern,
     MissingIdentifierAfterDot,
     MissingFunctionName,
@@ -38,6 +38,7 @@ public enum SyntaxErrorKind
     MissingIdentifierAfterType,
     MissingIdentifierInForIn,
     MissingIdentifierInFor,
+    MissingIdentifierAfterConst,
 
     // Missing keywords (SYN-030 — SYN-034)
     MissingVarOrParenAfterFor,
@@ -46,11 +47,16 @@ public enum SyntaxErrorKind
     MissingEqualsInFor,
     MissingToInFor,
 
-    // Unexpected input (SYN-040 — SYN-043)
-    ExpectedTopLevelDeclaration,
+    // Unexpected input (SYN-041 — SYN-049)
     ExpectedExpression,
     UnexpectedEofInExpression,
     ExpectedType,
+    ExpectedImportKind,
+    MissingImportName,
+    MissingIdentifierAfterAs,
+    MissingSemicolonAfterImport,
+    ExpectedDeclarationAfterExport,
+    UnexpectedAliasForStandardImport,
 }
 
 /// <summary>

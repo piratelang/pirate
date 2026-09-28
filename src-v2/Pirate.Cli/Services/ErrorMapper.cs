@@ -48,7 +48,7 @@ public static class ErrorMapper
         SyntaxErrorKind.MissingCloseParenAfterParameters    => "SYN-013",
         SyntaxErrorKind.MissingColonBeforeReturnType        => "SYN-014",
 
-        // Missing identifiers (SYN-020 — SYN-027)
+        // Missing identifiers (SYN-020 — SYN-028)
         SyntaxErrorKind.MissingIdentifierAfterExtern        => "SYN-020",
         SyntaxErrorKind.MissingIdentifierAfterDot           => "SYN-021",
         SyntaxErrorKind.MissingFunctionName                 => "SYN-022",
@@ -57,6 +57,7 @@ public static class ErrorMapper
         SyntaxErrorKind.MissingIdentifierAfterType          => "SYN-025",
         SyntaxErrorKind.MissingIdentifierInForIn            => "SYN-026",
         SyntaxErrorKind.MissingIdentifierInFor              => "SYN-027",
+        SyntaxErrorKind.MissingIdentifierAfterConst         => "SYN-028",
 
         // Missing keywords (SYN-030 — SYN-034)
         SyntaxErrorKind.MissingVarOrParenAfterFor           => "SYN-030",
@@ -65,11 +66,16 @@ public static class ErrorMapper
         SyntaxErrorKind.MissingEqualsInFor                  => "SYN-033",
         SyntaxErrorKind.MissingToInFor                      => "SYN-034",
 
-        // Unexpected input (SYN-040 — SYN-043)
-        SyntaxErrorKind.ExpectedTopLevelDeclaration         => "SYN-040",
+        // Unexpected input (SYN-041 — SYN-049)
         SyntaxErrorKind.ExpectedExpression                  => "SYN-041",
         SyntaxErrorKind.UnexpectedEofInExpression           => "SYN-042",
         SyntaxErrorKind.ExpectedType                        => "SYN-043",
+        SyntaxErrorKind.ExpectedImportKind                  => "SYN-044",
+        SyntaxErrorKind.MissingImportName                   => "SYN-045",
+        SyntaxErrorKind.MissingIdentifierAfterAs            => "SYN-046",
+        SyntaxErrorKind.MissingSemicolonAfterImport         => "SYN-047",
+        SyntaxErrorKind.ExpectedDeclarationAfterExport      => "SYN-048",
+        SyntaxErrorKind.UnexpectedAliasForStandardImport    => "SYN-049",
 
         _ => "SYN-999",
     };
@@ -86,6 +92,10 @@ public static class ErrorMapper
         SemanticsErrorKind.EmptyArrayRequiresElementType   => "SEM-008",
         SemanticsErrorKind.ForInIterableMustBeArray        => "SEM-009",
         SemanticsErrorKind.DuplicateDeclaration            => "SEM-010",
+        SemanticsErrorKind.UnknownExtern                   => "SEM-011",
+        SemanticsErrorKind.UnknownImport                   => "SEM-012",
+        SemanticsErrorKind.ModuleImportUnsupported         => "SEM-013",
+        SemanticsErrorKind.ReturnAtTopLevel                => "SEM-014",
         _                                                  => "SEM-999",
     };
 }

@@ -11,7 +11,7 @@ namespace Pirate.Cli.Commands;
 /// pirate build [filename] — discovers .pirate modules, checks each against
 /// the content-hash cache, and rebuilds only those that changed.
 /// </summary>
-public sealed class BuildCommand : Command<BuildCommand.BuildCommandSettings>
+public sealed class BuildCommand(ICompilationPipeline compilationPipeline) : Command<BuildCommand.BuildCommandSettings>
 {
     public sealed class BuildCommandSettings : GlobalSettings
     {
@@ -73,22 +73,19 @@ public sealed class BuildCommand : Command<BuildCommand.BuildCommandSettings>
                 else
                 {
                     var source = File.ReadAllText(file);
-                    // Fully qualified: inside Pirate.* namespaces, the simple
-                    // names Lexer/Parser bind to the namespaces, not the classes.
-                    var lexResult = Pirate.Lexer.Lexer.Tokenize(source);
-                    var parseResult = Pirate.Parser.Parser.Parse(lexResult);
+                    var frontend = compilationPipeline.Compile(source);
 
-                    var allErrors = new List<Pirate.Syntax.CompilationError>(lexResult.Errors);
-                    allErrors.AddRange(parseResult.Errors);
-
-                    if (allErrors.Count > 0)
+                    if (!frontend.Success)
                     {
                         failed++;
                         AnsiConsole.MarkupLine($"  [{Theme.Error}]✗[/] {Markup.Escape(relative)} (failed)");
-                        DiagnosticRenderer.RenderErrors(file, allErrors);
+                        DiagnosticRenderer.RenderErrors(file, frontend.Errors);
                     }
                     else
                     {
+                        // Only a fully clean frontend pass (lex + parse + semantics)
+                        // counts as built — a module with type errors must rebuild
+                        // (and re-report) next time, never be served as up to date.
                         rebuilt++;
                         cache.MarkBuilt(file);
                         AnsiConsole.MarkupLine($"  [{Theme.Success}]⟳[/] {Markup.Escape(relative)} (rebuilt)");
