@@ -16,7 +16,6 @@ internal static class Banner
         ("init [filename]", "initializes a new pirate project"),
         ("new [type] [filename]", "create a new file from a template"),
         ("build", "build the modules in the current folder"),
-        ("shell", "opens the pirate repl"),
     };
 
     public static void Render()

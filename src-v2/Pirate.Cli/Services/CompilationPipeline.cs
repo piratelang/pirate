@@ -21,17 +21,19 @@ public sealed record FrontendResult(ProgramNode? Program, IReadOnlyList<Compilat
 /// shown in a single pass. Semantics runs only on a clean parse: the
 /// analyzer assumes a well-formed AST, and cascading over partial parses
 /// would double-report.
-///
-/// Lexer/Parser are fully qualified because inside Pirate.* namespaces the
-/// simple names bind to the namespaces, not the classes; their conversion to
-/// injected services is tracked as STYLE.md migration item (b).
 /// </summary>
-internal sealed class CompilationPipeline(ISemanticAnalyzer semanticAnalyzer) : ICompilationPipeline
+internal sealed class CompilationPipeline(
+    ISemanticAnalyzer semanticAnalyzer,
+    Pirate.Lexer.ILexer lexer,
+    Pirate.Parser.IParser parser) : ICompilationPipeline
 {
     public FrontendResult Compile(string source)
     {
-        var lex = Pirate.Lexer.Lexer.Tokenize(source);
-        var parse = Pirate.Parser.Parser.Parse(lex);
+        var lex = lexer.Tokenize(source);
+        // Module is the only file kind today — the entry/helper-module
+        // grammar. Class/interface files aren't discovered yet (that's
+        // Phase 3), so nothing upstream has another kind to pass in.
+        var parse = parser.Parse(lex, PirateFileKind.Module);
 
         List<CompilationError> errors = [.. lex.Errors, .. parse.Errors];
 

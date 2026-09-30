@@ -12,10 +12,10 @@ internal static class Helpers
 {
     public static SemanticResult Analyze(string source)
     {
-        var lex = Pirate.Lexer.Lexer.Tokenize(source);
+        var lex = new Pirate.Lexer.Lexer().Tokenize(source);
         Assert.Empty(lex.Errors);
 
-        var parse = Pirate.Parser.Parser.Parse(lex);
+        var parse = Pirate.Parser.Parser.Parse(lex, PirateFileKind.Module);
         Assert.Empty(parse.Errors);
         Assert.NotNull(parse.Program);
 

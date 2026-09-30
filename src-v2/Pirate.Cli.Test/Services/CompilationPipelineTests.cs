@@ -10,7 +10,8 @@ namespace Pirate.Cli.Test.Services;
 internal static class Pipelines
 {
     public static FrontendResult Compile(string source) =>
-        new CompilationPipeline(new SemanticAnalyzer()).Compile(source);
+        new CompilationPipeline(new SemanticAnalyzer(), new Pirate.Lexer.Lexer(), new Pirate.Parser.ParserService())
+            .Compile(source);
 }
 
 public class CompilationPipelineTests

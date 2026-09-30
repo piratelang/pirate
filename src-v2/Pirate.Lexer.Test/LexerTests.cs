@@ -6,13 +6,15 @@ namespace Pirate.Lexer.Test;
 
 public class LexerTests
 {
+    private static readonly Lexer Sut = new();
+
     private static TokenType[] TypesOf(LexResult result) =>
         result.Tokens.Select(t => t.Type).ToArray();
 
     [Fact]
     public void Tokenize_EmptySource_ReturnsOnlyEof()
     {
-        var result = Lexer.Tokenize(string.Empty);
+        var result = Sut.Tokenize(string.Empty);
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
         Assert.Empty(result.Errors);
@@ -21,7 +23,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_WhitespaceOnly_ReturnsOnlyEof()
     {
-        var result = Lexer.Tokenize("  \t\r\n \n ");
+        var result = Sut.Tokenize("  \t\r\n \n ");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
         Assert.Empty(result.Errors);
@@ -53,7 +55,7 @@ public class LexerTests
     [InlineData("new", TokenType.New)]
     public void Tokenize_Keyword_ProducesKeywordToken(string source, TokenType expected)
     {
-        var result = Lexer.Tokenize(source);
+        var result = Sut.Tokenize(source);
 
         Assert.Equal([expected, TokenType.Eof], TypesOf(result));
     }
@@ -61,7 +63,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_TrueLiteral_HasBoolValue()
     {
-        var result = Lexer.Tokenize("true");
+        var result = Sut.Tokenize("true");
 
         Assert.Equal(true, result.Tokens[0].Value);
     }
@@ -69,7 +71,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_FalseLiteral_HasBoolValue()
     {
-        var result = Lexer.Tokenize("false");
+        var result = Sut.Tokenize("false");
 
         Assert.Equal(false, result.Tokens[0].Value);
     }
@@ -77,7 +79,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_Identifier_ProducesIdentifierTokenWithLexeme()
     {
-        var result = Lexer.Tokenize("counter_1");
+        var result = Sut.Tokenize("counter_1");
 
         var token = result.Tokens[0];
         Assert.Equal(TokenType.Identifier, token.Type);
@@ -88,7 +90,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_IdentifierWithKeywordPrefix_IsNotTreatedAsKeyword()
     {
-        var result = Lexer.Tokenize("intValue");
+        var result = Sut.Tokenize("intValue");
 
         Assert.Equal([TokenType.Identifier, TokenType.Eof], TypesOf(result));
     }
@@ -96,7 +98,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_IdentifierStartingWithConst_IsNotTreatedAsKeyword()
     {
-        var result = Lexer.Tokenize("constX");
+        var result = Sut.Tokenize("constX");
 
         Assert.Equal([TokenType.Identifier, TokenType.Eof], TypesOf(result));
     }
@@ -107,7 +109,7 @@ public class LexerTests
     [InlineData("external")]
     public void Tokenize_SoftModuleKeywords_ProduceIdentifierTokens(string source)
     {
-        var result = Lexer.Tokenize(source);
+        var result = Sut.Tokenize(source);
 
         Assert.Equal([TokenType.Identifier, TokenType.Eof], TypesOf(result));
     }
@@ -115,7 +117,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_QualifiedName_ProducesDotSeparatedIdentifiers()
     {
-        var result = Lexer.Tokenize("Standard.Terminal.Print");
+        var result = Sut.Tokenize("Standard.Terminal.Print");
 
         Assert.Equal(
             [TokenType.Identifier, TokenType.Dot, TokenType.Identifier, TokenType.Dot, TokenType.Identifier, TokenType.Eof],
@@ -125,7 +127,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_IntLiteral_HasIntValue()
     {
-        var result = Lexer.Tokenize("42");
+        var result = Sut.Tokenize("42");
 
         var token = result.Tokens[0];
         Assert.Equal(TokenType.IntLiteral, token.Type);
@@ -135,7 +137,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_FloatLiteral_HasDoubleValue()
     {
-        var result = Lexer.Tokenize("3.14");
+        var result = Sut.Tokenize("3.14");
 
         var token = result.Tokens[0];
         Assert.Equal(TokenType.FloatLiteral, token.Type);
@@ -145,7 +147,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_IntFollowedByDot_DoesNotConsumeDotWithoutFractionalDigits()
     {
-        var result = Lexer.Tokenize("3.length");
+        var result = Sut.Tokenize("3.length");
 
         Assert.Equal(
             [TokenType.IntLiteral, TokenType.Dot, TokenType.Identifier, TokenType.Eof],
@@ -155,7 +157,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_IntLiteralOverflow_ReportsError()
     {
-        var result = Lexer.Tokenize("99999999999999999999");
+        var result = Sut.Tokenize("99999999999999999999");
 
         Assert.Single(result.Errors);
         var error = (LexError)result.Errors[0];
@@ -166,7 +168,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_StringLiteral_DecodesContentAsValue()
     {
-        var result = Lexer.Tokenize("\"Ahoy!\"");
+        var result = Sut.Tokenize("\"Ahoy!\"");
 
         var token = result.Tokens[0];
         Assert.Equal(TokenType.StringLiteral, token.Type);
@@ -180,7 +182,7 @@ public class LexerTests
     [InlineData("\"back\\\\slash\"", "back\\slash")]
     public void Tokenize_StringLiteral_DecodesKnownEscapeSequences(string source, string expected)
     {
-        var result = Lexer.Tokenize(source);
+        var result = Sut.Tokenize(source);
 
         Assert.Equal(expected, result.Tokens[0].Value);
         Assert.Empty(result.Errors);
@@ -189,7 +191,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_StringLiteral_UnknownEscapeSequence_ReportsErrorAndKeepsCharacter()
     {
-        var result = Lexer.Tokenize("\"a\\qb\"");
+        var result = Sut.Tokenize("\"a\\qb\"");
 
         Assert.Single(result.Errors);
         var error = (LexError)result.Errors[0];
@@ -201,7 +203,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_UnterminatedStringLiteral_ReportsError()
     {
-        var result = Lexer.Tokenize("\"never closed");
+        var result = Sut.Tokenize("\"never closed");
 
         Assert.Single(result.Errors);
         var error = (LexError)result.Errors[0];
@@ -212,7 +214,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_CharLiteral_HasCharValue()
     {
-        var result = Lexer.Tokenize("'x'");
+        var result = Sut.Tokenize("'x'");
 
         var token = result.Tokens[0];
         Assert.Equal(TokenType.CharLiteral, token.Type);
@@ -222,7 +224,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_EscapedCharLiteral_HasDecodedValue()
     {
-        var result = Lexer.Tokenize("'\\n'");
+        var result = Sut.Tokenize("'\\n'");
 
         Assert.Equal('\n', result.Tokens[0].Value);
     }
@@ -230,7 +232,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_UnterminatedCharLiteral_ReportsError()
     {
-        var result = Lexer.Tokenize("'x");
+        var result = Sut.Tokenize("'x");
 
         Assert.Single(result.Errors);
         var error = (LexError)result.Errors[0];
@@ -267,7 +269,7 @@ public class LexerTests
     [InlineData(".", TokenType.Dot)]
     public void Tokenize_Operator_ProducesExpectedToken(string source, TokenType expected)
     {
-        var result = Lexer.Tokenize(source);
+        var result = Sut.Tokenize(source);
 
         Assert.Equal([expected, TokenType.Eof], TypesOf(result));
         Assert.Empty(result.Errors);
@@ -276,7 +278,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_LoneAmpersand_ReportsErrorInsteadOfToken()
     {
-        var result = Lexer.Tokenize("&");
+        var result = Sut.Tokenize("&");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
         Assert.Single(result.Errors);
@@ -287,7 +289,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_LonePipe_ReportsErrorInsteadOfToken()
     {
-        var result = Lexer.Tokenize("|");
+        var result = Sut.Tokenize("|");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
         Assert.Single(result.Errors);
@@ -298,7 +300,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_UnknownCharacter_ReportsErrorAndSkipsIt()
     {
-        var result = Lexer.Tokenize("@");
+        var result = Sut.Tokenize("@");
 
         Assert.Equal([TokenType.Eof], TypesOf(result));
         Assert.Single(result.Errors);
@@ -310,7 +312,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_LineComment_IsStrippedFromTokenStream()
     {
-        var result = Lexer.Tokenize("1 // this is ignored\n2");
+        var result = Sut.Tokenize("1 // this is ignored\n2");
 
         Assert.Equal([TokenType.IntLiteral, TokenType.IntLiteral, TokenType.Eof], TypesOf(result));
         Assert.Equal(1, result.Tokens[0].Value);
@@ -320,7 +322,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_LineCommentAtEndOfFile_NoTrailingNewline_IsStripped()
     {
-        var result = Lexer.Tokenize("1 // trailing, no newline");
+        var result = Sut.Tokenize("1 // trailing, no newline");
 
         Assert.Equal([TokenType.IntLiteral, TokenType.Eof], TypesOf(result));
     }
@@ -328,7 +330,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_SingleDivide_IsNotConfusedWithComment()
     {
-        var result = Lexer.Tokenize("6 / 2");
+        var result = Sut.Tokenize("6 / 2");
 
         Assert.Equal([TokenType.IntLiteral, TokenType.Slash, TokenType.IntLiteral, TokenType.Eof], TypesOf(result));
     }
@@ -336,7 +338,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_SingleLine_TracksColumns()
     {
-        var result = Lexer.Tokenize("ab + 1");
+        var result = Sut.Tokenize("ab + 1");
 
         Assert.Equal(1, result.Tokens[0].Location.Line);
         Assert.Equal(1, result.Tokens[0].Location.Column); // "ab"
@@ -347,7 +349,7 @@ public class LexerTests
     [Fact]
     public void Tokenize_MultipleLines_TracksLineAndResetsColumn()
     {
-        var result = Lexer.Tokenize("a\nbb");
+        var result = Sut.Tokenize("a\nbb");
 
         Assert.Equal(1, result.Tokens[0].Location.Line);
         Assert.Equal(1, result.Tokens[0].Location.Column);
@@ -371,7 +373,7 @@ public class LexerTests
             }
             """;
 
-        var result = Lexer.Tokenize(source);
+        var result = Sut.Tokenize(source);
 
         Assert.Empty(result.Errors);
         Assert.Equal(TokenType.Extern, result.Tokens[0].Type);

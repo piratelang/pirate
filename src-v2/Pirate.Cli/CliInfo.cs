@@ -3,9 +3,8 @@ using System.Reflection;
 namespace Pirate.Cli;
 
 /// <summary>
-/// Shared CLI metadata. Single source of truth for the version string
-/// (eliminating the duplication between <c>Banner.cs</c> and
-/// <c>ShellCommand.cs</c>).
+/// Shared CLI metadata. Single source of truth for the version string,
+/// used by <c>Banner.cs</c>.
 /// </summary>
 public static class CliInfo
 {

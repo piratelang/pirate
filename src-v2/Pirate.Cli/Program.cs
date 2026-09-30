@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Pirate.Cli;
 using Pirate.Cli.Commands;
 using Pirate.Cli.Services;
+using Pirate.Lexer;
+using Pirate.Parser;
 using Pirate.Semantics;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -30,6 +32,8 @@ if (args.Length == 0)
 // commands receive dependencies via constructor injection (TypeRegistrar
 // bridges Spectre.Console.Cli onto this container).
 var services = new ServiceCollection();
+services.AddPirateLexer();
+services.AddPirateParser();
 services.AddPirateSemantics();
 services.AddSingleton<ICompilationPipeline, CompilationPipeline>();
 
@@ -83,9 +87,6 @@ app.Configure(config =>
         .WithDescription("Builds the modules in the current folder.")
         .WithExample("build")
         .WithExample("build", "main");
-
-    config.AddCommand<ShellCommand>("shell")
-        .WithDescription("Opens the pirate REPL.");
 });
 
 return app.Run(args);

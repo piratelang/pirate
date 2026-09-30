@@ -5,15 +5,15 @@ using Pirate.Syntax;
 namespace Pirate.Lexer;
 
 /// <summary>
-/// Single-pass scanner over the raw source text (docs/GRAMMAR.md §1). Unlike
-/// v1's lexer, whitespace/newlines are never stripped before scanning, so
-/// line/column are tracked per character and every token carries a real
-/// source location; and unlike v1, scan errors are collected as diagnostics
-/// instead of thrown, matching the rest of the v2 pipeline.
+/// Single-pass scanner over the raw source text (docs/GRAMMAR.md §1).
+/// Whitespace/newlines are never stripped before scanning, so line/column
+/// are tracked per character and every token carries a real source
+/// location; scan errors are collected as diagnostics instead of thrown,
+/// matching the rest of the v2 pipeline.
 /// </summary>
-public static class Lexer
+public sealed class Lexer : ILexer
 {
-    public static LexResult Tokenize(string source)
+    public LexResult Tokenize(string source)
     {
         ArgumentNullException.ThrowIfNull(source);
         return new Scanner(source).Run();

@@ -2,13 +2,14 @@ namespace Pirate.Parser.Test
 
 open Pirate.Lexer
 open Pirate.Parser
+open Pirate.Syntax
 open Pirate.Syntax.Nodes
 open Xunit
 
 module Helpers =
     let parse source =
-        let lexResult = Lexer.Tokenize source
-        Parser.Parse lexResult
+        let lexResult = Lexer().Tokenize source
+        Parser.Parse lexResult PirateFileKind.Module
 
     let getExpr source =
         // Expressions only exist inside a function body; wrap the snippet so it

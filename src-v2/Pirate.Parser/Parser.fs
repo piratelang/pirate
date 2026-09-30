@@ -410,8 +410,11 @@ module Parser =
 
     // --- Entry point ---
 
-    /// Parses a token stream into a <see cref="ParseResult"/>.
-    let Parse (lexResult: LexResult) : ParseResult =
+    /// Parses a token stream into a <see cref="ParseResult"/>. `fileKind`
+    /// is not consulted yet — only `PirateFileKind.Module` has a grammar
+    /// (docs/GRAMMAR.md §4, Phase 2 of docs/brainstorm/FLAT_PLAN.md).
+    let Parse (lexResult: LexResult) (fileKind: PirateFileKind) : ParseResult =
+        ignore fileKind
         let state =
             { Tokens = lexResult.Tokens
               Pos = 0

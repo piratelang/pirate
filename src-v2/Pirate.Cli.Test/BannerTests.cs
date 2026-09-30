@@ -21,7 +21,6 @@ public class BannerTests
     [InlineData("init [filename]")]
     [InlineData("new [type] [filename]")]
     [InlineData("build")]
-    [InlineData("shell")]
     public void Commands_ListsEveryCommandUsage(string usage)
     {
         Assert.Contains(Banner.Commands, command => command.Usage == usage);
