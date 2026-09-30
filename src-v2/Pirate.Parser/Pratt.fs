@@ -129,6 +129,17 @@ module internal Pratt =
             | TokenType.Identifier ->
                 parseName state
 
+            | TokenType.Self ->
+                let t = advance state
+                SelfExpressionNode(loc t, loc t) :> ExpressionNode
+
+            | TokenType.Null ->
+                let t = advance state
+                LiteralNode(loc t, loc t, LiteralKind.Null, null) :> ExpressionNode
+
+            | TokenType.New ->
+                parseNewExpression state
+
             | _ ->
                 let tok = peek state
                 state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedExpression, sprintf "Expected expression, got '%s'" tok.Lexeme, loc tok))
@@ -158,6 +169,42 @@ module internal Pratt =
     and parseName state : ExpressionNode =
         let startTok = advance state
         QualifiedNameNode(loc startTok, loc startTok, startTok.Lexeme) :> ExpressionNode
+
+    // new-expression = 'new' qualified-name '(' [ argument-list ] ')' ;
+    // The name here is a restrictive qualified-name (identifier { '.' identifier }),
+    // not a general expression — unlike a.b.c, it can't have call/index
+    // applied before the final '(args)' that creates the instance.
+    and parseNewExpression state : ExpressionNode =
+        let startTok = advance state // consume 'new'
+        let nameParts = ResizeArray<string>()
+        if at state TokenType.Identifier then
+            nameParts.Add((advance state).Lexeme)
+            while at state TokenType.Dot do
+                advance state |> ignore
+                if at state TokenType.Identifier then
+                    nameParts.Add((advance state).Lexeme)
+                else
+                    state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingIdentifierAfterDot, "Expected identifier after '.'", loc (peek state)))
+        else
+            state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingIdentifierAfterNew, "Expected a class name after 'new'", loc (peek state)))
+        let className = System.String.Join(".", nameParts)
+        if at state TokenType.LeftParen then
+            advance state |> ignore // consume (
+            let args = ResizeArray<ExpressionNode>()
+            if not (at state TokenType.RightParen) then
+                args.Add(parseExpression state 0)
+                while at state TokenType.Comma do
+                    advance state |> ignore
+                    args.Add(parseExpression state 0)
+            let closing =
+                if at state TokenType.RightParen then advance state
+                else
+                    state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingCloseParenAfterNew, "Expected ')' to close 'new' arguments", loc (peek state)))
+                    peek state
+            NewExpressionNode(loc startTok, loc closing, className, args) :> ExpressionNode
+        else
+            state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingOpenParenAfterNew, "Expected '(' after 'new' class name", loc (peek state)))
+            NewExpressionNode(loc startTok, loc (peek state), className, ResizeArray<ExpressionNode>()) :> ExpressionNode
 
     // --- Postfix (call, index, member access) ---
     and applyPostfix state (expr: ExpressionNode) : ExpressionNode =

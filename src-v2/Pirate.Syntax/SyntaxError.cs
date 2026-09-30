@@ -8,7 +8,8 @@ namespace Pirate.Syntax;
 /// 001-014: Missing closing/separator tokens
 /// 020-028: Missing identifiers
 /// 030-034: Missing keywords
-/// 041-048: Unexpected input, including import/export shapes
+/// 041-049: Unexpected input, including import/visibility shapes
+/// 050-061: Class-file shapes (docs/GRAMMAR.md §4, flat files Phase 2)
 /// </para>
 /// </summary>
 public enum SyntaxErrorKind
@@ -55,8 +56,20 @@ public enum SyntaxErrorKind
     MissingImportName,
     MissingIdentifierAfterAs,
     MissingSemicolonAfterImport,
-    ExpectedDeclarationAfterExport,
+    ExpectedDeclarationAfterPrivate,
     UnexpectedAliasForStandardImport,
+
+    // Class-file shapes (SYN-050 — SYN-059)
+    MissingFieldOrMemberInClassFile,
+    MissingOpenParenAfterConstructor,
+    MissingCloseParenAfterConstructorParameters,
+    MissingDelegateTargetAfterColon,
+    MissingOpenParenAfterDelegate,
+    MissingCloseParenAfterDelegateArguments,
+    MissingIdentifierAfterNew,
+    MissingOpenParenAfterNew,
+    MissingCloseParenAfterNew,
+    ReservedKeywordNotSupportedYet,
 }
 
 /// <summary>

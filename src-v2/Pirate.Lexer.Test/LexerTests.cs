@@ -48,11 +48,22 @@ public class LexerTests
     [InlineData("return", TokenType.Return)]
     [InlineData("extern", TokenType.Extern)]
     [InlineData("import", TokenType.Import)]
-    [InlineData("export", TokenType.Export)]
+    [InlineData("private", TokenType.Private)]
+    [InlineData("field", TokenType.Field)]
+    [InlineData("constructor", TokenType.Constructor)]
+    [InlineData("readonly", TokenType.Readonly)]
+    [InlineData("self", TokenType.Self)]
+    [InlineData("null", TokenType.Null)]
     [InlineData("true", TokenType.True)]
     [InlineData("false", TokenType.False)]
-    [InlineData("class", TokenType.Class)]
     [InlineData("new", TokenType.New)]
+    [InlineData("class", TokenType.Class)]
+    [InlineData("super", TokenType.Super)]
+    [InlineData("extends", TokenType.Extends)]
+    [InlineData("implements", TokenType.Implements)]
+    [InlineData("abstract", TokenType.Abstract)]
+    [InlineData("override", TokenType.Override)]
+    [InlineData("static", TokenType.Static)]
     public void Tokenize_Keyword_ProducesKeywordToken(string source, TokenType expected)
     {
         var result = Sut.Tokenize(source);
@@ -267,6 +278,7 @@ public class LexerTests
     [InlineData(":", TokenType.Colon)]
     [InlineData(";", TokenType.Semicolon)]
     [InlineData(".", TokenType.Dot)]
+    [InlineData("?", TokenType.Question)]
     public void Tokenize_Operator_ProducesExpectedToken(string source, TokenType expected)
     {
         var result = Sut.Tokenize(source);

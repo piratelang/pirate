@@ -33,35 +33,50 @@ module Parser =
             None
 
     // --- Type ---
+    // type = base-type [ '?' ] [ '[' ']' [ '?' ] ] ; base-type = scalar-type | qualified-name ;
+    // A bare identifier is a class-name base type (docs/GRAMMAR.md §4) —
+    // resolving it against the project's types is Phase 3/4 of
+    // docs/brainstorm/FLAT_PLAN.md, so the parser accepts any name here.
     let private parseType state : TypeNode option =
-        let scalarType =
-            match (peek state).Type with
-            | TokenType.Int    -> Some ScalarType.Int
-            | TokenType.Float  -> Some ScalarType.Float
-            | TokenType.String -> Some ScalarType.String
-            | TokenType.Char   -> Some ScalarType.Char
-            | TokenType.Bool   -> Some ScalarType.Bool
-            | TokenType.Void   -> Some ScalarType.Void
+        let startTok = peek state
+        let baseType =
+            match startTok.Type with
+            | TokenType.Int        -> Some (Some ScalarType.Int, None)
+            | TokenType.Float      -> Some (Some ScalarType.Float, None)
+            | TokenType.String     -> Some (Some ScalarType.String, None)
+            | TokenType.Char       -> Some (Some ScalarType.Char, None)
+            | TokenType.Bool       -> Some (Some ScalarType.Bool, None)
+            | TokenType.Void       -> Some (Some ScalarType.Void, None)
+            | TokenType.Identifier -> Some (None, Some startTok.Lexeme)
             | _ ->
-                let tok = peek state
-                state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedType, sprintf "Expected type, got '%s'" tok.Lexeme, loc tok))
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedType, sprintf "Expected type, got '%s'" startTok.Lexeme, loc startTok))
                 None
-        match scalarType with
+        match baseType with
         | None -> None
-        | Some st ->
-            let startTok = peek state
-            advance state |> ignore // consume the scalar keyword
+        | Some (scalarOpt, classNameOpt) ->
+            advance state |> ignore // consume the scalar keyword or class-name identifier
+            // T?[]/T[]? both set one flag — distinguishing nullable elements
+            // from a nullable array is deferred (see PirateType.IsNullable).
+            let mutable isNullable = false
+            if at state TokenType.Question then
+                advance state |> ignore
+                isNullable <- true
             let mutable isArr = false
             if at state TokenType.LeftBracket then
                 advance state |> ignore
                 if at state TokenType.RightBracket then
                     advance state |> ignore
                     isArr <- true
+                    if at state TokenType.Question then
+                        advance state |> ignore
+                        isNullable <- true
                 else
                     state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingCloseBracketInType, "Expected ']' after '[' in type", loc (peek state)))
-            // End at the last consumed token (the scalar keyword or ']'), not the next token.
+            // End at the last consumed token, not the next token.
             let endLoc = loc (state.Tokens.[state.Pos - 1])
-            Some (TypeNode(loc startTok, endLoc, st, isArr))
+            // Placeholder when this is a class type — ClassName is what matters then.
+            let scalar = scalarOpt |> Option.defaultValue ScalarType.Int
+            Some (TypeNode(loc startTok, endLoc, scalar, isArr, isNullable, classNameOpt |> Option.toObj))
 
     // --- Block ---
     let rec private parseBlock state : BlockNode option =
@@ -105,16 +120,16 @@ module Parser =
     // A 'const' with no type or 'var' infers its type from the initializer;
     // plain (non-const) declarations still require type or 'var' so that
     // 'x = 5;' stays an assignment, not a re-inferable declaration.
-    and private parseConstDecl state startToken isExported : StatementNode option =
+    and private parseConstDecl state startToken isPrivate : StatementNode option =
         advance state |> ignore // consume 'const'; startToken anchors the node
         match (peek state).Type with
-        | TokenType.Var -> parseVarDecl state startToken true isExported
+        | TokenType.Var -> parseVarDecl state startToken true isPrivate
         | TokenType.Int
         | TokenType.Float
         | TokenType.String
         | TokenType.Char
-        | TokenType.Bool -> parseTypedVarDecl state startToken true isExported
-        | _ -> parseDeclarationTail state startToken true isExported
+        | TokenType.Bool -> parseTypedVarDecl state startToken true isPrivate
+        | _ -> parseDeclarationTail state startToken true isPrivate
                  SyntaxErrorKind.MissingIdentifierAfterConst "Expected identifier after 'const'"
 
     and private parseReturn state : StatementNode option =
@@ -200,12 +215,12 @@ module Parser =
                     | Some body -> Some (ForStatementNode(loc startTok, loc (peek state), id.Lexeme, startExpr, endExpr, body) :> StatementNode)
                     | None -> None
 
-    and private parseVarDecl state startToken isConst isExported : StatementNode option =
+    and private parseVarDecl state startToken isConst isPrivate : StatementNode option =
         advance state |> ignore // consume 'var'
-        parseDeclarationTail state startToken isConst isExported
+        parseDeclarationTail state startToken isConst isPrivate
             SyntaxErrorKind.MissingIdentifierAfterVar "Expected identifier after 'var'"
 
-    and private parseDeclarationTail state startToken isConst isExported idKind idMessage : StatementNode option =
+    and private parseDeclarationTail state startToken isConst isPrivate idKind idMessage : StatementNode option =
         match expect state TokenType.Identifier idKind idMessage with
         | None -> None
         | Some id ->
@@ -218,9 +233,9 @@ module Parser =
                 expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterDeclaration "Expected ';' after declaration" |> ignore
                 // Untype-annotated declarations (var, inferred const) pass null
                 // for C# nullable VariableDeclarationNode.Type.
-                Some (VariableDeclarationNode(loc startToken, loc (peek state), null, isConst, id.Lexeme, init, isExported) :> StatementNode)
+                Some (VariableDeclarationNode(loc startToken, loc (peek state), null, isConst, id.Lexeme, init, isPrivate) :> StatementNode)
 
-    and private parseTypedVarDecl state startToken isConst isExported : StatementNode option =
+    and private parseTypedVarDecl state startToken isConst isPrivate : StatementNode option =
         match parseType state with
         | None -> None
         | Some typ ->
@@ -234,7 +249,7 @@ module Parser =
                     advance state |> ignore
                     let init = Pratt.parseExpression state 0
                     expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterDeclaration "Expected ';' after declaration" |> ignore
-                    Some (VariableDeclarationNode(loc startToken, loc (peek state), typ, isConst, id.Lexeme, init, isExported) :> StatementNode)
+                    Some (VariableDeclarationNode(loc startToken, loc (peek state), typ, isConst, id.Lexeme, init, isPrivate) :> StatementNode)
 
     and private parseExprStmt state : StatementNode option =
         let startTok = peek state
@@ -338,7 +353,7 @@ module Parser =
             expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterImport "Expected ';' after import" |> ignore
             ImportStatementNode(loc startToken, loc (peek state), k, parts, alias)
 
-    and private parseFuncDecl state isExported : TopLevelNode =
+    and private parseFuncDecl state isPrivate : TopLevelNode =
         let startTok = advance state
         let name =
             match expect state TokenType.Identifier SyntaxErrorKind.MissingFunctionName "Expected function name" with
@@ -361,7 +376,7 @@ module Parser =
             match parseBlock state with
             | Some b -> b
             | None -> BlockNode(loc (peek state), loc (peek state), ResizeArray<StatementNode>(), null)
-        FunctionDeclarationNode(loc startTok, loc (peek state), name, parameters, retType, body, isExported)
+        FunctionDeclarationNode(loc startTok, loc (peek state), name, parameters, retType, body, isPrivate)
 
     and private parseParam state : ParameterDefinitionNode option =
         match parseType state with
@@ -377,34 +392,36 @@ module Parser =
         let rec loop () =
             if not (eof state) then
                 let posBefore = state.Pos
-                // export-statement = 'export' ( function-declaration
-                //                             | variable-declaration )
-                // Exported variable declarations are executable top-level
-                // statements (like any declaration); exported functions are
-                // declarations proper — hence the split destination lists.
+                // module-element = ... | [ 'private' ] function-declaration
+                //                      | [ 'private' ] variable-declaration | ...
+                // Every top-level declaration is public by default
+                // (GRAMMAR.md §3.3); 'private' opts one out. A private
+                // variable declaration is an executable top-level statement
+                // (like any declaration); a private function is a
+                // declaration proper — hence the split destination lists.
                 match (peek state).Type with
                 | TokenType.Extern -> members.Add(parseExtern state)
                 | TokenType.Func -> members.Add(parseFuncDecl state false)
                 | TokenType.Import -> members.Add(parseImport state)
-                | TokenType.Export ->
-                    let exportToken = advance state
+                | TokenType.Private ->
+                    let privateToken = advance state
                     match (peek state).Type with
                     | TokenType.Func -> members.Add(parseFuncDecl state true)
                     | TokenType.Var ->
                         advance state |> ignore // consume 'var'
-                        parseDeclarationTail state exportToken false true
+                        parseDeclarationTail state privateToken false true
                             SyntaxErrorKind.MissingIdentifierAfterVar "Expected identifier after 'var'"
                         |> Option.iter statements.Add
                     | TokenType.Const ->
-                        parseConstDecl state exportToken true |> Option.iter statements.Add
+                        parseConstDecl state privateToken true |> Option.iter statements.Add
                     | TokenType.Int
                     | TokenType.Float
                     | TokenType.String
                     | TokenType.Char
                     | TokenType.Bool ->
-                        parseTypedVarDecl state exportToken false true |> Option.iter statements.Add
+                        parseTypedVarDecl state privateToken false true |> Option.iter statements.Add
                     | _ ->
-                        state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedDeclarationAfterExport, "Expected 'func', 'var', 'const', or a type after 'export'", loc (peek state)))
+                        state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedDeclarationAfterPrivate, "Expected 'func', 'var', 'const', or a type after 'private'", loc (peek state)))
                         consumeThroughSemicolon state
                 | _ -> parseStatement state |> Option.iter statements.Add
                 // Forward-progress guard: any error path that consumed no

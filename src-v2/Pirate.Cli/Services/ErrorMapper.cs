@@ -74,8 +74,20 @@ public static class ErrorMapper
         SyntaxErrorKind.MissingImportName                   => "SYN-045",
         SyntaxErrorKind.MissingIdentifierAfterAs            => "SYN-046",
         SyntaxErrorKind.MissingSemicolonAfterImport         => "SYN-047",
-        SyntaxErrorKind.ExpectedDeclarationAfterExport      => "SYN-048",
+        SyntaxErrorKind.ExpectedDeclarationAfterPrivate     => "SYN-048",
         SyntaxErrorKind.UnexpectedAliasForStandardImport    => "SYN-049",
+
+        // Class-file shapes (SYN-050 — SYN-059)
+        SyntaxErrorKind.MissingFieldOrMemberInClassFile     => "SYN-050",
+        SyntaxErrorKind.MissingOpenParenAfterConstructor    => "SYN-051",
+        SyntaxErrorKind.MissingCloseParenAfterConstructorParameters => "SYN-052",
+        SyntaxErrorKind.MissingDelegateTargetAfterColon     => "SYN-053",
+        SyntaxErrorKind.MissingOpenParenAfterDelegate       => "SYN-054",
+        SyntaxErrorKind.MissingCloseParenAfterDelegateArguments => "SYN-055",
+        SyntaxErrorKind.MissingIdentifierAfterNew           => "SYN-056",
+        SyntaxErrorKind.MissingOpenParenAfterNew            => "SYN-057",
+        SyntaxErrorKind.MissingCloseParenAfterNew           => "SYN-058",
+        SyntaxErrorKind.ReservedKeywordNotSupportedYet      => "SYN-059",
 
         _ => "SYN-999",
     };

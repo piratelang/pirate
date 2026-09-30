@@ -134,6 +134,9 @@ public sealed class Lexer : ILexer
                 case '.':
                     Add(TokenType.Dot, ".", start);
                     return;
+                case '?':
+                    Add(TokenType.Question, "?", start);
+                    return;
 
                 case '=' when Current == '=':
                     Advance();

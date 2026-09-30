@@ -93,14 +93,14 @@ public class AnalyzerSurfaceTests
         Helpers.AssertError(SemanticsErrorKind.ReturnAtTopLevel, "return 5;");
 
     [Fact]
-    public void Analyze_ExportedVariableAndFunction_Succeed() =>
-        Helpers.AssertClean("export var data = \"shared\"; export func get() : string { return data; }");
+    public void Analyze_PrivateVariableAndFunction_Succeed() =>
+        Helpers.AssertClean("private var data = \"shared\"; private func get() : string { return data; }");
 
     [Fact]
-    public void Analyze_ExportedConstStillImmutable() =>
+    public void Analyze_PrivateConstStillImmutable() =>
         Helpers.AssertError(
             SemanticsErrorKind.AssignmentToConst,
-            "export const LIMIT = 10; LIMIT = 11;");
+            "private const LIMIT = 10; LIMIT = 11;");
 
     [Fact]
     public void Analyze_TopLevelControlFlowAndLoops_Succeed() =>

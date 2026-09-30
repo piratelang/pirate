@@ -38,15 +38,32 @@ public enum TokenType
     // Module-system keywords (GRAMMAR.md §1.3; soft keywords 'standard',
     // 'module', 'external' stay ordinary identifiers)
     Import,
-    Export,
+
+    // Visibility keyword (replaces 'export' — GRAMMAR.md §3.3)
+    Private,
+
+    // Class keywords (GRAMMAR.md §4)
+    Field,
+    Constructor,
+    Readonly,
+    Self,
+    Null,
 
     // Literal keywords
     True,
     False,
 
-    // Reserved, not yet implemented (GRAMMAR.md §1.3)
-    Class,
+    // 'new' is an expression keyword (GRAMMAR.md §3.6/§4)
     New,
+
+    // Reserved, not yet implemented (GRAMMAR.md §1.3, §4/§5)
+    Class,
+    Super,
+    Extends,
+    Implements,
+    Abstract,
+    Override,
+    Static,
 
     // Assignment
     Equal,
@@ -85,6 +102,7 @@ public enum TokenType
     Colon,
     Semicolon,
     Dot,
+    Question,
 
     Eof
 }

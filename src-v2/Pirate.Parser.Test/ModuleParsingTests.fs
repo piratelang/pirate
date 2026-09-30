@@ -96,46 +96,53 @@ module ModuleParsingTests =
                 | _ -> false))
 
     [<Fact>]
-    let ``Exported function is a member marked exported`` () =
-        let result = Helpers.parse "export func helper() : void { }"
+    let ``Private function is a member marked private`` () =
+        let result = Helpers.parse "private func helper() : void { }"
         Assert.Empty(result.Errors)
         let functionDeclaration = result.Program.Value.Members.[0] :?> FunctionDeclarationNode
-        Assert.True(functionDeclaration.IsExported)
+        Assert.True(functionDeclaration.IsPrivate)
         Assert.Equal("helper", functionDeclaration.Name)
 
     [<Fact>]
-    let ``Exported variable is a statement marked exported`` () =
-        let result = Helpers.parse "export var data = \"shared\";"
+    let ``Private variable is a statement marked private`` () =
+        let result = Helpers.parse "private var data = \"shared\";"
         Assert.Empty(result.Errors)
         let declaration = result.Program.Value.Statements.[0] :?> VariableDeclarationNode
-        Assert.True(declaration.IsExported)
+        Assert.True(declaration.IsPrivate)
         Assert.False(declaration.IsConst)
         Assert.Equal("data", declaration.Name)
 
     [<Fact>]
-    let ``Exported typed and const declarations`` () =
-        let result = Helpers.parse "export int count = 3;\nexport const LIMIT = 10;"
+    let ``Private typed and const declarations`` () =
+        let result = Helpers.parse "private int count = 3;\nprivate const LIMIT = 10;"
         Assert.Empty(result.Errors)
         let typed = result.Program.Value.Statements.[0] :?> VariableDeclarationNode
         let constant = result.Program.Value.Statements.[1] :?> VariableDeclarationNode
-        Assert.True(typed.IsExported)
+        Assert.True(typed.IsPrivate)
         Assert.Equal(ScalarType.Int, typed.Type.ScalarType)
-        Assert.True(constant.IsExported)
+        Assert.True(constant.IsPrivate)
         Assert.True(constant.IsConst)
         Assert.Null(constant.Type)
-        // The node anchors on 'export', not 'const' (line 2, column 1) —
-        // same anchor as every other exported declaration form.
+        // The node anchors on 'private', not 'const' (line 2, column 1) —
+        // same anchor as every other private declaration form.
         Assert.Equal(2, constant.StartLocation.Line)
         Assert.Equal(1, constant.StartLocation.Column)
 
     [<Fact>]
-    let ``Export of a statement keyword is a syntax error`` () =
-        let result = Helpers.parse "export if x { }"
+    let ``Declaration is public by default`` () =
+        let result = Helpers.parse "func helper() : void { }"
+        Assert.Empty(result.Errors)
+        let functionDeclaration = result.Program.Value.Members.[0] :?> FunctionDeclarationNode
+        Assert.False(functionDeclaration.IsPrivate)
+
+    [<Fact>]
+    let ``Private before a statement keyword is a syntax error`` () =
+        let result = Helpers.parse "private if x { }"
         Assert.True(
             result.Errors
             |> Seq.exists (fun e ->
                 match e with
-                | :? SyntaxError as s -> s.Kind = SyntaxErrorKind.ExpectedDeclarationAfterExport
+                | :? SyntaxError as s -> s.Kind = SyntaxErrorKind.ExpectedDeclarationAfterPrivate
                 | _ -> false))
 
     [<Fact>]
