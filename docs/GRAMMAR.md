@@ -379,11 +379,13 @@ class-element     = { modifier } ( field | method | constructor ) ;
 modifier          = 'private' | 'readonly' ;
                   (* 'readonly' on fields only; 'override'/'abstract' reserved, 5 *)
 
-field             = 'field' type identifier [ '=' expression ] ';'
+field             = 'field' ( type | 'var' ) identifier [ '=' expression ] ';'
                   | 'const' [ type | 'var' ] identifier '=' expression ';' ;
                   (* on 'field', the initializer may be omitted only if every
                      constructor assigns the field (definite assignment); a
-                     nullable field is never implicitly null *)
+                     nullable field is never implicitly null. 'const' always
+                     requires an initializer — there's no later assignment
+                     to give it one. *)
 method            = 'func' identifier '(' [ parameter-list ] ')' ':' type block ;
 constructor       = 'constructor' '(' [ parameter-list ] ')'
                     [ ':' delegate ] block ;

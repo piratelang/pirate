@@ -540,3 +540,29 @@ that renaming a file touches its own body and every importer — treated as a
 refactor tooling should handle, not a reason to let `self` stand in for the
 type.
 
+---
+
+## [v2-035] Phase 2 lands: class-file grammar, `export` removed from code
+
+**When**: 2026-09-30
+**What**: The lexer/parser side of flat files (Phase 2 of
+`docs/brainstorm/FLAT_PLAN.md`, #222) is implemented on
+`feature/flat-files`: `field`, `constructor`, `readonly`, `self`, `null`
+tokens; `super`/`extends`/`implements`/`abstract`/`override`/`static`
+lexed but rejected everywhere they'd appear with one
+`ReservedKeywordNotSupportedYet` error per occurrence; `new` promoted to
+an expression keyword; `T?`/class-name types; and a class-file top-level
+grammar (fields, constants, constructors with an optional `: self(...)`
+delegate, methods — no loose statements). `export` is gone from the
+lexer and parser; `FunctionDeclarationNode`/`VariableDeclarationNode`'s
+`IsExported` is renamed `IsPrivate`, set by the new `private` modifier
+(GRAMMAR.md §3.3).
+**Why**: v2-030 already made this the canonical spec; this is that spec
+implemented. `export`'s removal and `private`'s addition are one change
+because they share the same grammar slot (a module-element's leading
+modifier) — landing `private` without first deleting `export` would mean
+two competing visibility keywords for one commit's length, which is worse
+than the larger diff. None of this is reachable from `pirate build`/`run`
+yet: `Pirate.Shared.File` still only discovers `.pirate`, so a `.cpirate`
+class file has no way to reach the parser outside a test — that's Phase 3.
+

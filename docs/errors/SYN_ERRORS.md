@@ -382,16 +382,16 @@ main.pirate:1:1 import standard Terminal *SYN-047*
 
 **Fix**: terminate the statement: `import standard Terminal;`
 
-### SYN-048 — Expected declaration after `export`
+### SYN-048 — Expected declaration after `private`
 
 ```
-main.pirate:1:8 Expected 'func', 'var', 'const', or a type after 'export' *SYN-048*
-  1 | export if x { }
-    |       ^
+main.pirate:1:9 Expected 'func', 'var', 'const', or a type after 'private' *SYN-048*
+  1 | private if x { }
+    |        ^
 ```
 
-**Cause**: `export` only prefixes function and variable declarations.
-**Fix**: `export func get() : int { ... }` or `export var data = ...;`
+**Cause**: `private` only prefixes function and variable declarations.
+**Fix**: `private func get() : int { ... }` or `private var data = ...;`
 
 ### SYN-049 — `as` alias on a standard import
 
@@ -404,3 +404,120 @@ main.pirate:1:26 'as' only applies to module and external imports *SYN-049*
 **Cause**: `import standard <NS>;` binds the group's own names (leaf and
 dotted path) — there is nothing for an alias to name.
 **Fix**: drop the alias: `import standard Terminal;`
+
+## Class-file shapes (SYN-050 — SYN-059)
+
+Class files (`.cpirate`/`.cpir`, GRAMMAR.md §4) are parsed with a
+different top-level rule than modules — no loose statements, only
+fields, constants, constructors, and methods.
+
+### SYN-050 — Expected a class member
+
+```
+Counter.cpirate:1:1 Expected 'field', 'const', 'constructor', or a method in a class file *SYN-050*
+  1 | var x = 5;
+    | ^^^
+```
+
+**Cause**: A class file has no loose statements — every top-level line
+must be a field, constant, constructor, or method.
+**Fix**: Use `field int x = 5;` for a field, or move the statement
+inside a constructor or method body.
+
+### SYN-051 — Missing `(` after `constructor`
+
+```
+Counter.cpirate:1:12 Expected '(' after 'constructor' *SYN-051*
+  1 | constructor int x) { }
+    |            ^
+```
+
+**Fix**: `constructor(int x) { }`
+
+### SYN-052 — Missing `)` after constructor parameters
+
+```
+Counter.cpirate:1:16 Expected ')' after constructor parameters *SYN-052*
+  1 | constructor(int x { }
+    |                   ^
+```
+
+**Fix**: close the parameter list: `constructor(int x) { }`
+
+### SYN-053 — Expected `self` after `:` in a constructor
+
+```
+Counter.cpirate:1:16 Expected 'self' after ':' in constructor *SYN-053*
+  1 | constructor() : foo() { }
+    |                ^^^
+```
+
+**Cause**: A constructor delegate can only call another constructor on
+the same class, spelled `self`.
+**Fix**: `constructor() : self(16) { }`
+
+### SYN-054 — Missing `(` after `self`
+
+```
+Counter.cpirate:1:22 Expected '(' after 'self' *SYN-054*
+  1 | constructor() : self { }
+    |                      ^
+```
+
+**Fix**: `constructor() : self(16) { }` — `self` as a delegate always
+calls another constructor, so it always takes an argument list.
+
+### SYN-055 — Missing `)` after delegate arguments
+
+```
+Counter.cpirate:1:27 Expected ')' to close delegate arguments *SYN-055*
+  1 | constructor() : self(16 { }
+    |                          ^
+```
+
+**Fix**: close the argument list: `constructor() : self(16) { }`
+
+### SYN-056 — Expected a class name after `new`
+
+```
+main.pirate:1:22 Expected a class name after 'new' *SYN-056*
+  1 | Counter c = new (10);
+    |                      ^
+```
+
+**Fix**: name the class being created: `new Counter(10)`
+
+### SYN-057 — Missing `(` after a `new` class name
+
+```
+main.pirate:1:27 Expected '(' after 'new' class name *SYN-057*
+  1 | Counter c = new Counter 10);
+    |                          ^
+```
+
+**Fix**: `new Counter(10)`
+
+### SYN-058 — Missing `)` to close `new` arguments
+
+```
+main.pirate:1:31 Expected ')' to close 'new' arguments *SYN-058*
+  1 | Counter c = new Counter(10;
+    |                            ^
+```
+
+**Fix**: `new Counter(10)`
+
+### SYN-059 — Reserved keyword, not supported yet
+
+```
+Counter.cpirate:1:1 'extends' is reserved, not supported yet *SYN-059*
+  1 | extends Base;
+    | ^^^^^^^
+```
+
+**Cause**: `extends`, `implements`, `abstract`, `override`, `static`,
+and `super` (as a constructor delegate) are reserved for a later
+milestone (docs/brainstorm/FLAT_PLAN.md, "After the first slice") —
+the classes first slice is fields, constructors, methods, `self`, and
+nullable types only.
+**Fix**: Not user-fixable yet.

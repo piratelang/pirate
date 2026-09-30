@@ -35,7 +35,7 @@ a sequential number:
 ## Error Catalogs
 
 - **[Lexical Errors](LEX_ERRORS.md)** — `LEX-001` through `LEX-007`
-- **[Syntax Errors](SYN_ERRORS.md)** — `SYN-001` through `SYN-048` (no `SYN-040`)
+- **[Syntax Errors](SYN_ERRORS.md)** — `SYN-001` through `SYN-059` (no `SYN-040`)
 - **[Semantic Errors](SEM_ERRORS.md)** — `SEM-001` through `SEM-014`
 - **[Runtime Errors](RTN_ERRORS.md)** — `RTN-001` through `RTN-003` *(future)*
 

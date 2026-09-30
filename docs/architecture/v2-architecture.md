@@ -386,7 +386,7 @@ sequential number:
 | Prefix | Stage | Range | File |
 |--------|-------|-------|------|
 | `LEX` | Lexer | `LEX-001`–`LEX-007` | `docs/errors/LEX_ERRORS.md` |
-| `SYN` | Parser | `SYN-001`–`SYN-048` (no `SYN-040`) | `docs/errors/SYN_ERRORS.md` |
+| `SYN` | Parser | `SYN-001`–`SYN-059` (no `SYN-040`) | `docs/errors/SYN_ERRORS.md` |
 | `SEM` | Semantics | `SEM-001`–`SEM-014` | `docs/errors/SEM_ERRORS.md` |
 | `RTN` | Runtime (VM) | `RTN-001`–`RTN-003` (+ planned `RTN-004`) | `docs/errors/RTN_ERRORS.md` |
 
