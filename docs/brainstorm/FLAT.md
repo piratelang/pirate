@@ -1,9 +1,11 @@
 # Pirate Flat Files (brainstorm)
 
-Status: **brainstorm, not canonical.** Nothing here is implemented. If adopted,
-the grammar moves into `docs/GRAMMAR.md` and the decisions into
-`docs/design/DESIGN_DECISIONS.md`. The build order is in
-[`FLAT_PLAN.md`](FLAT_PLAN.md).
+Status: **adopted, not yet implemented.** Phase 0 folded this grammar into
+[`../GRAMMAR.md`](../GRAMMAR.md) §4 (canonical) and the decisions into
+[`../design/DESIGN_DECISIONS.md`](../design/DESIGN_DECISIONS.md) (`v2-030`
+onwards) — this file stays as the fuller prose walkthrough and rationale,
+kept in sync with the canonical spec rather than re-canonicalized here. The
+build order is in [`FLAT_PLAN.md`](FLAT_PLAN.md).
 
 **First slice:** classes only, meaning fields, constructors, methods, `self`,
 namespaces, imports and nullable types. `extends`, `implements`, interfaces and

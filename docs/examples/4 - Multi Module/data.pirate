@@ -1,8 +1,9 @@
-// A helper module: declarations only, no top-level code. `export` marks
-// what importing modules can reach (GRAMMAR.md §3.3).
+// A helper module: declarations only, no top-level code. Every declaration
+// is public by default (GRAMMAR.md §3.3); `export` was removed — see
+// GRAMMAR_CHANGES.md.
 
-export var data = "This is some shared data";
+var data = "This is some shared data";
 
-export func greet(string name) : string {
+func greet(string name) : string {
     return "Hello, " + name;
 }

@@ -441,3 +441,102 @@ from an absent one, which is also what the linker needs for module imports.
 an alias to name; accepting and ignoring it would let `import standard
 Terminal as T;` silently do nothing useful.
 
+---
+
+## [v2-030] Flat files adopted: a file is a type, `export` is removed
+
+**When**: 2026-09-30
+**What**: `docs/brainstorm/FLAT.md` and `FLAT_PLAN.md`'s decisions are
+folded into `GRAMMAR.md` §4 as the canonical (if not-yet-implemented) spec,
+tracked by epic #219 and sub-issues #220–228
+(`docs/brainstorm/FLAT_PLAN.md`'s "Status" checklist). Classes are a file
+kind (`.cpirate`/`.cpir`), not a `class Foo { }` wrapper — the filename is
+the type name, every top-level member belongs to it. `export` is removed
+everywhere (modules and classes alike); `private` is the one visibility
+modifier, public-by-default otherwise. This work happens on branch
+`feature/flat-files`, sequenced as eight phases (0 spec → 1 front-end prep →
+2 lexer/parser → 3 project model → 4 semantics → 5a compiler/VM/stdlib → 5b
+objects → 6 docs), landing back to back as one effort.
+**Why**: OOP was already reserved (`class`/`new`) but undefined; flat files
+reuse v2's existing "declarations at top level" model instead of adding a
+second, wrapper-based declaration style, and remove `export` in favor of one
+visibility rule shared by modules and classes. The module-linking milestone
+(v2-021, "In progress" in `v2-architecture.md`) is sequenced as Phase 3 of
+this plan and **must not** be built against the old `export` model first —
+resolution is written once, flat-first, so a pre-flat-files module-linker
+implementation was stashed on `dev` rather than carried onto this branch
+(see `git stash list` on `dev`) to avoid exactly that.
+
+---
+
+## [v2-031] Field access has exactly three levels: public, `readonly`, `private`
+
+**When**: 2026-09-30
+**What**: `field int x` (read/write from anywhere), `readonly field int x`
+(read anywhere, assigned only inside the class's own constructors/methods),
+`private field int x` (neither). `readonly` applies to fields only — on a
+method, constructor, or `const` it's a compile error, since there's nothing
+to write there to begin with. Independent read/write restriction,
+`protected` (needs `extends`), and accessor blocks (`prop`) are backlog
+(GRAMMAR.md §5, "After the first slice").
+**Why**: User decision, favoring the smallest access model that covers the
+worked examples (`Counter`, `shop`) over speculative generality. `readonly`
+doesn't freeze the *value* (a `readonly` field holding an object still lets
+callers invoke that object's public methods) — only who can reassign the
+field itself from outside the class.
+
+---
+
+## [v2-032] Every type gets a uniform nullable form, `T?`
+
+**When**: 2026-09-30
+**What**: `T?` is defined for every type — scalars, classes, and arrays
+(`int?`, `Item?`, `Item[]?`, `Item?[]`) — with one rule instead of a
+per-category one. `null`, `== null`/`!= null`, and flow narrowing (locals
+and parameters only, not fields) are in the first slice; `?.`, `??`, `x!`
+are backlog. A nullable value can't be used as its base type until narrowed
+(GRAMMAR.md §2).
+**Why**: One rule for scalars, classes, and arrays is simpler to specify and
+implement than a scalar/reference split, and misuse being a *compile-time*
+error (never a null-reference crash) is the point — there's deliberately no
+run-time null failure to report once this lands. The VM's representation of
+a null scalar is the highest-risk unresolved part of this decision: it's
+**not** chosen here, see v2-033.
+
+---
+
+## [v2-033] Null representation in `PirateValue` deferred to Phase 5b
+
+**When**: 2026-09-30
+**What**: v2-032 specifies nullable scalars (`int?`) at the language level,
+but how `PirateValue` (the VM's tagged-union value struct, currently `{
+ValueKind Kind; double Number; object? Ref; }` per `v2-architecture.md`)
+represents a null `int` is **not decided yet**. Phase 5a (compiler/VM
+core, arithmetic through builtins) must not lock a `PirateValue` layout
+that can't hold a null scalar; the representation is chosen at the start of
+Phase 5b, before `OpNew`/`OpGetField`/`OpNull` are written.
+**Why**: Getting this wrong after Phase 5a ships would mean revisiting
+every opcode that touches `PirateValue`. Deciding it once, right before the
+opcodes that need it, costs one design pass instead of a rewrite; flagged
+explicitly in `FLAT_PLAN.md`'s risks section for the same reason.
+
+---
+
+## [v2-034] `self`, `constructor`, `new`: three separate keywords, one job each
+
+**When**: 2026-09-30
+**What**: `constructor` defines a constructor (reads as `func`'s
+counterpart); `new Counter(10)` is the only way to create an instance; and
+`self` is the current instance inside a method/constructor body *or* a
+constructor delegate (`constructor() : self(16) { }`) — never a type. The
+type is always spelled by the file's own name, inside the file and out
+(`func add(Counter other) : Counter`). A member can't share the file's name,
+since that name is in scope as a type throughout the body.
+**Why**: Splitting "define," "instantiate," and "refer to the instance"
+across three keywords means a definition and a call never share one
+(`new` only ever means "create"), and `self` never needs a position-based
+double meaning ("is this `self` the type or the instance?"). The cost is
+that renaming a file touches its own body and every importer — treated as a
+refactor tooling should handle, not a reason to let `self` stand in for the
+type.
+

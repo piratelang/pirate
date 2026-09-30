@@ -1,0 +1,9 @@
+// SPEC EXAMPLE — see Counter.cpirate.
+
+import standard Terminal;
+
+Counter c = new Counter(10);
+c.increment();
+c.increment();
+
+PrintLine(MathUtil.square(c.value()));

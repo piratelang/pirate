@@ -1,10 +1,13 @@
 # Flat files: implementation plan (brainstorm)
 
-Status: **plan, not implemented.** Companion to [`FLAT.md`](FLAT.md), which
-describes the language. This file records the decisions made so far, the
-phases to build it on v2, and what is still undecided. Nothing here is
-canonical until Phase 0 folds it into `GRAMMAR.md` and
-`DESIGN_DECISIONS.md`.
+Status: **Phase 0 (spec) landed; Phases 1–6 not implemented.** Companion to
+[`FLAT.md`](FLAT.md), which describes the language. This file records the
+decisions made so far, the phases to build it on v2, and what is still
+undecided. The grammar and decisions below are now canonical via
+[`../GRAMMAR.md`](../GRAMMAR.md) §4 and
+[`../design/DESIGN_DECISIONS.md`](../design/DESIGN_DECISIONS.md) (`v2-030`
+onwards, folded by Phase 0) — this file stays the plan of record for the
+phases still ahead.
 
 Tracked by [#219 — v2: Flat files — a file is a type (classes first
 slice)](https://github.com/piratelang/pirate/issues/219), one sub-issue per
@@ -30,7 +33,7 @@ docs.
 
 Branch: `feature/flat-files`. Check off as each phase's change merges.
 
-- [ ] Phase 0 — spec ([#220](https://github.com/piratelang/pirate/issues/220))
+- [x] Phase 0 — spec ([#220](https://github.com/piratelang/pirate/issues/220))
 - [ ] Phase 1 — front end prep ([#221](https://github.com/piratelang/pirate/issues/221))
 - [ ] Phase 2 — lexer/parser ([#222](https://github.com/piratelang/pirate/issues/222))
 - [ ] Phase 3 — project model & namespaces ([#223](https://github.com/piratelang/pirate/issues/223)) —

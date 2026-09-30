@@ -1,0 +1,6 @@
+// SPEC EXAMPLE — a plain module, same-folder visibility (GRAMMAR.md §4.4)
+// lets main.pirate reach Counter and MathUtil without an import.
+
+func square(int x) : int {
+    return x * x;
+}

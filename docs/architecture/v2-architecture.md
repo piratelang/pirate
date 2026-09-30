@@ -412,7 +412,14 @@ for how the system works in code.
 - ✅ `.agents/` — model/provider-agnostic agent instructions
 
 **In progress:**
-- 🔧 Module linking — `import module` / `import external` resolution against the fleet manifest, export visibility, entry-only top-level code (SEM-013 today)
+- 🔧 Flat files (a file is a type) — `docs/brainstorm/FLAT_PLAN.md`, tracked
+  by epic #219, branch `feature/flat-files`. Module linking (`import
+  module`/`import external` resolution against the fleet manifest,
+  visibility, entry-only top-level code — SEM-013 today) is this plan's
+  Phase 3, superseding the standalone module-linking milestone this bullet
+  used to name; `export`'s replacement by `private` (GRAMMAR.md §3.3) and
+  classes (GRAMMAR.md §4, closing the `class`/`new` open item) are Phases 0
+  and 2–5b respectively. `pirate shell` is removed as part of Phase 1.
 
 **Not yet started:**
 - ⬜ `Pirate.Compiler` — bytecode emission (interleaved with VM)
