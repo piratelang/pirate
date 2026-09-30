@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ParserResult.fs" />
+    <Compile Include="IParser.fs" />
+    <Compile Include="Pratt.fs" />
+    <Compile Include="Parser.fs" />
+    <Compile Include="ParserService.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Lexer\Pirate.Lexer.csproj" />
+    <ProjectReference Include="..\Pirate.Syntax\Pirate.Syntax.csproj" />
+  </ItemGroup>
+
+</Project>

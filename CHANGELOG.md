@@ -2,6 +2,22 @@
 
 Ordered by Release/Milestone, then pullrequest. Listing the changes made.
 
+# Unreleased (v2)
+
+Flat files (epic [#219](https://github.com/piratelang/pirate/issues/219),
+branch `feature/flat-files`, `docs/brainstorm/FLAT_PLAN.md`). Breaking
+changes for v2 only — v1 (`src/`) is unaffected.
+
+- **Breaking**: `export` removed. `private` is the one visibility modifier;
+  every top-level declaration (module or class) is public by default.
+- **Breaking**: `pirate shell` removed — no REPL.
+- New file kinds: `.cpirate`/`.cpir` (class), `.ipirate`/`.ipir` (interface,
+  later). `.pirate`/`.pir` keep meaning "module."
+- `pirate init` prompts for the project name (used for both the `.fleet`
+  file and the root namespace) instead of defaulting to `module.fleet`.
+- Build cache `PipelineVersion` bump (project-wide invalidation once the
+  module linker lands).
+
 # 2.0.0
 
 - ([PIRATE-22](https://vanarkel.atlassian.net/browse/PIRATE-22)) Add Solution Folder hierarchy

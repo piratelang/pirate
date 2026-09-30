@@ -1,0 +1,7 @@
+{
+  "name": "more-operations",
+  "version": "0.1.0",
+  "entryPoint": "main",
+  "build": {},
+  "dependencies": {}
+}

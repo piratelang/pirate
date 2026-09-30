@@ -1,0 +1,40 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "lsp": true,
+  "instructions": [
+    ".agents/AGENTS.md"
+  ],
+  "agent": {
+    "ask" : {
+      "description": "Provides helpful and accurate responses to user questions about the code.",
+      "prompt": "The user is asking a question about the code. Provide a helpful and accurate response.",
+      "tools": {
+        "write": false,
+        "edit": false
+      }
+    }
+  },
+  "mcp": {
+    "github": {
+      "type": "remote",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {env:GITHUB_MCP_TOKEN}"
+      }
+    }
+  },
+  "references": {
+    "docs": {
+      "path": "docs",
+      "description": "Pirate language docs — grammar, CLI guide, architecture, code style, testing strategy"
+    },
+    "agents": {
+      "path": ".agents",
+      "description": "Agent instructions (AGENTS.md) and compiler reference material (Thorsten Ball's Writing an Interpreter in Go / Writing a Compiler in Go)"
+    }
+  },
+  "plugin": [
+    "opencode-wakatime"
+  ]
+}

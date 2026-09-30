@@ -1,0 +1,39 @@
+# Architecture overview
+
+This repo contains two complete, independent implementations of the Pirate
+language, in two separate solutions that share no projects:
+
+- [`v1-architecture.md`](v1-architecture.md) — `src/PirateLang.sln`, the
+  currently-shipped implementation.
+- [`v2-architecture.md`](v2-architecture.md) — `src-v2/PirateLang.slnx`, the
+  ground-up rewrite in progress: Spectre.Console CLI, a faster lexer/parser,
+  and a compiled (bytecode + VM) pipeline with static typing, replacing v1's
+  tree-walking interpreter.
+
+Read both before touching either solution — v2 is not a port of v1's code,
+but it is a replacement for v1's *behavior*, so knowing what v1 actually does
+(not just what its docs claim) matters when v2 has to match or deliberately
+diverge from it.
+
+Related docs, not architecture but load-bearing for the same work:
+
+- [`../GRAMMAR.md`](../GRAMMAR.md) — canonical v2 language grammar.
+- [`../GRAMMAR_CHANGES.md`](../GRAMMAR_CHANGES.md) — why v2's grammar differs from v1.
+- [`../STYLE.md`](../STYLE.md) — v2 code style guide: naming, DI per-project extensions, records, diagnostics, comments, testing.
+- [`../TESTING.md`](../TESTING.md) — testing strategy for both layers (xUnit + Gherkin).
+
+## Current state
+
+v1 is the shipped version and must keep working. v2 is past scaffolding: the
+lexer, syntax nodes/error hierarchy/semantic-model data types, F# parser
+(including imports, exports, and top-level statements), the static
+type-checker (`Pirate.Semantics`), `Pirate.Shared.File`,
+`Pirate.Shared.Logging`, `Pirate.Fleet`, and the Spectre.Console CLI (a DI-
+composed `CompilationPipeline` for build/run/shell with content-hash caching
+gated on a clean frontend and diagnostics rendering incl. SEM codes) are
+implemented and tested (`dotnet test src-v2/PirateLang.slnx`); compiler/VM/
+standard library have no real code yet, and module linking (`import module` /
+`import external` resolution) is the next milestone — see
+[`v2-architecture.md`](v2-architecture.md)'s "Current state" for the per-
+project status. There is no migration/cutover doc checked in yet — treat
+"when/how v1 gets deleted" as undecided until the user says otherwise.

@@ -1,0 +1,7 @@
+// The smallest runnable Pirate program: import a standard-library
+// namespace, then use it. The entry module's top-level statements ARE the
+// program (GRAMMAR.md §3.1) — no main() function needed.
+
+import standard Terminal;
+
+PrintLine("Hello, World!");

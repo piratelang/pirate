@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ExpressionParsingTests.fs" />
+    <Compile Include="StatementParsingTests.fs" />
+    <Compile Include="TopLevelParsingTests.fs" />
+    <Compile Include="ModuleParsingTests.fs" />
+    <Compile Include="ClassFileParsingTests.fs" />
+    <Compile Include="ErrorRecoveryTests.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0" />
+    <PackageReference Include="AutoFixture" Version="4.18.1" />
+    <PackageReference Include="FakeItEasy" Version="8.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pirate.Parser\Pirate.Parser.fsproj" />
+    <ProjectReference Include="..\Pirate.Lexer\Pirate.Lexer.csproj" />
+    <ProjectReference Include="..\Pirate.Syntax\Pirate.Syntax.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,27 @@
+// SPEC EXAMPLE — the classes-first-slice syntax (GRAMMAR.md §4); the lexer,
+// parser, and semantics for class files are not implemented yet
+// (docs/brainstorm/FLAT_PLAN.md, Phases 2 and 4).
+
+const int Step = 1;
+
+readonly field int count = 0;
+private field int calls = 0;
+
+constructor() { }
+
+constructor(int start) {
+    count = start;
+}
+
+func increment() : void {
+    count = count + Step;
+    calls = calls + 1;
+}
+
+func value() : int {
+    return count;
+}
+
+private func reset() : void {
+    count = 0;
+}

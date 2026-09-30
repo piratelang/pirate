@@ -1,0 +1,9 @@
+// SPEC EXAMPLE — parses, but the module linker is not implemented yet:
+// the `import module` line is rejected with SEM-013 until linking lands.
+
+import standard Terminal;
+import module data as Data;
+
+PrintLine("Hello, World!");
+PrintLine(Data.data);
+PrintLine(Data.greet("pirate"));

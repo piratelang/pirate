@@ -1,0 +1,10 @@
+// SPEC EXAMPLE — parses, but neither `import external` nor remote module
+// fetching is implemented: the import line is rejected with SEM-013, and
+// the manifest schema for external dependencies (location/fetch) is part
+// of the linking milestone.
+
+import standard Terminal;
+import external data as Data;
+
+PrintLine("Hello, World!");
+PrintLine(Data.data);
