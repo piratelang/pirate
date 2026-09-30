@@ -26,6 +26,22 @@ effort, so an intermediate phase doesn't have to leave a shippable product. Each
 one still lands green (`dotnet test src-v2/PirateLang.slnx`) with its tests and
 docs.
 
+## Status
+
+Branch: `feature/flat-files`. Check off as each phase's change merges.
+
+- [ ] Phase 0 — spec ([#220](https://github.com/piratelang/pirate/issues/220))
+- [ ] Phase 1 — front end prep ([#221](https://github.com/piratelang/pirate/issues/221))
+- [ ] Phase 2 — lexer/parser ([#222](https://github.com/piratelang/pirate/issues/222))
+- [ ] Phase 3 — project model & namespaces ([#223](https://github.com/piratelang/pirate/issues/223)) —
+      a pre-flat (export-model) module linker was stashed on `dev` before this
+      branch; mine it for import-graph/cycle-detection/cache-invalidation
+      logic, don't build from scratch
+- [ ] Phase 4 — semantics ([#224](https://github.com/piratelang/pirate/issues/224))
+- [ ] Phase 5a — compiler/VM core/stdlib ([#227](https://github.com/piratelang/pirate/issues/227))
+- [ ] Phase 5b — objects ([#225](https://github.com/piratelang/pirate/issues/225))
+- [ ] Phase 6 — examples & docs wrap-up ([#226](https://github.com/piratelang/pirate/issues/226))
+
 ## Decisions taken
 
 | Topic | Decision |
