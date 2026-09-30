@@ -386,6 +386,152 @@ module Parser =
             | None -> None
             | Some id -> Some (ParameterDefinitionNode(typ.StartLocation, loc id, typ, id.Lexeme))
 
+    // --- Class files (docs/GRAMMAR.md §4) ---
+
+    // modifier = 'private' | 'readonly' ; 'override'/'abstract'/'static' are
+    // reserved but not supported yet — reported once per occurrence, then
+    // skipped so the member after them still parses.
+    and private parseModifiers state : bool * bool =
+        let mutable isPrivate = false
+        let mutable isReadonly = false
+        let mutable loop = true
+        while loop do
+            match (peek state).Type with
+            | TokenType.Private ->
+                advance state |> ignore
+                isPrivate <- true
+            | TokenType.Readonly ->
+                advance state |> ignore
+                isReadonly <- true
+            | TokenType.Override | TokenType.Abstract | TokenType.Static ->
+                let tok = advance state
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.ReservedKeywordNotSupportedYet, sprintf "'%s' is reserved, not supported yet" tok.Lexeme, loc tok))
+            | _ -> loop <- false
+        (isPrivate, isReadonly)
+
+    // Shared tail for 'field'/'const' once the keyword and (optional) type
+    // are consumed: identifier [ '=' expression ] ';'. A const with no
+    // initializer is a syntax error (a constant can't be assigned later to
+    // give it one); a field's initializer may be omitted — semantics
+    // enforces definite assignment (docs/GRAMMAR.md §4.1), not the parser.
+    and private parseFieldTail state startTok (typ: TypeNode option) isConst isPrivate isReadonly : TopLevelNode option =
+        match expect state TokenType.Identifier SyntaxErrorKind.MissingIdentifierAfterType "Expected identifier after type" with
+        | None -> None
+        | Some id ->
+            let hasInit = at state TokenType.Equal
+            if hasInit then advance state |> ignore
+            if isConst && not hasInit then
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingEqualsInDeclaration, "Expected '=' in constant declaration", loc (peek state)))
+            let init = if hasInit then Some (Pratt.parseExpression state 0) else None
+            expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterDeclaration "Expected ';' after declaration" |> ignore
+            Some (FieldDeclarationNode(loc startTok, loc (peek state), Option.toObj typ, isConst, isPrivate, isReadonly, id.Lexeme, Option.toObj init) :> TopLevelNode)
+
+    // field = 'field' ( type | 'var' ) identifier [ '=' expression ] ';'
+    and private parseField state isPrivate isReadonly : TopLevelNode option =
+        let startTok = advance state // consume 'field'
+        if at state TokenType.Var then
+            advance state |> ignore
+            parseFieldTail state startTok None false isPrivate isReadonly
+        else
+            match parseType state with
+            | None -> None
+            | Some typ -> parseFieldTail state startTok (Some typ) false isPrivate isReadonly
+
+    // const = 'const' [ type | 'var' ] identifier '=' expression ';'
+    // (no 'field' keyword — a class constant reads the same as a module one)
+    and private parseClassConst state isPrivate : TopLevelNode option =
+        let startTok = advance state // consume 'const'
+        if at state TokenType.Var then
+            advance state |> ignore
+            parseFieldTail state startTok None true isPrivate false
+        else
+            match (peek state).Type with
+            | TokenType.Int | TokenType.Float | TokenType.String
+            | TokenType.Char | TokenType.Bool | TokenType.Void | TokenType.Identifier ->
+                match parseType state with
+                | None -> None
+                | Some typ -> parseFieldTail state startTok (Some typ) true isPrivate false
+            | _ ->
+                // No type or 'var': infer from the initializer, like a
+                // top-level inferred const.
+                parseFieldTail state startTok None true isPrivate false
+
+    // constructor = 'constructor' '(' [ parameter-list ] ')' [ ':' delegate ] block ;
+    // delegate    = 'self' '(' [ argument-list ] ')' ;  ('super(...)' reserved, 5)
+    and private parseConstructor state isPrivate : TopLevelNode option =
+        let startTok = advance state // consume 'constructor'
+        expect state TokenType.LeftParen SyntaxErrorKind.MissingOpenParenAfterConstructor "Expected '(' after 'constructor'" |> ignore
+        let parameters = ResizeArray<ParameterDefinitionNode>()
+        if not (at state TokenType.RightParen) then
+            parseParam state |> Option.iter parameters.Add
+            while at state TokenType.Comma do
+                advance state |> ignore
+                parseParam state |> Option.iter parameters.Add
+        expect state TokenType.RightParen SyntaxErrorKind.MissingCloseParenAfterConstructorParameters "Expected ')' after constructor parameters" |> ignore
+        let delegateArgs =
+            if at state TokenType.Colon then
+                advance state |> ignore // consume ':'
+                match (peek state).Type with
+                | TokenType.Self ->
+                    advance state |> ignore
+                    let args = ResizeArray<ExpressionNode>()
+                    if at state TokenType.LeftParen then
+                        advance state |> ignore
+                        if not (at state TokenType.RightParen) then
+                            args.Add(Pratt.parseExpression state 0)
+                            while at state TokenType.Comma do
+                                advance state |> ignore
+                                args.Add(Pratt.parseExpression state 0)
+                        expect state TokenType.RightParen SyntaxErrorKind.MissingCloseParenAfterDelegateArguments "Expected ')' to close delegate arguments" |> ignore
+                    else
+                        state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingOpenParenAfterDelegate, "Expected '(' after 'self'", loc (peek state)))
+                    Some (args :> IReadOnlyList<ExpressionNode>)
+                | TokenType.Super ->
+                    let tok = advance state
+                    state.Errors.Add(SyntaxError(SyntaxErrorKind.ReservedKeywordNotSupportedYet, "'super' is reserved, not supported yet — there is no 'extends' yet", loc tok))
+                    None
+                | _ ->
+                    state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingDelegateTargetAfterColon, "Expected 'self' after ':' in constructor", loc (peek state)))
+                    None
+            else
+                None
+        let body =
+            match parseBlock state with
+            | Some b -> b
+            | None -> BlockNode(loc (peek state), loc (peek state), ResizeArray<StatementNode>(), null)
+        Some (ConstructorDeclarationNode(loc startTok, loc (peek state), parameters, Option.toObj delegateArgs, body, isPrivate) :> TopLevelNode)
+
+    // class-element = { modifier } ( field | method | constructor ) ;
+    and private parseClassElement state : TopLevelNode option =
+        let isPrivate, isReadonly = parseModifiers state
+        match (peek state).Type with
+        | TokenType.Field -> parseField state isPrivate isReadonly
+        | TokenType.Const -> parseClassConst state isPrivate
+        | TokenType.Constructor -> parseConstructor state isPrivate
+        | TokenType.Func -> Some (parseFuncDecl state isPrivate)
+        | TokenType.Extends | TokenType.Implements ->
+            let tok = advance state
+            state.Errors.Add(SyntaxError(SyntaxErrorKind.ReservedKeywordNotSupportedYet, sprintf "'%s' is reserved, not supported yet" tok.Lexeme, loc tok))
+            consumeThroughSemicolon state
+            None
+        | _ ->
+            state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingFieldOrMemberInClassFile, "Expected 'field', 'const', 'constructor', or a method in a class file", loc (peek state)))
+            consumeThroughSemicolon state
+            None
+
+    // class-file = { class-element } ; — no loose statements (docs/GRAMMAR.md §4).
+    and private parseClassFile state : TopLevelNode list =
+        let members = ResizeArray<TopLevelNode>()
+        let rec loop () =
+            if not (eof state) then
+                let posBefore = state.Pos
+                parseClassElement state |> Option.iter members.Add
+                // Forward-progress guard, same as the module top-level loop.
+                if state.Pos = posBefore then advance state |> ignore
+                loop ()
+        loop ()
+        List.ofSeq members
+
     let private parseTopLevel state : TopLevelNode list * StatementNode list =
         let members = ResizeArray<TopLevelNode>()
         let statements = ResizeArray<StatementNode>()
@@ -433,18 +579,24 @@ module Parser =
 
     // --- Entry point ---
 
-    /// Parses a token stream into a <see cref="ParseResult"/>. `fileKind`
-    /// is not consulted yet — only `PirateFileKind.Module` has a grammar
-    /// (docs/GRAMMAR.md §4, Phase 2 of docs/brainstorm/FLAT_PLAN.md).
+    /// Parses a token stream into a <see cref="ParseResult"/>, per
+    /// <paramref name="fileKind"/>'s grammar (docs/GRAMMAR.md §3-4).
+    /// Interface files have no grammar yet — reserved (Phase 2 of
+    /// docs/brainstorm/FLAT_PLAN.md).
     let Parse (lexResult: LexResult) (fileKind: PirateFileKind) : ParseResult =
-        ignore fileKind
         let state =
             { Tokens = lexResult.Tokens
               Pos = 0
               // Syntax errors only — lexer errors stay in LexResult.Errors;
               // the CLI concatenates both lists for display.
               Errors = ResizeArray<CompilationError>() }
-        let members, statements = parseTopLevel state
+        let members, statements =
+            match fileKind with
+            | PirateFileKind.Class -> parseClassFile state, ([]: StatementNode list)
+            | PirateFileKind.Interface ->
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.ReservedKeywordNotSupportedYet, "Interface files are reserved, not supported yet", loc (peek state)))
+                ([]: TopLevelNode list), ([]: StatementNode list)
+            | _ -> parseTopLevel state
         let program =
             let bounds =
                 [ for m in members -> (m.StartLocation, m.EndLocation)

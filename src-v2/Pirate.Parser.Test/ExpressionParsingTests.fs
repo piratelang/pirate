@@ -11,6 +11,10 @@ module Helpers =
         let lexResult = Lexer().Tokenize source
         Parser.Parse lexResult PirateFileKind.Module
 
+    let parseClass source =
+        let lexResult = Lexer().Tokenize source
+        Parser.Parse lexResult PirateFileKind.Class
+
     let getExpr source =
         // Expressions only exist inside a function body; wrap the snippet so it
         // parses as a top-level program holding a single expression statement.
