@@ -34,7 +34,7 @@ docs.
 Branch: `feature/flat-files`. Check off as each phase's change merges.
 
 - [x] Phase 0 — spec ([#220](https://github.com/piratelang/pirate/issues/220))
-- [ ] Phase 1 — front end prep ([#221](https://github.com/piratelang/pirate/issues/221))
+- [x] Phase 1 — front end prep ([#221](https://github.com/piratelang/pirate/issues/221))
 - [ ] Phase 2 — lexer/parser ([#222](https://github.com/piratelang/pirate/issues/222))
 - [ ] Phase 3 — project model & namespaces ([#223](https://github.com/piratelang/pirate/issues/223)) —
       a pre-flat (export-model) module linker was stashed on `dev` before this
