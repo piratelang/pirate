@@ -47,6 +47,27 @@ public class FleetFileRepositoryTests : IDisposable
     }
 
     [Fact]
+    public void WriteThenRead_RoundTripsDependencies()
+    {
+        var fleet = new FleetFile
+        {
+            Name = "shop",
+            Dependencies = new Dictionary<string, FleetDependency>
+            {
+                ["geometry"] = new FleetDependency { Location = "../geometry" },
+            },
+        };
+
+        FleetFileRepository.Write(_root.FullName, "shop", fleet);
+        var result = FleetFileRepository.TryRead(_root.FullName);
+
+        Assert.NotNull(result);
+        var dependency = Assert.Single(result!.Dependencies);
+        Assert.Equal("geometry", dependency.Key);
+        Assert.Equal("../geometry", dependency.Value.Location);
+    }
+
+    [Fact]
     public void Write_UsesGivenName()
     {
         FleetFileRepository.Write(_root.FullName, "my-project", new FleetFile());
