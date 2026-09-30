@@ -816,8 +816,18 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
             return null;
         }
 
-        return new PirateType(node.ScalarType, node.IsArray);
+        return ToType(node);
     }
+
+    /// <summary>
+    /// Carries every field of a syntax <c>TypeNode</c> into the value type,
+    /// so a future kind of type (a class name, or <c>IsNullable</c> once the
+    /// parser produces one) doesn't need this conversion edited again —
+    /// callers that need to reject a particular shape (like <c>void</c> in
+    /// <see cref="ToValueType"/>) check the result themselves.
+    /// </summary>
+    private static PirateType ToType(TypeNode node) =>
+        new(node.ScalarType, node.IsArray, node.IsNullable, node.ClassName);
 
     private PirateType ToReturnType(FunctionDeclarationNode node)
     {
@@ -832,7 +842,7 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
             return PirateType.Void;
         }
 
-        return new PirateType(node.ReturnType.ScalarType, node.ReturnType.IsArray);
+        return ToType(node.ReturnType);
     }
 
     private static string OperatorName(BinaryOperator operatorName) => operatorName switch
