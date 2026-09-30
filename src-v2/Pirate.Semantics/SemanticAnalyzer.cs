@@ -89,11 +89,7 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
         var path = string.Join(".", node.Path);
         if (node.Kind is ImportKind.Module or ImportKind.External)
         {
-            var what = node.Kind == ImportKind.Module ? "module" : "external";
-            Error(
-                SemanticsErrorKind.ModuleImportUnsupported,
-                $"Import of {what} '{path}' is not supported yet — the module linker is a future milestone",
-                node.StartLocation);
+            DefineModuleImport(node, path);
             return;
         }
 
@@ -137,6 +133,111 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
             _global.Define(binding);
         }
     }
+
+    /// <summary>
+    /// Binds an <c>import module</c>/<c>import external</c> against the
+    /// resolution the module linker recorded on the node
+    /// (<see cref="ImportStatementNode.Resolution"/>): a resolved import
+    /// binds its alias plus every export under the alias-qualified name, an
+    /// unresolved one reports the linker's reason. A null resolution means
+    /// no linker ran (a standalone single-module check, e.g. analyzing one
+    /// program directly) — no project graph exists to resolve against.
+    /// </summary>
+    private void DefineModuleImport(ImportStatementNode node, string moduleName)
+    {
+        switch (node.Resolution)
+        {
+            case null:
+                Error(
+                    node.Kind == ImportKind.Module ? SemanticsErrorKind.UnknownModule : SemanticsErrorKind.UnknownDependency,
+                    node.Kind == ImportKind.Module
+                        ? $"Unknown module '{moduleName}'"
+                        : $"Unknown external dependency '{moduleName}'",
+                    node.StartLocation);
+                return;
+            case UnresolvedModuleImport unresolved:
+                Error(UnresolvedKind(node.Kind, unresolved.Reason), UnresolvedMessage(node.Kind, moduleName, unresolved), node.StartLocation);
+                return;
+            case ResolvedModuleImport resolved:
+                BindModuleExports(node, moduleName, resolved);
+                return;
+        }
+    }
+
+    private void BindModuleExports(ImportStatementNode node, string moduleName, ResolvedModuleImport resolved)
+    {
+        var alias = node.Alias ?? node.Path[^1];
+
+        var bindings = new List<Symbol> { new ModuleSymbol(alias, _global.Count, SymbolScope.Module, moduleName) };
+        foreach (var export in resolved.Exports)
+        {
+            // Exports are the providing module's own declarations; a name it
+            // imported itself is never re-exported (defensive: the grammar
+            // only allows public-by-default/private on function/variable
+            // declarations, not on an imported alias).
+            switch (export)
+            {
+                case ImportedVariableSymbol or ImportedFunctionSymbol:
+                    break;
+                case VariableSymbol variable:
+                    bindings.Add(new ImportedVariableSymbol($"{alias}.{variable.Name}", variable.Index, variable.Type, variable.IsConst, moduleName));
+                    break;
+                case FunctionSymbol function:
+                    bindings.Add(new ImportedFunctionSymbol($"{alias}.{function.Name}", function.Index, function.Parameters, function.ReturnType, moduleName));
+                    break;
+            }
+        }
+
+        // Bind all-or-nothing, the same atomicity policy as standard
+        // imports: any collision rejects the whole import, leaving the
+        // alias unbound rather than half an interface reachable.
+        foreach (var binding in bindings)
+        {
+            if (_global.Resolve(binding.Name) is not null)
+            {
+                Error(SemanticsErrorKind.DuplicateDeclaration, $"Duplicate declaration '{binding.Name}' in scope", node.StartLocation);
+                return;
+            }
+        }
+
+        foreach (var binding in bindings)
+        {
+            _global.Define(binding);
+        }
+    }
+
+    private static SemanticsErrorKind UnresolvedKind(ImportKind importKind, UnresolvedModuleReason reason) => reason switch
+    {
+        UnresolvedModuleReason.NotFound => importKind == ImportKind.Module
+            ? SemanticsErrorKind.UnknownModule
+            : SemanticsErrorKind.UnknownDependency,
+        UnresolvedModuleReason.LocationMissing => SemanticsErrorKind.DependencyLocationMissing,
+        UnresolvedModuleReason.RemoteLocation => SemanticsErrorKind.RemoteDependencyUnsupported,
+        UnresolvedModuleReason.CyclicImport => SemanticsErrorKind.CyclicModuleImport,
+        UnresolvedModuleReason.HasTopLevelStatements => SemanticsErrorKind.ImportedModuleHasTopLevelCode,
+        UnresolvedModuleReason.HasErrors => SemanticsErrorKind.ImportedModuleHasErrors,
+        _ => SemanticsErrorKind.UnknownModule,
+    };
+
+    private static string UnresolvedMessage(ImportKind importKind, string moduleName, UnresolvedModuleImport unresolved) =>
+        unresolved.Reason switch
+        {
+            UnresolvedModuleReason.NotFound => importKind == ImportKind.Module
+                ? $"Unknown module '{moduleName}'"
+                : $"Unknown external dependency '{moduleName}'",
+            UnresolvedModuleReason.LocationMissing =>
+                $"External dependency '{moduleName}' points to '{unresolved.Location}', which does not exist",
+            UnresolvedModuleReason.RemoteLocation =>
+                $"External dependency '{moduleName}' has a remote location ('{unresolved.Location}') — fetching remote modules is not implemented yet",
+            UnresolvedModuleReason.CyclicImport => unresolved.CyclePath is { Count: > 1 } cyclePath
+                ? $"Cyclic module import: {string.Join(" → ", cyclePath.Select(name => $"'{name}'"))}"
+                : $"Cyclic module import involving '{moduleName}'",
+            UnresolvedModuleReason.HasTopLevelStatements =>
+                $"Module '{moduleName}' has top-level statements and cannot be imported — only the entry module runs code",
+            UnresolvedModuleReason.HasErrors =>
+                $"Module '{moduleName}' has compilation errors; its exports are unavailable",
+            _ => $"Unknown module '{moduleName}'",
+        };
 
     private void CheckTopLevelStatements(ProgramNode program)
     {

@@ -26,11 +26,11 @@ short one, and the tooling accepts both. The type name is the filename without
 its final extension, and it must be a single identifier: `foo.bar.cpirate` is an
 error, not a type named `foo`.
 
-| Extensions | Kind | Contains |
-|---|---|---|
-| `.cpirate`, `.cpir` | class | fields, constructors, methods |
-| `.ipirate`, `.ipir` | interface | bodiless method signatures (later milestone) |
-| `.pirate`, `.pir` | module | functions and constants (today's helper module) |
+| Extensions              | Kind      | Contains                                        |
+| ----------------------- | --------- | ----------------------------------------------- |
+| `.cpirate`, `.cpir` | class     | fields, constructors, methods                   |
+| `.ipirate`, `.ipir` | interface | bodiless method signatures (later milestone)    |
+| `.pirate`, `.pir`   | module    | functions and constants (today's helper module) |
 
 Examples: `Stack.cpirate` (or `Stack.cpir`), `Shape.ipirate`, `data.pirate` (or
 `data.pir`). The old `.class.pirate` spelling is not used.
@@ -40,8 +40,8 @@ is the type `Stack`. Two files that resolve to the same type name in one folder
 are a duplicate-name error, whatever their extensions: `Stack.cpir` next to
 `Stack.cpirate`, or a class `Stack.cpir` next to a module `Stack.pir`.
 
-| Entry | Kind | Contains |
-|---|---|---|
+| Entry                                                           | Kind  | Contains                      |
+| --------------------------------------------------------------- | ----- | ----------------------------- |
 | `main.pirate` or `main.pir` (the manifest's `entryPoint`) | entry | loose statements; the program |
 
 The entry file keeps the existing rule: whichever module the fleet manifest names
@@ -163,11 +163,11 @@ constructor(int capacity) { ... }   // constructor
   shared functions and constants live in modules.
 - **Three access levels, and that is all in the first slice.** A field is one of:
 
-  | Written | Read from other files | Assigned from other files | Assigned inside the class |
-  |---|---|---|---|
-  | `field int count` | yes | yes | yes |
-  | `readonly field int count` | yes | no | yes |
-  | `private field int count` | no | no | yes |
+  | Written                      | Read from other files | Assigned from other files | Assigned inside the class |
+  | ---------------------------- | --------------------- | ------------------------- | ------------------------- |
+  | `field int count`          | yes                   | yes                       | yes                       |
+  | `readonly field int count` | yes                   | no                        | yes                       |
+  | `private field int count`  | no                    | no                        | yes                       |
 
   "Inside the class" means the class's constructors and methods. `readonly` is
   for fields only, and it doesn't make the value immutable: the class can still
@@ -206,8 +206,7 @@ if found != null {
 
 - The first slice has `null`, `== null`, `!= null` and flow narrowing.
   `?.`, `??` and `x!` are a later addition.
-- A nullable value can't be used as its base type until it is narrowed. `int? a;
-  a + 1` is a compile error.
+- A nullable value can't be used as its base type until it is narrowed. `int? a; a + 1` is a compile error.
 - Narrowing applies to local variables and parameters. It does not apply to
   fields, because a field may change between the check and the use. Copy the
   field into a local first.

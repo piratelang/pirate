@@ -18,8 +18,18 @@ public enum SemanticsErrorKind
     DuplicateDeclaration,
     UnknownExtern,
     UnknownImport,
-    ModuleImportUnsupported,
     ReturnAtTopLevel,
+
+    // Module linking (docs/brainstorm/FLAT_PLAN.md Phase 3/4) — replaces
+    // the retired ModuleImportUnsupported now that cross-file resolution
+    // exists.
+    UnknownModule,
+    UnknownDependency,
+    DependencyLocationMissing,
+    RemoteDependencyUnsupported,
+    CyclicModuleImport,
+    ImportedModuleHasTopLevelCode,
+    ImportedModuleHasErrors,
 }
 
 /// <summary>

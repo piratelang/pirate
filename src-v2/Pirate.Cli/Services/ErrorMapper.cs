@@ -106,8 +106,17 @@ public static class ErrorMapper
         SemanticsErrorKind.DuplicateDeclaration            => "SEM-010",
         SemanticsErrorKind.UnknownExtern                   => "SEM-011",
         SemanticsErrorKind.UnknownImport                   => "SEM-012",
-        SemanticsErrorKind.ModuleImportUnsupported         => "SEM-013",
+        // SEM-013 (ModuleImportUnsupported) retired — cross-file resolution
+        // exists now (docs/brainstorm/FLAT_PLAN.md Phase 3/4); the code
+        // stays unused (v2 is pre-release, no dead kinds to reserve for).
         SemanticsErrorKind.ReturnAtTopLevel                => "SEM-014",
+        SemanticsErrorKind.UnknownModule                   => "SEM-015",
+        SemanticsErrorKind.UnknownDependency                => "SEM-016",
+        SemanticsErrorKind.DependencyLocationMissing        => "SEM-017",
+        SemanticsErrorKind.RemoteDependencyUnsupported      => "SEM-018",
+        SemanticsErrorKind.CyclicModuleImport               => "SEM-019",
+        SemanticsErrorKind.ImportedModuleHasTopLevelCode    => "SEM-020",
+        SemanticsErrorKind.ImportedModuleHasErrors          => "SEM-021",
         _                                                  => "SEM-999",
     };
 }

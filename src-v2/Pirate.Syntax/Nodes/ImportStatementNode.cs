@@ -37,4 +37,13 @@ public sealed record ImportStatementNode(
     /// <c>Standard.Terminal</c>. Null before it runs.
     /// </summary>
     public string? ResolvedNamespace { get; set; }
+
+    /// <summary>
+    /// Set by the module linker for <see cref="ImportKind.Module"/> and
+    /// <see cref="ImportKind.External"/> imports before the semantics pass
+    /// runs: the resolved export interface, or the reason none exists. Null
+    /// when no linker ran (a standalone single-module check), which the
+    /// analyzer reports as an unknown module/dependency.
+    /// </summary>
+    public ModuleImportResolution? Resolution { get; set; }
 }
