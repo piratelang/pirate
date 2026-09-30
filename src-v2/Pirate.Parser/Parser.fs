@@ -245,15 +245,21 @@ module Parser =
             let value = Pratt.parseExpression state 0
             expect state TokenType.Semicolon SyntaxErrorKind.MissingSemicolonAfterExpression "Expected ';' after expression" |> ignore
             match expr with
-            | :? QualifiedNameNode as qn when qn.Parts.Count = 1 ->
-                Some (VariableAssignmentNode(qn.StartLocation, loc (peek state), qn.Parts.[0], null, value) :> StatementNode)
+            | :? QualifiedNameNode as qn ->
+                Some (VariableAssignmentNode(qn.StartLocation, loc (peek state), qn.Name, null, value) :> StatementNode)
             | :? IndexExpressionNode as idx ->
                 match idx.Target with
-                | :? QualifiedNameNode as target when target.Parts.Count = 1 ->
-                    Some (VariableAssignmentNode(idx.StartLocation, loc (peek state), target.Parts.[0], idx.Index, value) :> StatementNode)
+                | :? QualifiedNameNode as target ->
+                    Some (VariableAssignmentNode(idx.StartLocation, loc (peek state), target.Name, idx.Index, value) :> StatementNode)
                 | _ ->
                     state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedExpression, "Invalid assignment target", idx.StartLocation))
                     Some (ExpressionStatementNode(loc startTok, loc (peek state), expr) :> StatementNode)
+            // member-suffix assignment: self.count = 1;, c.count = 1; (docs/GRAMMAR.md §4.3).
+            // Nothing resolves a member to an assignable field yet — semantics
+            // rejects every instance — but the grammar already includes it, so
+            // the parser accepts it now rather than needing another change later.
+            | :? MemberAccessNode as access ->
+                Some (MemberAssignmentNode(access.StartLocation, loc (peek state), access.Target, access.Member, value) :> StatementNode)
             | _ ->
                 state.Errors.Add(SyntaxError(SyntaxErrorKind.ExpectedExpression, "Invalid assignment target", expr.StartLocation))
                 Some (ExpressionStatementNode(loc startTok, loc (peek state), expr) :> StatementNode)

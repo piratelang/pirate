@@ -127,7 +127,7 @@ module internal Pratt =
                 parseArrayLiteral state
 
             | TokenType.Identifier ->
-                parseQualifiedName state
+                parseName state
 
             | _ ->
                 let tok = peek state
@@ -152,20 +152,14 @@ module internal Pratt =
                 startTok
         ArrayLiteralNode(loc startTok, loc endTok, elements) :> ExpressionNode
 
-    and parseQualifiedName state : ExpressionNode =
-        let startTok = peek state
-        let parts = ResizeArray<string>()
-        parts.Add(startTok.Lexeme)
-        advance state |> ignore
-        while at state TokenType.Dot do
-            advance state |> ignore
-            if at state TokenType.Identifier then
-                parts.Add((advance state).Lexeme)
-            else
-                state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingIdentifierAfterDot, "Expected identifier after '.'", loc (peek state)))
-        QualifiedNameNode(loc startTok, loc (peek state), parts) :> ExpressionNode
+    // A bare identifier (docs/GRAMMAR.md §3.6). A dotted chain like
+    // `Standard.Terminal.Print` is no longer parsed here in one shot — the
+    // `.` is a postfix (member-suffix, §4.3) applied below.
+    and parseName state : ExpressionNode =
+        let startTok = advance state
+        QualifiedNameNode(loc startTok, loc startTok, startTok.Lexeme) :> ExpressionNode
 
-    // --- Postfix (call, index) ---
+    // --- Postfix (call, index, member access) ---
     and applyPostfix state (expr: ExpressionNode) : ExpressionNode =
         if at state TokenType.LeftParen then
             let startLoc = expr.StartLocation
@@ -194,6 +188,16 @@ module internal Pratt =
                     peek state
             let idx = IndexExpressionNode(startLoc, loc closing, expr, index)
             applyPostfix state (idx :> ExpressionNode)
+        elif at state TokenType.Dot then
+            let startLoc = expr.StartLocation
+            advance state |> ignore // consume .
+            if at state TokenType.Identifier then
+                let memberTok = advance state
+                let access = MemberAccessNode(startLoc, loc memberTok, expr, memberTok.Lexeme)
+                applyPostfix state (access :> ExpressionNode)
+            else
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingIdentifierAfterDot, "Expected identifier after '.'", loc (peek state)))
+                expr
         else
             expr
 

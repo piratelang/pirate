@@ -252,6 +252,9 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
             case VariableAssignmentNode assignment:
                 CheckVariableAssignment(assignment);
                 break;
+            case MemberAssignmentNode memberAssignment:
+                CheckMemberAssignment(memberAssignment);
+                break;
             case ExpressionStatementNode expressionStatement:
                 CheckExpressionStatement(expressionStatement);
                 break;
@@ -351,6 +354,20 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
         }
 
         ExpectType(node.Value, variable.Type);
+    }
+
+    /// <summary>
+    /// <c>self.count = 1;</c>, <c>c.count = 1;</c> (docs/GRAMMAR.md §4.3).
+    /// Nothing resolves a member to an assignable field yet, so every
+    /// instance of this node is rejected — classes are a future milestone
+    /// (Phase 4 of docs/brainstorm/FLAT_PLAN.md). Subexpressions are still
+    /// checked so an error inside them isn't silently skipped.
+    /// </summary>
+    private void CheckMemberAssignment(MemberAssignmentNode node)
+    {
+        CheckExpression(node.Target, null);
+        CheckExpression(node.Value, null);
+        Error(SemanticsErrorKind.TypeMismatch, "Member assignment is not supported yet — classes are a future milestone", node.StartLocation);
     }
 
     private void CheckExpressionStatement(ExpressionStatementNode node)
@@ -520,6 +537,7 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
         {
             LiteralNode literal => CheckLiteral(literal),
             QualifiedNameNode qualifiedName => CheckQualifiedName(qualifiedName),
+            MemberAccessNode memberAccess => CheckMemberAccess(memberAccess),
             FunctionCallNode call => CheckFunctionCall(call),
             BinaryOperationNode binary => CheckBinary(binary),
             UnaryOperationNode unary => CheckUnary(unary),
@@ -548,19 +566,47 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
 
     private PirateType? CheckQualifiedName(QualifiedNameNode node)
     {
-        var path = string.Join(".", node.Parts);
+        var symbol = _current.Resolve(node.Name);
+        if (symbol is null)
+        {
+            Error(SemanticsErrorKind.UndeclaredVariable, $"Undeclared variable '{node.Name}'", node.StartLocation);
+            return null;
+        }
+
+        node.ResolvedSymbol = symbol;
+        if (symbol is VariableSymbol variable)
+        {
+            return variable.Type;
+        }
+
+        Error(SemanticsErrorKind.TypeMismatch, $"'{node.Name}' is a function and cannot be used as a value", node.StartLocation);
+        return null;
+    }
+
+    /// <summary>
+    /// A member access used as a value, e.g. <c>Standard.Terminal.Read()</c>'s
+    /// <c>Standard.Terminal</c> would hit this if it weren't inside a call —
+    /// reachable directly for a dotted name with no call, like
+    /// <c>var f = Standard.Terminal.Print;</c> (rejected below, same as a
+    /// bare function name). A non-dotted-name target (docs/GRAMMAR.md §4.4
+    /// namespace-prefix resolution doesn't apply) is a future-milestone
+    /// object field access — not supported until classes exist (Phase 4 of
+    /// docs/brainstorm/FLAT_PLAN.md).
+    /// </summary>
+    private PirateType? CheckMemberAccess(MemberAccessNode node)
+    {
+        var path = FlattenDottedPath(node);
+        if (path is null)
+        {
+            CheckExpression(node.Target, null);
+            Error(SemanticsErrorKind.TypeMismatch, "Member access is not supported yet — classes are a future milestone", node.StartLocation);
+            return null;
+        }
+
         var symbol = _current.Resolve(path);
         if (symbol is null)
         {
-            if (node.Parts.Count > 1)
-            {
-                Error(SemanticsErrorKind.UndeclaredFunction, $"Undeclared function '{path}'", node.StartLocation);
-            }
-            else
-            {
-                Error(SemanticsErrorKind.UndeclaredVariable, $"Undeclared variable '{path}'", node.StartLocation);
-            }
-
+            Error(SemanticsErrorKind.UndeclaredFunction, $"Undeclared function '{path}'", node.StartLocation);
             return null;
         }
 
@@ -574,9 +620,41 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
         return null;
     }
 
+    /// <summary>
+    /// Reconstructs the dotted path a chain of bare names/member accesses
+    /// spells (<c>Standard.Terminal.Print</c>) — the resolver still keys
+    /// builtins/imports by this joined string (docs/GRAMMAR.md §4.4's
+    /// "longest namespace prefix" resolution), only the AST shape that
+    /// produces it changed (§3.6's member-suffix postfix, replacing the old
+    /// flat <c>QualifiedNameNode.Parts</c> chain). Null when the chain's
+    /// innermost expression isn't a bare name — e.g. <c>f().b</c> — so
+    /// there is no namespace path to look up.
+    /// </summary>
+    private static string? FlattenDottedPath(ExpressionNode node) => node switch
+    {
+        QualifiedNameNode name => name.Name,
+        MemberAccessNode access => FlattenDottedPath(access.Target) is { } prefix ? $"{prefix}.{access.Member}" : null,
+        _ => null,
+    };
+
+    /// <summary>Sets the resolved symbol on whichever name-shaped node produced a dotted path (see <see cref="FlattenDottedPath"/>).</summary>
+    private static void SetResolvedSymbol(ExpressionNode node, Symbol symbol)
+    {
+        switch (node)
+        {
+            case QualifiedNameNode name:
+                name.ResolvedSymbol = symbol;
+                break;
+            case MemberAccessNode access:
+                access.ResolvedSymbol = symbol;
+                break;
+        }
+    }
+
     private PirateType? CheckFunctionCall(FunctionCallNode node)
     {
-        if (node.Callee is not QualifiedNameNode callee)
+        var path = FlattenDottedPath(node.Callee);
+        if (path is null)
         {
             CheckExpression(node.Callee, null);
             foreach (var argument in node.Arguments)
@@ -588,11 +666,10 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
             return null;
         }
 
-        var path = string.Join(".", callee.Parts);
         var symbol = _current.Resolve(path);
         if (symbol is null)
         {
-            Error(SemanticsErrorKind.UndeclaredFunction, $"Undeclared function '{path}'", callee.StartLocation);
+            Error(SemanticsErrorKind.UndeclaredFunction, $"Undeclared function '{path}'", node.Callee.StartLocation);
             foreach (var argument in node.Arguments)
             {
                 CheckExpression(argument, null);
@@ -601,7 +678,7 @@ public sealed class SemanticAnalyzer : ISemanticAnalyzer
             return null;
         }
 
-        callee.ResolvedSymbol = symbol;
+        SetResolvedSymbol(node.Callee, symbol);
         if (symbol is VariableSymbol)
         {
             foreach (var argument in node.Arguments)

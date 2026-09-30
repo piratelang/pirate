@@ -1,18 +1,15 @@
-using System.Collections.Generic;
-
 namespace Pirate.Syntax.Nodes;
 
 /// <summary>
-/// A dotted identifier chain such as <c>Standard.Terminal.Print</c> or a
-/// bare identifier like <c>counter</c>. Produced when the parser encounters
-/// an identifier (optionally followed by <c>.identifier</c> segments) that
-/// is not immediately followed by <c>(</c> (which would make it a call) or
-/// <c>[</c> (which would make it an index).
+/// A bare identifier, such as <c>counter</c> or <c>Standard</c>. A dotted
+/// chain (<c>Standard.Terminal.Print</c>) is no longer one node — it's
+/// nested <see cref="MemberAccessNode"/>s built by the postfix parser
+/// (docs/GRAMMAR.md §3.6), with this node as the innermost target.
 /// </summary>
 public sealed record QualifiedNameNode(
     SourceLocation StartLocation,
     SourceLocation EndLocation,
-    IReadOnlyList<string> Parts)
+    string Name)
     : ExpressionNode(StartLocation, EndLocation)
 {
     /// <summary>

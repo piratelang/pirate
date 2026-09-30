@@ -29,6 +29,7 @@ public class AnalyzerErrorTests
     [Theory]
     [InlineData("func main() : void { nope(); }")]
     [InlineData("func main() : void { Standard.Terminal.Print(\"x\"); }")] // no extern imported
+    [InlineData("func main() : void { var y = a.thing; }")] // a dotted path (member access), not resolved
     public void UndeclaredFunction(string source) =>
         Helpers.AssertError(SemanticsErrorKind.UndeclaredFunction, source);
 
@@ -57,6 +58,8 @@ public class AnalyzerErrorTests
     [InlineData("while 1 { var x = 1; }")] // non-bool while condition
     [InlineData("var n = \"s\"; for var i = 0 to n { }")] // non-int loop bound
     [InlineData("1 + 2;")] // expression statement is not a call
+    [InlineData("var b = (1 + 2).thing;")] // member access on a non-namespace target
+    [InlineData("var c = 1; c.count = 1;")] // member assignment: classes don't exist yet
     public void Analyze_TypeErrorsInMain_ReportsTypeMismatch(string body) =>
         Helpers.AssertErrorInMain(SemanticsErrorKind.TypeMismatch, body);
 

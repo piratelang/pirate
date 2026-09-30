@@ -157,3 +157,31 @@ module ExpressionParsingTests =
         let bin = expr :?> BinaryOperationNode
         Assert.Equal(BinaryOperator.Or, bin.Operator)
         Assert.Equal(BinaryOperator.And, (bin.Right :?> BinaryOperationNode).Operator)
+
+    // --- Member access postfix (docs/GRAMMAR.md §3.6/§4.3) ---
+
+    [<Fact>]
+    let ``Member access`` () =
+        let expr = Helpers.getExpr "c.value;"
+        let access = expr :?> MemberAccessNode
+        Assert.Equal("value", access.Member)
+        let target = access.Target :?> QualifiedNameNode
+        Assert.Equal("c", target.Name)
+
+    [<Fact>]
+    let ``Dotted call builds nested member access, not one qualified name`` () =
+        let expr = Helpers.getExpr "Standard.Terminal.Print(x);"
+        let call = expr :?> FunctionCallNode
+        let print = call.Callee :?> MemberAccessNode
+        Assert.Equal("Print", print.Member)
+        let terminal = print.Target :?> MemberAccessNode
+        Assert.Equal("Terminal", terminal.Member)
+        let standard = terminal.Target :?> QualifiedNameNode
+        Assert.Equal("Standard", standard.Name)
+
+    [<Fact>]
+    let ``Member access on a call target`` () =
+        let expr = Helpers.getExpr "getItem().name;"
+        let access = expr :?> MemberAccessNode
+        Assert.Equal("name", access.Member)
+        Assert.IsType<FunctionCallNode>(access.Target)

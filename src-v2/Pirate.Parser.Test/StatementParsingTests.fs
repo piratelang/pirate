@@ -72,6 +72,19 @@ module StatementParsingTests =
         Assert.Equal("x", stmt.Name)
 
     [<Fact>]
+    let ``Member access assignment`` () =
+        // docs/GRAMMAR.md §4.3: self.count = 1;, c.count = 1;. Nothing
+        // resolves a member to a field yet (that's semantics, Phase 4), but
+        // the parser accepts the shape now.
+        let result = Helpers.parse "func main() : void { c.count = 1; }"
+        Assert.Empty(result.Errors)
+        let fd = (result.Program.Value.Members.[0]) :?> FunctionDeclarationNode
+        let stmt = fd.Body.Statements.[0] :?> MemberAssignmentNode
+        Assert.Equal("count", stmt.Member)
+        let target = stmt.Target :?> QualifiedNameNode
+        Assert.Equal("c", target.Name)
+
+    [<Fact>]
     let ``If statement`` () =
         let result = Helpers.parse "func main() : void { if true { x = 1; } }"
         Assert.Empty(result.Errors)
