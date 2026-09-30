@@ -61,3 +61,20 @@ place to look when someone asks "wait, didn't v1 have X?".
   already reserves these keywords for a future OOP extension. v2 keeps them
   reserved (they cannot be used as identifiers) but defines no grammar for
   them; out of scope for this pass.
+- **Flat files: a file is a type, `export` is removed.** Superseding the
+  point above — classes arrive not as a `class Foo { }` wrapper but as a
+  dedicated file kind (`.cpirate`/`.cpir`), where the filename *is* the type
+  name and every top-level member belongs to it (GRAMMAR.md §4). This
+  reuses v2's existing "declarations at top level" shape for modules rather
+  than adding a second, wrapper-based declaration style. `class` stays
+  reserved-but-unused (the extension carries the kind, not a keyword); `new`
+  is promoted to an expression keyword, used only to create an instance —
+  never to introduce a type. `export` (3.3 in the previous revision of this
+  doc) is dropped everywhere, including plain modules: one visibility rule,
+  `private` opts a declaration out of the public-by-default rule, for both
+  class members and top-level module declarations. See
+  [`brainstorm/FLAT.md`](brainstorm/FLAT.md) for the full rationale
+  (including the "why not `member`" and "why not an accessible/mutable
+  keyword pair" discussions) and
+  [`brainstorm/FLAT_PLAN.md`](brainstorm/FLAT_PLAN.md) for the phased build
+  order this unlocks (module linking, nullable scalars in the VM, etc.).

@@ -41,7 +41,13 @@ Type keywords: `var` `const` `int` `float` `string` `char` `bool` `void`
 
 Control keywords: `func` `if` `else` `while` `for` `in` `to` `return` `extern`
 
-Module keywords: `import` `export`
+Module keywords: `import`
+
+Visibility keywords: `private` (replaces `export` — see 3.3 and
+[GRAMMAR_CHANGES.md](GRAMMAR_CHANGES.md))
+
+Class keywords: `field` `constructor` `readonly` `self` `null`. `new` is
+promoted from "reserved" to an expression keyword (3.6, 4).
 
 Soft keywords: `standard`, `module`, `external`, `as` are ordinary
 identifiers that the parser treats as keywords only in the specific
@@ -50,7 +56,8 @@ function names.
 
 Literal keywords: `true` `false`
 
-Reserved, not yet implemented: `class` `new`
+Reserved, not yet implemented: `class` `super` `extends` `implements`
+`abstract` `override` `static` (see 4 for why each is reserved).
 
 ### 1.4 Literals
 
@@ -88,9 +95,29 @@ Scalar types: `int`, `float`, `string`, `char`, `bool`, `void` (function
 return type only — not a value type, cannot be a variable's, parameter's, or
 array element's type).
 
-Array types: `T[]` for any scalar type `T` (e.g. `int[]`, `string[]`).
-Arrays are single-dimensional; nested arrays (`int[][]`) are not part of this
-grammar pass.
+Array types: `T[]` for any scalar type `T` (e.g. `int[]`, `string[]`), or for
+a class type once classes exist (`Item[]`, 4). Arrays are single-dimensional;
+nested arrays (`int[][]`) are not part of this grammar pass.
+
+Class types (4) are named by their file's name and can appear anywhere a
+scalar type can: variable/field/parameter/return types, and array element
+types.
+
+### Nullable types
+
+Every type, scalar or class, has a nullable form: `T?` (`int?`, `Item?`,
+`Item[]?`, `Item?[]`). A plain `T` is never null; `T` is a subtype of `T?`.
+`void` is never nullable. `null` is the literal for the empty value of any
+`T?`.
+
+- `== null` / `!= null` work on every type, including arrays, with flow
+  narrowing to `T` inside the true branch of `!= null` (and the false branch
+  of `== null`). Narrowing applies to local variables and parameters, not to
+  fields — a field may change between the check and the use, so copy it into
+  a local first.
+- A nullable value can't be used as its base type until narrowed: `int? a; a
+  + 1;` is a compile-time error.
+- `?.`, `??`, and `x!` are not part of this grammar pass (5).
 
 ### Static typing rules
 
@@ -129,9 +156,11 @@ Result types are fixed:
 | `!`             | `bool`                | `bool` |
 | `-` (unary)     | `int` or `float`      | same type |
 | `list[i]`       | `T[]`, index must be `int` | `T` |
+| `==` `!=`       | `T?`/`T`, `null`      | `bool` (any type, 2) |
+| `==` `!=`       | two class values      | `bool` (reference equality) |
 
 The float domains of `%`/`^`, relational ordering of `char`/`string`,
-string indexing, and array equality are open items (4).
+string indexing, and array equality are open items (5).
 
 ## 3. Grammar
 
@@ -141,23 +170,29 @@ string indexing, and array equality are open items (4).
 program        = { module-element } ;
 module-element = import-statement
                | extern-statement
-               | export-statement
-               | function-declaration
+               | [ 'private' ] function-declaration
+               | [ 'private' ] variable-declaration
                | statement ;
 ```
 
-A module is a list of declarations interleaved with top-level executable
-statements. The module the project's fleet manifest names as `entryPoint`
-(that is, what `pirate run` executes) is the program: its top-level
-statements run, in order. A module with no top-level statements has nothing
-to run. Declared functions are visible to the whole module regardless of
-declaration order.
+A `.pirate`/`.pir` module is a list of declarations interleaved with
+top-level executable statements. The module the project's fleet manifest
+names as `entryPoint` (that is, what `pirate run` executes) is the program:
+its top-level statements run, in order. A module with no top-level
+statements has nothing to run. Declared functions are visible to the whole
+module regardless of declaration order.
 
-Restricting top-level code to the entry module — rejecting statements found
-in an *imported* helper module — is part of the module-linking milestone;
-until then every module's top-level statements are type-checked as if they
-will run, and `pirate build` accepts declaration-only and statement-bearing
-modules alike.
+Every top-level declaration is public by default; `private` hides it from
+importers (3.3). A **non-entry** module holds functions and `const` values
+only — a mutable module-level variable (`var`, or a typed declaration
+without `const`) at top level of a non-entry module is a compile-time error,
+so there is no shared mutable state across files (4).
+
+Restricting top-level statements to the entry module — rejecting them in an
+*imported* helper module — is part of the module-linking milestone (Phase 3,
+[`brainstorm/FLAT_PLAN.md`](brainstorm/FLAT_PLAN.md)); until then every
+module's top-level statements are type-checked as if they will run, and
+`pirate build` accepts declaration-only and statement-bearing modules alike.
 
 ### 3.2 Imports and externs
 
@@ -186,15 +221,18 @@ qualified-name   = identifier { '.' identifier } ;
   lands. The optional `alias` is the name the imported module's exports are
   reached through (`Data.data`); without it the last path segment is used.
 
-### 3.3 Exports
+### 3.3 Visibility
 
 ```
-export-statement = 'export' ( function-declaration | variable-declaration ) ;
+visibility-modifier = 'private' ;
 ```
 
-`export` marks a top-level declaration as visible to modules that import
-this one. Until the linker exists, exported declarations compile exactly
-like unmarked ones; the marker is recorded and unused.
+`export` is removed (see [GRAMMAR_CHANGES.md](GRAMMAR_CHANGES.md)). Every
+top-level declaration — in a module or a class file — is **public by
+default**; a leading `private` hides it from other files instead. Until the
+linker exists, the modifier is recorded and unused; once it lands,
+`private` on a top-level module function/`const` hides it from importers the
+same way `private` hides a class member (4) from other files.
 
 ### 3.4 Function declaration
 
@@ -204,7 +242,8 @@ function-declaration
                     block ;
 parameter-list    = parameter { ',' parameter } ;
 parameter         = type identifier ;
-type              = scalar-type [ '[' ']' ] ;
+type              = base-type [ '?' ] [ '[' ']' [ '?' ] ] ;
+base-type         = scalar-type | qualified-name ;     (* qualified-name = a class type, 4 *)
 scalar-type       = 'int' | 'float' | 'string' | 'char' | 'bool' | 'void' ;
 block             = '{' { statement } [ return-statement ] '}' ;
 return-statement  = 'return' [ expression ] ';' ;
@@ -277,39 +316,151 @@ additive          = multiplicative { ( '+' | '-' ) multiplicative } ;
 multiplicative    = power { ( '*' | '/' | '%' ) power } ;
 power             = unary { '^' unary } ;            (* right-associative *)
 unary             = ( '!' | '-' ) unary | postfix ;
-postfix           = primary { call-suffix | index-suffix } ;
+postfix           = primary { call-suffix | index-suffix | member-suffix } ;
 call-suffix       = '(' [ argument-list ] ')' ;
 index-suffix      = '[' expression ']' ;
+member-suffix     = '.' identifier ;                (* c.value(), c.count — 4 *)
 argument-list     = expression { ',' expression } ;
 primary           = int-literal | float-literal | string-literal
                   | char-literal | bool-literal
                   | array-literal
                   | qualified-name
+                  | 'self' | 'null' | new-expression
                   | '(' expression ')' ;
 array-literal     = '[' [ expression { ',' expression } ] ']' ;
+new-expression    = 'new' qualified-name '(' [ argument-list ] ')' ;
 ```
 
-`postfix` covers both function calls (`name(args)`,
-`Standard.Terminal.Print(x)`) and array indexing (`list[i]`), including
-chained forms like `f()[0]`.
+`postfix` covers function calls (`name(args)`, `Standard.Terminal.Print(x)`),
+array indexing (`list[i]`), and member access (`c.value()`, `c.count`, 4),
+including chained forms like `f()[0]` or `c.value().add(1)`.
+
+`self` is the current instance inside a class file's constructor or method
+body (4); it is never a type. `null` is the nullable-empty literal (2).
 
 An array literal's elements must all share one type; the empty literal `[]`
 takes its element type from the declared type of the variable it initializes
 (see 2, so it is valid only in a typed-declaration position).
 
-## 4. Open items (explicitly out of scope for this pass)
+## 4. Classes and namespaces (flat files)
+
+Status: **specified, not yet implemented** (see
+[`brainstorm/FLAT_PLAN.md`](brainstorm/FLAT_PLAN.md) for the build order —
+Phases 1–6 land the lexer, parser, semantics, compiler/VM, and stdlib
+support this section assumes). [`brainstorm/FLAT.md`](brainstorm/FLAT.md) is
+the fuller prose walkthrough with worked examples; this section is its
+grammar folded into the canonical spec, condensed to production rules and
+the rules that go with them. First slice only: classes (fields,
+constructors, methods, `self`, namespaces, imports, nullable types).
+`extends`, `implements`, interfaces and `static` are reserved but not
+defined here (5).
+
+**A file is a type, and the filename is the type's name.** There is no
+`class Foo { }` wrapper — everything at the top level of a class file is a
+member of that type. The filename without its final extension is the type
+name and must be a single identifier (`foo.bar.cpirate` is an error, not a
+type named `foo`).
+
+| Extensions | Kind | Contains |
+|---|---|---|
+| `.cpirate`, `.cpir` | class | fields, constructors, methods |
+| `.ipirate`, `.ipir` | interface | bodiless method signatures (reserved, 5) |
+| `.pirate`, `.pir` | module | functions and constants (3.1) |
+
+Two files that resolve to the same type name in one folder are a
+duplicate-name error, whatever their extensions (`Stack.cpir` next to
+`Stack.cpirate`, or a class `Stack.cpir` next to a module `Stack.pir`).
+
+### 4.1 Class-file grammar
+
+```
+class-file        = { class-element } ;
+class-element     = { modifier } ( field | method | constructor ) ;
+modifier          = 'private' | 'readonly' ;
+                  (* 'readonly' on fields only; 'override'/'abstract' reserved, 5 *)
+
+field             = 'field' type identifier [ '=' expression ] ';'
+                  | 'const' [ type | 'var' ] identifier '=' expression ';' ;
+                  (* on 'field', the initializer may be omitted only if every
+                     constructor assigns the field (definite assignment); a
+                     nullable field is never implicitly null *)
+method            = 'func' identifier '(' [ parameter-list ] ')' ':' type block ;
+constructor       = 'constructor' '(' [ parameter-list ] ')'
+                    [ ':' delegate ] block ;
+delegate          = 'self' '(' [ argument-list ] ')' ;
+                  (* 'super(...)' reserved until 'extends' exists, 5 *)
+```
+
+A class file has no loose statements — only fields, constructors, methods,
+and constants. `field var label = "x";` infers the field's type from its
+initializer, same rule as a local `var`. A member can't share the file's own
+name, since the file's name is in scope as a type throughout the body.
+
+### 4.2 Access levels
+
+Exactly three, applying to fields, methods, and constructors alike (for
+methods/constructors there's nothing to write, so `readonly` on them — or on
+a `const` — is an error):
+
+| Written | Read from other files | Assigned from other files | Assigned inside the class |
+|---|---|---|---|
+| `field int count` | yes | yes | yes |
+| `readonly field int count` | yes | no | yes |
+| `private field int count` | no | no | yes |
+
+"Inside the class" means the class's own constructors and methods.
+`readonly` doesn't make the *value* immutable — the class can still change
+it — only who can assign the field from outside.
+
+### 4.3 Overloading and assignment
+
+Constructors and methods overload by arity, then parameter types;
+ambiguity is a compile-time error. Assignment targets extend through member
+access: `self.count = 1;`, `c.count = 1;` (subject to 4.2).
+
+### 4.4 Namespaces and resolution
+
+The `.fleet` file's base name is the root namespace; folders are
+sub-namespaces (lowercase by convention); the filename is the type
+(PascalCase by convention) — no `namespace` keyword, the filesystem is the
+declaration. A type's full name is root + folder path + file name
+(`shop.models.Money`).
+
+- Declarations in the same folder — classes and modules alike — are visible
+  without an import. Anything else needs
+  `import module <full name> [as <alias>];`; the imported name is the last
+  segment, or the alias. `import external <dep>.<path> [as <alias>];`
+  resolves `<dep>` against the `.fleet` file's `dependencies` map
+  ([`FLEET.md`](FLEET.md)).
+- A full name works without an import (`shop.models.Item i = ...`),
+  resolving by longest namespace prefix, then type, then member.
+- Two files with the same full name are an error; a type can't share its
+  name with a sibling folder (`Money.cpirate` and `Money/`). Names and
+  folders compare case-insensitively.
+- Circular imports are allowed — every type is registered before any body
+  is checked.
+
+## 5. Open items (explicitly out of scope for this pass)
 
 - `elif` sugar.
-- `class` / `new` (reserved keywords, no grammar defined).
+- `extends`, `implements`, `.ipirate` interfaces, virtual dispatch,
+  `abstract`/`override`, `static` members — reserved keywords (1.3), no
+  grammar defined. Tracked as backlog after the classes first slice
+  ([`brainstorm/FLAT_PLAN.md`](brainstorm/FLAT_PLAN.md), "After the first
+  slice").
+- Nullable operators `?.`, `??`, `x!` (2).
 - Multi-dimensional / nested arrays.
 - Implicit numeric conversions (`int` → `float`).
-- Module linking: resolving `import module` / `import external`, export
-  visibility across modules, and rejecting top-level statements in imported
-  helper modules (3.1–3.3).
+- Module linking: resolving `import module` / `import external`, visibility
+  across modules, and rejecting top-level statements in imported helper
+  modules (3.1, 3.3, 4.4) — Phase 3 of the flat-files plan.
 - Variadic builtins (v1's `Standard.String.Concat` took any number of
   strings; v2 currently declares the two-string form).
 - `%` and `^` on `float`; relational ordering of `char` and `string`;
-  indexing into `string` (e.g. `s[0]` → `char`); array equality with `==`.
+  indexing into `string` (e.g. `s[0]` → `char`); array equality with `==`
+  (`T[]`/`T[]`, as opposed to the `== null` form in 2, which is in scope).
 - Block scoping for `if`/`while`/`for` bodies — today a function (or module)
-  is one scope, so a loop variable stays visible after the loop.
+  is one scope, so a loop variable stays visible after the loop. Affects how
+  4's nullable narrowing and field definite-assignment interact with blocks.
 - Closure / free-variable capture (reserved symbol scope `Free`).
+- Enums and exhaustive `match`; generics (Pirate has none, out of scope).
