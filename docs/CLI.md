@@ -18,9 +18,16 @@ declared positional arguments — argument parsing, `-h`/`--help` generation,
 and usage/examples text come from Spectre, not hand-written per command like
 v1's `Help()` overrides and manual `args.Contains("-h")` check.
 
-Command surface is unchanged from v1: `run`, `init`, `new`, `build`, `shell`,
-plus the no-args banner. Every command still returns a process exit code
-(`0` success, non-zero failure) the same way v1's commands did via `Error()`.
+Command surface is unchanged from v1: `run`, `init`, `new`, `build`, plus the
+no-args banner. Every command still returns a process exit code (`0` success,
+non-zero failure) the same way v1's commands did via `Error()`.
+
+**`pirate shell` is removed** as part of the flat-files work
+([`brainstorm/FLAT_PLAN.md`](brainstorm/FLAT_PLAN.md) Phase 1; documented
+here ahead of the code removal per that plan's Phase 0). The REPL fed each
+line through the full frontend independently, which doesn't extend to a
+multi-file class/module project the way `build`/`run` do — there's no
+single-file REPL model for "a file is a type."
 
 Every command's settings class inherits `GlobalSettings` — the seam any
 flag or behavior meant to apply to every command hangs off, rather than
@@ -128,7 +135,7 @@ $ pirate new
 
 The "pirate new [type]" command creates a new file from a template
 
-── Options ──────────────────────────────────────
+── Options ────────────────────────
 pirate
 gitignore
 gitattributes
@@ -172,13 +179,13 @@ Examples (real output):
 
 ```
 $ pirate build
-── Build ──────────────────────────────────────────
+── Build ──────────────────────────────
   ⟳ main.pirate (rebuilt)
 
 1 module: 1 rebuilt, 0 up to date
 
 $ pirate build bad
-── Build ──────────────────────────────────────────
+── Build ──────────────────────────────
   ✗ bad.pirate (failed)
 bad.pirate:3:1 Cannot assign to 'LIMIT' (declared 'const') *SEM-004*
   2 |     const int LIMIT = 10;
@@ -217,9 +224,9 @@ declaration-only module is a valid, buildable module with nothing to run:
 
 ```
 $ pirate run decl-only
-── Build ──────────────────────────────────────────
+── Build ──────────────────────────────
   ⟳ decl-only.pirate (rebuilt)
-── Running ───────────────────────────────────────
+── Running ───────────────────────
 Module 'decl-only.pirate' has no top-level statements — nothing to run.
 ```
 
@@ -228,9 +235,9 @@ remaining stub:
 
 ```
 $ pirate run
-── Build ──────────────────────────────────────────
+── Build ──────────────────────────────
   ✓ main.pirate (up to date)
-── Running ───────────────────────────────────────
+── Running ───────────────────────
 ✓ main.pirate type-checked clean.
 Execution is not implemented yet — the v2 VM pipeline is still a stub.
 ```
@@ -240,28 +247,6 @@ spinner; the "Execution is not implemented yet" line is the seam where
 compile + VM execution (and RTN-004 for the nothing-to-run case) will
 hang once the pipeline's back half exists, so `run` won't need
 restructuring to do real work later.
-
-### `pirate shell`
-
-Opens a read-eval-print loop: prints the version banner, then reads lines
-from stdin until `stop`, `exit`, or `break` or EOF. Uses plain
-`Console.ReadLine()`, not a Spectre `TextPrompt` — a `TextPrompt` requires
-an interactive terminal and fails on piped/redirected stdin, which would
-break both scripted usage and any future e2e test that feeds a script into
-`pirate shell` via stdin. Each line is a fresh, line-numbered source fed
-through the full frontend (`CompilationPipeline`): every lex, syntax, and
-semantic error renders with `file:line:col`, the offending line, and a
-caret; a clean line reports the type-check success and the same execution
-stub as `run`:
-
-```
->> import standard Terminal;
-(type-checked clean, but execution is not implemented yet)
->> func f(void x) : int { return 1; }
-stdin:2:8 'void' is not a value type *SEM-003*
-  2 | func f(void x) : int { return 1; }
-             ^
-```
 
 ## Error handling
 
@@ -280,7 +265,7 @@ message as a bug:
 - **Anything else** (a genuine unhandled fault): printed as
   `[red]Unexpected error: <message>[/]` (message escaped), no stack trace.
 
-Both paths exit with `-1`. This exists mainly for when `run`/`shell` start
+Both paths exit with `-1`. This exists mainly for when `run` starts
 executing real VM code and a runtime fault becomes possible; today's stub
 commands only throw via `Validate()`.
 
@@ -315,17 +300,13 @@ commands only throw via `Validate()`.
   the version in one place. `IncludeSourceRevisionInInformationalVersion` is
   set to `false` so the displayed version doesn't get a `+<git-sha>` suffix
   appended by the SDK's deterministic-build feature. The reflection lookup
-  is shared through `CliInfo.Version()` (`CliInfo.cs`), used by `Banner`
-  and `ShellCommand` — one source of truth and one lookup.
-- `build`/`run`/`shell` are honest about pipeline status: the whole
-  frontend they can do today (lexing, parsing, type-checking, diagnostics)
-  is real, and execution prints an explicit "not implemented yet" because
-  the compiler/VM half of the pipeline doesn't exist — rather than a
-  silent no-op or a fake success.
-- `pirate shell` reads input with plain `Console.ReadLine()`, not a Spectre
-  `TextPrompt` — a `TextPrompt` requires an interactive terminal and throws
-  on piped/redirected stdin, which would break both scripted usage and any
-  future e2e test that feeds a script into `pirate shell` via stdin.
+  is shared through `CliInfo.Version()` (`CliInfo.cs`), used by `Banner` —
+  one source of truth and one lookup.
+- `build`/`run` are honest about pipeline status: the whole frontend they
+  can do today (lexing, parsing, type-checking, diagnostics) is real, and
+  execution prints an explicit "not implemented yet" because the
+  compiler/VM half of the pipeline doesn't exist — rather than a silent
+  no-op or a fake success.
 - `Program.cs` sets `Console.OutputEncoding = Encoding.UTF8` at startup
   (wrapped in try/catch — redirected output can reject this on some
   platforms). Windows consoles don't default to UTF-8, which otherwise
@@ -353,7 +334,6 @@ Pirate.Cli/
     NewCommand.cs                settings nested as NewCommand.NewCommandSettings
     BuildCommand.cs              settings nested as BuildCommand.BuildCommandSettings
     RunCommand.cs                settings nested as RunCommand.RunCommandSettings
-    ShellCommand.cs              settings nested as ShellCommand.ShellCommandSettings
   Services/                     pure, unit-testable logic used by the commands above
     Templates.cs                 init/new file contents
     CompilationPipeline.cs       ICompilationPipeline: lex → parse → check, concatenated errors

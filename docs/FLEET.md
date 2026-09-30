@@ -15,6 +15,14 @@ lives in the project root as `<name>.fleet` — `<name>` defaults to `module`
 `pirate init -n|--name <name>`, same shape as `[filename]` defaulting to
 `main` for the `.pirate` file it writes alongside it.
 
+**Planned (flat files, Phase 3 of
+[`brainstorm/FLAT_PLAN.md`](brainstorm/FLAT_PLAN.md), not yet
+implemented):** `pirate init` prompts for the project name instead of
+defaulting to `module`, since that name becomes both the `.fleet` file name
+*and* the root namespace every type in the project resolves under
+(GRAMMAR.md §4.4); `-n|--name` still supplies it without the prompt. Names
+colliding with reserved roots (`standard`) are refused.
+
 ```json
 {
   "name": "my-project",
@@ -29,9 +37,9 @@ lives in the project root as `<name>.fleet` — `<name>` defaults to `module`
 |---|---|---|
 | `name` | Project name. | The project directory's folder name. |
 | `version` | Project version (free-form string, not yet validated as semver). | `"0.1.0"` |
-| `entryPoint` | The module `pirate run` executes when invoked with no `[filename]` argument: its **top-level statements** are the program (GRAMMAR.md §3.1). A module with none is a valid build target but has nothing to run — `run` says so and exits `1`. | Whatever `pirate init`'s own `[filename]` argument resolved to (`"main"` by default). |
+| `entryPoint` | The module `pirate run` executes when invoked with no `[filename]` argument: its **top-level statements** are the program (GRAMMAR.md §3.1). A module with none is a valid build target but has nothing to run — `run` says so and exits `1`. Must name a module (`.pirate`/`.pir`) file, root-relative without the extension; naming a class or interface file is a manifest error (planned, Phase 3). | Whatever `pirate init`'s own `[filename]` argument resolved to (`"main"` by default). |
 | `build` | Reserved for future compiler/build configuration. | `{}` |
-| `dependencies` | Reserved for a future package ecosystem. | `{}` |
+| `dependencies` | A path map from another project's root namespace (its own `.fleet` base name) to a relative path, resolving `import external <dep>.<path>;` (GRAMMAR.md §4.4). **Planned, Phase 3 — not yet implemented**; the key must equal the dependency's `.fleet` file name. | `{}` |
 
 **`build` and `dependencies` are not implemented yet** — same
 honesty-about-pipeline-status policy as `pirate build`/`run` themselves
