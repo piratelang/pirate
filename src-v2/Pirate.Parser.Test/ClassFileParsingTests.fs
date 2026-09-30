@@ -136,6 +136,15 @@ module ClassFileParsingTests =
         Assert.IsType<SelfExpressionNode>(assignment.Target) |> ignore
 
     [<Fact>]
+    let ``Class file can import a module, same as a module file`` () =
+        let result = Helpers.parseClass "import module shop.models.Money;\n\nfield Money price = new Money(0);"
+        Assert.Empty(result.Errors)
+        let import = result.Program.Value.Members.[0] :?> ImportStatementNode
+        Assert.Equal(ImportKind.Module, import.Kind)
+        let field = result.Program.Value.Members.[1] :?> FieldDeclarationNode
+        Assert.Equal("price", field.Name)
+
+    [<Fact>]
     let ``Loose statement in a class file is a syntax error`` () =
         let result = Helpers.parseClass "var x = 5;"
         Assert.True(

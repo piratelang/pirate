@@ -501,23 +501,29 @@ module Parser =
             | None -> BlockNode(loc (peek state), loc (peek state), ResizeArray<StatementNode>(), null)
         Some (ConstructorDeclarationNode(loc startTok, loc (peek state), parameters, Option.toObj delegateArgs, body, isPrivate) :> TopLevelNode)
 
-    // class-element = { modifier } ( field | method | constructor ) ;
+    // class-element = { modifier } ( field | method | constructor )
+    //              | import-statement ;
+    // (docs/GRAMMAR.md §4.4: same-folder declarations need no import, but a
+    // class file can still import across folders, same as a module.)
     and private parseClassElement state : TopLevelNode option =
-        let isPrivate, isReadonly = parseModifiers state
-        match (peek state).Type with
-        | TokenType.Field -> parseField state isPrivate isReadonly
-        | TokenType.Const -> parseClassConst state isPrivate
-        | TokenType.Constructor -> parseConstructor state isPrivate
-        | TokenType.Func -> Some (parseFuncDecl state isPrivate)
-        | TokenType.Extends | TokenType.Implements ->
-            let tok = advance state
-            state.Errors.Add(SyntaxError(SyntaxErrorKind.ReservedKeywordNotSupportedYet, sprintf "'%s' is reserved, not supported yet" tok.Lexeme, loc tok))
-            consumeThroughSemicolon state
-            None
-        | _ ->
-            state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingFieldOrMemberInClassFile, "Expected 'field', 'const', 'constructor', or a method in a class file", loc (peek state)))
-            consumeThroughSemicolon state
-            None
+        if at state TokenType.Import then
+            Some (parseImport state)
+        else
+            let isPrivate, isReadonly = parseModifiers state
+            match (peek state).Type with
+            | TokenType.Field -> parseField state isPrivate isReadonly
+            | TokenType.Const -> parseClassConst state isPrivate
+            | TokenType.Constructor -> parseConstructor state isPrivate
+            | TokenType.Func -> Some (parseFuncDecl state isPrivate)
+            | TokenType.Extends | TokenType.Implements ->
+                let tok = advance state
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.ReservedKeywordNotSupportedYet, sprintf "'%s' is reserved, not supported yet" tok.Lexeme, loc tok))
+                consumeThroughSemicolon state
+                None
+            | _ ->
+                state.Errors.Add(SyntaxError(SyntaxErrorKind.MissingFieldOrMemberInClassFile, "Expected 'field', 'const', 'constructor', or a method in a class file", loc (peek state)))
+                consumeThroughSemicolon state
+                None
 
     // class-file = { class-element } ; — no loose statements (docs/GRAMMAR.md §4).
     and private parseClassFile state : TopLevelNode list =

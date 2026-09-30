@@ -375,7 +375,8 @@ duplicate-name error, whatever their extensions (`Stack.cpir` next to
 
 ```
 class-file        = { class-element } ;
-class-element     = { modifier } ( field | method | constructor ) ;
+class-element     = import-statement
+                  | { modifier } ( field | method | constructor ) ;
 modifier          = 'private' | 'readonly' ;
                   (* 'readonly' on fields only; 'override'/'abstract' reserved, 5 *)
 
