@@ -71,6 +71,10 @@ incremental content-hash cache) is complete and tested; the bytecode
 compiler, VM, standard library, and module linking (`import module` /
 `import external`) are the next milestones — see
 [`docs/architecture/v2-architecture.md`](docs/architecture/v2-architecture.md#current-state).
+In progress on `feature/flat-files`: classes as a file kind, `export`
+removed in favor of `private` — see
+[`docs/brainstorm/FLAT_PLAN.md`](docs/brainstorm/FLAT_PLAN.md). This and
+everything else on this page is v2-only; v1 below is unaffected.
 
 Build and test v2 (requires .NET 9 SDK):
 
